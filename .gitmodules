@@ -1,0 +1,6 @@
+[submodule "lib/libft"]
+	path = lib/libft
+	url = /home/iamongeo/Cursus42/cub3d/lib/libft
+[submodule "lib/MLX42"]
+	path = lib/MLX42
+	url = /home/iamongeo/Cursus42/cub3d/lib/MLX42
