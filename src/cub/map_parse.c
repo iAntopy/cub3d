@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/02/28 01:49:13 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/02/28 13:17:55 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static	void	transcribe(t_minimap *map, char *file)
 	// map->w = game->w * 36;
 }
 
-void	map_checker(t_minimap *mini, char *file)
+void	map_checker(t_minimap *mini, t_cub cub, char *file)
 {
 	int		fd;
 	char	*temp;
