@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/02/27 04:12:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/02/28 01:30:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 int	cub_clear(t_cub *cub, int exit_status)
 {
@@ -31,9 +31,9 @@ void	on_close(void *param)
 
 void	cub_key_handler(mlx_key_data_t event, void *param)
 {
-//	t_cub	*cub;
+	//	t_cub	*cub;
 
-//	cub = (t_cub *)param;
+	//	cub = (t_cub *)param;
 	if (event.key == MLX_KEY_ESCAPE && event.action == MLX_PRESS)
 		on_close(param);
 }
@@ -67,15 +67,19 @@ int	cub_init_core_data(t_cub *cub)
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
+	t_minimap	*mini;
 //	mlx_image_t	*img;
-	
+		
 	(void)argc;
 	(void)argv;
 	ft_memclear(&cub, sizeof(cub));
 
 	// FONCTION DE PARSING VIENT ICI !!
+	// INIT INPUT	
+	map_checker(init_mini(mini), argv[1]);
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
+	
 
 	printf("Try init mlx \n");
 	
@@ -88,6 +92,8 @@ int	main(int argc, char **argv)
 
 	// INIT DATA
 	cub_init_core_data(&cub);
+
+
 
 	
 	// INIT CURSOR SETTINGS
