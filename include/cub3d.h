@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/02/28 00:05:58 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/02/28 01:46:58 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int	report_mlx_init_error(void);
 // MAP_CHECKER //////////
 // map_parse
 
-static	void	wall_check(t_minimap *m);
-static	void	start_set(t_minimap *map, int flag);
+// static	void	wall_check(t_minimap *m);
+// static	void	start_set(t_minimap *map, int flag);
 static	void	transcribe(t_minimap *map, char *file);
 void			map_checker(t_minimap *mini, char *file);
 // mini_tool

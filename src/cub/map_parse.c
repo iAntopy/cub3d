@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/02/28 01:38:16 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/02/28 01:49:13 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	print_map(t_minimap *m)
 		{
 			if (m->tab[i][j] == '1' && (i == 0 || j == 0
 			|| i == (m->height / 36) - 1 || j == (m->width / 36) - 1))
+				mlx_pixel_put();
 				// mlx_put_image_to_window(\
 				// m->mlx.mlx, m->mlx.win, m->img.wall, j * 36, i * 36);
 			else if (m->map[i][j] == '1')
