@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/02/28 05:56:57 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/01 18:16:51 by iamongeo         ###   ########.fr        #
                                                                               #
 # **************************************************************************** #
 
@@ -37,7 +37,13 @@ LIBFT	:= $(LFTDIR)/libft.a
 
 INCL	:= -I include/ -I $(LFTDIR)  -I $(MLXDIR)/include -I $(GLFWDIR)/include
 
+
 LIBS	:=  $(LIBMLX) $(LIBGLFW) $(LIBFT) -ldl -pthread -lm
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Darwin)
+        LIBS += -framework OpenGL -framework Cocoa -framework IOKit
+endif
 
 NAME	:= cub3D
 
