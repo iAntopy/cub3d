@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/02/28 01:20:51 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/02/28 05:56:57 by iamongeo         ###   ########.fr        #
                                                                               #
 # **************************************************************************** #
 
@@ -23,9 +23,13 @@ CFLAGS	:= -Wextra -Wall -Werror
 
 GLFWDIR	:= lib/glfw
 LIBGLFW	:= $(GLFWDIR)/build/src/libglfw3.a
+BLDGLFW	:= $(GLFWDIR)/build
 
 MLXDIR	:= lib/MLX42
 LIBMLX	:= $(MLXDIR)/build/libmlx42.a
+BLDMLX	:= $(MLXDIR)/build
+
+SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src
 
 LFTDIR	:= lib/libft
 LIBFT	:= $(LFTDIR)/libft.a
@@ -39,13 +43,23 @@ NAME	:= cub3D
 
 all: $(NAME)
 
-$(LIBGLFW):
-	@cmake $(GLFWDIR) -B $(GLFWDIR)/build
-	make -C $(MLXDIR)/build
+$(SUBMOD_SRC):
+	@git submodule init
 
-$(LIBMLX): $(LIBGLFW)
-	@cmake $(MLXDIR) -B $(MLXDIR)/build
-	make -C $(MLXDIR)/build -j4
+git_submodule: $(SUBMOD_SRC)
+	@git submodule update
+
+$(BLDGLFW):
+	@cmake -S $(GLFWDIR) -B $(BLDGLFW)
+
+$(LIBGLFW): $(BLDGLFW)
+	make -C $(BLDGLFW)
+
+$(BLDMLX): $(LIBGLFW)
+	@cmake -S $(MLXDIR) -B $(BLDMLX)
+
+$(LIBMLX): $(BLDMLX)
+	make -C $(BLDMLX) -j4
 
 $(LIBFT):
 	make -C $(LFTDIR)
@@ -53,12 +67,13 @@ $(LIBFT):
 %.o: %.c 
 	@$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
 
-$(NAME): $(LIBGLFW) $(LIBMLX) $(LIBFT) $(OBJS)
+$(NAME): git_submodule $(LIBMLX) $(LIBFT) $(OBJS)
 	@$(CC) $(OBJS) $(LIBS) $(INCL) -o $(NAME)
 
 clean:
 	@rm -f $(OBJS)
-#	@rm -f $(LIBMLX)/build
+	@rm -rf $(MLXDIR)/build
+	@rm -rf $(GLFWDIR)/build
 
 fclean: clean
 	@rm -f $(NAME)
