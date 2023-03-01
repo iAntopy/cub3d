@@ -1,6 +1,13 @@
-[submodule "lib/libft"]
-	path = lib/libft
-	url = /home/iamongeo/Cursus42/cub3d/lib/libft
 [submodule "lib/MLX42"]
 	path = lib/MLX42
-	url = /home/iamongeo/Cursus42/cub3d/lib/MLX42
+	url = https://github.com/codam-coding-college/MLX42.git
+	branch = master
+	ignore = untracked
+[submodule "lib/glfw"]
+	path = lib/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = master
+[submodule "lib/libft"]
+	path = lib/libft
+	url = https://github.com/iAntopy/libft.git
+	branch = master
