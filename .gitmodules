@@ -11,3 +11,7 @@
 	path = lib/libft
 	url = https://github.com/iAntopy/libft.git
 	branch = master
+[submodule "lib/mtxlib"]
+	path = lib/mtxlib
+	url = https://github.com/iAntopy/mtxlib.git
+	branch = master

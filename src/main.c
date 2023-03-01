@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/02/28 04:42:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/02/28 19:46:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,15 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	printf("Init mlx SUCCESSFUL\n");
+	mlx_focus(cub.mlx);
 
 
 	// INIT DATA
 	cub_init_core_data(&cub);
-
 	
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);
 	mlx_set_cursor_mode(cub.mlx, MLX_MOUSE_HIDDEN);
-	mlx_focus(cub.mlx);
 
 	
 	// INIT HOOKS
