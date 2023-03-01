@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/02/28 05:56:57 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/01 05:48:48 by iamongeo         ###   ########.fr        #
                                                                               #
 # **************************************************************************** #
 
@@ -29,11 +29,13 @@ MLXDIR	:= lib/MLX42
 LIBMLX	:= $(MLXDIR)/build/libmlx42.a
 BLDMLX	:= $(MLXDIR)/build
 
-SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src
+SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src 
 
 LFTDIR	:= lib/libft
 LIBFT	:= $(LFTDIR)/libft.a
 
+MTXDIR	:= lib/mtxlib
+LIBMTX	:= $(MTXDIR)/libmtx.a
 
 INCL	:= -I include/ -I $(LFTDIR)  -I $(MLXDIR)/include -I $(GLFWDIR)/include
 
@@ -63,6 +65,9 @@ $(LIBMLX): $(BLDMLX)
 
 $(LIBFT):
 	make -C $(LFTDIR)
+
+$(LIBMLX):
+	make -C $(MLXDIR)
 
 %.o: %.c 
 	@$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
