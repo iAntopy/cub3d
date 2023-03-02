@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/02 09:44:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 10:47:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ static void	print_rays(t_mtx *xs, t_mtx *ys)
 */
 }
 
+char	get_is_wall(t_map *map, int x, int y)
+{
+	return (map->collisions[y * map->width + x]);
+}
+
 static void	print_map(t_map *map)
 {
 	int	i;
@@ -42,6 +47,26 @@ static void	print_map(t_map *map)
 				printf(" ");
 			else
 				printf("%c", (*l)[i]);
+		}
+		printf("\n");
+	}
+}
+
+static void	print_collision_map(t_cub *cub)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < cub->map.height)
+	{
+		j = -1;
+		while (++j < cub->map.width)
+		{
+			if (get_is_wall(&cub->map, j, i))
+				printf("1");
+			else
+				printf("0");
 		}
 		printf("\n");
 	}
@@ -77,6 +102,28 @@ typedef struct s_ray_intersect_data
 //	float	*dist;//	ptr to distance array where to put distance results
 
 }	t_rayint;
+
+int	build_collision_map(t_cub *cub)
+{
+	t_map	*map;
+	char	*colls;
+	int	i;
+	int	j;
+
+	map = &cub->map;
+	if (!ft_malloc_p(sizeof(char) * map->total_cells, (void **)&colls))
+		return (-1);
+	
+	i = -1;
+	while (++i < map->height)
+	{
+		j = -1;
+		while (++j < map->width)
+			colls[i * map->width + j] = (map->tab[i][j] == '1');
+	}
+	map->collisions = colls;
+	return (0);
+}
 
 int	load_map(t_cub *cub, char *map_file)
 {
@@ -125,6 +172,9 @@ int	load_map(t_cub *cub, char *map_file)
 	}
 	printf("map : printing \n");
 	print_map(&cub->map);
+	build_collision_map(cub);
+	printf("map : print collision map : \n");
+	print_collision_map(cub);
 	return (0);
 }
 
@@ -142,11 +192,6 @@ static  void	raycast_init_single_vect(t_cub *cub, t_rayint *ri, int vi)
 	ri->a = ri->dy / ri->dx;
 	ri->inv_a = 1 / ri->a;
 	ri->b = ri->py - (ri->a * ri->px);
-}
-
-int	get_is_wall(t_cub *cub, int x, int y)
-{
-	return (cub->map.tab[y][x] == '1');
 }
 
 // Returns 1 if wall was reached
@@ -174,7 +219,7 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 		ri->ix = i_hori[0];
 		ri->iy = i_hori[1];
 	}
-	if (get_is_wall(ri->cub, ri->cx, ri->cy))
+	if (get_is_wall(&ri->cub->map, ri->cx, ri->cy))
 	{
 		col_ptr = _mtx_index_fptr(ri->cub->hero.collisions, ri->idx, 0);
 		*(col_ptr++) = ri->ix;
