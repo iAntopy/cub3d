@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/02/28 22:44:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 01:27:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,17 @@
 
 # include "MLX42/MLX42.h"
 # include "libft.h"
+# include "mtxlib.h"
 
-# define SCN_WIDTH 800
+# define SCN_WIDTH 20// 800
 # define SCN_HEIGHT 640
 # define ROT_FACTOR 0.012271846 // (2*PI / 512), soit 1 512e de tour pour chaque deltaX de souris (Temporaire, à teester)
 
 # define CELL_WIDTH 64
-# define 
+# define M_TAU 6.283185307179586f// 2 * pi
+
+# define FOV 2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define FOV_HF 1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 
 enum	e_sides
 {
@@ -63,8 +67,9 @@ typedef struct s_main_character_data
 	float	px;
 	float	py;
 	float	ori;
-	t_mtx	*angle_thetas;	// from mlx_linspace() based on player orientation. malloced first, changed in place thereafter.
-	t_mtx	*rays;		// rays cast based on angle_thetas.
+	t_mtx	*thetas;	// from mlx_linspace() based on player orientation. malloced first, changed in place thereafter.
+	t_mtx	*rays[2];	// first ptr is the cosine array from linspace thetas, second is sin array from thetas.
+//	t_mtx	*rays;		// rays cast based on angle_thetas.
 }	t_hero;
 
 typedef struct s_cub3d_core_data
@@ -81,6 +86,9 @@ typedef struct s_cub3d_core_data
 
 
 /// PARSING ///////////////////
+
+/// RAYCASTER /////////////////
+int	init_raycaster(t_cub *cub);
 
 /// DDA ALGO //////////////////
 

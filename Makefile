@@ -6,13 +6,14 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/01 20:01:51 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/02 00:54:17 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
 SRC_FLS	:=	main.c 			\
-		error_handling.c 	
+			error_handling.c 	\
+			init_raycaster.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
@@ -28,18 +29,18 @@ MLXDIR	:= lib/MLX42
 LIBMLX	:= $(MLXDIR)/build/libmlx42.a
 BLDMLX	:= $(MLXDIR)/build
 
-SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src 
-
 LFTDIR	:= lib/libft
 LIBFT	:= $(LFTDIR)/libft.a
 
 MTXDIR	:= lib/mtxlib
 LIBMTX	:= $(MTXDIR)/libmtx.a
 
-INCL	:= -I include/ -I $(LFTDIR)  -I $(MLXDIR)/include -I $(GLFWDIR)/include
+SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src $(LFTDIR)/libft.h $(MTXDIR)/src
+INCL	:= -I include/ -I $(LFTDIR)  -I $(MLXDIR)/include -I $(GLFWDIR)/include -I $(MTXDIR)/includes
 
-
-LIBS	:=  $(LIBMLX) $(LIBGLFW) $(LIBFT) -ldl -pthread -lm
+BASE_LIBS := -ldl -pthread -lm
+PROJ_LIBS := $(LIBMTX) $(LIBMLX) $(LIBGLFW) $(LIBFT)
+LIBS	:= $(BASE_LIBS) $(PROJ_LIBS)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
@@ -71,19 +72,20 @@ $(LIBMLX): $(BLDMLX)
 $(LIBFT):
 	make -C $(LFTDIR)
 
-$(LIBMLX):
-	make -C $(MLXDIR)
+$(LIBMTX):
+	make -C $(MTXDIR)
 
 %.o: %.c 
 	@$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
 
-$(NAME): git_submodule $(LIBMLX) $(LIBFT) $(OBJS)
+#$(NAME): git_submodule $(LIBMTX) $(LIBMLX) $(LIBFT) $(OBJS)
+$(NAME): git_submodule $(PROJ_LIBS) $(OBJS)
 	@$(CC) $(OBJS) $(LIBS) $(INCL) -o $(NAME)
 
 clean:
 	@rm -f $(OBJS)
-	@rm -rf $(MLXDIR)/build
-	@rm -rf $(GLFWDIR)/build
+#	@rm -rf $(MLXDIR)/build
+#	@rm -rf $(GLFWDIR)/build
 
 fclean: clean
 	@rm -f $(NAME)

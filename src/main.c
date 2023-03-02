@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/02/28 19:46:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 00:46:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 	(void)cub;
 	dx = xpos - cub->scn_midx;
 	dy = ypos - cub->scn_midy;
-	cub->ori += dx * ROT_FACTOR;
+	cub->hero.ori += dx * ROT_FACTOR;
 	printf("Cursor moved : pos (x, y) : (%lf, %lf), delta (dx, dy) : (%lf, %lf), ori : %f\n", xpos, ypos, dx, dy,
-		cub->ori);
+		cub->hero.ori);
 
 	// CAN'T TOUCH THIS, naaaaah na na na tst tst na na tst tst na na.
 	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
@@ -61,6 +61,8 @@ int	cub_init_core_data(t_cub *cub)
 {
 	cub->scn_midx = SCN_WIDTH / 2;
 	cub->scn_midy = SCN_HEIGHT / 2;
+
+	init_raycaster(cub);
 	return (0);
 }
 
