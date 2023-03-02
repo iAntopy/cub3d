@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/02 20:25:36 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 06:58:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,14 @@ int	cub_init_core_data(t_cub *cub)
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
-//	mlx_image_t	*img;
 	
-	(void)argc;
-	(void)argv;
 	ft_memclear(&cub, sizeof(cub));
+	if (argc != 2)
+		return (EXIT_FAILURE);
+	if (load_map(&cub, argv[1]) < 0)
+		return (EXIT_FAILURE);
 
+	return (0);
 	// FONCTION DE PARSING VIENT ICI !!
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/02 20:07:37 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/02 07:24:58 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ INCL	:= -I include/ -I $(LFTDIR)  -I $(MLXDIR)/include -I $(GLFWDIR)/include -I 
 
 BASE_LIBS := -ldl -pthread -lm
 PROJ_LIBS := $(LIBMTX) $(LIBMLX) $(LIBGLFW) $(LIBFT)
-LIBS	:= $(BASE_LIBS) $(PROJ_LIBS)
+LIBS	:= $(PROJ_LIBS) $(BASE_LIBS)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)

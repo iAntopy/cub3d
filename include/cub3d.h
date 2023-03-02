@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 01:04:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 07:23:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <string.h>
+# include <math.h>
 
 # include "MLX42/MLX42.h"
 # include "libft.h"
@@ -48,7 +49,8 @@ typedef struct s_map_data
 	int	total_cells;
 	int	width_px;
 	int	height_px;
-	char	**map;		// 2D array (could be 1D, char * instead)
+	int	total_area;
+	char	**tab;		// 2D array (could be 1D, char * instead)
 	char	*collisions;	// 1D array 
 }	t_map;
 
@@ -88,9 +90,12 @@ typedef struct s_cub3d_core_data
 
 
 /// PARSING ///////////////////
+int	load_map(t_cub *cub, char *map_file);
 
 /// RAYCASTER /////////////////
 int	init_raycaster(t_cub *cub);
+int	raycast_all_vectors(t_cub *cub);
+void	update_rays(t_cub *cub);
 
 /// DDA ALGO //////////////////
 
