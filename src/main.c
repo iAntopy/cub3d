@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 07:20:31 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:06:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ int	main(int argc, char **argv)
 
 //	ft_deltatime_usec_note("Raycaster results are in. What say you ?!\n");
 	
-//	return (0);
 //	return (cub_clear(&cub, EXIT_SUCCESS));
 	
 	// FONCTION DE PARSING VIENT ICI !!
