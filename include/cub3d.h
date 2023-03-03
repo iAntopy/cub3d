@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/04 00:47:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 21:21:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "libft.h"
 # include "mtxlib.h"
 
-# define SCN_WIDTH 9// 800
+# define SCN_WIDTH  800
 # define SCN_HEIGHT 640
 # define ROT_FACTOR 0.012271846 // (2*PI / 512), soit 1 512e de tour pour chaque deltaX de souris (Temporaire, à teester)
 
@@ -33,13 +33,14 @@
 
 # define FOV 2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 # define FOV_HF 1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define NEAR_Z 34
 
 enum	e_sides
 {
-	SIDE_W = 0,
-	SIDE_N = 1,
-	SIDE_E = 2,
-	SIDE_S = 3
+	W_SIDE = 0,
+	N_SIDE = 1,
+	E_SIDE = 2,
+	S_SIDE = 3
 };
 
 typedef struct s_map_data
@@ -72,9 +73,13 @@ typedef struct s_main_character_data
 	float	ori;
 	t_mtx	*thetas;	// from mlx_linspace() based on player orientation. malloced first, changed in place thereafter.
 	t_mtx	*rays[2];	// first ptr is the cosine array from linspace thetas, second is sin array from thetas.
-	t_mtx	*collisions;// intersections with walls in x y coords;
-	t_mtx	*distances;	// 1D vectd, len nb of rays, with distances to collisions
-	char	*sides_hit;
+	t_mtx	*coll_walls;	// cell coords of the wall that was hit for all rays.
+	t_mtx	*coll_sides;	// side that was hit checkable as e_side enum for all rays.
+	t_mtx	*collisions;	// intersections with walls in x y world coords;
+	t_mtx	*distances;	// 1D vect, len nb of rays, with distances to collisions
+	t_mtx	*tex_ratios;	// 1D vect, len nb of rays with ratios of wall hit position to CELL_WIDTH from
+				// the left to the right side of the wall. Multiply this ratio to texture width to 
+				// get exact column to draw in texture buffer.
 //	t_mtx	*rays;		// rays cast based on angle_thetas.
 }	t_hero;
 
@@ -84,6 +89,7 @@ typedef struct s_cub3d_core_data
 
 	int	scn_midx;	// mid screen x coordinate
 	int	scn_midy;	// mid screen y coordinate
+	float	inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
 
 	t_map	map;
 	t_tex	tex;

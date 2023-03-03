@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 22:13:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 20:34:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	cub_init_core_data(t_cub *cub)
 {
 	cub->scn_midx = SCN_WIDTH / 2;
 	cub->scn_midy = SCN_HEIGHT / 2;
+	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
+	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
 
 	init_raycaster(cub);
 	return (0);
@@ -86,6 +88,7 @@ int	main(int argc, char **argv)
 	ft_memclear(&cub, sizeof(cub));
 	if (argc != 2)
 		return (EXIT_FAILURE);
+	cub_init_core_data(&cub);
 	if (load_map(&cub, argv[1]) < 0)
 		return (EXIT_FAILURE);
 
@@ -100,9 +103,12 @@ int	main(int argc, char **argv)
 	if (init_raycaster(&cub) < 0)
 		return (EXIT_FAILURE);
 
+	ft_deltatime_usec_note(NULL);
 	if (raycast_all_vectors(&cub) < 0)
 		return (EXIT_FAILURE);
 
+	ft_deltatime_usec_note("Raycaster results are in. What say you ?!\n");
+	
 	return (0);
 	// FONCTION DE PARSING VIENT ICI !!
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)

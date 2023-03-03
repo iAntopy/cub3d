@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/02 07:24:58 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/02 18:17:33 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
 
-CFLAGS	:= -Wextra -Wall -Werror
+CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
 
 GLFWDIR	:= lib/glfw
 LIBGLFW	:= $(GLFWDIR)/build/src/libglfw3.a
