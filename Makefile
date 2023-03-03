@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/06 19:25:53 by gehebert         ###   ########.fr        #
+#    Updated: 2023/03/03 13:59:22 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ $(SUBMOD_SRC):
 	@git submodule init
 
 git_submodule: $(SUBMOD_SRC)
-	@git submodule update
+	@git submodule update --remote --merge
 
 $(BLDGLFW):
 	@cmake -S $(GLFWDIR) -B $(BLDGLFW)

@@ -6,12 +6,12 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/06 09:30:21 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:37:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
-#include "../include/textur.h"
+#include "cub3d.h"
+//#include "texture.h"
 
 
 // init map struct
@@ -105,12 +105,13 @@ static t_map	*map_frame(t_map *map, int fd)
 		free(temp);
 		nb++;
 	}
-	free(temp);
+	if (temp)
+		free(temp);
 	return (map);
 }
 
 // open , pre-count , calloc , padding ,  needed:(tex_parse)
-t_cub	map_checker(t_map *map, t_cub cub, char *file)
+t_cub	*map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int		fd;
 	//

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/06 18:19:04 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:35:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,31 @@ typedef struct s_map_data
 	int	width_px;
 	int	height_px;
 	int	total_area;
-	char 	*file;		// map filename *.cub
-	char	**tab;		// 2D array (could be 1D, char * instead)
 	char	*collision_map;	// 1D array 
-	float	**grid_coords;//	mtx indexed (y * width + x) rowwise and column 0 and 1 represant the x and y coordinates in world coords.
-}	t_map;
+	float	**grid_coords;	// top-left corner coordinate for grid indexed [cell_y][cell_x]
 
+	// Germain specific Stuff
+	char 	*file;		// map filename *.cub
+	char	**tab;		// char input parsed
+	int 	pos_x;		// aqui_X
+	int	pos_y;		// aqui_y
+	int	cases;		// total case all gabarit
+	char 	*array;		// char* array 
+}	t_map;
+/*
+// minimap  
+typedef struct s_map
+{
+	char 	*file;		// map filename *.cub
+	char 	**tab;		// char input parsed
+	int 	pos_x;		// aqui_X
+	int		pos_y;		// aqui_y
+	int		width;		// max_x_len
+	int 	height;		// max_y_len
+	int		cases;		// total case all gabarit
+	char 	*array;		// char* array 
+} 	t_map;
+*/
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
 // Potentially, animated wall textures could be in a 2D array[side][anim_iteration] up to n nb of frames in the animation.
@@ -184,8 +203,8 @@ int	load_map(t_cub *cub, char *map_file);
 /// MAP_CHECKER ///////////////
 //map_parse
 t_map			*init_map(t_map *map);
-t_cub			map_checker(t_cub cub, t_map *map, char *file);
-t_cub    		tex_parse(t_cub cub, t_map *map, int fd);
+t_cub			*map_checker(t_cub *cub, t_map *map, char *file);
+t_map    		*tex_parse(t_cub *cub, t_map *map, int fd);
 int			 	str_to_color(int r, int g, int b, int a);
 // t_map			*map_frame(t_map *map, int fd);
 //map_tool
@@ -213,10 +232,10 @@ float	*get_grid_coords(t_map *map, int cx, int cy);
 /// DDA ALGO //////////////////
 
 /// RENDERER /////////////////
+int	init_renderer(t_cub *cub);
 int	renderer_clear(t_cub *cub);
 //void	render_walls(t_cub *cub);
 void	render_scene(t_cub *cub);
-int	init_renderer(t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void	cub_player_rotate(t_cub *cub, float rot);

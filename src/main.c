@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/06 19:32:26 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:33:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	main(int argc, char **argv)
 	// FONCTION DE PARSING VIENT ICI !!
 	// INIT INPUT	
 	map = NULL;
-	map_checker(cub,init_map(map), argv[1]);
+	map_checker(&cub, init_map(map), argv[1]);
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
 	

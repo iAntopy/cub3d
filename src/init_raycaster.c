@@ -6,11 +6,11 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 07:05:28 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:58:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include "cub3d.h"
 
 char	get_is_wall(t_map *map, int cx, int cy)
 {
@@ -125,6 +125,8 @@ typedef struct s_ray_intersect_data
 	float	vdy;//	current vertical intersect delta from py;
 	float	hdx;//	current horizontal intersect delta from px;
 	float	hdy;//	current horizontal intersect delta from py;
+	float	p_dirx;//	x part of player's directional vector
+	float	p_diry;//	y part of player's directional vector
 
 	//	line func data Y = ax + b
 	float	a;//	ray slope
@@ -279,6 +281,8 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //	float	axies[0];
 	float	*axies;
 	float	intersects[2];
+	float	distv;
+	float	disth;
 //	float	*col_ptr;
 //	int		test;
 //	float	temp;
@@ -290,10 +294,14 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 	intersects[1] = ri->a * (*axies) + ri->b;//		y = ax + b;
 	(*intersects) = (axies[1] - ri->b) * ri->inv_a;//	x = (y - b) / a;
 //	printf("(cx, cy) : (%d, %d), ray %d, axies : (%.3f, %.3f), intersects : (%.3f, %.3f), vert vs hero colision : (%f, %f)\n", ri->cx, ri->cy, ri->idx, axies[0], axies[1], intersects[0], intersects[1], axies[0] * axies[0] + intersects[1] * intersects[1], intersects[0] * intersects[0] + axies[1] * axies[1]);
-	ri->vdx = fabsf((*axies) - ri->px);
-	ri->vdy = fabsf(intersects[1] - ri->py);
-	ri->hdx = fabsf((*intersects) - ri->px);
-	ri->hdy = fabsf(axies[1] - ri->py);
+	distv = (axies[0] - ri->px) * ri->p_dirx + (intersects[1] - ri->py) * ri->p_diry;
+	disth = (intersects[0] - ri->px) * ri->p_dirx + (axies[1] - ri->py) * ri->p_diry;
+//	ri->vdx = fabsf((*axies) - ri->px);
+//	ri->vdy = fabsf(intersects[1] - ri->py);
+//	ri->hdx = fabsf((*intersects) - ri->px);
+//	ri->hdy = fabsf(axies[1] - ri->py);
+
+
 //	printf("(cx, cy) : (%d, %d), ray %d, axies : (%.3f, %.3f), intersects : (%.3f, %.3f), vert vs hero colision : (%f, %f)\n", ri->cx, ri->cy, ri->idx, axies[0], axies[1], intersects[0], intersects[1], ri->vdx + ri->vdy, ri->hdx + ri->hdy);
 //	printf("(vdx, vdy) : (%f, %f), (hdx, hdy) : (%f, %f)\n", ri->vdx, ri->vdy, ri->hdx, ri->hdy);
 //	if ((axies[0] * axies[0] + intersects[1] * intersects[1]) < (intersects[0] * intersects[0] + axies[1] * axies[1]))
@@ -321,7 +329,8 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //	ri->cell[is_hori] += ri->dir[is_hori];//*(&ri->dirx + is_hori);
 
 //////// BRANCHFULL
-	if ((ri->hdx + ri->hdy) < (ri->vdx + ri->vdy))
+//	if ((ri->hdx + ri->hdy) < (ri->vdx + ri->vdy))
+	if (disth < distv)//(ri->hdx + ri->hdy) < (ri->vdx + ri->vdy))
 	{
 		ri->cell[1] += ri->diry;
 		is_hori = 1;
@@ -371,27 +380,40 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 		{
 //			printf("ray %d, hori hit collision : (%f, %f), axies[0] : %f, tex raw delta : %f\n",
 //				ri->idx, intersects[0], axies[1], axies[0] - (CELL_WIDTH * ri->c_offx),
-//				intersects[0] - (axies[0] - (CELL_WIDTH * ri->c_offx)));
+//				intersects[0] - (axies[0] - (CELL_WIDTH * ri->c_offx)));//, *(++ri->fish));
+
 			*(++ri->collisions) = intersects[0];
 			*(++ri->collisions) = axies[1];
-			*(++ri->dists) = sqrtf(ri->hdx * ri->hdx + ri->hdy * ri->hdy);// * (*(++ri->fish));
+
+			//// Distance fonction version
+			//*(++ri->dists) = sqrtf(ri->hdx * ri->hdx + ri->hdy * ri->hdy) * (*(++ri->fish));
+			//*(++ri->dists) = ri->hdx * fabsf(*ri->cub->hero.dirx) + ri->hdy * fabsf(*ri->cub->hero.diry);
+			//*(++ri->dists) = (intersects[0] - ri->px) * (*ri->cub->hero.dirx) + (axies[1] - ri->py) * (*ri->cub->hero.diry);
+			*(++ri->dists) = disth;
+			
+
 			*(++ri->cside) = 1 + (ri->c_offy << 1);
 			*(++ri->texr) = (intersects[0] - (axies[0] - CELL_WIDTH * ri->c_offx)) * ri->cub->inv_cw;
-//			if (*ri->cside == S_SIDE)
-//				*ri->texr = 1 - *ri->texr;
 		}
 		else
 		{
-//			printf("ray %d, vert hit collision : (%f, %f), axies[1] : %f, tex raw delta : %f\n",
-//				ri->idx, axies[0], intersects[1], axies[1] - (CELL_WIDTH * ri->c_offy),
-//				intersects[1] - (axies[1] - (CELL_WIDTH * ri->c_offy)));
+//			printf("ray %d, hori hit collision : (%f, %f), axies[0] : %f, tex raw delta : %f\n",
+//				ri->idx, intersects[0], axies[1], axies[0] - (CELL_WIDTH * ri->c_offx),
+//				intersects[0] - (axies[0] - (CELL_WIDTH * ri->c_offx)));//, *(++ri->fish));
+
 			*(++ri->collisions) = axies[0];
 			*(++ri->collisions) = intersects[1];
-			*(++ri->dists) = sqrtf(ri->vdx * ri->vdx + ri->vdy * ri->vdy);// * (*(++ri->fish));
+			
+
+			//// Distance fonction version
+			//*(++ri->dists) = sqrtf(ri->vdx * ri->vdx + ri->vdy * ri->vdy) * (*(++ri->fish));
+			//*(++ri->dists) = ri->vdx * fabsf(*ri->cub->hero.dirx) + ri->vdy * fabsf(*ri->cub->hero.diry);
+			//*(++ri->dists) = (axies[0] - ri->px) * (*ri->cub->hero.dirx) + (intersects[1] - ri->py) * (*ri->cub->hero.diry);
+			*(++ri->dists) = distv;
+			
+
 			*(++ri->cside) = (ri->c_offx << 1);
 			*(++ri->texr) = (intersects[1] - (axies[1] - CELL_WIDTH * ri->c_offy)) * ri->cub->inv_cw;
-//			if (*ri->cside == W_SIDE)
-//				*ri->texr = 1 - *ri->texr;
 		}
 		if ((*ri->cside == W_SIDE) || (*ri->cside == S_SIDE))
 			*ri->texr = 1 - *ri->texr;
@@ -428,12 +450,14 @@ int	raycast_all_vectors(t_cub *cub)
 	ri.collisions = (float *)cub->hero.collisions->arr - 1;
 	ri.dists = (float *)cub->hero.distances->arr - 1;
 	ri.texr = (float *)cub->hero.tex_infos->arr - 1;
-	ri.fish = (float *)cub->hero.fisheye_correctors - 1;
+//	ri.fish = (float *)cub->hero.fisheye_correctors->arr - 1;
 	ri.grid_coords = cub->map.grid_coords;
 	ri.sx = cub->hero.cell_x;
 	ri.sy = cub->hero.cell_y;
 	ri.px = cub->hero.px;
 	ri.py = cub->hero.py;
+	ri.p_dirx = *cub->hero.dirx;
+	ri.p_diry = *cub->hero.diry;
 //	collision_occured = 0;
 	vi = -1;
 	while (++vi < SCN_WIDTH)
@@ -471,6 +495,9 @@ void	update_rays(t_cub *cub)
 //	printf("rays[0][1] after : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
 //	printf("rays[1][0] after : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
 //	printf("rays[1][1] after : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
+//	printf("fisheye correctors : \n");
+//	mtx_print(cub->hero.fisheye_correctors);
+	printf("player direction vector : [%f, %f]\n", *cub->hero.dirx, *cub->hero.diry);
 	raycast_all_vectors(cub);
 }
 
@@ -488,10 +515,12 @@ void	update_fov(t_cub *cub, float fov)
 	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
 //	printf("tanf(half fov) = %f\n", tanf(cub->hfov));
 //	printf("(0.5f * (float)SCN_WIDTH(800)) / tanf(hfov) = %f\n", (0.5f * 800.0f) / tanf(cub->hfov));
-	printf("fov : %f, half_fov : %f, near_z : %f, near_proj_factor : %f\n",
-		cub->fov, cub->hfov, cub->near_z, cub->near_proj_factor);
+//	printf("fov : %f, half_fov : %f, near_z : %f, near_proj_factor : %f\n",
+//		cub->fov, cub->hfov, cub->near_z, cub->near_proj_factor);
 	mtx_linspace_update(cub->hero.theta_offsets, -cub->hfov, cub->hfov, 1);
-	mtx_cos(cub->hero.theta_offsets, cub->hero.fisheye_correctors);
+//	mtx_cos(cub->hero.theta_offsets, cub->hero.fisheye_correctors);
+//	printf("fisheye correctors : \n");
+//	mtx_print(cub->hero.fisheye_correctors);
 	update_rays(cub);	
 }
 
@@ -503,7 +532,7 @@ int	init_raycaster(t_cub *cub)
 	hero = &cub->hero;
 	hero->theta_offsets = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	hero->ray_thetas = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-	hero->fisheye_correctors = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+//	hero->fisheye_correctors = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	hero->rays[0] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	hero->rays[1] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	hero->coll_walls = mtx_create_empty(SCN_WIDTH, 2, DTYPE_I);

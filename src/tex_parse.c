@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/06 09:29:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:12:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 // #include "../include/textur.h"
 
 	//      // tex_pars
@@ -94,7 +94,7 @@
 		//		if (yes && yes) attib name to path ... 
 		//		also if (name is color_name) : str_to_color
 /// get input frm file
-t_map	*tex_parse(t_cub cub, t_map *map, int fd)
+t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 {
 	char **txtr;
 	char *line;
@@ -107,9 +107,9 @@ t_map	*tex_parse(t_cub cub, t_map *map, int fd)
 	while (nb < 4)
 	{
 		line = get_next_line(fd);
-		while(ft_strlen(line) < 2)
+		while (ft_strlen(line) < 2)
 			line = get_next_line(fd);
-		if(line)
+		if (line)
 		{			
 			txtr = ft_split(line, ' ');
 			if (ft_strlen(txtr[0]) > 2)	
@@ -125,8 +125,8 @@ t_map	*tex_parse(t_cub cub, t_map *map, int fd)
 				error("9, Texture Name unmatching error !\n", map);
 			}
 			else if (id < 4)
-				cub.tex.tex_n[id] = txtr[1];//"./tex/s_side.png";
-			printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub.tex.tex_n[id]); 
+				cub->tex.tex_n[id] = txtr[1];//"./tex/s_side.png";
+			printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub->tex.tex_n[id]); 
 					// else if (id < 1)
 					// {
 					// 	// cub.tex.walls[0] = mlx_load_png(txtr[1]);

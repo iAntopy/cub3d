@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:02:25 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/06 09:08:44 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:03:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 // error display / free array : chk_fail
 int	error(char *error, t_map *map)
