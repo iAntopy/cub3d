@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/02 00:46:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/02 20:25:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	printf("Init mlx SUCCESSFUL\n");
+	mlx_focus(cub.mlx);
 	mlx_focus(cub.mlx);
 
 
