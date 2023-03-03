@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/02 20:27:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/03 01:04:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,15 @@ typedef struct s_texture_data
 
 typedef struct s_main_character_data
 {
-	int	cell_x;
-	int	cell_y;
+	int		cell_x;
+	int		cell_y;
 	float	px;
 	float	py;
 	float	ori;
 	t_mtx	*thetas;	// from mlx_linspace() based on player orientation. malloced first, changed in place thereafter.
 	t_mtx	*rays[2];	// first ptr is the cosine array from linspace thetas, second is sin array from thetas.
+	t_mtx	*collisions;// intersections with walls in x y coords;
+	t_mtx	*distances;	// 1D vect, len nb of rays, with distances to collisions
 //	t_mtx	*rays;		// rays cast based on angle_thetas.
 }	t_hero;
 
