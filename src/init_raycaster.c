@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/02 21:28:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/03 07:05:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_ray_intersect_data
 	float	*collisions;
 	float	*dists;
 	float	*texr;
+	float	*fish;
 	float	**grid_coords;
 	int		idx;
 
@@ -241,6 +242,7 @@ int	load_map(t_cub *cub, char *map_file)
 	build_grid_coords_map(cub);
 //	printf("map : printing grid coords\n");
 //	print_grid_coords(&cub->map);
+	printf("EXIT LOAD MAP \n");
 	return (0);
 }
 
@@ -372,7 +374,7 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //				intersects[0] - (axies[0] - (CELL_WIDTH * ri->c_offx)));
 			*(++ri->collisions) = intersects[0];
 			*(++ri->collisions) = axies[1];
-			*(++ri->dists) = sqrtf(ri->hdx * ri->hdx + ri->hdy * ri->hdy);
+			*(++ri->dists) = sqrtf(ri->hdx * ri->hdx + ri->hdy * ri->hdy);// * (*(++ri->fish));
 			*(++ri->cside) = 1 + (ri->c_offy << 1);
 			*(++ri->texr) = (intersects[0] - (axies[0] - CELL_WIDTH * ri->c_offx)) * ri->cub->inv_cw;
 //			if (*ri->cside == S_SIDE)
@@ -385,7 +387,7 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //				intersects[1] - (axies[1] - (CELL_WIDTH * ri->c_offy)));
 			*(++ri->collisions) = axies[0];
 			*(++ri->collisions) = intersects[1];
-			*(++ri->dists) = sqrtf(ri->vdx * ri->vdx + ri->vdy * ri->vdy);
+			*(++ri->dists) = sqrtf(ri->vdx * ri->vdx + ri->vdy * ri->vdy);// * (*(++ri->fish));
 			*(++ri->cside) = (ri->c_offx << 1);
 			*(++ri->texr) = (intersects[1] - (axies[1] - CELL_WIDTH * ri->c_offy)) * ri->cub->inv_cw;
 //			if (*ri->cside == W_SIDE)
@@ -393,6 +395,9 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 		}
 		if ((*ri->cside == W_SIDE) || (*ri->cside == S_SIDE))
 			*ri->texr = 1 - *ri->texr;
+//		printf("raycaster : wall height = near_proj (%f) / dist found (%f) = %f\n", ri->cub->near_proj_factor,
+//			(*ri->dists), ri->cub->near_proj_factor / (*ri->dists));
+		*(++ri->texr) = ri->cub->near_proj_factor / (*ri->dists);// wall height on screen.
 		ri->cell += 2;
 
 		
@@ -422,7 +427,8 @@ int	raycast_all_vectors(t_cub *cub)
 	ri.cside= (int *)cub->hero.coll_sides->arr - 1;
 	ri.collisions = (float *)cub->hero.collisions->arr - 1;
 	ri.dists = (float *)cub->hero.distances->arr - 1;
-	ri.texr = (float *)cub->hero.tex_ratios->arr - 1;
+	ri.texr = (float *)cub->hero.tex_infos->arr - 1;
+	ri.fish = (float *)cub->hero.fisheye_correctors - 1;
 	ri.grid_coords = cub->map.grid_coords;
 	ri.sx = cub->hero.cell_x;
 	ri.sy = cub->hero.cell_y;
@@ -442,43 +448,85 @@ int	raycast_all_vectors(t_cub *cub)
 //	mtx_print(cub->hero.coll_sides);
 //	mtx_print(cub->hero.collisions);
 //	mtx_print(cub->hero.distances);
-//	mtx_print(cub->hero.tex_ratios);
+//	mtx_print(cub->hero.tex_infos);
 	return (0);
 }
 
+// If player rotates call this function.
 void	update_rays(t_cub *cub)
 {
-	mtx_linspace_update(cub->hero.thetas, 
-		cub->hero.ori - FOV_HF, cub->hero.ori + FOV_HF, 1);
-	mtx_cos(cub->hero.thetas, cub->hero.rays[0]);
-	mtx_sin(cub->hero.thetas, cub->hero.rays[1]);
+	printf("update rays\n");
+//	printf("ori : %f, ray_thetas[0] before : %f\n", cub->hero.ori, _mtx_index_f(cub->hero.ray_thetas, 0, 0));
+	_mtx_addf_pscalar(cub->hero.theta_offsets, cub->hero.ori, cub->hero.ray_thetas);
+//	printf("ray_thetas[0] after : %f\n", _mtx_index_f(cub->hero.ray_thetas, 0, 0));
+	mtx_linspace_update(cub->hero.ray_thetas, 
+		cub->hero.ori - cub->hfov, cub->hero.ori + FOV_HF, 1);
+//	printf("rays[0][0] before : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
+///	printf("rays[0][1] before : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
+//	printf("rays[1][0] before : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
+//	printf("rays[1][1] before : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
+	mtx_cos(cub->hero.ray_thetas, cub->hero.rays[0]);
+	mtx_sin(cub->hero.ray_thetas, cub->hero.rays[1]);
+//	printf("rays[0][0] after : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
+//	printf("rays[0][1] after : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
+//	printf("rays[1][0] after : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
+//	printf("rays[1][1] after : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
+	raycast_all_vectors(cub);
+}
+
+// If Zoom level (fov) changes call this function.
+// fov in radians
+// near_z is the distance from the player to the projection plan.
+// near_proj_factor is a const as long as fov stays the same. Divide this 
+//	factor by the rays length to get draw height.
+void	update_fov(t_cub *cub, float fov)
+{
+	printf("update fov\n");
+	cub->fov = fov;// field of view
+	cub->hfov = 0.5f * fov;// half fov
+	cub->near_z = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
+	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
+//	printf("tanf(half fov) = %f\n", tanf(cub->hfov));
+//	printf("(0.5f * (float)SCN_WIDTH(800)) / tanf(hfov) = %f\n", (0.5f * 800.0f) / tanf(cub->hfov));
+	printf("fov : %f, half_fov : %f, near_z : %f, near_proj_factor : %f\n",
+		cub->fov, cub->hfov, cub->near_z, cub->near_proj_factor);
+	mtx_linspace_update(cub->hero.theta_offsets, -cub->hfov, cub->hfov, 1);
+	mtx_cos(cub->hero.theta_offsets, cub->hero.fisheye_correctors);
+	update_rays(cub);	
 }
 
 int	init_raycaster(t_cub *cub)
 {
 	t_hero	*hero;
-	
+
+	printf("Init raycaster :\n");
 	hero = &cub->hero;
-	hero->thetas = mtx_linspace(hero->ori - FOV_HF, hero->ori + FOV_HF, SCN_WIDTH, 1);
+	hero->theta_offsets = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	hero->ray_thetas = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	hero->fisheye_correctors = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	hero->rays[0] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	hero->rays[1] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-	if (!hero->thetas)
-		return (-1);
 	hero->coll_walls = mtx_create_empty(SCN_WIDTH, 2, DTYPE_I);
 	hero->coll_sides = mtx_create_empty(SCN_WIDTH, 1, DTYPE_I);
 	hero->collisions = mtx_create_empty(SCN_WIDTH, 2, DTYPE_F);
 	hero->distances = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-	hero->tex_ratios = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-//	mtx_print(hero->thetas);
-//	mtx_display_info(hero->thetas);
+		
+	// tex_infos :	row[0] : ratio of pixel column from left to right,
+	// 		row[1] : total height of 
+	hero->tex_infos = mtx_create_empty(SCN_WIDTH, 2, DTYPE_F);
+	if (!hero->theta_offsets || !hero->ray_thetas
+		|| !hero->fisheye_correctors || !hero->rays[0] || !hero->rays[1] 
+		|| !hero->coll_walls || !hero->coll_sides || !hero->collisions
+		|| !hero->distances || !hero->tex_infos)
+		return (-1);
 
-	mtx_cos(hero->thetas, hero->rays[0]);
-	mtx_sin(hero->thetas, hero->rays[1]);
-
-//	mtx_print(hero->rays[0]);
-//	mtx_display_info(hero->rays[0]);
-//	mtx_print(hero->rays[1]);
-//	mtx_display_info(hero->rays[1]);
+	hero->dirx = _mtx_index_fptr(hero->rays[0], SCN_WIDTH / 2, 0);
+	hero->diry = _mtx_index_fptr(hero->rays[1], SCN_WIDTH / 2, 0);
+	update_fov(cub, FOV);
+	printf("all matrix buffers created \n");
+//	mtx_print(hero->theta_offsets);
+//	mtx_print(hero->ray_thetas);
+//	mtx_print(hero->fisheye_correctors);
 //	print_rays(hero->rays[0], hero->rays[1]);
 	return (0);
 }

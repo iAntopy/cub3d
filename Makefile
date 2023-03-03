@@ -6,14 +6,16 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/02 18:17:33 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/03 06:54:05 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
 SRC_FLS	:=	main.c 			\
 			error_handling.c 	\
-			init_raycaster.c
+			init_raycaster.c	\
+			renderer.c		\
+			player_controls.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 

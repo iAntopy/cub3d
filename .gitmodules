@@ -14,4 +14,4 @@
 [submodule "lib/mtxlib"]
 	path = lib/mtxlib
 	url = https://github.com/iAntopy/mtxlib.git
-	branch = master
+	branch = cub3d
