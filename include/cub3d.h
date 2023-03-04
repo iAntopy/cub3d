@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/07 23:42:02 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/04 02:50:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@
 # define TEX_SKY			4
 # define TEX_FLOOR			5
 
+# define MAP_CHARS "01WNES"
+
 enum	e_sides
 {
 	W_SIDE = 0,
@@ -89,8 +91,9 @@ typedef struct s_map_data
 	char	**tab;		// char input parsed
 	int 	pos_x;		// aqui_X
 	int		pos_y;		// aqui_y
-	int		cases;		// total case all gabarit
-	char 	*array;		// char* array 
+//	int		cases;		// total case all gabarit
+//	char 	*array;		// char* array 
+	int	lines_to_map;
 }	t_map;
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
@@ -169,14 +172,17 @@ typedef struct s_cub3d_core_data
 
 
 /// PARSING ///////////////////
-int	load_map(t_cub *cub, char *map_file);
-
+//int	load_map(t_cub *cub, char *map_file);
+int	build_collision_map(t_map *map);
+void	print_collision_map(t_map *map);
+int	build_grid_coords_map(t_map *map);
+void	print_map(t_map *map);
 
 /// MAP_CHECKER ///////////////
 //map_parse
 t_map			*init_map(t_map *map);
-t_cub			*map_checker(t_cub *cub, t_map *map, char *file);
-t_map    		*tex_parse(t_cub *cub, t_map *map, int fd);
+int			map_checker(t_cub *cub, t_map *map, char *file);
+int			tex_parse(t_cub *cub, t_map *map, int fd);
 // t_map			*map_frame(t_map *map, int fd);
 //map_tool
 int				error(char *error, t_map *map);

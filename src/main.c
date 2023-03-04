@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/08 20:24:28 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/04 03:37:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,15 +117,14 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, float ori)
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
-	t_map		*map;
 	// float		*hero_cell_coord;
 	
 	ft_memclear(&cub, sizeof(cub));
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	cub_init_core_data(&cub);
-	if (load_map(&cub, argv[1]) < 0)
-		return (cub_clear(&cub, EXIT_FAILURE));
+//	if (load_map(&cub, argv[1]) < 0)
+//		return (cub_clear(&cub, EXIT_FAILURE));
 
 	// if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
 	// 	return (cub_clear(&cub, EXIT_FAILURE));
@@ -136,40 +135,42 @@ int	main(int argc, char **argv)
 
 	// FONCTION DE PARSING VIENT ICI !!
 	// INIT INPUT	
-	map = NULL;
-	map_checker(&cub, init_map(map), argv[1]);
-	
+	if (map_checker(&cub, init_map(&cub.map), argv[1]) != 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
+	if (set_player_cell_pos(&cub, 1, 1, 0.0f) != 0)
+	 	return (cub_clear(&cub, EXIT_FAILURE));
+
+//	return (cub_clear(&cub, EXIT_SUCCESS));
 	printf("DEBUG: MAP_CHK END:: TEX _START!\n");
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
-	
+
 	// Window Width, Height, title, is_resizable. (option possible pour la window : full screen mode)
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	if (!cub.mlx)
 	{
 		printf("MLX init failed \n");
 		return (cub_clear(&cub, EXIT_FAILURE));	
-		return (cub_clear(&cub, EXIT_FAILURE));	
 	}
 
 	mlx_focus(cub.mlx);
-	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
+//	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	// cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
 	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
 	if ((cub.tex.walls[0]))
 		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
 	else 
 		printf("Try init Walls FAILS \n");	
-	// return (0);
+//	 return (0);
 	
 	printf("Init mlx SUCCESSFUL !\n");
 	printf("Try init renderer\n");
-	if (init_renderer(&cub) < -1)
+	if (init_renderer(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	printf("Init renderer SUCCESSFUL !\n");
 	
-//	if (init_raycaster(&cub) < 0)
-	///	return (cub_clear(&cub, EXIT_FAILURE));
+	if (init_raycaster(&cub) < 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
 
 //	ft_deltatime_usec_note(NULL);
 	// if (raycast_all_vectors(&cub) < 0)

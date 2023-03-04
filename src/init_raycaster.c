@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 20:11:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/04 03:38:29 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	print_rays(t_mtx *xs, t_mtx *ys)
 	mtx_print(ys);
 }
 */
-static void	print_map(t_map *map)
+void	print_map(t_map *map)
 {
 	int	i;
 	char	**l;
@@ -72,18 +72,18 @@ static void	print_grid_coords(t_map *map)
 }
 */
 
-static void	print_collision_map(t_cub *cub)
+void	print_collision_map(t_map *map)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	while (++i < cub->map.height)
+	while (++i < map->height)
 	{
 		j = -1;
-		while (++j < cub->map.width)
+		while (++j < map->width)
 		{
-			if (get_is_wall(&cub->map, j, i))
+			if (get_is_wall(map, j, i))
 				printf("1");
 			else
 				printf("0");
@@ -143,17 +143,21 @@ int	build_collision_map(t_map *map)
 	int	i;
 	int	j;
 
+	printf("build collision map : entered. malloc total cells : %d\n", map->total_cells);
 	colls = NULL;
 	if (!ft_malloc_p(sizeof(char) * map->total_cells, (void **)&colls))
 		return (-1);
+	printf("build collision map : malloced\n");
 	
 	i = -1;
 	while (++i < map->height)
 	{
+		printf("build collision map : loopy %d\n", i);
 		j = -1;
 		while (++j < map->width)
 			colls[i * map->width + j] = (map->tab[i][j] == '1');
 	}
+	printf("build collision map : out loopy\n");
 	map->collision_map = colls;
 	return (0);
 }
@@ -164,9 +168,11 @@ int	build_grid_coords_map(t_map *map)
 	int		j;
 	float	**gcoords;
 
+	printf("build grid coords entered \n");
 	gcoords = NULL;
 	if (!ft_malloc_p(sizeof(float *) * (map->height + 1), (void **)&gcoords))
 		return (-1);
+	printf("build grid coords : going on loopy\n");
 	gcoords[map->height] = NULL;
 	i = -1;
 	while (++i < map->height)
@@ -180,10 +186,13 @@ int	build_grid_coords_map(t_map *map)
 			gcoords[i][(j << 1) + 1] = i * CELL_WIDTH;
 		}
 	}
+	printf("build grid coords : going off loopy\n");
+
 	map->grid_coords = gcoords;
 	return (0);
 }
 
+/*
 int	load_map(t_cub *cub, char *map_file)
 {
 	static char	*lines[10000];
@@ -245,6 +254,7 @@ int	load_map(t_cub *cub, char *map_file)
 	printf("EXIT LOAD MAP \n");
 	return (0);
 }
+*/
 
 static  void	raycast_init_single_vect(t_cub *cub, t_rayint *ri, int vi)
 {
@@ -262,7 +272,7 @@ static  void	raycast_init_single_vect(t_cub *cub, t_rayint *ri, int vi)
 	ri->a = ri->ry / ri->rx;
 	ri->inv_a = 1 / ri->a;
 	ri->b = ri->py - (ri->a * ri->px);
-	printf("\n@----- Raycaster init ray %d with data -----@\n", vi);
+//	printf("\n@----- Raycaster init ray %d with data -----@\n", vi);
 //	printf("	- (dx, dy) : (%f, %f)\n", ri->rx, ri->ry);
 //	printf("	- (c_offx, c_offy) : (%d, %d)\n", ri->c_offx, ri->c_offy);
 //	printf("	- (dir_x, dir_y) : (%d, %d)\n", ri->dirx, ri->diry);
@@ -286,6 +296,7 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //	float	temp;
 	int	is_hori;
 
+//	printf("raycaster single ray check : \n");
 	axies = ri->grid_coords[ri->cell[1] + ri->c_offy] + ((ri->cell[0] + ri->c_offx) << 1);// same as call to get_grid_coord ... but inline !
 //	axies[0] = (*ri->cell + ri->c_offx) * CELL_WIDTH;
 //	axies[1] = (ri->cell[1] + ri->c_offy) * CELL_WIDTH;
