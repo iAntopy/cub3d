@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/02 06:58:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/03 22:13:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,41 @@ int	cub_init_core_data(t_cub *cub)
 	return (0);
 }
 
+int	set_player_cell_pos(t_cub *cub, int x, int y, float ori)
+{
+	if (get_is_wall(&cub->map, x, y))
+		return (printf("ERROR hero can't be placed in wall."));
+	cub->hero.cell_x = x;
+	cub->hero.cell_y = y;
+	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
+	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
+	cub->hero.ori = ori;
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
+	float		*hero_cell_coord;
 	
 	ft_memclear(&cub, sizeof(cub));
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	if (load_map(&cub, argv[1]) < 0)
+		return (EXIT_FAILURE);
+
+	if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
+		return (EXIT_FAILURE);
+	hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
+	printf("hero cell indexes : (%d, %d), hero cell coord : (%.3f, %.3f), hero pos : (%.2f, %.2f), hero orientation : %.5f\n",
+		cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
+		cub.hero.px, cub.hero.py, cub.hero.ori);
+
+
+	if (init_raycaster(&cub) < 0)
+		return (EXIT_FAILURE);
+
+	if (raycast_all_vectors(&cub) < 0)
 		return (EXIT_FAILURE);
 
 	return (0);

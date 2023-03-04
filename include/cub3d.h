@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/02 07:23:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/04 00:47:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "libft.h"
 # include "mtxlib.h"
 
-# define SCN_WIDTH 20// 800
+# define SCN_WIDTH 9// 800
 # define SCN_HEIGHT 640
 # define ROT_FACTOR 0.012271846 // (2*PI / 512), soit 1 512e de tour pour chaque deltaX de souris (Temporaire, à teester)
 
@@ -51,7 +51,8 @@ typedef struct s_map_data
 	int	height_px;
 	int	total_area;
 	char	**tab;		// 2D array (could be 1D, char * instead)
-	char	*collisions;	// 1D array 
+	char	*collision_map;	// 1D array 
+	float	**grid_coords;//	mtx indexed (y * width + x) rowwise and column 0 and 1 represant the x and y coordinates in world coords.
 }	t_map;
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
@@ -72,7 +73,8 @@ typedef struct s_main_character_data
 	t_mtx	*thetas;	// from mlx_linspace() based on player orientation. malloced first, changed in place thereafter.
 	t_mtx	*rays[2];	// first ptr is the cosine array from linspace thetas, second is sin array from thetas.
 	t_mtx	*collisions;// intersections with walls in x y coords;
-	t_mtx	*distances;	// 1D vect, len nb of rays, with distances to collisions
+	t_mtx	*distances;	// 1D vectd, len nb of rays, with distances to collisions
+	char	*sides_hit;
 //	t_mtx	*rays;		// rays cast based on angle_thetas.
 }	t_hero;
 
@@ -96,11 +98,12 @@ int	load_map(t_cub *cub, char *map_file);
 int	init_raycaster(t_cub *cub);
 int	raycast_all_vectors(t_cub *cub);
 void	update_rays(t_cub *cub);
+char	get_is_wall(t_map *map, int cx, int cy);
+float	*get_grid_coords(t_map *map, int cx, int cy);
 
 /// DDA ALGO //////////////////
 
 /// ERROR HANDLING ////////////
 int	report_mlx_init_error(void);
-
 
 #endif
