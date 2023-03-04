@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/07 20:10:49 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:19:09 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@
 				// int	i;
 				// int	color;
 				// int	tmp;
+// }
+
+/// color_to_int ...
+
+ 					// int	i;
+ 					// int	color;
+					// int	tmp;
 
 				// i = 0;
 				// color = 0;
@@ -58,6 +65,16 @@
 				// 	str = str->next;
 				// }
 // }
+					// i = 0;
+					// color = 0;
+					// while (str)
+					// {
+					// 	tmp = ft_atoi(str->content);
+					// 	if (tmp < 0 || tmp > 255)
+					// 		return (-1);
+					// 	color = color | (tmp << (16 - (i++ * 8)));
+					// 	str = str->next;
+// 					// }
 
 
 
@@ -76,6 +93,7 @@ int get_b (int trgb)
 {
 	return((trgb >> 16) & 0xFF);
 }
+
 int get_g (int trgb)
 {
 	return((trgb >> 8) & 0xFF);
@@ -90,11 +108,11 @@ int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char
 {
 	return (*(int *)(unsigned char [4]){b, g, r, t});
 }
-
 unsigned char get_ut(int trgb)
 {
 	return (((unsigned char *)&trgb)[3]);
 }
+
 unsigned char get_ur(int trgb)
 {
 	return (((unsigned char *)&trgb)[2]);
@@ -147,10 +165,10 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 	int id;
 	
 	
+	printf("DEBUG:Z. JOURNEY'S INTO TEX_PARSE\n");	
 	nb = 0;
 	while (nb < 6)
 	{
-		printf("DEBUG:Z. JOURNEY'S INTO TEX_PARSE\n");	
 		line = get_next_line(fd);
 		while (*line == '\n' || ft_strlen(line) < 2)
 			line = get_next_line(fd);
@@ -167,9 +185,7 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 			id = 0;
 			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
 			if ( id < 0)
-			{
 				error("9, Texture Name unmatching error !\n", map);
-			}
 			else if (id < 4)
 			{
 				cub->tex.tex_n[id] = txtr[1];//
@@ -179,8 +195,9 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 			{
 				
 				color = ft_split(txtr[1], ',');
-				printf("DEBUG:  ID: %d :: EAZY_color_num:  :: \n", id);//, cub->tex.rgbx[0]); 
-				printf("DEBUG:  ID: %d :: color_num: %s :: \n", id, color[0]); 
+				printf("DEBUG:  ID: %d :: color_num[0]: R = %s :: \n", id, color[0]); 
+				printf("DEBUG:  ID: %d :: color_num[1]: G = %s :: \n", id, color[1]); 
+				printf("DEBUG:  ID: %d :: color_num[2]: B = %s :: \n", id, color[2]); 
 				if (id == 4)
 					cub->tex.color[0] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]),1);
 				else if (id == 5)

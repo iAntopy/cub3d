@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/07 20:20:12 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/07 23:42:02 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,6 @@ int	load_map(t_cub *cub, char *map_file);
 t_map			*init_map(t_map *map);
 t_cub			*map_checker(t_cub *cub, t_map *map, char *file);
 t_map    		*tex_parse(t_cub *cub, t_map *map, int fd);
-// int			 	str_to_color(int r, int g, int b, int a);
 // t_map			*map_frame(t_map *map, int fd);
 //map_tool
 int				error(char *error, t_map *map);
@@ -228,5 +227,18 @@ void	cub_player_zoom(t_cub *cub, float dz);
 
 /// ERROR HANDLING ////////////
 int	report_mlx_init_error(void);
+/// color_parse
+
+int get_t (int trgb);
+int get_b (int trgb);
+int get_g (int trgb);
+int get_r (int trgb);
+int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+unsigned char get_ut(int trgb);
+unsigned char get_ur(int trgb);
+unsigned char get_ug(int trgb);
+unsigned char get_ub(int trgb);
+
+
 
 #endif
