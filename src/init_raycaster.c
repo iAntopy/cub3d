@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/07 20:28:11 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/03 20:11:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef struct s_ray_intersect_data
 	float	*collisions;
 	float	*dists;
 	float	*texr;
-	float	*fish;
+//	float	*fish;
 	float	**grid_coords;
 	int		idx;
 
@@ -121,10 +121,10 @@ typedef struct s_ray_intersect_data
 //	int		cy;//	current cell y
 //	float	ix;//	current intersect x
 //	float	iy;//	current intersect y
-	float	vdx;//	current vertical intersect delta from px;
-	float	vdy;//	current vertical intersect delta from py;
-	float	hdx;//	current horizontal intersect delta from px;
-	float	hdy;//	current horizontal intersect delta from py;
+//	float	vdx;//	current vertical intersect delta from px;
+//	float	vdy;//	current vertical intersect delta from py;
+//	float	hdx;//	current horizontal intersect delta from px;
+//	float	hdy;//	current horizontal intersect delta from py;
 	float	p_dirx;//	x part of player's directional vector
 	float	p_diry;//	y part of player's directional vector
 
@@ -137,14 +137,12 @@ typedef struct s_ray_intersect_data
 
 }	t_rayint;
 
-int	build_collision_map(t_cub *cub)
+int	build_collision_map(t_map *map)
 {
-	t_map	*map;
 	char	*colls;
 	int	i;
 	int	j;
 
-	map = &cub->map;
 	colls = NULL;
 	if (!ft_malloc_p(sizeof(char) * map->total_cells, (void **)&colls))
 		return (-1);
@@ -160,29 +158,29 @@ int	build_collision_map(t_cub *cub)
 	return (0);
 }
 
-int	build_grid_coords_map(t_cub *cub)
+int	build_grid_coords_map(t_map *map)
 {
 	int		i;
 	int		j;
 	float	**gcoords;
 
 	gcoords = NULL;
-	if (!ft_malloc_p(sizeof(float *) * (cub->map.height + 1), (void **)&gcoords))
+	if (!ft_malloc_p(sizeof(float *) * (map->height + 1), (void **)&gcoords))
 		return (-1);
-	gcoords[cub->map.height] = NULL;
+	gcoords[map->height] = NULL;
 	i = -1;
-	while (++i < cub->map.height)
+	while (++i < map->height)
 	{
-		if (!ft_malloc_p(2 * sizeof(float) * cub->map.width, (void **)&gcoords[i]))
+		if (!ft_malloc_p(2 * sizeof(float) * map->width, (void **)&gcoords[i]))
 			return (-1);
 		j = -1;
-		while (++j < cub->map.width)
+		while (++j < map->width)
 		{
 			gcoords[i][j << 1] = j * CELL_WIDTH;
 			gcoords[i][(j << 1) + 1] = i * CELL_WIDTH;
 		}
 	}
-	cub->map.grid_coords = gcoords;
+	map->grid_coords = gcoords;
 	return (0);
 }
 
@@ -445,7 +443,7 @@ int	raycast_all_vectors(t_cub *cub)
 
 	ri.cub = cub;
 	ri.cell = (int *)cub->hero.coll_walls->arr;// DO NOT OFFSET BY -1 !!!
-	ri.cside= (int *)cub->hero.coll_sides->arr - 1;
+	ri.cside = (int *)cub->hero.coll_sides->arr - 1;
 	ri.collisions = (float *)cub->hero.collisions->arr - 1;
 	ri.dists = (float *)cub->hero.distances->arr - 1;
 	ri.texr = (float *)cub->hero.tex_infos->arr - 1;
@@ -461,7 +459,7 @@ int	raycast_all_vectors(t_cub *cub)
 	vi = -1;
 	while (++vi < SCN_WIDTH)
 	{
-		printf("vi : %d\n", vi);
+//		printf("vi : %d\n", vi);
 		raycast_init_single_vect(cub, &ri, vi);
 		while (!raycast_find_cell_intersect(&ri))
 			continue ;
