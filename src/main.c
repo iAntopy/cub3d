@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/01 09:32:50 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/06 18:19:21 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,21 @@
 
 int	cub_clear(t_cub *cub, int exit_status)
 {
+	t_hero	*h;
+
 	printf("CUB CLEAR AT EXIT\n");
+	renderer_clear(cub);
+	printf("renderer_cleared\n");
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
+	printf("mlx_terminated\n");
+	h = &cub->hero;
+	printf("clearing all mtx matrices\n");
+	mtx_clear_list(10, h->theta_offsets, h->ray_thetas,
+		h->rays[0], h->rays[1], h->coll_walls, h->coll_sides,
+		h->collisions, h->fisheye_correctors,
+		h->distances, h->tex_infos);
+	printf("exit with status : %d\n", exit_status);
 	return (exit_status);
 }
 
@@ -31,28 +43,51 @@ void	on_close(void *param)
 
 void	cub_key_handler(mlx_key_data_t event, void *param)
 {
-	//	t_cub	*cub;
+	t_cub	*cub;
 
-	//	cub = (t_cub *)param;
+	cub = (t_cub *)param;
 	if (event.key == MLX_KEY_ESCAPE && event.action == MLX_PRESS)
 		on_close(param);
+	else if (event.key == MLX_KEY_W && event.action == MLX_PRESS)
+		cub_player_move(cub, 10, 0);
+	else if (event.key == MLX_KEY_S && event.action == MLX_PRESS)
+		cub_player_move(cub, -10, 0);
+	else if (event.key == MLX_KEY_A && event.action == MLX_PRESS)
+		cub_player_move(cub, 0, -10);
+	else if (event.key == MLX_KEY_D && event.action == MLX_PRESS)
+		cub_player_move(cub, 0, 10);
+}
+
+void	on_scroll(double deltax, double deltay, void *param)
+{
+	t_cub	*cub;
+
+	(void)deltax;
+	cub = (t_cub *)param;
+	if (deltax)
+		cub_player_zoom(cub, deltax / 10);
+	else
+		cub_player_zoom(cub, deltay / 10);
 }
 
 void	on_cursor_move(double xpos, double ypos, void *param)
 {
 	t_cub	*cub;
 	double	dx;
-	double	dy;
+//	double	dy;
 
 	cub = (t_cub *)param;
 	(void)cub;
+	(void)ypos;
 	dx = xpos - cub->scn_midx;
-	dy = ypos - cub->scn_midy;
-	cub->ori += dx * ROT_FACTOR;
-	printf("Cursor moved : pos (x, y) : (%lf, %lf), delta (dx, dy) : (%lf, %lf), ori : %f\n", xpos, ypos, dx, dy,
-		cub->ori);
+//	dy = ypos - cub->scn_midy;
+	cub->hero.ori += dx * ROT_FACTOR;
+//	printf("Cursor moved : pos (x, y) : (%lf, %lf), delta (dx, dy) : (%lf, %lf), ori : %f\n", xpos, ypos, dx, dy,
+//		cub->hero.ori);
 
-	// CAN'T TOUCH THIS, naaaaah na na na tst tst na na tst tst na na.
+	update_rays(cub);
+	render_scene(cub);
+	// CAN'T TOUCH THIS
 	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 }
 
@@ -61,19 +96,56 @@ int	cub_init_core_data(t_cub *cub)
 {
 	cub->scn_midx = SCN_WIDTH / 2;
 	cub->scn_midy = SCN_HEIGHT / 2;
+	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
+	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
+
+	return (0);
+}
+
+int	set_player_cell_pos(t_cub *cub, int x, int y, float ori)
+{
+	if (get_is_wall(&cub->map, x, y))
+		return (printf("ERROR hero can't be placed in wall."));
+	cub->hero.cell_x = x;
+	cub->hero.cell_y = y;
+	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
+	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
+	cub->hero.ori = ori;
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
-	t_minimap	*mini;
-//	mlx_image_t	*img;
-		
-	(void)argc;
-	(void)argv;
+	float		*hero_cell_coord;
+	
 	ft_memclear(&cub, sizeof(cub));
+	if (argc != 2)
+		return (EXIT_FAILURE);
+	cub_init_core_data(&cub);
+	if (load_map(&cub, argv[1]) < 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
 
+	if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
+	hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
+	printf("hero cell indexes : (%d, %d), hero cell coord : (%.3f, %.3f), hero pos : (%.2f, %.2f), hero orientation : %.5f\n",
+		cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
+		cub.hero.px, cub.hero.py, cub.hero.ori);
+
+
+	if (init_raycaster(&cub) < 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
+
+//	ft_deltatime_usec_note(NULL);
+//	if (raycast_all_vectors(&cub) < 0)
+//		return (cub_clear(&cub, EXIT_FAILURE));
+
+//	ft_deltatime_usec_note("Raycaster results are in. What say you ?!\n");
+	
+//	return (0);
+//	return (cub_clear(&cub, EXIT_SUCCESS));
+	
 	// FONCTION DE PARSING VIENT ICI !!
 	// INIT INPUT	
 	mini = NULL;
@@ -89,26 +161,27 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 	{
 		printf("MLX init failed \n");
-		return (EXIT_FAILURE);
+		return (cub_clear(&cub, EXIT_FAILURE));
 	}
-	printf("Init mlx SUCCESSFUL\n");
+	printf("Init mlx SUCCESSFUL !\n");
+	printf("Try init renderer\n");
+	if (init_renderer(&cub) < -1)
+		return (cub_clear(&cub, EXIT_FAILURE));
+	printf("Init renderer SUCCESSFUL !\n");
 
-
-	// INIT DATA
-	cub_init_core_data(&cub);
-
+	mlx_focus(cub.mlx);
 
 
 	
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);
 	mlx_set_cursor_mode(cub.mlx, MLX_MOUSE_HIDDEN);
-	mlx_focus(cub.mlx);
 
 	
 	// INIT HOOKS
 	mlx_cursor_hook(cub.mlx, &on_cursor_move, &cub);
 	mlx_key_hook(cub.mlx, &cub_key_handler, &cub);
+	mlx_scroll_hook(cub.mlx, &on_scroll, &cub);
 	mlx_close_hook(cub.mlx, &on_close, &cub);
 	
 
@@ -116,4 +189,5 @@ int	main(int argc, char **argv)
 	mlx_loop(cub.mlx);
 	printf("mlx loop stopped !\n");
 	return (cub_clear(&cub, EXIT_SUCCESS));
+
 }

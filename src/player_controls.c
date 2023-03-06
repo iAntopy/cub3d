@@ -1,0 +1,59 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player_controls.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
+/*   Updated: 2023/03/03 07:13:31 by iamongeo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+// Pass some positive/negative increment to rotate right/left
+void	cub_player_rotate(t_cub *cub, float rot)
+{
+	cub->hero.ori += rot;
+	update_rays(cub);
+
+
+	render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
+}
+
+// Pass some positive/negative increment to d_walk to move forward/backward
+// Pass some positive/negative increment to d_strafe to move left/right
+void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
+{
+	printf("Moving player : d_walk = %f, d_strafe = %f\n", d_walk, d_strafe);
+	printf("pos berfore -> (%f, %f)\n", cub->hero.px, cub->hero.py);
+	cub->hero.px += (d_walk * (*cub->hero.dirx)) + (d_strafe * -(*cub->hero.diry));
+	cub->hero.py += (d_walk * (*cub->hero.diry)) + (d_strafe * (*cub->hero.dirx));
+	printf("pos after -> (%f, %f)\n", cub->hero.px, cub->hero.py);
+
+	printf("cell x, y before -> (%d, %d)\n", cub->hero.cell_x, cub->hero.cell_y);
+	cub->hero.cell_x = (int)(cub->inv_cw * cub->hero.px);
+	cub->hero.cell_y = (int)(cub->inv_cw * cub->hero.py);
+	printf("cell x, y after -> (%d, %d)\n", cub->hero.cell_x, cub->hero.cell_y);
+	update_rays(cub);
+
+	cub->renderer.requires_update = 1;
+
+
+
+	render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
+}
+
+// Pass some positive/negative increment to zoom in/out by this factor.
+// ex: dz = +0.1 would multiply the current fov by 1.1 (1 + dz)
+// ex: dz = -0.1 would multiply the current fov by 0.9 (1 + dz)
+void	cub_player_zoom(t_cub *cub, float dz)
+{
+	if (fabsf(dz) > 0.5)
+		return ;
+	update_fov(cub, cub->fov * (1 + dz));
+
+
+	render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
+}
