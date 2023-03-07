@@ -110,7 +110,7 @@ static t_map	*map_frame(t_map *map, int fd)
 }
 
 // open , pre-count , calloc , padding ,  needed:(tex_parse)
-t_cub	map_checker(t_cub cub, t_map *map, char *file)
+t_cub	map_checker(t_map *map, t_cub cub, char *file)
 {
 	int		fd;
 	//
@@ -123,13 +123,13 @@ t_cub	map_checker(t_cub cub, t_map *map, char *file)
 	
 	/// should manage texture	part of file
 	map = tex_parse(cub, map, fd);
-	printf("DEBUG:Z. AFTER txtr_PARSE\n");	
+	// printf("DEBUG:Z. AFTER txtr_PARSE\n");	
 
 	map = transcribe(map, file); // pre-count
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
-	printf("DEBUG:Z. AFTER map_PARSE\n");	
+	// printf("DEBUG:Z. AFTER map_PARSE\n");	
 	map = map_frame(map, fd);
-	printf("DEBUG:Z. AFTER map_frame\n");		
+	// printf("DEBUG:Z. AFTER map_frame\n");		
 	close(fd);
 	// 	// wall_check(map, game);
 	return (cub);

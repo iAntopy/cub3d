@@ -50,6 +50,14 @@
 # define MINIMAP_PADX 20
 # define MINIMAP_PADY 20
 
+# define TEXTURES			6
+# define TEX_WEST			0
+# define TEX_NORTH			1
+# define TEX_EAST			2
+# define TEX_SOUTH			3
+# define TEX_SKY			4
+# define TEX_FLOOR			5
+
 enum	e_sides
 {
 	W_SIDE = 0,
@@ -57,6 +65,13 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
+/// PARSING ///////////////////
+// / coordonees standard
+typedef struct  s_pos
+{
+	int		x;
+	int		y;
+}   t_pos;
 
 typedef struct s_map_data
 {
@@ -66,10 +81,12 @@ typedef struct s_map_data
 	int	width_px;
 	int	height_px;
 	int	total_area;
+	char 	*file;		// map filename *.cub
 	char	**tab;		// 2D array (could be 1D, char * instead)
 	char	*collision_map;	// 1D array 
 	float	**grid_coords;//	mtx indexed (y * width + x) rowwise and column 0 and 1 represant the x and y coordinates in world coords.
 }	t_map;
+
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
 // Potentially, animated wall textures could be in a 2D array[side][anim_iteration] up to n nb of frames in the animation.
@@ -77,7 +94,22 @@ typedef struct s_texture_data
 {
 	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
 	mlx_texture_t	*skymap;	// yessss
+	int color[2];
+	char *tex_n[4];		// tex_name
 }	t_tex;
+
+//  struct config texture
+typedef struct s_textr
+{
+	char		*path;
+	void		*tex;
+	void		*ptr;
+	t_pos		start;	//origin (0,0)
+	t_pos		end;	// endian (width, height)
+	int			width;	
+	int			height;
+	int			size_line;
+} 			t_textr;
 
 typedef struct s_main_character_data
 {
@@ -121,6 +153,12 @@ typedef struct s_renderer
 typedef struct s_cub3d_core_data
 {
 	mlx_t	*mlx;
+	xpm_t	*xpm;
+	mlx_image_t	*img;
+	mlx_image_t *color;
+	// mlx_image_t	*sol;
+	// mlx_image_t	*sky;
+	mlx_texture_t *texture;
 
 	int	scn_midx;	// mid screen x coordinate
 	int	scn_midy;	// mid screen y coordinate
@@ -138,8 +176,31 @@ typedef struct s_cub3d_core_data
 }	t_cub;
 
 
+
 /// PARSING ///////////////////
 int	load_map(t_cub *cub, char *map_file);
+
+
+/// MAP_CHECKER ///////////////
+//map_parse
+t_map			*init_map(t_map *map);
+t_cub			map_checker(t_cub cub, t_map *map, char *file);
+t_cub    		tex_parse(t_cub cub, t_map *map, int fd);
+int			 	str_to_color(int r, int g, int b, int a);
+// t_map			*map_frame(t_map *map, int fd);
+//map_tool
+int				error(char *error, t_map *map);
+int				int_strlen(const char *s);
+int				ft_in_set(char const *c, char const *set);
+int				ft_strfcmp(const char	*s1, const char	*s2, size_t n);
+char			*ft_strncpy_i(char *dst, const char *src, size_t len, unsigned int idx);
+
+t_cub			path_from_line(t_cub cub);
+
+// void	    	print_map_next(t_map *m, int i, int j);
+// void    		print_map(t_map *m);
+// void			print_img(t_map *map, t_cub cub);
+
 
 /// RAYCASTER /////////////////
 int	init_raycaster(t_cub *cub);

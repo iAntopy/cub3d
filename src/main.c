@@ -117,6 +117,7 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, float ori)
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
+	t_map		*map;
 	float		*hero_cell_coord;
 	
 	ft_memclear(&cub, sizeof(cub));
@@ -148,8 +149,8 @@ int	main(int argc, char **argv)
 	
 	// FONCTION DE PARSING VIENT ICI !!
 	// INIT INPUT	
-	mini = NULL;
-	map_checker(init_mini(mini),cub, argv[1]);
+	map = NULL;
+	map_checker(cub,init_map(map), argv[1]);
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
 	
