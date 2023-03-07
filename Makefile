@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
+#    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/03 06:54:05 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/06 19:25:53 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,10 @@ SRC_FLS	:=	main.c 			\
 			error_handling.c 	\
 			init_raycaster.c	\
 			renderer.c		\
-			player_controls.c
+			player_controls.c	\
+			map_parse.c 		\
+			map_tool.c 		\
+			tex_parse.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
