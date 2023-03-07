@@ -178,13 +178,13 @@ int	main(int argc, char **argv)
 		if (!(cub.tex.walls[0]))
 			error("B. You are trying but no png to tex.\n", map);
 		// 	set img to be display
-		cub.img = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
-		if (!cub.img)
+		cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
+		if (!cub.imgz)
 			error("C. You are trying to open img but no img.\n", map);
 	/// image_to_window
 	printf("DEBUG: TEX_ TEST! INTO!\n");
 	// assigne img to window
-		mlx_image_to_window(cub.mlx, cub.img, 0, 0);	
+		mlx_image_to_window(cub.mlx, cub.imgz, 0, 0);	
 	///test_img_to_window
 		cub.color = mlx_new_image(cub.mlx, 128, 128);
 		mlx_image_to_window(cub.mlx, cub.color, 10, 10);
