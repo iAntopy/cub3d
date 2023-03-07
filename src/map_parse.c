@@ -47,7 +47,7 @@ static	char *spc_chk(t_map *map, int j)
 		h++;
 	// 		// error("6. Map contains unrecognized characters", map);
 	}
-	write(1, "\n", 1);
+	// write(1, "\n", 1);
 	return (map->tab[j]);
 }
 
@@ -86,6 +86,7 @@ static t_map	*map_frame(t_map *map, int fd)
 	int 	nb;  // actual line 
 
 	nb = 0;
+	temp = NULL;
 	while (nb < map->height)
 	{
 		temp = get_next_line(fd);
