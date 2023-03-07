@@ -94,8 +94,8 @@ typedef struct s_texture_data
 {
 	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
 	mlx_texture_t	*skymap;	// yessss
-	int color[2];
-	char *tex_n[4];		// tex_name
+	int 		color[2];
+	char 		*tex_n[4];		// tex_name
 }	t_tex;
 
 //  struct config texture
@@ -154,11 +154,11 @@ typedef struct s_cub3d_core_data
 {
 	mlx_t	*mlx;
 	xpm_t	*xpm;
-	mlx_image_t	*img;
+	mlx_image_t	*imgz;
 	mlx_image_t *color;
 	// mlx_image_t	*sol;
 	// mlx_image_t	*sky;
-	mlx_texture_t *texture;
+	mlx_texture_t *texr;
 
 	int	scn_midx;	// mid screen x coordinate
 	int	scn_midy;	// mid screen y coordinate
