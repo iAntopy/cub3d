@@ -124,20 +124,21 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	cub_init_core_data(&cub);
-//	if (load_map(&cub, argv[1]) < 0)
-		//return (cub_clear(&cub, EXIT_FAILURE));
+	if (load_map(&cub, argv[1]) < 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
 
-//	if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
-		//return (cub_clear(&cub, EXIT_FAILURE));
-//	hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
+	// if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
+	// 	return (cub_clear(&cub, EXIT_FAILURE));
+	// hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
 	// printf("hero cell indexes : (%d, %d), hero cell coord : (%.3f, %.3f), hero pos : (%.2f, %.2f), hero orientation : %.5f\n",
-		// cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
-		// cub.hero.px, cub.hero.py, cub.hero.ori);
+	// 	cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
+	// 	cub.hero.px, cub.hero.py, cub.hero.ori);
 
 	// FONCTION DE PARSING VIENT ICI !!
 	// INIT INPUT	
 	map = NULL;
 	map_checker(&cub, init_map(map), argv[1]);
+	printf("DEBUG: TEX_ TEST! START!\n");
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
 	
@@ -150,11 +151,7 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 	{
 		printf("MLX init failed \n");
-		return (cub_clear(&cub, EXIT_FAILURE));
-
-
-
-	
+		return (cub_clear(&cub, EXIT_FAILURE));	
 	}
 
 	printf("OYE OYE! Try init Walls FAILS \n");	
@@ -189,7 +186,6 @@ int	main(int argc, char **argv)
 
 
 	/// mlx_texture_to_image
-	// printf("DEBUG: TEX_ TEST! START!\n");
 	// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	// 	if (!(cub.tex.walls[0]))
 	// 		error("B. You are trying but no png to tex.\n", map);

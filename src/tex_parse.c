@@ -62,7 +62,7 @@
 
 
 /// color_to_int ...
-static int 	str_to_color(int r, int g, int b, int t)
+int 	str_to_color(int r, int g, int b, int t)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
@@ -91,19 +91,19 @@ int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char
 	return (*(int *)(unsigned char [4]){b, g, r, t});
 }
 
-unsigned char get_t(int trgb)
+unsigned char get_ut(int trgb)
 {
 	return (((unsigned char *)&trgb)[3]);
 }
-unsigned char get_r(int trgb)
+unsigned char get_ur(int trgb)
 {
 	return (((unsigned char *)&trgb)[2]);
 }
-unsigned char get_g(int trgb)
+unsigned char get_ug(int trgb)
 {
 	return (((unsigned char *)&trgb)[1]);
 }
-unsigned char get_b(int trgb)
+unsigned char get_ub(int trgb)
 {
 	return (((unsigned char *)&trgb)[0]);
 }
@@ -142,20 +142,23 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 {
 	char **txtr;
 	char *line;
-	// int	color;
+	char	**color;
 	int nb;
 	int id;
 	
 	
 	nb = 0;
-	while (nb < 4)
+	while (nb < 6)
 	{
+		printf("DEBUG:Z. JOURNEY'S INTO TEX_PARSE\n");	
 		line = get_next_line(fd);
-		while (ft_strlen(line) < 2)
+		while (*line == '\n' || ft_strlen(line) < 2)
 			line = get_next_line(fd);
 		if (line)
 		{			
 			txtr = ft_split(line, ' ');
+			if (txtr[1][ft_strlen(txtr[1])-1] == '\n')
+				txtr[1][ft_strlen(txtr[1])-1] = '\0';
 			if (ft_strlen(txtr[0]) > 2)	
 				error("7, Texture mapping Name error !\n", map);
 			if (!txtr[1])	
@@ -163,25 +166,39 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 				
 			id = 0;
 			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
-				printf("DEBUG: line_num: %d :tex_ref : %d tex_ref : %s tex_name: %s \n", nb, id, txtr[0], txtr[1]);
 			if ( id < 0)
 			{
 				error("9, Texture Name unmatching error !\n", map);
 			}
 			else if (id < 4)
-				cub->tex.tex_n[id] = "tex/s_side.png";//txtr[1];//
-			printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub->tex.tex_n[id]); 
+			{
+				cub->tex.tex_n[id] = txtr[1];//
+				printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub->tex.tex_n[id]); 
+			}
+			else if (id < 6)
+			{
+				
+				color = ft_split(txtr[1], ',');
+				printf("DEBUG:  ID: %d :: EAZY_color_num:  :: \n", id);//, cub->tex.rgbx[0]); 
+				printf("DEBUG:  ID: %d :: color_num: %s :: \n", id, color[0]); 
+				if (id == 4)
+					cub->tex.color[0] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]),1);
+				else if (id == 5)
+					cub->tex.color[1] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]),1);	
+						// cub->tex.color[1] = str_to_color(color[0], color[1],color[2]);
+						// cub->tex.color[1] = str_to_color(cub->tex.rgbx);
+						// cub->tex.color[1] = str_to_color(ft_split(txtr[1], ','),1);
+			}
 			nb++;		// 	// match tex_name to parse_color
 		}
 		else 
 		{
-			printf("DEBG: UNABLE!");
+			printf("DEBG: UNABLE tex_parse!");
 			free(line);
 			nb++;
-			// break;
 		}
-	free(line);	
-	
+		free(line);	
 	}
+	printf("DEBUG:Z. JOURNEY'S end TEX_PARSE\n");	
 	return (map);
 }

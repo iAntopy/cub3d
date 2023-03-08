@@ -124,15 +124,15 @@ t_cub	*map_checker(t_cub *cub, t_map *map, char *file)
 			error("2. Wrong file name or extention\n", map);
 	
 	/// should manage texture	part of file
+	printf("DEBUG:Z. BFORE TEX_PARSE\n");	
 	map = tex_parse(cub, map, fd);
-	// printf("DEBUG:Z. AFTER txtr_PARSE\n");	
-
+	printf("DEBUG:Z. AFTERT _TEX_PARSE\n");
 	map = transcribe(map, file); // pre-count
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
-	// printf("DEBUG:Z. AFTER map_PARSE\n");	
+	printf("DEBUG:Z. AFTER map_PARSE\n");	
 	map = map_frame(map, fd);
-	// printf("DEBUG:Z. AFTER map_frame\n");		
+	printf("DEBUG:Z. AFTER map_frame\n");		
 	close(fd);
-	// 	// wall_check(map, game);
+	// 	// wall_check(cun, map);
 	return (cub);
 }
