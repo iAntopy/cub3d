@@ -167,9 +167,7 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 			id = 0;
 			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
 			if ( id < 0)
-			{
 				error("9, Texture Name unmatching error !\n", map);
-			}
 			else if (id < 4)
 			{
 				cub->tex.tex_n[id] = txtr[1];//

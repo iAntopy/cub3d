@@ -150,9 +150,9 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, EXIT_FAILURE));	
 	}
 
-	cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
-	printf("OYE OYE! Try init Walls ::%s:: \n",cub.tex.tex_n[0]);		
 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
+	cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
+	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
 	if ((cub.tex.walls[0]))
 		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
 	else 
