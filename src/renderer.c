@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 07:52:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:41:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,10 @@ int	init_renderer(t_cub *cub)
 //	mlx_set_instance_depth(cub->renderer.bg_layer->instances, 3);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 //	mlx_set_instance_depth(cub->renderer.walls_layer->instances, 2);
-	cub->renderer.ui_layer = mlx_new_image(cub->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
+//	cub->renderer.ui_layer = mlx_new_image(cub->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
+	printf("bla : %p\n",cub->tex.walls[0]);
+	cub->renderer.ui_layer = mlx_texture_to_image(cub->mlx, cub->tex.walls[0]);
+	printf("bla2\n");
 //	mlx_set_instance_depth(cub->renderer.ui_layer->instances, 1);
 
 	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer || !cub->renderer.ui_layer)
@@ -156,14 +159,14 @@ int	init_renderer(t_cub *cub)
 	mlx_set_color_in_rows(cub->renderer.bg_layer, SCN_HEIGHT / 2, SCN_HEIGHT, 0xff63615d);
 	//mlx_set_bg_color(cub->renderer.ui_layer, 0xf05ae686);
 //	mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0xf786e65a);//  5ae686);
-	mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0x00ff007f);//  5ae686);
+	// mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0x00ff007f);//  5ae686);
 //	mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0xf75ae686);
 	
+
 	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->renderer.walls_layer, 0, 0);
 	if (ENABLE_MINIMAP)
 		mlx_image_to_window(cub->mlx, cub->renderer.ui_layer,
 			MINIMAP_PADX, SCN_HEIGHT - MINIMAP_PADY - MINIMAP_HEIGHT);
-
 	return (0);
 }

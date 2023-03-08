@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_raycaster.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 14:58:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:28:11 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ static  void	raycast_init_single_vect(t_cub *cub, t_rayint *ri, int vi)
 	ri->a = ri->ry / ri->rx;
 	ri->inv_a = 1 / ri->a;
 	ri->b = ri->py - (ri->a * ri->px);
-//	printf("\n@----- Raycaster init ray %d with data -----@\n", vi);
+	printf("\n@----- Raycaster init ray %d with data -----@\n", vi);
 //	printf("	- (dx, dy) : (%f, %f)\n", ri->rx, ri->ry);
 //	printf("	- (c_offx, c_offy) : (%d, %d)\n", ri->c_offx, ri->c_offy);
 //	printf("	- (dir_x, dir_y) : (%d, %d)\n", ri->dirx, ri->diry);
@@ -288,7 +288,7 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //	float	temp;
 	int	is_hori;
 
-	axies = ri->grid_coords[ri->cell[1] + ri->c_offy] + (((*ri->cell) + ri->c_offx) << 1);// same as call to get_grid_coord ... but inline !
+	axies = ri->grid_coords[ri->cell[1] + ri->c_offy] + ((ri->cell[0] + ri->c_offx) << 1);// same as call to get_grid_coord ... but inline !
 //	axies[0] = (*ri->cell + ri->c_offx) * CELL_WIDTH;
 //	axies[1] = (ri->cell[1] + ri->c_offy) * CELL_WIDTH;
 	intersects[1] = ri->a * (*axies) + ri->b;//		y = ax + b;
@@ -302,12 +302,11 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //	ri->hdy = fabsf(axies[1] - ri->py);
 
 
-//	printf("(cx, cy) : (%d, %d), ray %d, axies : (%.3f, %.3f), intersects : (%.3f, %.3f), vert vs hero colision : (%f, %f)\n", ri->cx, ri->cy, ri->idx, axies[0], axies[1], intersects[0], intersects[1], ri->vdx + ri->vdy, ri->hdx + ri->hdy);
+// printf("(cx, cy) : (%d, %d), ray %d, axies : (%.3f, %.3f), intersects : (%.3f, %.3f), vert vs hero colision : (%f, %f)\n", ri->cx, ri->cy, ri->idx, axies[0], axies[1], intersects[0], intersects[1], ri->vdx + ri->vdy, ri->hdx + ri->hdy);
 //	printf("(vdx, vdy) : (%f, %f), (hdx, hdy) : (%f, %f)\n", ri->vdx, ri->vdy, ri->hdx, ri->hdy);
 //	if ((axies[0] * axies[0] + intersects[1] * intersects[1]) < (intersects[0] * intersects[0] + axies[1] * axies[1]))
 //	if (((axies[0] - ri->px) + (intersects[1] - ri->py)) < (intersects[0] + axies[1]))
 //	printf("previous cx, cy : (%d, %d)\n", ri->cx, ri->cy);
-
 	/// BRANCHLESS 
 /*
 	test = ((ri->hdx + ri->hdy) < (ri->vdx + ri->vdy));
@@ -462,6 +461,7 @@ int	raycast_all_vectors(t_cub *cub)
 	vi = -1;
 	while (++vi < SCN_WIDTH)
 	{
+		printf("vi : %d\n", vi);
 		raycast_init_single_vect(cub, &ri, vi);
 		while (!raycast_find_cell_intersect(&ri))
 			continue ;
@@ -544,7 +544,7 @@ int	init_raycaster(t_cub *cub)
 	// 		row[1] : total height of 
 	hero->tex_infos = mtx_create_empty(SCN_WIDTH, 2, DTYPE_F);
 	if (!hero->theta_offsets || !hero->ray_thetas
-		|| !hero->fisheye_correctors || !hero->rays[0] || !hero->rays[1] 
+		|| !hero->rays[0] || !hero->rays[1] 
 		|| !hero->coll_walls || !hero->coll_sides || !hero->collisions
 		|| !hero->distances || !hero->tex_infos)
 		return (-1);
