@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/07 20:10:49 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/07 22:11:47 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@
 // }
 
 /// color_to_int ...
-// static int 	str_to_color(int r, int g, int b, int a)
-// {
-// 	return (r << 24 | g << 16 | b << 8 | a);
+static int 	str_to_color(int r, int g, int b, int a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
+}
  					// int	i;
  					// int	color;
 					// int	tmp;
@@ -62,7 +63,6 @@
 					// 	color = color | (tmp << (16 - (i++ * 8)));
 					// 	str = str->next;
 // 					// }
-// }
 
 	/// should get file info about tex_color (sky/floor)
 // int 	parse_color(t_config *config, int key, char const *line)
