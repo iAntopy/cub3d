@@ -13,19 +13,19 @@
 #include "cub3d.h"
 
 // error display / free array : chk_fail
-int	error(char *error, t_map *map)
-{
-	int	i;
+// int	error(char *error, t_map *map)
+// {
+// 	int	i;
 
-	i = -1;
-	write(1, "Error\n", 6);
-	write(1, error, ft_strlen(error));
-	if (map->tab == NULL)
-		return(1);
-	while (map->tab[++i])
-		free(map->tab[i]);
-	return (1);
-}
+// 	i = -1;
+// 	write(1, "Error\n", 6);
+// 	write(1, error, ft_strlen(error));
+// 	if (map->tab == NULL)
+// 		exit(1);
+// 	while (map->tab[++i])
+// 		free(map->tab[i]);
+// 	exit(1);
+// }
 	//error("1. You are trying to open a dir.\n", map);
 	//error("2. Wrong file name or extention\n", map);
 	//error("3. There is an error in your map, Please verify\n", map);
@@ -81,7 +81,7 @@ int	ft_in_set(const char *c, const char *set)
 	while(c[j])
 	{
 		i = 0;
-		write(1, &c[j], 1);
+		// write(1, &c[j], 1);
 		while (set[i])
 		{
 			if (c[j] == set[i])
@@ -99,7 +99,7 @@ char	*ft_strncpy_i(char *dst, const char *src, size_t len, unsigned int i)
 
 	while (src[i] != '\0' && i < len)
 	{
-		write(1, &src[i], 1);
+		// write(1, &src[i], 1);
 		dst[i] = src[i];
 		i++;
 	}

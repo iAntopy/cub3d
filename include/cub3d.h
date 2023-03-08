@@ -88,24 +88,10 @@ typedef struct s_map_data
 	char 	*file;		// map filename *.cub
 	char	**tab;		// char input parsed
 	int 	pos_x;		// aqui_X
-	int	pos_y;		// aqui_y
-	int	cases;		// total case all gabarit
-	char 	*array;		// char* array 
-}	t_map;
-/*
-// minimap  
-typedef struct s_map
-{
-	char 	*file;		// map filename *.cub
-	char 	**tab;		// char input parsed
-	int 	pos_x;		// aqui_X
 	int		pos_y;		// aqui_y
-	int		width;		// max_x_len
-	int 	height;		// max_y_len
 	int		cases;		// total case all gabarit
 	char 	*array;		// char* array 
-} 	t_map;
-*/
+}	t_map;
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
 // Potentially, animated wall textures could be in a 2D array[side][anim_iteration] up to n nb of frames in the animation.
