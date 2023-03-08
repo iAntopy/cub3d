@@ -42,28 +42,71 @@
 	// 				|| !(path = ft_substr(line, start, end - start)))
 	// 				return (NULL);
 	// 			return (path);
+		
+				// int	i;
+				// int	color;
+				// int	tmp;
+
+				// i = 0;
+				// color = 0;
+				// while (str)
+				// {
+				// 	// tmp = ft_atoi(str->content);
+				// 	if (tmp < 0 || tmp > 255)
+				// 		return (-1);
+				// 	color = color | (tmp << (16 - (i++ * 8)));
+				// 	str = str->next;
+				// }
 // }
+
+
 
 /// color_to_int ...
-// static int 	str_to_color(int r, int g, int b, int a)
-// {
-// 	return (r << 24 | g << 16 | b << 8 | a);
- 					// int	i;
- 					// int	color;
-					// int	tmp;
+static int 	str_to_color(int r, int g, int b, int t)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
 
-					// i = 0;
-					// color = 0;
-					// while (str)
-					// {
-					// 	tmp = ft_atoi(str->content);
-					// 	if (tmp < 0 || tmp > 255)
-					// 		return (-1);
-					// 	color = color | (tmp << (16 - (i++ * 8)));
-					// 	str = str->next;
-// 					// }
-// }
+int get_t (int trgb)
+{
+	return((trgb >> 24) & 0xFF);
+}
 
+int get_b (int trgb)
+{
+	return((trgb >> 16) & 0xFF);
+}
+int get_g (int trgb)
+{
+	return((trgb >> 8) & 0xFF);
+}
+
+int get_r (int trgb)
+{
+	return(trgb & 0xFF);
+}
+
+int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
+{
+	return (*(int *)(unsigned char [4]){b, g, r, t});
+}
+
+unsigned char get_t(int trgb)
+{
+	return (((unsigned char *)&trgb)[3]);
+}
+unsigned char get_r(int trgb)
+{
+	return (((unsigned char *)&trgb)[2]);
+}
+unsigned char get_g(int trgb)
+{
+	return (((unsigned char *)&trgb)[1]);
+}
+unsigned char get_b(int trgb)
+{
+	return (((unsigned char *)&trgb)[0]);
+}
 	/// should get file info about tex_color (sky/floor)
 // int 	parse_color(t_config *config, int key, char const *line)
 		// {
@@ -93,6 +136,7 @@
 	/// for each: chk_name ref AND chk_path
 		//		if (yes && yes) attib name to path ... 
 		//		also if (name is color_name) : str_to_color
+
 /// get input frm file
 t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 {
@@ -127,38 +171,6 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 			else if (id < 4)
 				cub->tex.tex_n[id] = "tex/s_side.png";//txtr[1];//
 			printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub->tex.tex_n[id]); 
-					// else if (id < 1)
-					// {
-					// 	// cub.tex.walls[0] = mlx_load_png(txtr[1]);
-					// 	// cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
-					// 	cub.tex.tex_n[id] = txtr[1];//"./tex/w_side.png"; 
-					// }
-					// else if (id < 2)
-					// {
-					//  	// cub.tex.walls[1] = mlx_load_png("tex/n_side.png");
-					//  	// cub.tex.walls[1] = mlx_load_png(txtr[1]);
-					// 	cub.tex.tex_n[id] =txtr[1];//"./tex/n_side.png"; 
-					// }
-					// else if (id < 3)
-					// {
-					// 	// cub.tex.walls[2] = mlx_load_png("./tex/e_side.png");
-					// 	// cub.tex.walls[2] = mlx_load_png(txtr[1]);
-					// 	cub.tex.tex_n[id] =txtr[1];//"./tex/e_side.png"; 	
-					// }
-				// {
-					// cub.tex.walls[3] = mlx_load_png("./tex/s_side.png");
-					// cub.tex.walls[3] = mlx_load_png(txtr[1]);
-				// }
-					// else if (id < 5)
-					// {
-					// 	color = str_to_color(ft_atoi(txtr[0]), ft_atoi(txtr[1]), ft_atoi(txtr[2]), 0);
-					//  	memset(cub->grnd->pixels, 255, cub.grnd->width * cub->grnd->height * sizeof(int32_t));
-					// }
-					// else if (id < 6)
-					// {
-					// 	color = str_to_color(ft_atoi(txtr[0]), ft_atoi(txtr[1]), ft_atoi(txtr[2]), 0);
-					// 	cub.img[1] = memset(cub.img[1]->pixels, 225, cub.img[1]->width * cub.img[1]->height * sizeof(int32_t));		
-					// }
 			nb++;		// 	// match tex_name to parse_color
 		}
 		else 
