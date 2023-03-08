@@ -147,10 +147,10 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 	int id;
 	
 	
+	printf("DEBUG:Z. JOURNEY'S INTO TEX_PARSE\n");	
 	nb = 0;
 	while (nb < 6)
 	{
-		printf("DEBUG:Z. JOURNEY'S INTO TEX_PARSE\n");	
 		line = get_next_line(fd);
 		while (*line == '\n' || ft_strlen(line) < 2)
 			line = get_next_line(fd);
@@ -179,8 +179,9 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 			{
 				
 				color = ft_split(txtr[1], ',');
-				printf("DEBUG:  ID: %d :: EAZY_color_num:  :: \n", id);//, cub->tex.rgbx[0]); 
-				printf("DEBUG:  ID: %d :: color_num: %s :: \n", id, color[0]); 
+				printf("DEBUG:  ID: %d :: color_num[0]: R = %s :: \n", id, color[0]); 
+				printf("DEBUG:  ID: %d :: color_num[1]: G = %s :: \n", id, color[1]); 
+				printf("DEBUG:  ID: %d :: color_num[2]: B = %s :: \n", id, color[2]); 
 				if (id == 4)
 					cub->tex.color[0] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]),1);
 				else if (id == 5)

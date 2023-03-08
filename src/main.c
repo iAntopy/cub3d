@@ -138,13 +138,9 @@ int	main(int argc, char **argv)
 	// INIT INPUT	
 	map = NULL;
 	map_checker(&cub, init_map(map), argv[1]);
-	printf("DEBUG: TEX_ TEST! START!\n");
+	printf("DEBUG: MAP_CHK END:: TEX _START!\n");
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
-	
-
-
-	
 	
 	// Window Width, Height, title, is_resizable. (option possible pour la window : full screen mode)
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
@@ -154,9 +150,9 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, EXIT_FAILURE));	
 	}
 
-	printf("OYE OYE! Try init Walls FAILS \n");	
-	// cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
+	printf("OYE OYE! Try init Walls ::%s:: \n",cub.tex.tex_n[0]);		
+	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	if ((cub.tex.walls[0]))
 		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
 	else 
