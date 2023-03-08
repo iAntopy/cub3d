@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 14:35:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:20:12 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,17 +104,17 @@ typedef struct s_texture_data
 }	t_tex;
 
 //  struct config texture
-typedef struct s_textr
-{
-	char		*path;
-	void		*tex;
-	void		*ptr;
-	t_pos		start;	//origin (0,0)
-	t_pos		end;	// endian (width, height)
-	int			width;	
-	int			height;
-	int			size_line;
-} 			t_textr;
+// typedef struct s_textr
+// {
+// 	char		*path;
+// 	void		*tex;
+// 	void		*ptr;
+// 	t_pos		start;	//origin (0,0)
+// 	t_pos		end;	// endian (width, height)
+// 	int			width;	
+// 	int			height;
+// 	int			size_line;
+// } 			t_textr;
 
 typedef struct s_main_character_data
 {
@@ -191,7 +191,7 @@ int	load_map(t_cub *cub, char *map_file);
 t_map			*init_map(t_map *map);
 t_cub			*map_checker(t_cub *cub, t_map *map, char *file);
 t_map    		*tex_parse(t_cub *cub, t_map *map, int fd);
-int			 	str_to_color(int r, int g, int b, int a);
+// int			 	str_to_color(int r, int g, int b, int a);
 // t_map			*map_frame(t_map *map, int fd);
 //map_tool
 int				error(char *error, t_map *map);

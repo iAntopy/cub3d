@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/03 14:12:16 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:10:49 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,23 @@
 	// 			return (path);
 // }
 
-	/// color_to_int ...
+/// color_to_int ...
 // static int 	str_to_color(int r, int g, int b, int a)
 // {
 // 	return (r << 24 | g << 16 | b << 8 | a);
-// 					// int	i;
-// 					// int	color;
-// 					// int	tmp;
+ 					// int	i;
+ 					// int	color;
+					// int	tmp;
 
-// 					// i = 0;
-// 					// color = 0;
-// 					// while (str)
-// 					// {
-// 					// 	tmp = ft_atoi(str->content);
-// 					// 	if (tmp < 0 || tmp > 255)
-// 					// 		return (-1);
-// 					// 	color = color | (tmp << (16 - (i++ * 8)));
-// 					// 	str = str->next;
+					// i = 0;
+					// color = 0;
+					// while (str)
+					// {
+					// 	tmp = ft_atoi(str->content);
+					// 	if (tmp < 0 || tmp > 255)
+					// 		return (-1);
+					// 	color = color | (tmp << (16 - (i++ * 8)));
+					// 	str = str->next;
 // 					// }
 // }
 
@@ -125,7 +125,7 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 				error("9, Texture Name unmatching error !\n", map);
 			}
 			else if (id < 4)
-				cub->tex.tex_n[id] = txtr[1];//"./tex/s_side.png";
+				cub->tex.tex_n[id] = "tex/s_side.png";//txtr[1];//
 			printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub->tex.tex_n[id]); 
 					// else if (id < 1)
 					// {
@@ -163,6 +163,7 @@ t_map	*tex_parse(t_cub *cub, t_map *map, int fd)
 		}
 		else 
 		{
+			printf("DEBG: UNABLE!");
 			free(line);
 			nb++;
 			// break;
