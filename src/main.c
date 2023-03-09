@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/07 20:40:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/07 23:43:57 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,11 +150,7 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 	{
 		printf("MLX init failed \n");
-		return (cub_clear(&cub, EXIT_FAILURE));
-
-
-
-	
+		return (cub_clear(&cub, EXIT_FAILURE));	
 	}
 
 	printf("OYE OYE! Try init Walls FAILS \n");	
@@ -186,21 +182,9 @@ int	main(int argc, char **argv)
 	
 	mlx_focus(cub.mlx);
 
-
-
 	/// mlx_texture_to_image
-	// printf("DEBUG: TEX_ TEST! START!\n");
-	// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
-	// 	if (!(cub.tex.walls[0]))
-	// 		error("B. You are trying but no png to tex.\n", map);
-	// 	// 	set img to be display
-	// 	cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
-	// 	if (!cub.imgz)
-	// 		error("C. You are trying to open img but no img.\n", map);
 	// /// image_to_window
-	// printf("DEBUG: TEX_ TEST! INTO!\n");
-	// // assigne img to window
-	// 	mlx_image_to_window(cub.mlx, cub.imgz, 0, 0);	
+
 	// ///test_img_to_window
 	// 	cub.color = mlx_new_image(cub.mlx, 128, 128);
 	// 	mlx_image_to_window(cub.mlx, cub.color, 10, 10);
