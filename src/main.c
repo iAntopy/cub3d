@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/07 23:43:57 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:13:13 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,26 +124,23 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	cub_init_core_data(&cub);
-//	if (load_map(&cub, argv[1]) < 0)
-		//return (cub_clear(&cub, EXIT_FAILURE));
+	if (load_map(&cub, argv[1]) < 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
 
-//	if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
-		//return (cub_clear(&cub, EXIT_FAILURE));
-//	hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
+	// if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
+	// 	return (cub_clear(&cub, EXIT_FAILURE));
+	// hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
 	// printf("hero cell indexes : (%d, %d), hero cell coord : (%.3f, %.3f), hero pos : (%.2f, %.2f), hero orientation : %.5f\n",
-		// cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
-		// cub.hero.px, cub.hero.py, cub.hero.ori);
+	// 	cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
+	// 	cub.hero.px, cub.hero.py, cub.hero.ori);
 
 	// FONCTION DE PARSING VIENT ICI !!
 	// INIT INPUT	
 	map = NULL;
 	map_checker(&cub, init_map(map), argv[1]);
+	printf("DEBUG: MAP_CHK END:: TEX _START!\n");
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
-	
-
-
-	
 	
 	// Window Width, Height, title, is_resizable. (option possible pour la window : full screen mode)
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
@@ -151,11 +148,12 @@ int	main(int argc, char **argv)
 	{
 		printf("MLX init failed \n");
 		return (cub_clear(&cub, EXIT_FAILURE));	
+		return (cub_clear(&cub, EXIT_FAILURE));	
 	}
 
-	printf("OYE OYE! Try init Walls FAILS \n");	
-	// cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
+	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
+	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
 	if ((cub.tex.walls[0]))
 		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
 	else 
@@ -183,6 +181,13 @@ int	main(int argc, char **argv)
 	mlx_focus(cub.mlx);
 
 	/// mlx_texture_to_image
+	// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
+	// 	if (!(cub.tex.walls[0]))
+	// 		error("B. You are trying but no png to tex.\n", map);
+	// 	// 	set img to be display
+	// 	cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
+	// 	if (!cub.imgz)
+	// 		error("C. You are trying to open img but no img.\n", map);
 	// /// image_to_window
 
 	// ///test_img_to_window

@@ -99,22 +99,10 @@ typedef struct s_texture_data
 {
 	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
 	mlx_texture_t	*skymap;	// yessss
+	char		**rgbx;
 	int 		color[2];
 	char 		*tex_n[4];		// tex_name
 }	t_tex;
-
-//  struct config texture
-// typedef struct s_textr
-// {
-// 	char		*path;
-// 	void		*tex;
-// 	void		*ptr;
-// 	t_pos		start;	//origin (0,0)
-// 	t_pos		end;	// endian (width, height)
-// 	int			width;	
-// 	int			height;
-// 	int			size_line;
-// } 			t_textr;
 
 typedef struct s_main_character_data
 {
@@ -161,8 +149,6 @@ typedef struct s_cub3d_core_data
 	xpm_t	*xpm;
 	mlx_image_t	*imgz;
 	mlx_image_t *color;
-	// mlx_image_t	*sol;
-	// mlx_image_t	*sky;
 	mlx_texture_t *texr;
 
 	int	scn_midx;	// mid screen x coordinate
@@ -200,6 +186,17 @@ int				ft_strfcmp(const char	*s1, const char	*s2, size_t n);
 char			*ft_strncpy_i(char *dst, const char *src, size_t len, unsigned int idx);
 
 t_cub			path_from_line(t_cub cub);
+/// COLOR PARSE ////////////
+int 	str_to_color(int r, int g, int b, int t);
+int get_t (int trgb);
+int get_b (int trgb);
+int get_g (int trgb);
+int get_r (int trgb);
+int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+unsigned char get_ut(int trgb);
+unsigned char get_ur(int trgb);
+unsigned char get_ug(int trgb);
+unsigned char get_ub(int trgb);
 
 // void	    	print_map_next(t_map *m, int i, int j);
 // void    		print_map(t_map *m);
