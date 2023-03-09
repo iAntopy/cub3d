@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/08 20:13:13 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:24:28 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int	main(int argc, char **argv)
 	// INIT INPUT	
 	map = NULL;
 	map_checker(&cub, init_map(map), argv[1]);
+	
 	printf("DEBUG: MAP_CHK END:: TEX _START!\n");
 	// if (parsing_func_de_fou_debile(&cub, argc, argv) < 0)
 	//	return (EXIT_FAILURE);
@@ -151,8 +152,9 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, EXIT_FAILURE));	
 	}
 
+	mlx_focus(cub.mlx);
 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
-	cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
+	// cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
 	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
 	if ((cub.tex.walls[0]))
 		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
@@ -178,7 +180,6 @@ int	main(int argc, char **argv)
 	// return (0);
 	// return (cub_clear(&cub, EXIT_SUCCESS));
 	
-	mlx_focus(cub.mlx);
 
 	/// mlx_texture_to_image
 	// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
