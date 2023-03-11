@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 05:26:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 07:32:40 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,10 @@ int	main(int argc, char **argv)
 	if (init_raycaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
+	cub.tex.floor = mlx_load_png("tex/floor.png");
+	if (!cub.tex.floor)
+		return (cub_clear(&cub, EXIT_FAILURE));
+	printf("Floor texture loaded SUCCESSFULLY !\n");
 //	ft_deltatime_usec_note(NULL);
 	// if (raycast_all_vectors(&cub) < 0)
 		// return (cub_clear(&cub, EXIT_FAILURE));

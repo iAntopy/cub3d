@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 05:19:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 06:50:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct s_map_data
 //	int		cases;		// total case all gabarit
 //	char 	*array;		// char* array 
 	int	lines_to_map;
+	int	hero_int;
+	int	flg_chk;
 }	t_map;
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
@@ -105,6 +107,7 @@ typedef struct s_texture_data
 	xpm_t		*xwalls[4];
 	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
 	mlx_texture_t	*skymap;	// yessss
+	mlx_texture_t	*floor;	// yessss
 	char		**rgbx;
 	int 		color[2];
 	char 		*tex_n[4];		// tex_name
@@ -195,6 +198,7 @@ void	print_map(t_map *map);
 t_map			*init_map(t_map *map);
 int			map_checker(t_cub *cub, t_map *map, char *file);
 int			tex_parse(t_cub *cub, t_map *map, int fd);
+t_map			*wall_check(t_map *map);
 // t_map			*map_frame(t_map *map, int fd);
 //map_tool
 int				error(char *error, t_map *map);

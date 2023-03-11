@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 05:59:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 07:38:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,33 +127,35 @@ static void	render_walls(t_cub *cub)
 	int	scn_start_y;
 	int	tex_start_x;
 	int	*sides;
-	float	rays_x;
-	float	rays_y;
 	mlx_texture_t	*tex;
 	int	*pxls;
 //	int	y_offset;
 //	float	incr;
 	float	ratio;
+	
+//	for FLOORCASTER
+	float	rays_x;
+	float	rays_y;
 	float	param;
 	float	rx;
 	float	ry;
-//	float	height_to_fheight;
-//	float	fheight_to_tex;
 
 	clear_image_buffer(cub->renderer.walls_layer);
 	sides = (int *)cub->hero.coll_sides->arr - 1;
 	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
+
+
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
 		rays_x = _mtx_index_f(cub->hero.rays[0], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
 		rays_y = _mtx_index_f(cub->hero.rays[1], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
+	
 		tex = cub->tex.walls[*(++sides)];
 		half_texh = (tex->height >> 1);
 		tex_start_x = (int)(*(++tex_info) * tex->width);
 		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
 		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
-
 
 		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
 //		y_offset = (tex->height >> 2);//(fheight - height) >> 1;// divide by 2
@@ -177,20 +179,24 @@ static void	render_walls(t_cub *cub)
 					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));
 
 //////////////	FLOORCASTING  //////////////////////
-/*
+
 		j = scn_start_y + j - 1;
 		while (++j < SCN_HEIGHT)
 		{
 			param = get_floorcaster_param(cub, i, j);
-			//rx = *(++rays_x) * param;
-			//ry = *(++rays_y) * param;
 			rx = rays_x * param + cub->hero.px;
 			ry = rays_y * param + cub->hero.py;
-			printf("floor (rayx, rayy) : (%f, %f),  pixel collision : (%f, %f), param : %f\n", rays_x,
-				rays_y, rx, ry, param);
+//			rx = rays_x * param + cub->hero.px;
+//			ry = rays_y * param + cub->hero.py;
+//			printf("floor (rayx, rayy) : (%f, %f),  pixel collision : (%f, %f), param : %f\n",
+//				rays_x, rays_y, rx, ry, param);
+			mlx_put_pixel(cub->renderer.walls_layer, i, j,
+				cub->tex.floor->pixels[(int)((fmodf(ry, CELL_WIDTH)// * cub->inv_cw 
+				* cub->tex.floor->height// * cub->tex.floor->width
+				+ fmodf(rx, CELL_WIDTH)) * cub->inv_cw * cub->tex.floor->width)]);
 		}
+
 	}
-*/
 }
 
 // Called anytime a noticeable change is made

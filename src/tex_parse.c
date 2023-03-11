@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/10 19:00:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 06:51:09 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,29 +160,17 @@ static int	setup_wall_textures(t_cub *cub)
 {
 	char		**src;
 	mlx_texture_t	**dst;
-	int		i;
+//	int		i;
 
 	src = cub->tex.tex_n;
 	dst = cub->tex.walls;
 	if (src[W_SIDE] && src[N_SIDE] && src[E_SIDE] && src[S_SIDE])
 	{
 		printf("All textures available :  \n- %s- %s- %s- %s\n", src[W_SIDE], src[N_SIDE], src[E_SIDE], src[S_SIDE]);
-		i = -1;
-		while (++i < 4)
-		{
-			if (ft_strnstr(src[i], ".png", PATH_MAX))
-			{
-				dst[i] = mlx_load_png(src[i]);
-				printf("Tried to load png file %s : ptr : %p\n", src[i], cub->tex.walls);
-			}
-			else if (ft_strnstr(src[i], ".xpm", PATH_MAX))
-			{
-				printf("Before try to load xpm42 file %s : ptr : %p\n", src[i], cub->tex.xwalls[i]);
-				cub->tex.xwalls[i] = mlx_load_xpm42(src[i]);
-				printf("Tried to load xpm42 file %s : ptr : %p\n", src[i], cub->tex.xwalls[i]);
-				dst[i] = &cub->tex.xwalls[i]->texture;
-			}
-		}
+		dst[W_SIDE] = mlx_load_png(src[W_SIDE]);
+		dst[N_SIDE] = mlx_load_png(src[N_SIDE]);
+		dst[E_SIDE] = mlx_load_png(src[E_SIDE]);
+		dst[S_SIDE] = mlx_load_png(src[S_SIDE]);
 	}
 	return (cub->tex.walls[W_SIDE] && cub->tex.walls[N_SIDE] 
 		&& cub->tex.walls[E_SIDE] && cub->tex.walls[S_SIDE]);
