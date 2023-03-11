@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/13 23:26:31 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:48:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,24 @@
 # define FOV120 2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 # define FOV120_HF 1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 
+# define FOV100 1.7453292519943295f
+# define FOV100_HF 0.8726646259971647f
+
 # define FOV90 1.5707963267948966f
 # define FOV90_HF 0.7853981633974483f
 
 # define FOV60 1.047197551196597746f
 # define FOV60_HF 0.52359877559829887f
 
-# define FOV FOV60//	2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
-# define FOV_HF FOV60_HF//	1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
-# define PLAYER_HEIGHT 32
-// Height of player in pixels or Height of camera (used for floorcasting).
+# define FOV20 0.349065850398865915f
+# define FOV20_HF 0.17453292519943295f
+
+# define FOV FOV60
+# define FOV_HF FOV60_HF
+# define FOV_MIN FOV20
+# define FOV_MAX FOV90
+
+# define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
 
 
 # define ENABLE_MINIMAP 1

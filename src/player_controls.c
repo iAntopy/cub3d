@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/14 01:08:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:42:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	cub_player_rotate(t_cub *cub, float rot)
 //	printf("tex_offset after : %d\n", cub->skymap_tex_offset);
 //	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
 //	printf("ori / ori_factor : %f / %f\n", cub->hero.ori, cub->hero.ori_factor);
+	ft_deltatime_usec_note(NULL);
 	update_rays(cub);
 //	printf("p_dirx, p_diry : (%f, %f)\n", *cub->hero.dirx, *cub->hero.diry);
-
-
 	render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
+	ft_deltatime_usec_note("Believe it or not !");
 }
 
 //void	cub_player_wall_collision_correction(t_cub *cub, float dx, float dy)
@@ -71,10 +71,19 @@ void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 // ex: dz = -0.1 would multiply the current fov by 0.9 (1 + dz)
 void	cub_player_zoom(t_cub *cub, float dz)
 {
+	float	new_fov;
+
 	if (fabsf(dz) > 0.5)
 		return ;
-	update_fov(cub, cub->fov * (1 + dz));
-
-
-	render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
+	new_fov = cub->fov * (1 + dz);
+	if (new_fov < FOV_MIN)
+		new_fov = FOV_MIN;
+	else if (new_fov > FOV_MAX)
+		new_fov = FOV_MAX;
+	if (new_fov != cub->fov)
+	{
+		update_fov(cub, new_fov);
+		cub->renderer.requires_update = 1;
+		render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
+	}
 }

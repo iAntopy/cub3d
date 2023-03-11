@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/14 00:59:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 14:23:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -474,7 +474,7 @@ int	raycast_all_vectors(t_cub *cub)
 	ri.py = cub->hero.py;
 	ri.p_dirx = *cub->hero.dirx;
 	ri.p_diry = *cub->hero.diry;
-	printf("cast all vects : (px, py) : (%f, %f), (p_dirx, p_diry) : (%f, %f)\n", ri.px, ri.py, ri.p_dirx, ri.p_diry);
+//	printf("cast all vects : (px, py) : (%f, %f), (p_dirx, p_diry) : (%f, %f)\n", ri.px, ri.py, ri.p_dirx, ri.p_diry);
 //	collision_occured = 0;
 	vi = -1;
 	while (++vi < SCN_WIDTH)
@@ -497,7 +497,7 @@ int	raycast_all_vectors(t_cub *cub)
 // If player rotates call this function.
 void	update_rays(t_cub *cub)
 {
-	printf("update rays\n");
+//	printf("update rays\n");
 //	printf("ori : %f, ray_thetas[0] before : %f\n", cub->hero.ori, _mtx_index_f(cub->hero.ray_thetas, 0, 0));
 	_mtx_addf_pscalar(cub->hero.theta_offsets, cub->hero.ori, cub->hero.ray_thetas);
 //	printf("ray_thetas[0] after : %f\n", _mtx_index_f(cub->hero.ray_thetas, 0, 0));
@@ -515,7 +515,7 @@ void	update_rays(t_cub *cub)
 //	printf("rays[1][1] after : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
 //	printf("fisheye correctors : \n");
 //	mtx_print(cub->hero.fisheye_correctors);
-	printf("player direction vector : [%f, %f]\n", *cub->hero.dirx, *cub->hero.diry);
+//	printf("player direction vector : [%f, %f]\n", *cub->hero.dirx, *cub->hero.diry);
 	raycast_all_vectors(cub);
 }
 

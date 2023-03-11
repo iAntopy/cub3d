@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 19:12:41 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:22:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,26 @@ void	cub_key_handler(mlx_key_data_t event, void *param)
 	t_cub	*cub;
 
 	cub = (t_cub *)param;
-	if (event.key == MLX_KEY_ESCAPE && event.action == MLX_PRESS)
+	if (event.action != MLX_PRESS)
+		return ;
+	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
-	else if (event.key == MLX_KEY_W && event.action == MLX_PRESS)
+	else if (event.key == MLX_KEY_W)
 		cub_player_move(cub, 10, 0);
-	else if (event.key == MLX_KEY_S && event.action == MLX_PRESS)
+	else if (event.key == MLX_KEY_S)
 		cub_player_move(cub, -10, 0);
-	else if (event.key == MLX_KEY_A && event.action == MLX_PRESS)
+	else if (event.key == MLX_KEY_A)
 		cub_player_move(cub, 0, -10);
-	else if (event.key == MLX_KEY_D && event.action == MLX_PRESS)
+	else if (event.key == MLX_KEY_D)
 		cub_player_move(cub, 0, 10);
+	else if (event.key == MLX_KEY_LEFT)
+		cub_player_rotate(cub, -10.0f * ROT_FACTOR);
+	else if (event.key == MLX_KEY_RIGHT)
+		cub_player_rotate(cub, 10.0f * ROT_FACTOR);
+	else if (event.key == MLX_KEY_UP)
+		cub_player_zoom(cub, -0.1);
+	else if (event.key == MLX_KEY_DOWN)
+		cub_player_zoom(cub, 0.1);
 }
 
 void	on_scroll(double deltax, double deltay, void *param)
