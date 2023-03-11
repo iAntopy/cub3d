@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 07:38:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 12:44:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,29 @@ int	texture_get_pixel(mlx_texture_t *tex, int x, int y)
 	return ((int *)tex->pixels[y * tex->width + x]);
 }
 */
+
+int	get_texture_pixel(mlx_texture_t *tex, int x, int y)
+{
+//	printf("get_tex_pix : skymap width : %d, x : %d, y : %d\n", tex->width, x, y);
+	return (((int *)tex->pixels)[y * tex->width + x]);
+}
+
+void	render_skymap_column(t_cub *cub, int x, int end_y)
+{
+	const int	tex_col = (int)((x - cub->scn_midx) * cub->inv_sw * cub->skymap_fov_to_texture
+		+ cub->skymap_tex_offset) % cub->tex.skymap->width;
+	int		y;
+
+	end_y = ft_clamp(end_y, 0, cub->tex.skymap->height);
+//	printf("skymap : ori_factor * skymap width : %f\n", cub->hero.ori_factor * cub->tex.skymap->width);
+//	printf("skymap : (x - scn_midx) : %d, fov to tex : %f, tex_offset : %d, tex_col : %d\n", x - cub->scn_midx, cub->skymap_fov_to_texture, cub->skymap_tex_offset, tex_col);
+//	printf("skymap : x : %d, end_y %d, tex_col : %d\n", x, end_y, tex_col);
+	y = -1;
+	while (++y < end_y)
+		mlx_put_pixel(cub->renderer.walls_layer, x, y,
+			get_texture_pixel(cub->tex.skymap, tex_col, y));// potentially find some sophisticated function for y.
+}
+
 int	find_wall_texture_pixel(int *pxls, int offset)
 {
 //	printf("%x, ", pxls[offset]);
@@ -115,35 +138,34 @@ int	find_wall_texture_pixel(int *pxls, int offset)
 }
 
 
-static void	render_walls(t_cub *cub)
+void	render_walls(t_cub *cub)
 {
-	int	i;
-	int	j;
-	float	*tex_info;
-	int	half_texh;
-	int	scn_fheight;
-	int	scn_height;
+	int		i;
+	int		j;
+	float		*tex_info;
+	int		half_texh;
+	int		scn_fheight;
+	int		scn_height;
 	
-	int	scn_start_y;
-	int	tex_start_x;
-	int	*sides;
+	int		scn_start_y;
+	int		tex_start_x;
+	int		*sides;
 	mlx_texture_t	*tex;
-	int	*pxls;
-//	int	y_offset;
-//	float	incr;
-	float	ratio;
+	int		*pxls;
+//	int		y_offset;
+//	float		incr;
+	float		ratio;
 	
 //	for FLOORCASTER
-	float	rays_x;
-	float	rays_y;
-	float	param;
-	float	rx;
-	float	ry;
+	float		rays_x;
+	float		rays_y;
+	float		param;
+	float		rx;
+	float		ry;
 
 	clear_image_buffer(cub->renderer.walls_layer);
 	sides = (int *)cub->hero.coll_sides->arr - 1;
 	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
-
 
 	i = -1;
 	while (++i < SCN_WIDTH)
@@ -177,6 +199,9 @@ static void	render_walls(t_cub *cub)
 //				find_wall_texture_pixel(pxls, (int)(half_texh - (j * ratio - (scn_height >> 2))) * tex->width));
 				find_wall_texture_pixel(pxls,
 					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));
+		
+//////////////	SKYMAP RENDERING ///////////////////
+		render_skymap_column(cub, i, scn_start_y);
 
 //////////////	FLOORCASTING  //////////////////////
 
@@ -191,11 +216,13 @@ static void	render_walls(t_cub *cub)
 //			printf("floor (rayx, rayy) : (%f, %f),  pixel collision : (%f, %f), param : %f\n",
 //				rays_x, rays_y, rx, ry, param);
 			mlx_put_pixel(cub->renderer.walls_layer, i, j,
-				cub->tex.floor->pixels[(int)((fmodf(ry, CELL_WIDTH)// * cub->inv_cw 
-				* cub->tex.floor->height// * cub->tex.floor->width
-				+ fmodf(rx, CELL_WIDTH)) * cub->inv_cw * cub->tex.floor->width)]);
+				get_texture_pixel(cub->tex.floor,
+					(int)(fmodf(rx, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->width),
+					(int)(fmodf(ry, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->height)));
+//				cub->tex.floor->pixels[(int)((fmodf(ry, CELL_WIDTH)// * cub->inv_cw 
+//				* cub->tex.floor->height// * cub->tex.floor->width
+//				+ fmodf(rx, CELL_WIDTH)) * cub->inv_cw * cub->tex.floor->width)]);
 		}
-
 	}
 }
 
@@ -220,9 +247,9 @@ int	init_renderer(t_cub *cub)
 //	mlx_set_instance_depth(cub->renderer.walls_layer->instances, 2);
 	cub->renderer.ui_layer = mlx_new_image(cub->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
 
-	printf("bla : \n");//,cub->tex.walls[0]);
+//	printf("bla : \n");//,cub->tex.walls[0]);
 //	cub->renderer.ui_layer = mlx_texture_to_image(cub->mlx, cub->tex.walls[0]);
-	printf("bla2\n");
+//	printf("bla2\n");
 //	mlx_set_instance_depth(cub->renderer.ui_layer->instances, 1);
 
 	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer || !cub->renderer.ui_layer)
@@ -234,9 +261,14 @@ int	init_renderer(t_cub *cub)
 	// mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0x00ff007f);//  5ae686);
 //	mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0xf75ae686);
 	
-
-	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
+//	mlx_image_t	*skymap_mockup = mlx_texture_to_image(cub->mlx, cub->tex.skymap);
+//	if (skymap_mockup)
+//		printf("SKYMAP MOCKUP SUCCESSFULL\n");
+//	else
+//		printf("SKYMAP MOCKUP FAILED\n");
+//	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->renderer.walls_layer, 0, 0);
+//	mlx_image_to_window(cub->mlx, skymap_mockup, 0, SCN_HEIGHT - 128);
 	if (ENABLE_MINIMAP)
 		mlx_image_to_window(cub->mlx, cub->renderer.ui_layer,
 			MINIMAP_PADX, SCN_HEIGHT - MINIMAP_PADY - MINIMAP_HEIGHT);

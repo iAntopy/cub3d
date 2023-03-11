@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/03 07:13:31 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 12:36:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 void	cub_player_rotate(t_cub *cub, float rot)
 {
 	cub->hero.ori += rot;
+	printf("tex_offset before : %d\n", cub->skymap_tex_offset);
+	cub->skymap_tex_offset = (int)(cub->hero.ori * cub->skymap_radial_width);
+	printf("tex_offset after : %d\n", cub->skymap_tex_offset);
+//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
+//	printf("ori / ori_factor : %f / %f\n", cub->hero.ori, cub->hero.ori_factor);
 	update_rays(cub);
 
 

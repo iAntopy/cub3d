@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/09 23:18:00 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/11 10:37:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ t_map	    *wall_check(t_map *m)
                     return (m);
                 }
 
-                m->hero_int = o_cells;
+                m->hero_side = o_cells;
                 hero_x = m->pos_x;
                 hero_y = m->pos_y;     
-                printf("\n\tDEBUG: HERO FOUND  side ref[%d]", m->hero_int);   
+                printf("\n\tDEBUG: HERO FOUND  side ref[%d]", m->hero_side);   
                 // printf("\t::hero_x[%d]: hero_y[%d] \n", hero_x, hero_y);
                 m->flg_chk = 2;               
             }
@@ -96,7 +96,7 @@ t_map	    *wall_check(t_map *m)
         m->pos_x = hero_x;
         m->pos_y = hero_y;      
         printf("\t::hero_x[%d]: hero_y[%d] \n", m->pos_x, m->pos_y);
-        printf("DEBUG: WALL CHK SUCCEED o_cells [%d]!!!\n", m->hero_int);
+        printf("DEBUG: WALL CHK SUCCEED o_cells [%d]!!!\n", m->hero_side);
     }
     else 
         m->flg_chk = 1;

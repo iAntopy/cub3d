@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/09 22:41:09 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/11 10:37:09 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_map	*init_map(t_map *map)
 {
 	map->pos_x = 1;		// start pos
 	map->pos_y = 1;		// start pos
-	map->hero_int = -1;	// hero_int refex
+	map->hero_side = -1;	// hero_int refex
 	map->width = 0;		// longest row
 	map->height = 0;	// how many row
 	map->total_cells = 0;		// ref nbr cases total

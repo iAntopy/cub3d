@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 06:50:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 12:01:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ typedef struct s_map_data
 //	int		cases;		// total case all gabarit
 //	char 	*array;		// char* array 
 	int	lines_to_map;
-	int	hero_int;
+	int	hero_side;
 	int	flg_chk;
 }	t_map;
 
@@ -119,7 +119,8 @@ typedef struct s_main_character_data
 	int		cell_y;
 	float	px;
 	float	py;
-	float	ori;
+	float	ori;//	player orientation in radian
+	float	ori_factor;//	ori / 2pi, updated in cub_player_rotate
 	t_mtx	*theta_offsets;	// linspace from -half_fov to +half_fov. DOES NOT take into account player orientation
 	t_mtx	*ray_thetas;	// theta_offsets + player ori. Specific thetas for player pos. Call update_rays().
 	t_mtx	*rays[2];	// first ptr is the cosine array from linspace thetas, second is sin array from thetas.
@@ -172,11 +173,18 @@ typedef struct s_cub3d_core_data
 	int	scn_midx;	// mid screen x coordinate
 	int	scn_midy;	// mid screen y coordinate
 	float	inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
+	float	inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
+	float	inv_two_pi;	// 1 / 2pi;
 
 	float	fov;// = fov;// field of view
 	float	hfov;// = fov * 0.5f;// half fov
 	float	near_z;// = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
 	float	near_proj_factor;// = CELL_WIDTH * cub->near_z;
+	float	skymap_radial_width;// skymap_tex.width / 2pi (const after texture load)
+	int	skymap_tex_offset;// hero.ori * radial_width. texture pixel column index;
+	float	skymap_fov_to_texture;//  fov * radial_width.
+					// converts screen coords to texture coords
+					// by multiplying (x - scn_midx) / SCN_WIDTH to it and add ori_offset.
 
 	t_map	map;
 	t_tex	tex;

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 07:32:40 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 12:39:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,12 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 	(void)ypos;
 	dx = xpos - cub->scn_midx;
 //	dy = ypos - cub->scn_midy;
-	cub->hero.ori += dx * ROT_FACTOR;
+//	cub->hero.ori += dx * ROT_FACTOR;
 //	printf("Cursor moved : pos (x, y) : (%lf, %lf), delta (dx, dy) : (%lf, %lf), ori : %f\n", xpos, ypos, dx, dy,
 //		cub->hero.ori);
-
-	update_rays(cub);
-	render_scene(cub);
+	cub_player_rotate(cub, dx * ROT_FACTOR);
+//	update_rays(cub);
+//	render_scene(cub);
 	// CAN'T TOUCH THIS
 	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 }
@@ -98,12 +98,14 @@ int	cub_init_core_data(t_cub *cub)
 	cub->scn_midx = SCN_WIDTH / 2;
 	cub->scn_midy = SCN_HEIGHT / 2;
 	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
+	cub->inv_sw = 1.0f / (float)SCN_WIDTH;
+	cub->inv_two_pi = 0.5f / M_PI ;
 	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
 
 	return (0);
 }
 
-int	set_player_cell_pos(t_cub *cub, int x, int y, float ori)
+int	set_player_cell_pos(t_cub *cub, int x, int y, int side)
 {
 	if (get_is_wall(&cub->map, x, y))
 		return (printf("ERROR hero can't be placed in wall."));
@@ -111,7 +113,10 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, float ori)
 	cub->hero.cell_y = y;
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
-	cub->hero.ori = ori;
+	cub->hero.ori = M_PI - side * cub->inv_two_pi;
+//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
+	cub->skymap_tex_offset = (int)(cub->hero.ori * cub->skymap_radial_width);
+	printf("SET PLAYER POS : ori : %f, sky_tex_offset : %d\n", cub->hero.ori, cub->skymap_tex_offset);
 	return (0);
 }
 
@@ -138,7 +143,7 @@ int	main(int argc, char **argv)
 	// INIT INPUT	
 	if (map_checker(&cub, init_map(&cub.map), argv[1]) != 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	if (set_player_cell_pos(&cub, 1, 1, 0.0f) != 0)
+	if (set_player_cell_pos(&cub, cub.map.pos_x, cub.map.pos_y, cub.map.hero_side) != 0)
 	 	return (cub_clear(&cub, EXIT_FAILURE));
 
 //	return (cub_clear(&cub, EXIT_SUCCESS));
@@ -163,7 +168,27 @@ int	main(int argc, char **argv)
 	else 
 		printf("Try init Walls FAILS \n");	
 //	 return (0);
+
+
+	cub.tex.floor = mlx_load_png("tex/floor.png");
+	if (!cub.tex.floor)
+		return (cub_clear(&cub, EXIT_FAILURE));
+	printf("Floor texture loaded SUCCESSFULLY !\n");
 	
+	cub.tex.skymap = mlx_load_png("tex/skymap_512x128.png");
+	if (!cub.tex.skymap)
+	{
+		printf("loading skymap FAILED !! ptr : %p\n", cub.tex.skymap);
+		return (cub_clear(&cub, EXIT_FAILURE));
+	}
+	printf("Skymap texture loaded SUCCESSFULLY !\n");
+
+
+	//// ESSENTIAL DATA FOR SKYMAP !! ////////
+	cub.skymap_radial_width = cub.tex.skymap->width * cub.inv_two_pi;// skymap.width / 2pi
+
+
+
 	printf("Init mlx SUCCESSFUL !\n");
 	printf("Try init renderer\n");
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0)
@@ -173,10 +198,6 @@ int	main(int argc, char **argv)
 	if (init_raycaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
-	cub.tex.floor = mlx_load_png("tex/floor.png");
-	if (!cub.tex.floor)
-		return (cub_clear(&cub, EXIT_FAILURE));
-	printf("Floor texture loaded SUCCESSFULLY !\n");
 //	ft_deltatime_usec_note(NULL);
 	// if (raycast_all_vectors(&cub) < 0)
 		// return (cub_clear(&cub, EXIT_FAILURE));
@@ -217,5 +238,4 @@ int	main(int argc, char **argv)
 	mlx_loop(cub.mlx);
 	printf("mlx loop stopped !\n");
 	return (cub_clear(&cub, EXIT_SUCCESS));
-
 }
