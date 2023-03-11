@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/04 03:38:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 05:09:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -520,8 +520,9 @@ void	update_fov(t_cub *cub, float fov)
 	printf("update fov\n");
 	cub->fov = fov;// field of view
 	cub->hfov = 0.5f * fov;// half fov
-	cub->near_z = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
+	cub->near_z = (float)cub->scn_midx / tanf(cub->hfov);
 	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
+	update_floorcaster_params(cub);
 //	printf("tanf(half fov) = %f\n", tanf(cub->hfov));
 //	printf("(0.5f * (float)SCN_WIDTH(800)) / tanf(hfov) = %f\n", (0.5f * 800.0f) / tanf(cub->hfov));
 //	printf("fov : %f, half_fov : %f, near_z : %f, near_proj_factor : %f\n",

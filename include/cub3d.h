@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/04 02:50:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 05:19:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 
 # define FOV FOV60//	2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 # define FOV_HF FOV60_HF//	1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
+
 
 # define ENABLE_MINIMAP 1
 
@@ -100,6 +102,7 @@ typedef struct s_map_data
 // Potentially, animated wall textures could be in a 2D array[side][anim_iteration] up to n nb of frames in the animation.
 typedef struct s_texture_data
 {
+	xpm_t		*xwalls[4];
 	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
 	mlx_texture_t	*skymap;	// yessss
 	char		**rgbx;
@@ -143,6 +146,15 @@ typedef struct s_renderer
 	mlx_image_t	*walls_layer;
 	mlx_image_t	*ui_layer;
 
+
+//////	FLOOR CASTER ////////////
+	float	*near_z_dists;// Array of distances to every column of the projected
+				// plane (near_z). See floorcaster. 
+	float	*param_factors;// Pre-calc parametric multipliers for all pixels
+				// below scn_mixy. Every drawn pixel's on screen 
+				// is mapped to a multiplier (see floor_caster.c)
+				// that stretches rx and ry to find the floor pixel it hits.
+
 	int		requires_update;
 }	t_rdr;
 
@@ -170,13 +182,13 @@ typedef struct s_cub3d_core_data
 }	t_cub;
 
 
-
 /// PARSING ///////////////////
 //int	load_map(t_cub *cub, char *map_file);
 int	build_collision_map(t_map *map);
 void	print_collision_map(t_map *map);
 int	build_grid_coords_map(t_map *map);
 void	print_map(t_map *map);
+
 
 /// MAP_CHECKER ///////////////
 //map_parse
@@ -192,6 +204,8 @@ int				ft_strfcmp(const char	*s1, const char	*s2, size_t n);
 char			*ft_strncpy_i(char *dst, const char *src, size_t len, unsigned int idx);
 
 t_cub			path_from_line(t_cub cub);
+
+
 /// COLOR PARSE ////////////
 int 	str_to_color(int r, int g, int b, int t);
 int get_t (int trgb);
@@ -217,13 +231,18 @@ void	update_fov(t_cub *cub, float fov);
 char	get_is_wall(t_map *map, int cx, int cy);
 float	*get_grid_coords(t_map *map, int cx, int cy);
 
-/// DDA ALGO //////////////////
+int	init_floorcaster(t_cub *cub);
+void	update_floorcaster_params(t_cub *cub);
+float	get_floorcaster_param(t_cub *cub, int x, int y);
+int	floorcaster_clear(t_cub *cub);
+
 
 /// RENDERER /////////////////
 int	init_renderer(t_cub *cub);
 int	renderer_clear(t_cub *cub);
 //void	render_walls(t_cub *cub);
 void	render_scene(t_cub *cub);
+
 
 /// CHARACTER CONTROLS ////////
 void	cub_player_rotate(t_cub *cub, float rot);
@@ -233,6 +252,7 @@ void	cub_player_zoom(t_cub *cub, float dz);
 
 /// ERROR HANDLING ////////////
 int	report_mlx_init_error(void);
+int	report_malloc_error(void);
 /// color_parse
 
 int get_t (int trgb);
@@ -244,7 +264,5 @@ unsigned char get_ut(int trgb);
 unsigned char get_ur(int trgb);
 unsigned char get_ug(int trgb);
 unsigned char get_ub(int trgb);
-
-
 
 #endif

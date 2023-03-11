@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/04 03:29:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 05:59:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col)
 	__mlx_fill_pixels(img->pixels + (sizeof(int) * start * img->width),
 		sizeof(int) * (end - start) * img->width, col);
 }
-
+/*
 // IS DUMMY FUNCTION FOR NOW. returns some red brick looking color.
 int	find_wall_texture_pixel(int side)
 {
@@ -103,31 +103,94 @@ int	find_wall_texture_pixel(int side)
 //	return (0xff3e519e);
 }
 
+int	texture_get_pixel(mlx_texture_t *tex, int x, int y)
+{
+	return ((int *)tex->pixels[y * tex->width + x]);
+}
+*/
+int	find_wall_texture_pixel(int *pxls, int offset)
+{
+//	printf("%x, ", pxls[offset]);
+	return (pxls[offset]);
+}
+
+
 static void	render_walls(t_cub *cub)
 {
 	int	i;
 	int	j;
-	float	fheight;
-	int	height;
-	int	start_y;
-	int	side;
-//	float	*texr;
+	float	*tex_info;
+	int	half_texh;
+	int	scn_fheight;
+	int	scn_height;
+	
+	int	scn_start_y;
+	int	tex_start_x;
+	int	*sides;
+	float	rays_x;
+	float	rays_y;
+	mlx_texture_t	*tex;
+	int	*pxls;
+//	int	y_offset;
+//	float	incr;
+	float	ratio;
+	float	param;
+	float	rx;
+	float	ry;
+//	float	height_to_fheight;
+//	float	fheight_to_tex;
 
 	clear_image_buffer(cub->renderer.walls_layer);
+	sides = (int *)cub->hero.coll_sides->arr - 1;
+	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
-		fheight = _mtx_index_f(cub->hero.tex_infos, i, 1);
-		height = ft_clamp((int)fheight, 0, SCN_HEIGHT);
-		start_y = ((SCN_HEIGHT - height) / 2);
-		side = _mtx_index_i(cub->hero.coll_sides, i, 0);
-//		printf("render col %d, with height : %d, starting at y : %d\n", i, height, start_y);
-		j = -1;
-		while (++j < height)
-			mlx_put_pixel(cub->renderer.walls_layer, i,
-				start_y + j, find_wall_texture_pixel(side));
-	}
+		rays_x = _mtx_index_f(cub->hero.rays[0], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
+		rays_y = _mtx_index_f(cub->hero.rays[1], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
+		tex = cub->tex.walls[*(++sides)];
+		half_texh = (tex->height >> 1);
+		tex_start_x = (int)(*(++tex_info) * tex->width);
+		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
+		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
 
+
+		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
+//		y_offset = (tex->height >> 2);//(fheight - height) >> 1;// divide by 2
+//		printf("col %d, sx, sy : (%d, %d), fh, h: (%d, %d), yoff %d\n", i, tex_start_x, scn_start_y,
+//			scn_fheight, scn_height, y_offset);
+//		pxls = (int *)tex->pixels + tex_start_x + y_offset * tex->width;
+//		incr = (float)(tex->height - y_offset) / (float)scn_height;// * tex->width;
+
+		ratio = (float)tex->height / (float)scn_fheight;
+		pxls = (int *)tex->pixels + tex_start_x;
+//		pxls = (int *)tex->pixels + tex_start_x + half_texh * tex->width;
+//			+ (int)((tex->height - (scn_start_y * ratio)) >> 1) * tex->width;
+
+		j = -1;
+		while (++j < scn_height)
+			mlx_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
+				//start_y + j, pxls[(int)(j * incr) * tex->width]);//find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
+//				find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
+//				find_wall_texture_pixel(pxls, (int)(half_texh - (j * ratio - (scn_height >> 2))) * tex->width));
+				find_wall_texture_pixel(pxls,
+					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));
+
+//////////////	FLOORCASTING  //////////////////////
+/*
+		j = scn_start_y + j - 1;
+		while (++j < SCN_HEIGHT)
+		{
+			param = get_floorcaster_param(cub, i, j);
+			//rx = *(++rays_x) * param;
+			//ry = *(++rays_y) * param;
+			rx = rays_x * param + cub->hero.px;
+			ry = rays_y * param + cub->hero.py;
+			printf("floor (rayx, rayy) : (%f, %f),  pixel collision : (%f, %f), param : %f\n", rays_x,
+				rays_y, rx, ry, param);
+		}
+	}
+*/
 }
 
 // Called anytime a noticeable change is made

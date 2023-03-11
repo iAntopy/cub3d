@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/04 03:37:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 05:26:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 
 	printf("CUB CLEAR AT EXIT\n");
 	renderer_clear(cub);
+	floorcaster_clear(cub);
 	printf("renderer_cleared\n");
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
@@ -165,7 +166,7 @@ int	main(int argc, char **argv)
 	
 	printf("Init mlx SUCCESSFUL !\n");
 	printf("Try init renderer\n");
-	if (init_renderer(&cub) < 0)
+	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	printf("Init renderer SUCCESSFUL !\n");
 	

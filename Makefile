@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/03 13:59:22 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/11 05:09:55 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRC_FLS	:=	main.c 			\
 			player_controls.c	\
 			map_parse.c 		\
 			map_tool.c 		\
-			tex_parse.c
+			tex_parse.c		\
+			floor_caster.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
