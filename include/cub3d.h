@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/15 01:17:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 20:19:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,10 @@ typedef struct s_texture_data
 	char 		*tex_n[4];		// tex_name
 }	t_tex;
 
-typedef struct s_ray_intersect_data
+typedef struct s_raycaster_data		t_rcast;
+typedef struct s_cub3d_core_data	t_cub;
+
+typedef struct s_ray_collision_data
 {
 //	External ref
 	t_rcast	*rcast;
@@ -135,14 +138,14 @@ typedef struct s_ray_intersect_data
 	float	*py;// hero position y;
 	float	*p_dirx;// player's directional vector in x;
 	float	*p_diry;// player's directional vector in y;
-	float	*dirx;// ray vector direction in x for specific ray; Pointer to rcast->rays[0] at rays idx.
-	float	*diry;// ray vector direction in y for specific ray; Pointer to rcast->rays[1] at rays idx.
+	float	*rx;// ray vector direction in x for specific ray; Pointer to rcast->rays[0] at rays idx.
+	float	*ry;// ray vector direction in y for specific ray; Pointer to rcast->rays[1] at rays idx.
 
 //	Init data
 	int		c_offx;//	x offset of cell to check in collision map
 	int		c_offy;//	y offset of cell to check in collision map
-	int		cincr_x;//	direction of cell move for vertical axis collision.
-	int		cincr_y;//	direction of cell move for horizontal axis collision.
+	int		cincr_x;//	direction of cell move for vertical axis collision. Either 1 or -1.
+	int		cincr_y;//	direction of cell move for horizontal axis collision. Either 1 or -1.
 	float	a;//	ray slope
 	float	inv_a;//a inverse == 1/a;
 	float	b;//	ray y offset
@@ -152,10 +155,10 @@ typedef struct s_ray_intersect_data
 	int		cy;// tracked collision cell y; Init to hero.cell_y. Final value is collision cell y.
 	
 //	Resulting data
-	int		side;// collision side
+	int		side;// collision side. Can be compared to side enums.
 	float	hitx;// collision world coord x;
 	float	hity;// collision world coord y;
-	float	dist;// collision distance to projection plan.
+	float	dist;// collision distance to projection plane.
 	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
 	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
 
@@ -244,10 +247,9 @@ typedef struct s_cub3d_core_data
 	float	near_proj_factor;// = CELL_WIDTH * cub->near_z;
 	float	skymap_radial_width;// skymap_tex.width / 2pi (const after texture load)
 	int		skymap_tex_offset;// hero.ori * radial_width. texture pixel column index;
-	float	skymap_fov_to_texture;//  fov * radial_width.
+	float	skymap_fov_to_tex;//  fov * radial_width.
 					// converts screen coords to texture coords
 					// by multiplying (x - scn_midx) / SCN_WIDTH to it and add ori_offset.
-
 	t_map	map;
 	t_tex	tex;
 	t_hero	hero;
@@ -299,13 +301,13 @@ unsigned char get_ub(int trgb);
 
 /// RAYCASTER /////////////////
 int		init_raycaster(t_cub *cub);
-int		clear_raycaster(t_rcast *rcast, int exit_status);
-int		raycast_all_vectors(t_cub *cub);
+int		raycaster_clear(t_rcast *rcast, int exit_status);
+//int		raycast_all_vectors(t_cub *cub);
 void	update_rays(t_cub *cub);
 void	update_fov(t_cub *cub, float fov);
-char	get_is_wall(t_map *map, int cx, int cy);
+int		get_is_wall(t_map *map, int cx, int cy);
 int		get_is_cell_within_bounds(t_map *map, int cx, int cy);
-float	*get_grid_coords(t_map *map, int cx, int cy);
+//float	*get_grid_coords(t_map *map, int cx, int cy);
 
 int		init_floorcaster(t_cub *cub);
 void	update_floorcaster_params(t_cub *cub);

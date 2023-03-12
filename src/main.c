@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 15:22:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 19:05:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,14 @@
 
 int	cub_clear(t_cub *cub, int exit_status)
 {
-	t_hero	*h;
-
 	printf("CUB CLEAR AT EXIT\n");
+	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
 	floorcaster_clear(cub);
 	printf("renderer_cleared\n");
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
 	printf("mlx_terminated\n");
-	h = &cub->hero;
-	printf("clearing all mtx matrices\n");
-	mtx_clear_list(10, h->theta_offsets, h->ray_thetas,
-		h->rays[0], h->rays[1], h->coll_walls, h->coll_sides,
-		h->collisions, h->fisheye_correctors,
-		h->distances, h->tex_infos);
 	printf("exit with status : %d\n", exit_status);
 	return (exit_status);
 }

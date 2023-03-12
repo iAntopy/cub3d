@@ -6,18 +6,20 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/11 13:42:37 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/11 20:12:13 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
-SRC_FLS	:=	main.c 			\
+SRC_FLS	:=		main.c 			\
 			error_handling.c 	\
 			init_raycaster.c	\
+			update_raycaster.c	\
 			renderer.c		\
 			player_controls.c	\
 			map_parse.c 		\
 			map_tool.c 		\
+			prebuilt_map_tools.c	\
 			tex_parse.c		\
 			wall_chk.c		\
 			floor_caster.c

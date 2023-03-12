@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 14:24:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 19:45:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,14 @@ int	renderer_clear(t_cub *cub)
 		mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
 	if (cub->renderer.walls_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.walls_layer);
+	if (cub->renderer.ui_layer)
+		mlx_delete_image(cub->mlx, cub->renderer.ui_layer);
 	return (0);
 }
 
 void	clear_image_buffer(mlx_image_t *img)
 {
-	//	int	*ptr;
-	//	int	r;
-		ft_memclear(img->pixels, img->width * img->height * sizeof(int));
-	//	r = -1;
-	//	while (++r < img->height)
-	//	{
-	//		ptr = img->pixels + r * img->width;
-	//		ft_memclear(ptr, img->width * img->height * sizeof(int));
-	//	}
+	ft_memclear(img->pixels, img->width * img->height * sizeof(int));
 }
 
 void	__mlx_fill_pixels(uint8_t *pixels, size_t total_bytes, int col)
@@ -122,7 +116,7 @@ int	get_texture_pixel(mlx_texture_t *tex, int x, int y)
 
 void	render_skymap_column(t_cub *cub, int x, int end_y)
 {
-	const int	tex_col = (int)((x - cub->scn_midx) * cub->inv_sw * cub->skymap_fov_to_texture
+	const int	tex_col = (int)((x - cub->scn_midx) * cub->inv_sw * cub->skymap_fov_to_tex
 		+ cub->skymap_tex_offset) % cub->tex.skymap->width;
 	int		y;
 
@@ -142,20 +136,25 @@ int	find_wall_texture_pixel(int *pxls, int offset)
 	return (pxls[offset]);
 }
 
-
 void	render_walls(t_cub *cub)
 {
+	const float	flr_texw_to_cellw = cub->inv_cw * cub->tex.floor->width;
+	const float	flr_texh_to_cellw = cub->inv_cw * cub->tex.floor->height;
 	int		i;
 	int		j;
-	float		*tex_info;
+
+	t_rdata		*rd;
+
+
+//	float		*tex_info;
 	int		half_texh;
-	int		scn_fheight;
+//	int		scn_fheight;
 	int		scn_height;
 	int		half_height;
 	
 	int		scn_start_y;
 	int		tex_start_x;
-	int		*sides;
+//	int		*sides;
 	mlx_texture_t	*tex;
 	uint32_t	*pxls;
 //	int		y_offset;
@@ -163,31 +162,43 @@ void	render_walls(t_cub *cub)
 	float		ratio;
 	
 //	for FLOORCASTER
-	float		rays_x;
-	float		rays_y;
+//	float		rays_x;
+//	float		rays_y;
 	float		param;
-	float		rx;
-	float		ry;
+//	float		rx;
+//	float		ry;
+
+	rd = cub->hero.rcast.rdata - 1;
 
 //	printf("Randy : Clear image buffer \n");
 	clear_image_buffer(cub->renderer.walls_layer);
 //	printf("Randy : Cleared \n");
-	sides = (int *)cub->hero.coll_sides->arr - 1;
-	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
+//	sides = (int *)cub->hero.coll_sides->arr - 1;
+//	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
 //	printf("Dist for first ray : %f\n", _mtx_index_f(cub->hero.distances, 0, 0));
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
-		rays_x = _mtx_index_f(cub->hero.rays[0], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
-		rays_y = _mtx_index_f(cub->hero.rays[1], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
-	
-		tex = cub->tex.walls[*(++sides)];
-//		printf("Randy : tex : %p\n", tex);
+//		rays_x = _mtx_index_f(cub->hero.rays[0], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
+//		rays_y = _mtx_index_f(cub->hero.rays[1], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
+		++rd;
+		tex = cub->tex.walls[rd->side];
 		half_texh = (tex->height >> 1);
-		tex_start_x = (int)(*(++tex_info) * tex->width);
-		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
-		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
+		tex_start_x = (int)(rd->tex_ratio * tex->width);
+		scn_height = ft_clamp(rd->tex_height, 0, SCN_HEIGHT);
 		half_height = (scn_height >> 1);
+
+		ratio = (float)tex->height / (float)rd->tex_height;
+		pxls = (uint32_t *)tex->pixels + tex_start_x;
+
+
+//		tex = cub->tex.walls[*(++sides)];
+//		half_texh = (tex->height >> 1);
+//		tex_start_x = (int)(*(++tex_info) * tex->width);
+//		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
+//		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
+
+//		half_height = (scn_height >> 1);
 
 //		printf("scn_fheight : %d, scn_height : %d, tex_start_x : %d\n", scn_fheight, scn_height, tex_start_x);
 		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
@@ -197,12 +208,14 @@ void	render_walls(t_cub *cub)
 //		pxls = (int *)tex->pixels + tex_start_x + y_offset * tex->width;
 //		incr = (float)(tex->height - y_offset) / (float)scn_height;// * tex->width;
 
-		ratio = (float)tex->height / (float)scn_fheight;
-		pxls = (uint32_t *)tex->pixels + tex_start_x;
+//		ratio = (float)tex->height / (float)scn_fheight;
+//		pxls = (uint32_t *)tex->pixels + tex_start_x;
 //		pxls = (int *)tex->pixels + tex_start_x + half_texh * tex->width;
 //			+ (int)((tex->height - (scn_start_y * ratio)) >> 1) * tex->width;
 
 //		printf("Randy : wall while enter from height %d to %d\n", scn_start_y, scn_height);
+
+//////////////	WALLS RENDERING ///////////////////
 		j = -1;
 		while (++j < scn_height)
 			cub_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
@@ -219,20 +232,18 @@ void	render_walls(t_cub *cub)
 		while (++j < SCN_HEIGHT)
 		{
 			param = get_floorcaster_param(cub, i, j);
-			rx = rays_x * param + cub->hero.px;
-			ry = rays_y * param + cub->hero.py;
+//			rx = rays_x * param + cub->hero.px;
+//			ry = rays_y * param + cub->hero.py;
 //			rx = rays_x * param + cub->hero.px;
 //			ry = rays_y * param + cub->hero.py;
 //			printf("floor (rayx, rayy) : (%f, %f),  pixel collision : (%f, %f), param : %f\n",
 //				rays_x, rays_y, rx, ry, param);
-//			mlx_put_pixel(cub->renderer.walls_layer, i, j,
 			cub_put_pixel(cub->renderer.walls_layer, i, j,
 				get_texture_pixel(cub->tex.floor,
-					(int)(fmodf(rx, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->width),
-					(int)(fmodf(ry, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->height)));
-//				cub->tex.floor->pixels[(int)((fmodf(ry, CELL_WIDTH)// * cub->inv_cw 
-//				* cub->tex.floor->height// * cub->tex.floor->width
-//				+ fmodf(rx, CELL_WIDTH)) * cub->inv_cw * cub->tex.floor->width)]);
+					(int)(fmodf((*rd->rx) * param + (*rd->px), CELL_WIDTH)
+						* flr_texw_to_cellw),//cub->inv_cw * cub->tex.floor->width),
+					(int)(fmodf((*rd->ry) * param + (*rd->py), CELL_WIDTH)
+						* flr_texh_to_cellw)));//cub->inv_cw * cub->tex.floor->height)));
 		}
 	}
 }
@@ -267,8 +278,8 @@ int	init_renderer(t_cub *cub)
 
 	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer || !cub->renderer.ui_layer)
 		return (-1);
-	mlx_set_color_in_rows(cub->renderer.bg_layer, 0, SCN_HEIGHT / 2, cub->tex.color[0]);//0xffffe77b);
-	mlx_set_color_in_rows(cub->renderer.bg_layer, SCN_HEIGHT / 2, SCN_HEIGHT, cub->tex.color[1]);//0xff63615d);
+	mlx_set_color_in_rows(cub->renderer.bg_layer, 0, SCN_HEIGHT >> 1, cub->tex.color[0]);//0xffffe77b);
+	mlx_set_color_in_rows(cub->renderer.bg_layer, SCN_HEIGHT >> 1, SCN_HEIGHT, cub->tex.color[1]);//0xff63615d);
 	//mlx_set_bg_color(cub->renderer.ui_layer, 0xf05ae686);
 //	mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0xf786e65a);//  5ae686);
 	// mlx_set_bg_color_traditional(cub->renderer.ui_layer, 0x00ff007f);//  5ae686);
