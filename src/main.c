@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 12:39:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:12:41 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,21 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 {
 	t_cub	*cub;
 	double	dx;
-//	double	dy;
+	//	double	dy;
 
-	cub = (t_cub *)param;
-	(void)cub;
-	(void)ypos;
-	dx = xpos - cub->scn_midx;
-//	dy = ypos - cub->scn_midy;
-//	cub->hero.ori += dx * ROT_FACTOR;
-//	printf("Cursor moved : pos (x, y) : (%lf, %lf), delta (dx, dy) : (%lf, %lf), ori : %f\n", xpos, ypos, dx, dy,
-//		cub->hero.ori);
-	cub_player_rotate(cub, dx * ROT_FACTOR);
-//	update_rays(cub);
-//	render_scene(cub);
-	// CAN'T TOUCH THIS
-	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
+		cub = (t_cub *)param;
+		(void)cub;
+		(void)ypos;
+		dx = xpos - cub->scn_midx;
+	//	dy = ypos - cub->scn_midy;
+	//	cub->hero.ori += dx * ROT_FACTOR;
+	//	printf("Cursor moved : pos (x, y) : (%lf, %lf), delta (dx, dy) : (%lf, %lf), ori : %f\n", xpos, ypos, dx, dy,
+	//		cub->hero.ori);
+		cub_player_rotate(cub, dx * ROT_FACTOR);
+	//	update_rays(cub);
+	//	render_scene(cub);
+		// CAN'T TOUCH THIS
+		mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 }
 
 // On pourra intégrer ces lignes là dans le parsing ou qqc du genre, mais on va en avoir besoin. 
@@ -129,15 +129,15 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	cub_init_core_data(&cub);
-//	if (load_map(&cub, argv[1]) < 0)
-//		return (cub_clear(&cub, EXIT_FAILURE));
+	//	if (load_map(&cub, argv[1]) < 0)
+	//		return (cub_clear(&cub, EXIT_FAILURE));
 
-	// if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
-	// 	return (cub_clear(&cub, EXIT_FAILURE));
-	// hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
-	// printf("hero cell indexes : (%d, %d), hero cell coord : (%.3f, %.3f), hero pos : (%.2f, %.2f), hero orientation : %.5f\n",
-	// 	cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
-	// 	cub.hero.px, cub.hero.py, cub.hero.ori);
+		// if (set_player_cell_pos(&cub, 1, 5, 0.0f) != 0)
+		// 	return (cub_clear(&cub, EXIT_FAILURE));
+		// hero_cell_coord = get_grid_coords(&cub.map, cub.hero.cell_x, cub.hero.cell_y);
+		// printf("hero cell indexes : (%d, %d), hero cell coord : (%.3f, %.3f), hero pos : (%.2f, %.2f), hero orientation : %.5f\n",
+		// 	cub.hero.cell_x, cub.hero.cell_y, hero_cell_coord[0], hero_cell_coord[1],
+		// 	cub.hero.px, cub.hero.py, cub.hero.ori);
 
 	// FONCTION DE PARSING VIENT ICI !!
 	// INIT INPUT	
@@ -175,7 +175,7 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	printf("Floor texture loaded SUCCESSFULLY !\n");
 	
-	cub.tex.skymap = mlx_load_png("tex/skymap_512x128.png");
+	cub.tex.skymap = mlx_load_png("tex/sky_star.png");
 	if (!cub.tex.skymap)
 	{
 		printf("loading skymap FAILED !! ptr : %p\n", cub.tex.skymap);
@@ -208,19 +208,19 @@ int	main(int argc, char **argv)
 	// return (cub_clear(&cub, EXIT_SUCCESS));
 	
 
-	/// mlx_texture_to_image
-	// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
-	// 	if (!(cub.tex.walls[0]))
-	// 		error("B. You are trying but no png to tex.\n", map);
-	// 	// 	set img to be display
-	// 	cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
-	// 	if (!cub.imgz)
-	// 		error("C. You are trying to open img but no img.\n", map);
-	// /// image_to_window
+		/// mlx_texture_to_image
+		// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
+		// 	if (!(cub.tex.walls[0]))
+		// 		error("B. You are trying but no png to tex.\n", map);
+		// 	// 	set img to be display
+		// 	cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
+		// 	if (!cub.imgz)
+		// 		error("C. You are trying to open img but no img.\n", map);
+		// /// image_to_window
 
-	// ///test_img_to_window
-	// 	cub.color = mlx_new_image(cub.mlx, 128, 128);
-	// 	mlx_image_to_window(cub.mlx, cub.color, 10, 10);
+		// ///test_img_to_window
+		// 	cub.color = mlx_new_image(cub.mlx, 128, 128);
+		// 	mlx_image_to_window(cub.mlx, cub.color, 10, 10);
 	
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);

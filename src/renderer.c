@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 12:44:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:13:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ int	renderer_clear(t_cub *cub)
 
 void	clear_image_buffer(mlx_image_t *img)
 {
-//	int	*ptr;
-//	int	r;
-	ft_memclear(img->pixels, img->width * img->height * sizeof(int));
-//	r = -1;
-//	while (++r < img->height)
-//	{
-//		ptr = img->pixels + r * img->width;
-//		ft_memclear(ptr, img->width * img->height * sizeof(int));
-//	}
+	//	int	*ptr;
+	//	int	r;
+		ft_memclear(img->pixels, img->width * img->height * sizeof(int));
+	//	r = -1;
+	//	while (++r < img->height)
+	//	{
+	//		ptr = img->pixels + r * img->width;
+	//		ft_memclear(ptr, img->width * img->height * sizeof(int));
+	//	}
 }
 
 void	__mlx_fill_pixels(uint8_t *pixels, size_t total_bytes, int col)
@@ -86,21 +86,21 @@ void	mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col)
 // IS DUMMY FUNCTION FOR NOW. returns some red brick looking color.
 int	find_wall_texture_pixel(int side)
 {
-	if (side == W_SIDE)
-		return (0xD69550ff);
-//		return (0xa35940ff);
-	else if (side == N_SIDE)
-		return (0xe2a258ff);
-//		return (0x753d2aff);
-	else if (side == E_SIDE)
-		return (0xdc843cff);
-//		return (0xa35940ff);
-	else if (side == S_SIDE)
-		return (0xc26b35ff);
-//		return (0x944f38ff);
-//		return (0xc96c4dff);
-	return (0xa35940ff);
-//	return (0xff3e519e);
+		if (side == W_SIDE)
+			return (0xD69550ff);
+	//		return (0xa35940ff);
+		else if (side == N_SIDE)
+			return (0xe2a258ff);
+	//		return (0x753d2aff);
+		else if (side == E_SIDE)
+			return (0xdc843cff);
+	//		return (0xa35940ff);
+		else if (side == S_SIDE)
+			return (0xc26b35ff);
+	//		return (0x944f38ff);
+	//		return (0xc96c4dff);
+		return (0xa35940ff);
+	//	return (0xff3e519e);
 }
 
 int	texture_get_pixel(mlx_texture_t *tex, int x, int y)
