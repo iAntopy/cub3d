@@ -6,17 +6,26 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:02:25 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/08 20:43:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/12 13:53:12 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
 // error display / free array : chk_fail
-	// int	error(char *error, t_map *map)
-	// {
-	// 	int	i;
+int	error(char *error, t_map *map)
+{
+	int	i;
 
+	i = -1;
+	// write(1, "Error\n", 6);
+	// write(1, error, ft_strlen(error));
+	if (map->tab == NULL)
+		return (1);
+	while (map->tab[++i])
+		free(map->tab[i]);
+	return (write(1, error, ft_strlen(error)));
+}
 	//error("1. You are trying to open a dir.\n", map);
 	//error("2. Wrong file name or extention\n", map);
 	//error("3. There is an error in your map, Please verify\n", map);
