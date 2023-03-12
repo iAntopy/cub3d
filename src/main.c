@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 19:05:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/11 23:27:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int	cub_init_core_data(t_cub *cub)
 
 int	set_player_cell_pos(t_cub *cub, int x, int y, int side)
 {
+	printf("Plater (x, y) : (%d, %d)\n", x, y);
 	if (get_is_wall(&cub->map, x, y))
 		return (printf("ERROR hero can't be placed in wall."));
 	cub->hero.cell_x = x;
@@ -173,12 +174,12 @@ int	main(int argc, char **argv)
 //	 return (0);
 
 
-	cub.tex.floor = mlx_load_png("tex/floor.png");
+	cub.tex.floor = mlx_load_png("tex/FloorTile4.png");
 	if (!cub.tex.floor)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	printf("Floor texture loaded SUCCESSFULLY !\n");
 	
-	cub.tex.skymap = mlx_load_png("tex/sky_star.png");
+	cub.tex.skymap = mlx_load_png("tex/skymap3.png");
 	if (!cub.tex.skymap)
 	{
 		printf("loading skymap FAILED !! ptr : %p\n", cub.tex.skymap);
