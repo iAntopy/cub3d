@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 22:01:53 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 00:55:38 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	main(int argc, char **argv)
 	mlx_focus(cub.mlx);
 //	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	// cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
-	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
+	// printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
 	if ((cub.tex.walls[0]))
 		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
 	else 
@@ -207,20 +207,17 @@ int	main(int argc, char **argv)
 	// return (0);
 	// return (cub_clear(&cub, EXIT_SUCCESS));
 	
+			///
 
-		/// mlx_texture_to_image
-		// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
-		// 	if (!(cub.tex.walls[0]))
-		// 		error("B. You are trying but no png to tex.\n", map);
+		printf("DEBUG: TEX_ TEST! START!\n");
+			
 		// 	// 	set img to be display
-		// 	cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
-		// 	if (!cub.imgz)
-		// 		error("C. You are trying to open img but no img.\n", map);
-		// /// image_to_window
-
-		// ///test_img_to_window
+			cub.tex.plain = mlx_load_png("tex/w_side.png");
+			cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.plain);
+			// mlx_image_to_window(cub.mlx, cub.imgz, 0, 0);	
+		// // ///test_img_to_window
 		// 	cub.color = mlx_new_image(cub.mlx, 128, 128);
-		// 	mlx_image_to_window(cub.mlx, cub.color, 10, 10);
+			// mlx_image_to_window(cub.mlx, cub.color, 10, 10);
 	
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);

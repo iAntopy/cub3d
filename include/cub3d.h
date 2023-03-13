@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 22:06:39 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 00:53:52 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
 
 
-# define ENABLE_MINIMAP 1
+# define ENABLE_MINIMAP 0
 
 # define MINIMAP_WIDTH 200
 # define MINIMAP_HEIGHT 200
@@ -108,6 +108,7 @@ typedef struct s_texture_data
 	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
 	mlx_texture_t	*skymap;	// yessss
 	mlx_texture_t	*floor;	// yessss
+	mlx_texture_t	*plain;	// what wait!	
 	char		**rgbx;
 	int 		color[2];
 	char 		*tex_n[4];		// tex_name
@@ -149,6 +150,9 @@ typedef struct s_renderer
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
 	mlx_image_t	*ui_layer;
+	mlx_image_t	*imgz;
+	
+	
 
 
 //////	FLOOR CASTER ////////////
@@ -267,14 +271,5 @@ int	report_mlx_init_error(void);
 int	report_malloc_error(void);
 /// color_parse
 
-int get_t (int trgb);
-int get_b (int trgb);
-int get_g (int trgb);
-int get_r (int trgb);
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_ut(int trgb);
-unsigned char get_ur(int trgb);
-unsigned char get_ug(int trgb);
-unsigned char get_ub(int trgb);
 
 #endif

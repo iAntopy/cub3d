@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 19:13:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 01:03:58 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	render_skymap_column(t_cub *cub, int x, int end_y)
 //	printf("skymap : x : %d, end_y %d, tex_col : %d\n", x, end_y, tex_col);
 	y = -1;
 	while (++y < end_y)
-		mlx_put_pixel(cub->renderer.walls_layer, x, y,
+		mlx_put_pixel(cub->renderer.imgz, x, y,
 			get_texture_pixel(cub->tex.skymap, tex_col, y));// potentially find some sophisticated function for y.
 }
 
@@ -163,7 +163,7 @@ void	render_walls(t_cub *cub)
 	float		rx;
 	float		ry;
 
-	clear_image_buffer(cub->renderer.walls_layer);
+	clear_image_buffer(cub->renderer.imgz);
 	sides = (int *)cub->hero.coll_sides->arr - 1;
 	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
 
@@ -193,7 +193,7 @@ void	render_walls(t_cub *cub)
 
 		j = -1;
 		while (++j < scn_height)
-			mlx_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
+			mlx_put_pixel(cub->renderer.imgz, i, scn_start_y + j,
 				//start_y + j, pxls[(int)(j * incr) * tex->width]);//find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
 //				find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
 //				find_wall_texture_pixel(pxls, (int)(half_texh - (j * ratio - (scn_height >> 2))) * tex->width));
@@ -215,7 +215,7 @@ void	render_walls(t_cub *cub)
 //			ry = rays_y * param + cub->hero.py;
 //			printf("floor (rayx, rayy) : (%f, %f),  pixel collision : (%f, %f), param : %f\n",
 //				rays_x, rays_y, rx, ry, param);
-			mlx_put_pixel(cub->renderer.walls_layer, i, j,
+			mlx_put_pixel(cub->renderer.imgz, i, j,
 				get_texture_pixel(cub->tex.floor,
 					(int)(fmodf(rx, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->width),
 					(int)(fmodf(ry, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->height)));
@@ -244,6 +244,8 @@ int	init_renderer(t_cub *cub)
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 //	mlx_set_instance_depth(cub->renderer.bg_layer->instances, 3);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
+
+	cub->renderer.imgz = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);	
 //	mlx_set_instance_depth(cub->renderer.walls_layer->instances, 2);
 	cub->renderer.ui_layer = mlx_new_image(cub->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
 
@@ -252,7 +254,7 @@ int	init_renderer(t_cub *cub)
 //	printf("bla2\n");
 //	mlx_set_instance_depth(cub->renderer.ui_layer->instances, 1);
 
-	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer || !cub->renderer.ui_layer)
+	if (!cub->renderer.bg_layer || !cub->renderer.imgz || !cub->renderer.ui_layer)
 		return (-1);
 	mlx_set_color_in_rows(cub->renderer.bg_layer, 0, SCN_HEIGHT / 2, cub->tex.color[0]);//0xffffe77b);
 	mlx_set_color_in_rows(cub->renderer.bg_layer, SCN_HEIGHT / 2, SCN_HEIGHT, cub->tex.color[1]);//0xff63615d);
@@ -267,11 +269,11 @@ int	init_renderer(t_cub *cub)
 //	else
 //		printf("SKYMAP MOCKUP FAILED\n");
 //	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
-	mlx_image_to_window(cub->mlx, cub->renderer.walls_layer, 0, 0);
+	mlx_image_to_window(cub->mlx, cub->renderer.imgz, 0, 0);
 //	mlx_image_to_window(cub->mlx, skymap_mockup, 0, SCN_HEIGHT - 128);
-	if (ENABLE_MINIMAP)
-		mlx_image_to_window(cub->mlx, cub->renderer.ui_layer,
-			MINIMAP_PADX, SCN_HEIGHT - MINIMAP_PADY - MINIMAP_HEIGHT);
+	// if (ENABLE_MINIMAP)
+	// 	mlx_image_to_window(cub->mlx, cub->renderer.ui_layer,
+	// 		MINIMAP_PADX, SCN_HEIGHT - MINIMAP_PADY - MINIMAP_HEIGHT);
 	printf("init renderer : exit \n");
 	return (0);
 }
