@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/13 00:55:38 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 12:26:37 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	main(int argc, char **argv)
 	mlx_focus(cub.mlx);
 //	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	// cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
-	// printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
+	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
 	if ((cub.tex.walls[0]))
 		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
 	else 
@@ -170,12 +170,12 @@ int	main(int argc, char **argv)
 //	 return (0);
 
 
-	cub.tex.floor = mlx_load_png("tex/floor.png");
+	// cub.tex.floor = mlx_load_png("tex/floor.png");
 	if (!cub.tex.floor)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	printf("Floor texture loaded SUCCESSFULLY !\n");
 	
-	cub.tex.skymap = mlx_load_png("tex/sky_star.png");
+	// cub.tex.skymap = mlx_load_png("tex/sky_star.png");
 	if (!cub.tex.skymap)
 	{
 		printf("loading skymap FAILED !! ptr : %p\n", cub.tex.skymap);

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/12 23:53:45 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 12:27:24 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,9 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 				if (*txtr[1] < '0' || *txtr[1] > '9')
 				{
 					 if (id == 4)
-						cub->tex.floor = mlx_load_png(txtr[1]);
+						cub->tex.skymap= mlx_load_png(txtr[1]);
 					 if (id == 5)
-						cub->tex.skymap = mlx_load_png(txtr[1]);
+						cub->tex.floor = mlx_load_png(txtr[1]);
 				}
 				else
 				{

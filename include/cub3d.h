@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/13 00:53:52 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 01:38:07 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
 
 
-# define ENABLE_MINIMAP 0
+# define ENABLE_MINIMAP 1
 
 # define MINIMAP_WIDTH 200
 # define MINIMAP_HEIGHT 200
