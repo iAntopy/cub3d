@@ -5,7 +5,7 @@ S  "tex/s_side.png"
 E  "tex/e_side.png"
 
 C "tex/floor.png"
-F 55,55,10
+F "tex/sky_starpng"
 
 111111111
 100000001
