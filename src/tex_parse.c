@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/12 21:53:33 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:10:00 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 
 static int	setup_wall_textures(t_cub *cub)
 {
-	const char		**src;
+	char		**src;
 	mlx_texture_t	**dst;
 //	int		i;
 
@@ -263,9 +263,9 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 				return (error_clear("7, Texture mapping Name error !\n", map, &txtr));
 			if (!txtr[1])	
 				return (error_clear("8, Texture mapping Path error !\n", map, &txtr));
-
 			id = 0;
 			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
+			printf("DEBUG: MAP_TEX --- >> id[%d] tex_parse!\n", id);		
 			if ( id < 0)
 				return (error_clear("9, Texture Name unmatching error !\n", map, &txtr));
 			else if (id < 4)

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/11 10:37:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:11:25 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_map	    *wall_check(t_map *m)
             if (o_cells == 0)
             {
                 // printf("\tDEBUG: WALL CHK start O_cells = %d char {%c}\n", o_cells, (char)m->tab[m->pos_x][m->pos_y]); 
-                printf("chek_pos o_cell \t REFS:[%d] [x:%d][y:%d]\n",  o_cells, m->pos_x, m->pos_y);
+                // printf("chek_pos o_cell \t REFS:[%d] [x:%d][y:%d]\n",  o_cells, m->pos_x, m->pos_y);
 
                 if(m->pos_x - 1)
                 {
@@ -84,7 +84,7 @@ t_map	    *wall_check(t_map *m)
                 hero_x = m->pos_x;
                 hero_y = m->pos_y;     
                 printf("\n\tDEBUG: HERO FOUND  side ref[%d]", m->hero_side);   
-                // printf("\t::hero_x[%d]: hero_y[%d] \n", hero_x, hero_y);
+                printf("\t::hero_x[%d]: hero_y[%d] \n", hero_x, hero_y);
                 m->flg_chk = 2;               
             }
             m->pos_x++;    
@@ -95,8 +95,8 @@ t_map	    *wall_check(t_map *m)
     {
         m->pos_x = hero_x;
         m->pos_y = hero_y;      
-        printf("\t::hero_x[%d]: hero_y[%d] \n", m->pos_x, m->pos_y);
-        printf("DEBUG: WALL CHK SUCCEED o_cells [%d]!!!\n", m->hero_side);
+        // printf("\t::hero_x[%d]: hero_y[%d] \n", m->pos_x, m->pos_y);
+        // printf("DEBUG: WALL CHK SUCCEED o_cells [%d]!!!\n", m->hero_side);
     }
     else 
         m->flg_chk = 1;

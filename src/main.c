@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 19:12:41 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:01:53 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int	main(int argc, char **argv)
 	// INIT INPUT	
 	if (map_checker(&cub, init_map(&cub.map), argv[1]) != 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	if (set_player_cell_pos(&cub, cub.map.pos_x, cub.map.pos_y, cub.map.hero_side) != 0)
+	if (set_player_cell_pos(&cub, cub.map.pos_y, cub.map.pos_x, cub.map.hero_side) != 0)
 	 	return (cub_clear(&cub, EXIT_FAILURE));
 
 //	return (cub_clear(&cub, EXIT_SUCCESS));
