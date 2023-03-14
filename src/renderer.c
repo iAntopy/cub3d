@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 19:13:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 01:51:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ void	render_walls(t_cub *cub)
 	int		j;
 	float		*tex_info;
 	int		half_texh;
+	int		half_scnh;
 	int		scn_fheight;
 	int		scn_height;
 	
@@ -178,7 +179,7 @@ void	render_walls(t_cub *cub)
 		tex_start_x = (int)(*(++tex_info) * tex->width);
 		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
 		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
-
+		half_scnh = (scn_height >> 1);
 		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
 //		y_offset = (tex->height >> 2);//(fheight - height) >> 1;// divide by 2
 //		printf("col %d, sx, sy : (%d, %d), fh, h: (%d, %d), yoff %d\n", i, tex_start_x, scn_start_y,
@@ -198,7 +199,7 @@ void	render_walls(t_cub *cub)
 //				find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
 //				find_wall_texture_pixel(pxls, (int)(half_texh - (j * ratio - (scn_height >> 2))) * tex->width));
 				find_wall_texture_pixel(pxls,
-					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));
+					((int)((j - half_scnh) * ratio) + half_texh) * tex->width));
 		
 //////////////	SKYMAP RENDERING ///////////////////
 		render_skymap_column(cub, i, scn_start_y);

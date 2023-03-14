@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 19:12:41 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/13 00:47:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ void	cub_key_handler(mlx_key_data_t event, void *param)
 	cub = (t_cub *)param;
 	if (event.key == MLX_KEY_ESCAPE && event.action == MLX_PRESS)
 		on_close(param);
-	else if (event.key == MLX_KEY_W && event.action == MLX_PRESS)
-		cub_player_move(cub, 10, 0);
-	else if (event.key == MLX_KEY_S && event.action == MLX_PRESS)
-		cub_player_move(cub, -10, 0);
-	else if (event.key == MLX_KEY_A && event.action == MLX_PRESS)
-		cub_player_move(cub, 0, -10);
-	else if (event.key == MLX_KEY_D && event.action == MLX_PRESS)
-		cub_player_move(cub, 0, 10);
+//	else if (event.key == MLX_KEY_W && event.action == MLX_PRESS)
+///		cub_player_move(cub, 10, 0);
+//	else if (event.key == MLX_KEY_S && event.action == MLX_PRESS)
+//		cub_player_move(cub, -10, 0);
+//	else if (event.key == MLX_KEY_A && event.action == MLX_PRESS)
+//		cub_player_move(cub, 0, -10);
+//	else if (event.key == MLX_KEY_D && event.action == MLX_PRESS)
+//		cub_player_move(cub, 0, 10);
 }
 
 void	on_scroll(double deltax, double deltay, void *param)
@@ -100,6 +100,7 @@ int	cub_init_core_data(t_cub *cub)
 	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
 	cub->inv_sw = 1.0f / (float)SCN_WIDTH;
 	cub->inv_two_pi = 0.5f / M_PI ;
+
 	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
 
 	return (0);
@@ -114,8 +115,13 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, int side)
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = M_PI - side * cub->inv_two_pi;
+	cub->hero.cur_speed = 0;
+	cub->hero.movx = 0;
+	cub->hero.movy = 0;
+	
 //	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
-	cub->skymap_tex_offset = (int)(cub->hero.ori * cub->skymap_radial_width);
+
+
 	printf("SET PLAYER POS : ori : %f, sky_tex_offset : %d\n", cub->hero.ori, cub->skymap_tex_offset);
 	return (0);
 }
@@ -186,7 +192,8 @@ int	main(int argc, char **argv)
 
 	//// ESSENTIAL DATA FOR SKYMAP !! ////////
 	cub.skymap_radial_width = cub.tex.skymap->width * cub.inv_two_pi;// skymap.width / 2pi
-
+	cub.skymap_tex_offset = (int)(cub.hero.ori * cub.skymap_radial_width);
+	cub.skymap_fov_to_texture = FOV90 * cub.skymap_radial_width;
 
 
 	printf("Init mlx SUCCESSFUL !\n");
@@ -232,7 +239,7 @@ int	main(int argc, char **argv)
 	mlx_key_hook(cub.mlx, &cub_key_handler, &cub);
 	mlx_scroll_hook(cub.mlx, &on_scroll, &cub);
 	mlx_close_hook(cub.mlx, &on_close, &cub);
-	
+	mlx_loop_hook(cub.mlx, &cub_on_update, &cub);
 
 	printf("Starting mlx loop\n");
 	mlx_loop(cub.mlx);
