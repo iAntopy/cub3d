@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/11 06:49:00 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/14 19:39:12 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ SRC_FLS	:=	main.c 			\
 			map_tool.c 		\
 			tex_parse.c		\
 			wall_chk.c		\
-			floor_caster.c
+			floor_caster.c 	\
+			color_shift		\
+			color_creat.c
+			
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
