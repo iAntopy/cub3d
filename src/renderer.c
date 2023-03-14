@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/12 19:13:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/14 01:05:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,10 +163,12 @@ void	render_walls(t_cub *cub)
 	float		rx;
 	float		ry;
 
+//	printf("Randy : Clear image buffer \n");
 	clear_image_buffer(cub->renderer.walls_layer);
+//	printf("Randy : Cleared \n");
 	sides = (int *)cub->hero.coll_sides->arr - 1;
 	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
-
+//	printf("Dist for first ray : %f\n", _mtx_index_f(cub->hero.distances, 0, 0));
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
@@ -174,11 +176,12 @@ void	render_walls(t_cub *cub)
 		rays_y = _mtx_index_f(cub->hero.rays[1], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
 	
 		tex = cub->tex.walls[*(++sides)];
+//		printf("Randy : tex : %p\n", tex);
 		half_texh = (tex->height >> 1);
 		tex_start_x = (int)(*(++tex_info) * tex->width);
 		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
 		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
-
+//		printf("scn_fheight : %d, scn_height : %d, tex_start_x : %d\n", scn_fheight, scn_height, tex_start_x);
 		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
 //		y_offset = (tex->height >> 2);//(fheight - height) >> 1;// divide by 2
 //		printf("col %d, sx, sy : (%d, %d), fh, h: (%d, %d), yoff %d\n", i, tex_start_x, scn_start_y,
@@ -191,6 +194,7 @@ void	render_walls(t_cub *cub)
 //		pxls = (int *)tex->pixels + tex_start_x + half_texh * tex->width;
 //			+ (int)((tex->height - (scn_start_y * ratio)) >> 1) * tex->width;
 
+//		printf("Randy : wall while enter from height %d to %d\n", scn_start_y, scn_height);
 		j = -1;
 		while (++j < scn_height)
 			mlx_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,

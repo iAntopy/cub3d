@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   init_raycaster.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 11:45:34 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/14 00:59:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	get_is_cell_within_bounds(t_map *map, int cx, int cy)
+{
+	return ((0 <= cx) && (cx < map->width) && (0 <= cy) && (cy < map->height));
+}
 
 char	get_is_wall(t_map *map, int cx, int cy)
 {
@@ -305,6 +310,9 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //	printf("(cx, cy) : (%d, %d), ray %d, axies : (%.3f, %.3f), intersects : (%.3f, %.3f), vert vs hero colision : (%f, %f)\n", ri->cx, ri->cy, ri->idx, axies[0], axies[1], intersects[0], intersects[1], axies[0] * axies[0] + intersects[1] * intersects[1], intersects[0] * intersects[0] + axies[1] * axies[1]);
 	distv = (axies[0] - ri->px) * ri->p_dirx + (intersects[1] - ri->py) * ri->p_diry;
 	disth = (intersects[0] - ri->px) * ri->p_dirx + (axies[1] - ri->py) * ri->p_diry;
+//	printf("distv : (ax[0](%f) - px(%f) * p_dirx(%f) + (ict[1](%f) - py(%f)) * p_diry(%f))) = %f\n", axies[0], ri->px, ri->p_dirx, intersects[1], ri->py, ri->p_diry, distv);
+	//printf("distv : ax %.2f, px %.2f, p_dirx %.2f, ict[1] %.2f, py %.2f, p_diry %.2f = %.2f\n", axies[0], ri->px, ri->p_dirx, intersects[1], ri->py, ri->p_diry, distv);
+//	printf("disth : ict[0] %.2f, px %.2f, p_dirx %.2f, ax[1] %.2f, py %.2f, p_diry %.2f = %.2f\n", intersects[0], ri->px, ri->p_dirx, axies[1], ri->py, ri->p_diry, disth);
 //	ri->vdx = fabsf((*axies) - ri->px);
 //	ri->vdy = fabsf(intersects[1] - ri->py);
 //	ri->hdx = fabsf((*intersects) - ri->px);
@@ -375,7 +383,7 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 //	return (get_is_wall(&ri->cub->map, ri->cx, ri->cy));
 	if (get_is_wall(&ri->cub->map, ri->cell[0], ri->cell[1]))
 	{
-//		printf("ray idx %d hit wall at cell (%d, %d)\n\n", ri->idx, ri->cx, ri->cy);
+//		printf("ray idx %d hit wall at cell (%d, %d)\n\n", ri->idx, ri->cell[0], ri->cell[1]);//, ri->cx, ri->cy);
 //		printf("delta from \n\n", ri->idx, ri->cx, ri->cy);
 //		col_ptr = _mtx_index_fptr(ri->cub->hero.collisions, ri->idx, 0);
 //		*(++ri->cwall) = ri->cx;
@@ -425,7 +433,7 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 		}
 		if ((*ri->cside == W_SIDE) || (*ri->cside == S_SIDE))
 			*ri->texr = 1 - *ri->texr;
-//		printf("raycaster : wall height = near_proj (%f) / dist found (%f) = %f\n", ri->cub->near_proj_factor,
+///		printf("raycaster : wall height = near_proj (%f) / dist found (%f) = %f\n", ri->cub->near_proj_factor,
 //			(*ri->dists), ri->cub->near_proj_factor / (*ri->dists));
 		*(++ri->texr) = ri->cub->near_proj_factor / (*ri->dists);// wall height on screen.
 		ri->cell += 2;
@@ -466,6 +474,7 @@ int	raycast_all_vectors(t_cub *cub)
 	ri.py = cub->hero.py;
 	ri.p_dirx = *cub->hero.dirx;
 	ri.p_diry = *cub->hero.diry;
+	printf("cast all vects : (px, py) : (%f, %f), (p_dirx, p_diry) : (%f, %f)\n", ri.px, ri.py, ri.p_dirx, ri.p_diry);
 //	collision_occured = 0;
 	vi = -1;
 	while (++vi < SCN_WIDTH)
