@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 14:23:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/15 01:31:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,8 +261,18 @@ int	load_map(t_cub *cub, char *map_file)
 }
 */
 
-static  void	raycast_init_single_vect(t_cub *cub, t_rayint *ri, int vi)
+static  void	raycast_init_single_vect(t_rdata *rd)//t_cub *cub, t_rayint *ri, int vi)
 {
+	rd->cx = rd->rcast->pcx;
+	rd->cy = rd->rcast->pcy;
+	rd->c_offx = (*rd->dirx >= 0);
+	rd->c_offy = (*rd->diry >= 0);
+	rd->cincr_x = (2 * rd->c_offx) - 1;
+	rd->cincr_x = (2 * rd->c_offx) - 1;
+	rd->a = *rd->diry / *rd->dirx;
+	rd->inv_a = 1 / rd->a;
+	rd->b = *rd->py - (rd->a * *rd->px)
+/*
 	ri->idx = vi;
 	ri->rx = _mtx_index_f(cub->hero.rays[0], vi, 0);
 	ri->ry = _mtx_index_f(cub->hero.rays[1], vi, 0);
@@ -277,6 +287,7 @@ static  void	raycast_init_single_vect(t_cub *cub, t_rayint *ri, int vi)
 	ri->a = ri->ry / ri->rx;
 	ri->inv_a = 1 / ri->a;
 	ri->b = ri->py - (ri->a * ri->px);
+*/
 //	printf("\n@----- Raycaster init ray %d with data -----@\n", vi);
 //	printf("	- (dx, dy) : (%f, %f)\n", ri->rx, ri->ry);
 //	printf("	- (c_offx, c_offy) : (%d, %d)\n", ri->c_offx, ri->c_offy);
@@ -454,12 +465,83 @@ int	raycast_find_cell_intersect(t_rayint *ri)
 	return (0);
 }
 
-// Assumes vectors are initialised correctly.
-int	raycast_all_vectors(t_cub *cub)
+int	raycast_find_ray_collision(t_rdata *rd)
 {
-	t_rayint	ri;
-	int			vi;// vector index from [0-SCN_WIDTH[
+	float	*axies;
+	float	intersects[2];
+	float	distv;
+	float	disth;
+	int		is_hori;
 
+//	axies = rd->rcast->grid_coords[ri->cell[1] + ri->c_offy] + ((ri->cell[0] + ri-c_offx) << 1);// same as call to get_grid_coord ... but inline !
+	axies = rd->rcast->map->grid_coords[rd->cy + rd->c_offy] + ((rd->cx + rd->c_offx) << 1);// same as call to get_grid_coord ... but inline !
+	intersects[1] = rd->a * (*axies) + rd->b;//		y = ax + b;
+	(*intersects) = (axies[1] - rd->b) * rd->inv_a;//	x = (y - b) / a;
+	distv = (axies[0] - (*rd->px)) * (*rd->p_dirx) + (intersects[1] - (*rd->py)) * (*rd->p_diry);
+	disth = (intersects[0] - (*rd->px)) * (*rd->p_dirx) + (axies[1] - (*rd->py)) * (*rd->p_diry);
+	if (disth < distv)
+	{
+		rd->cy += rd->diry;
+		is_hori = 1;
+	}
+	else
+	{
+		*rd->cx += rd->dirx;
+		is_hori = 0;
+	}
+	if (get_is_wall(rd->rcast->map, rd->cx, rd->cy))
+	{
+		if (is_hori)
+		{
+			rd->hitx = intersects[0];
+			rd->hity = axies[1];
+			rd->dist = disth;
+			rd->side = 1 + (rd->c_offy << 1);
+			rd->tex_ratio = (intersects[0] - (axies[0] - CELL_WIDTH * rd->c_offx)) * rd->rcast->cub->inv_cw;
+			
+//			*(++ri->collisions) = intersects[0];
+//			*(++ri->collisions) = axies[1];
+//			*(++ri->dists) = disth;
+//			*(++ri->cside) = 1 + (ri->c_offy << 1);
+//			*(++ri->texr) = (intersects[0] - (axies[0] - CELL_WIDTH * ri->c_offx)) * ri->cub->inv_cw;
+		}
+		else
+		{
+			rd->hitx = axies[0];
+			rd->hity = intersects[1];
+			rd->dist = distv;
+			rd->side = (rd->c_offx << 1);
+			rd->tex_ratio = (intersects[1] - (axies[1] - CELL_WIDTH * rd->c_offy)) * rd->rcast->cub->inv_cw;
+	/**/		
+			*(++ri->collisions) = axies[0];
+			*(++ri->collisions) = intersects[1];
+			
+
+			//// Distance fonction version
+			//*(++ri->dists) = sqrtf(ri->vdx * ri->vdx + ri->vdy * ri->vdy) * (*(++ri->fish));
+			//*(++ri->dists) = ri->vdx * fabsf(*ri->cub->hero.dirx) + ri->vdy * fabsf(*ri->cub->hero.diry);
+			//*(++ri->dists) = (axies[0] - ri->px) * (*ri->cub->hero.dirx) + (intersects[1] - ri->py) * (*ri->cub->hero.diry);
+			*(++ri->dists) = distv;
+			
+
+			*(++ri->cside) = (ri->c_offx << 1);
+			*(++ri->texr) = (intersects[1] - (axies[1] - CELL_WIDTH * ri->c_offy)) * ri->cub->inv_cw;
+*/
+		}
+		if ((rd->side == W_SIDE) || (rd->side == S_SIDE))
+			rd->tex_ratio = 1 - rd->tex_ratio;
+		rd->tex_height = rd->rcast->cub->near_proj_factor / rd->dist;
+	}
+}
+
+// Assumes vectors are initialised correctly.
+int	raycast_all_vectors(t_rcast *rcast)//t_cub *cub)
+{
+//	t_rayint	ri;
+//	int			vi;// vector index from [0-SCN_WIDTH[
+	t_rdata		*rd;
+
+/*
 	ri.cub = cub;
 	ri.cell = (int *)cub->hero.coll_walls->arr;// DO NOT OFFSET BY -1 !!!
 	ri.cside = (int *)cub->hero.coll_sides->arr - 1;
@@ -474,14 +556,19 @@ int	raycast_all_vectors(t_cub *cub)
 	ri.py = cub->hero.py;
 	ri.p_dirx = *cub->hero.dirx;
 	ri.p_diry = *cub->hero.diry;
+*/
 //	printf("cast all vects : (px, py) : (%f, %f), (p_dirx, p_diry) : (%f, %f)\n", ri.px, ri.py, ri.p_dirx, ri.p_diry);
 //	collision_occured = 0;
-	vi = -1;
-	while (++vi < SCN_WIDTH)
+
+//	vi = -1;
+	rd = rcast->rdata - 1;
+	while ((++rd - rcast->rdata) < SCN_WIDTH)
+//	while (++vi < SCN_WIDTH)
 	{
 //		printf("vi : %d\n", vi);
-		raycast_init_single_vect(cub, &ri, vi);
-		while (!raycast_find_cell_intersect(&ri))
+//		raycast_init_single_vect(cub, &ri, vi);
+		raycast_init_single_vect(rd);
+		while (!raycast_find_cell_intersect(rd))
 			continue ;
 	}
 //	__mtx_isqrtf(cub->hero.distances->arr, SCN_WIDTH);
@@ -499,16 +586,17 @@ void	update_rays(t_cub *cub)
 {
 //	printf("update rays\n");
 //	printf("ori : %f, ray_thetas[0] before : %f\n", cub->hero.ori, _mtx_index_f(cub->hero.ray_thetas, 0, 0));
-	_mtx_addf_pscalar(cub->hero.theta_offsets, cub->hero.ori, cub->hero.ray_thetas);
+	_mtx_addf_pscalar(cub->hero.rcast.theta_offs, cub->hero.ori,
+		cub->hero.rcast.ray_thetas);
 //	printf("ray_thetas[0] after : %f\n", _mtx_index_f(cub->hero.ray_thetas, 0, 0));
-	mtx_linspace_update(cub->hero.ray_thetas, 
+	mtx_linspace_update(cub->hero.rcast.ray_thetas, 
 		cub->hero.ori - cub->hfov, cub->hero.ori + FOV_HF, 1);
 //	printf("rays[0][0] before : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
 ///	printf("rays[0][1] before : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
 //	printf("rays[1][0] before : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
 //	printf("rays[1][1] before : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
-	mtx_cos(cub->hero.ray_thetas, cub->hero.rays[0]);
-	mtx_sin(cub->hero.ray_thetas, cub->hero.rays[1]);
+	mtx_cos(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[0]);
+	mtx_sin(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[1]);
 //	printf("rays[0][0] after : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
 //	printf("rays[0][1] after : %f\n", _mtx_index_f(cub->hero.rays[1], 0, 0));
 //	printf("rays[1][0] after : %f\n", _mtx_index_f(cub->hero.rays[0], 0, 0));
@@ -516,7 +604,7 @@ void	update_rays(t_cub *cub)
 //	printf("fisheye correctors : \n");
 //	mtx_print(cub->hero.fisheye_correctors);
 //	printf("player direction vector : [%f, %f]\n", *cub->hero.dirx, *cub->hero.diry);
-	raycast_all_vectors(cub);
+	raycast_all_vectors(&cub->hero.rcast);
 }
 
 // If Zoom level (fov) changes call this function.
@@ -537,18 +625,103 @@ void	update_fov(t_cub *cub, float fov)
 //	printf("(0.5f * (float)SCN_WIDTH(800)) / tanf(hfov) = %f\n", (0.5f * 800.0f) / tanf(cub->hfov));
 //	printf("fov : %f, half_fov : %f, near_z : %f, near_proj_factor : %f\n",
 //		cub->fov, cub->hfov, cub->near_z, cub->near_proj_factor);
-	mtx_linspace_update(cub->hero.theta_offsets, -cub->hfov, cub->hfov, 1);
+	mtx_linspace_update(cub->hero.rcast.theta_offs, -cub->hfov, cub->hfov, 1);
 //	mtx_cos(cub->hero.theta_offsets, cub->hero.fisheye_correctors);
 //	printf("fisheye correctors : \n");
 //	mtx_print(cub->hero.fisheye_correctors);
-	update_rays(cub);	
+	update_rays(cub);
+}
+
+/*
+typedef struct s_ray_intersect_data
+{
+//	External ref
+	t_rcast	*rcast;
+
+//	Struct constants;
+	int		idx;
+	float	*px;// hero position x; Pointer to cub->hero.px.
+	float	*py;// hero position y;
+	float	*p_dirx;// player's directional vector in x;
+	float	*p_diry;// player's directional vector in y;
+	float	*dirx;// ray vector direction in x for specific ray; Pointer to rcast->rays[0] at rays idx.
+	float	*diry;// ray vector direction in y for specific ray; Pointer to rcast->rays[1] at rays idx.
+
+//	Init data
+	int		c_offx;//	x offset of cell to check in collision map
+	int		c_offy;//	y offset of cell to check in collision map
+	float	a;//	ray slope
+	float	inv_a;//a inverse == 1/a;
+	float	b;//	ray y offset
+
+//	Tracked data (final value is resulting data)
+	int		cx;// tracked collision cell x; Init to hero.cell_x. Final value is collision cell x.
+	int		cy;// tracked collision cell y; Init to hero.cell_y. Final value is collision cell y.
+	
+//	Resulting data
+	int		side;// collision side
+	float	hitx;// collision world coord x;
+	float	hity;// collision world coord y;
+	float	dist;// collision distance to projection plan.
+	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
+	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
+
+}	t_rdata;
+
+typedef struct s_raycaster_data
+{
+	t_cub		*cub;
+	float		**grid_coords;// Only reference. Do not free.
+	t_mtx		*theta_offset;// Angle offsets for each angle from 0. Malloced mtx.
+	t_mtx		*ray_thetas;// Angles for each ray. Malloced mtx.
+	t_mtx		*rays[2];// X, Y part for each ray vector. index 0 are Xs, 1 are Ys Malloced mtx.
+	t_rdata		*rdata;//	malloced array of struct with collision data. len SCR_WIDTH
+}	t_rcast;
+*/
+
+int	clear_raycaster(t_rcast *rcast, int exit_status)
+{
+	mtx_clear_list(4, rcast->theta_offs, rcast->ray_thetas,
+		rcast->rays[0], rcast->rays[1]);
+	ft_free_p((void **)&rcast->rdata);
+	return (exit_status);
 }
 
 int	init_raycaster(t_cub *cub)
 {
-	t_hero	*hero;
+	t_rcast	*rcast;
+	t_rdata	*rd;
 
 	printf("Init raycaster :\n");
+	rcast = &cub->hero.rcast;
+	rcast->cub = cub;
+	rcast->map = &cub->map;
+	rcast->theta_offs = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->ray_thetas = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->rays[0] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->rays[1] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->rdata = malloc(sizeof(t_rdata) * SCN_WIDTH);
+
+	if (!rcast->theta_offs || !rcast->ray_thetas || !rcast->ray_thetas
+		|| !rcast->rays[0] || !rcast->rays[1] || !rcast->rdata)
+		return (clear_raycaster(rcast, EXIT_FAILURE));
+	cub->hero.dirx = _mtx_index_fptr(rcast->rays[0], SCN_WIDTH / 2, 0);
+	cub->hero.diry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH / 2, 0);
+	rd = rcast->rdata - 1;
+	while ((++rd - rcast->rdata) < SCN_WIDTH)//++i < SCN_WIDTH)
+	{
+		rd->idx = (rd - (rcast->rdata));
+		rd->rcast = rcast;
+		rd->pcx = &cub->hero.cell_x;
+		rd->pcy = &cub->hero.cell_y;
+		rd->px = &cub->hero.px;
+		rd->py = &cub->hero.py;
+		rd->p_dirx = cub->hero.dirx;
+		rd->p_diry = cub->hero.diry;
+		rd->dirx = _mtx_index_fptr(rcast->rays[0], rd->idx, 0);//cub->hero.dirx;
+		rd->diry = _mtx_index_fptr(rcast->rays[1], rd->idx, 0);//cub->hero.diry;
+	}	
+	/*
 	hero = &cub->hero;
 	hero->theta_offsets = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	hero->ray_thetas = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
@@ -561,7 +734,7 @@ int	init_raycaster(t_cub *cub)
 	hero->distances = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 		
 	// tex_infos :	row[0] : ratio of pixel column from left to right,
-	// 		row[1] : total height of 
+	// 		row[1] : total height of texture on screen
 	hero->tex_infos = mtx_create_empty(SCN_WIDTH, 2, DTYPE_F);
 	if (!hero->theta_offsets || !hero->ray_thetas
 		|| !hero->rays[0] || !hero->rays[1] 
@@ -571,6 +744,7 @@ int	init_raycaster(t_cub *cub)
 
 	hero->dirx = _mtx_index_fptr(hero->rays[0], SCN_WIDTH / 2, 0);
 	hero->diry = _mtx_index_fptr(hero->rays[1], SCN_WIDTH / 2, 0);
+	*/
 	update_fov(cub, FOV);
 	printf("all matrix buffers created \n");
 //	mtx_print(hero->theta_offsets);
