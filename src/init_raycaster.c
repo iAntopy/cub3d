@@ -6,7 +6,11 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/03/11 14:23:42 by iamongeo         ###   ########.fr       */
+=======
+/*   Updated: 2023/03/12 21:47:56 by iamongeo         ###   ########.fr       */
+>>>>>>> origin/ian_bonus
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -531,7 +535,7 @@ void	update_fov(t_cub *cub, float fov)
 	cub->hfov = 0.5f * fov;// half fov
 	cub->near_z = (float)cub->scn_midx / tanf(cub->hfov);
 	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
-	cub->skymap_fov_to_texture = cub->fov * cub->skymap_radial_width;
+//	cub->skymap_fov_to_texture = cub->fov * cub->skymap_radial_width;
 	update_floorcaster_params(cub);
 //	printf("tanf(half fov) = %f\n", tanf(cub->hfov));
 //	printf("(0.5f * (float)SCN_WIDTH(800)) / tanf(hfov) = %f\n", (0.5f * 800.0f) / tanf(cub->hfov));

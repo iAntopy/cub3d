@@ -6,7 +6,11 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/03/11 15:48:33 by iamongeo         ###   ########.fr       */
+=======
+/*   Updated: 2023/03/13 01:24:00 by iamongeo         ###   ########.fr       */
+>>>>>>> origin/ian_bonus
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +47,9 @@
 # define FOV60 1.047197551196597746f
 # define FOV60_HF 0.52359877559829887f
 
-# define FOV20 0.349065850398865915f
-# define FOV20_HF 0.17453292519943295f
-
-# define FOV FOV60
-# define FOV_HF FOV60_HF
-# define FOV_MIN FOV20
-# define FOV_MAX FOV90
-
-# define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
-
+# define FOV FOV60//	2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define FOV_HF FOV60_HF//	1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define PLAYER_HEIGHT 20// Height of player in pixels or Height of camera (used for floorcasting).
 
 # define ENABLE_MINIMAP 1
 
@@ -70,6 +67,20 @@
 # define TEX_FLOOR			5
 
 # define MAP_CHARS "01WNES"
+
+// PLAYER MOVES DEFINES
+//# define PLR_MAX_SPEED_FRW 150.0f//player max speed in  pixels/sec;
+//# define PLR_MAX_SPEED 100.0f
+# define PLR_ACCEL 20.0f// player acceleration in pixels/sec
+# define PLR_RESIST_FRW 0.5f// player speed multiplier for forward vector
+# define PLR_RESIST 0.5f// player speed multiplier in all other directions
+
+
+// ANIMATION LOOP DEFINES
+# define MAX_FPS 100
+# define FRAME_UTIME (int)(1000000 / MAX_FPS)// on_update usleep value;
+ 
+
 
 enum	e_sides
 {
@@ -152,6 +163,10 @@ typedef struct s_main_character_data
 
 	float	*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
 	float	*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
+	
+	float	cur_speed;
+	float	movx;
+	float	movy;
 }	t_hero;
 
 typedef struct s_renderer
@@ -194,7 +209,7 @@ typedef struct s_cub3d_core_data
 	float	near_z;// = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
 	float	near_proj_factor;// = CELL_WIDTH * cub->near_z;
 	float	skymap_radial_width;// skymap_tex.width / 2pi (const after texture load)
-	int	skymap_tex_offset;// hero.ori * radial_width. texture pixel column index;
+	int		skymap_tex_offset;// hero.ori * radial_width. texture pixel column index;
 	float	skymap_fov_to_texture;//  fov * radial_width.
 					// converts screen coords to texture coords
 					// by multiplying (x - scn_midx) / SCN_WIDTH to it and add ori_offset.
@@ -247,6 +262,8 @@ unsigned char get_ub(int trgb);
 // void    		print_map(t_map *m);
 // void			print_img(t_map *map, t_cub cub);
 
+/// UPDATE LOOP ///////////////
+void	cub_on_update(void *param);
 
 /// RAYCASTER /////////////////
 int		init_raycaster(t_cub *cub);
@@ -272,7 +289,7 @@ void	render_scene(t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void	cub_player_rotate(t_cub *cub, float rot);
-void	cub_player_move(t_cub *cub, float d_walk, float d_strafe);
+void	cub_player_move(t_cub *cub, float d_walk, float d_strafe, float d_time);
 void	cub_player_zoom(t_cub *cub, float dz);
 
 

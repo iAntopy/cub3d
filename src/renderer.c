@@ -6,7 +6,11 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/03/11 14:24:15 by iamongeo         ###   ########.fr       */
+=======
+/*   Updated: 2023/03/13 01:51:59 by iamongeo         ###   ########.fr       */
+>>>>>>> origin/ian_bonus
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +153,7 @@ void	render_walls(t_cub *cub)
 	int		j;
 	float		*tex_info;
 	int		half_texh;
+	int		half_scnh;
 	int		scn_fheight;
 	int		scn_height;
 	int		half_height;
@@ -187,9 +192,13 @@ void	render_walls(t_cub *cub)
 		tex_start_x = (int)(*(++tex_info) * tex->width);
 		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
 		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
+<<<<<<< HEAD
 		half_height = (scn_height >> 1);
 
 //		printf("scn_fheight : %d, scn_height : %d, tex_start_x : %d\n", scn_fheight, scn_height, tex_start_x);
+=======
+		half_scnh = (scn_height >> 1);
+>>>>>>> origin/ian_bonus
 		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
 //		y_offset = (tex->height >> 2);//(fheight - height) >> 1;// divide by 2
 //		printf("col %d, sx, sy : (%d, %d), fh, h: (%d, %d), yoff %d\n", i, tex_start_x, scn_start_y,
@@ -205,11 +214,20 @@ void	render_walls(t_cub *cub)
 //		printf("Randy : wall while enter from height %d to %d\n", scn_start_y, scn_height);
 		j = -1;
 		while (++j < scn_height)
+<<<<<<< HEAD
 			cub_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
 				pxls[(int)(((j - half_height) * ratio) + half_texh) * tex->width]);
 //			mlx_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
 //				find_wall_texture_pixel(pxls,
 //					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));
+=======
+			mlx_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
+				//start_y + j, pxls[(int)(j * incr) * tex->width]);//find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
+//				find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
+//				find_wall_texture_pixel(pxls, (int)(half_texh - (j * ratio - (scn_height >> 2))) * tex->width));
+				find_wall_texture_pixel(pxls,
+					((int)((j - half_scnh) * ratio) + half_texh) * tex->width));
+>>>>>>> origin/ian_bonus
 		
 //////////////	SKYMAP RENDERING ///////////////////
 		render_skymap_column(cub, i, scn_start_y);
