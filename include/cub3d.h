@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/13 01:38:07 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:48:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,23 @@
 # define FOV120 2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 # define FOV120_HF 1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 
+# define FOV100 1.7453292519943295f
+# define FOV100_HF 0.8726646259971647f
+
 # define FOV90 1.5707963267948966f
 # define FOV90_HF 0.7853981633974483f
 
 # define FOV60 1.047197551196597746f
 # define FOV60_HF 0.52359877559829887f
 
-# define FOV FOV60//	2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
-# define FOV_HF FOV60_HF//	1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define FOV20 0.349065850398865915f
+# define FOV20_HF 0.17453292519943295f
+
+# define FOV FOV60
+# define FOV_HF FOV60_HF
+# define FOV_MIN FOV20
+# define FOV_MAX FOV90
+
 # define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
 
 
@@ -240,17 +249,18 @@ unsigned char get_ub(int trgb);
 
 
 /// RAYCASTER /////////////////
-int	init_raycaster(t_cub *cub);
-int	raycast_all_vectors(t_cub *cub);
+int		init_raycaster(t_cub *cub);
+int		raycast_all_vectors(t_cub *cub);
 void	update_rays(t_cub *cub);
 void	update_fov(t_cub *cub, float fov);
 char	get_is_wall(t_map *map, int cx, int cy);
+int		get_is_cell_within_bounds(t_map *map, int cx, int cy);
 float	*get_grid_coords(t_map *map, int cx, int cy);
 
-int	init_floorcaster(t_cub *cub);
+int		init_floorcaster(t_cub *cub);
 void	update_floorcaster_params(t_cub *cub);
 float	get_floorcaster_param(t_cub *cub, int x, int y);
-int	floorcaster_clear(t_cub *cub);
+int		floorcaster_clear(t_cub *cub);
 
 
 /// RENDERER /////////////////

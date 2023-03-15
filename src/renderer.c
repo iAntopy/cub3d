@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/13 01:39:05 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/11 14:24:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,15 @@ int	texture_get_pixel(mlx_texture_t *tex, int x, int y)
 }
 */
 
+void	cub_put_pixel(mlx_image_t *img, int x, int y, int col)
+{
+	((uint32_t *)img->pixels)[x + y * img->width] = col;
+}
+
 int	get_texture_pixel(mlx_texture_t *tex, int x, int y)
 {
 //	printf("get_tex_pix : skymap width : %d, x : %d, y : %d\n", tex->width, x, y);
-	return (((int *)tex->pixels)[y * tex->width + x]);
+	return (((uint32_t *)tex->pixels)[x + y * tex->width]);
 }
 
 void	render_skymap_column(t_cub *cub, int x, int end_y)
@@ -127,7 +132,7 @@ void	render_skymap_column(t_cub *cub, int x, int end_y)
 //	printf("skymap : x : %d, end_y %d, tex_col : %d\n", x, end_y, tex_col);
 	y = -1;
 	while (++y < end_y)
-		mlx_put_pixel(cub->renderer.imgz, x, y,
+		cub_put_pixel(cub->renderer.walls_layer, x, y,
 			get_texture_pixel(cub->tex.skymap, tex_col, y));// potentially find some sophisticated function for y.
 }
 
@@ -146,12 +151,13 @@ void	render_walls(t_cub *cub)
 	int		half_texh;
 	int		scn_fheight;
 	int		scn_height;
+	int		half_height;
 	
 	int		scn_start_y;
 	int		tex_start_x;
 	int		*sides;
 	mlx_texture_t	*tex;
-	int		*pxls;
+	uint32_t	*pxls;
 //	int		y_offset;
 //	float		incr;
 	float		ratio;
@@ -163,10 +169,12 @@ void	render_walls(t_cub *cub)
 	float		rx;
 	float		ry;
 
-	clear_image_buffer(cub->renderer.imgz);
+//	printf("Randy : Clear image buffer \n");
+	clear_image_buffer(cub->renderer.walls_layer);
+//	printf("Randy : Cleared \n");
 	sides = (int *)cub->hero.coll_sides->arr - 1;
 	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
-
+//	printf("Dist for first ray : %f\n", _mtx_index_f(cub->hero.distances, 0, 0));
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
@@ -174,11 +182,14 @@ void	render_walls(t_cub *cub)
 		rays_y = _mtx_index_f(cub->hero.rays[1], i, 0);//(float *)cub->hero.rays[0]->arr - 1;
 	
 		tex = cub->tex.walls[*(++sides)];
+//		printf("Randy : tex : %p\n", tex);
 		half_texh = (tex->height >> 1);
 		tex_start_x = (int)(*(++tex_info) * tex->width);
 		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
 		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
+		half_height = (scn_height >> 1);
 
+//		printf("scn_fheight : %d, scn_height : %d, tex_start_x : %d\n", scn_fheight, scn_height, tex_start_x);
 		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
 //		y_offset = (tex->height >> 2);//(fheight - height) >> 1;// divide by 2
 //		printf("col %d, sx, sy : (%d, %d), fh, h: (%d, %d), yoff %d\n", i, tex_start_x, scn_start_y,
@@ -187,24 +198,23 @@ void	render_walls(t_cub *cub)
 //		incr = (float)(tex->height - y_offset) / (float)scn_height;// * tex->width;
 
 		ratio = (float)tex->height / (float)scn_fheight;
-		pxls = (int *)tex->pixels + tex_start_x;
+		pxls = (uint32_t *)tex->pixels + tex_start_x;
 //		pxls = (int *)tex->pixels + tex_start_x + half_texh * tex->width;
 //			+ (int)((tex->height - (scn_start_y * ratio)) >> 1) * tex->width;
 
+//		printf("Randy : wall while enter from height %d to %d\n", scn_start_y, scn_height);
 		j = -1;
 		while (++j < scn_height)
-			mlx_put_pixel(cub->renderer.imgz, i, scn_start_y + j,
-				//start_y + j, pxls[(int)(j * incr) * tex->width]);//find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
-//				find_wall_texture_pixel(pxls, (int)(j * incr) * tex->width));
-//				find_wall_texture_pixel(pxls, (int)(half_texh - (j * ratio - (scn_height >> 2))) * tex->width));
-				find_wall_texture_pixel(pxls,
-					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));
+			cub_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
+				pxls[(int)(((j - half_height) * ratio) + half_texh) * tex->width]);
+//			mlx_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
+//				find_wall_texture_pixel(pxls,
+//					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));
 		
 //////////////	SKYMAP RENDERING ///////////////////
 		render_skymap_column(cub, i, scn_start_y);
 
 //////////////	FLOORCASTING  //////////////////////
-
 		j = scn_start_y + j - 1;
 		while (++j < SCN_HEIGHT)
 		{
@@ -215,7 +225,8 @@ void	render_walls(t_cub *cub)
 //			ry = rays_y * param + cub->hero.py;
 //			printf("floor (rayx, rayy) : (%f, %f),  pixel collision : (%f, %f), param : %f\n",
 //				rays_x, rays_y, rx, ry, param);
-			mlx_put_pixel(cub->renderer.imgz, i, j,
+//			mlx_put_pixel(cub->renderer.walls_layer, i, j,
+			cub_put_pixel(cub->renderer.walls_layer, i, j,
 				get_texture_pixel(cub->tex.floor,
 					(int)(fmodf(rx, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->width),
 					(int)(fmodf(ry, CELL_WIDTH) * cub->inv_cw * cub->tex.floor->height)));
@@ -230,7 +241,9 @@ void	render_walls(t_cub *cub)
 void	render_scene(t_cub *cub)
 {
 //	printf("(((_______( RENDERING THAT SCENE BABYY !! )_________)))\n\n");
+//	ft_deltatime_usec_note(NULL);
 	render_walls(cub);
+//	ft_deltatime_usec_note("What a day to be  alive");
 	cub->renderer.requires_update = 0;
 ///	render_skymap(cub);	// potential addition
 //	render_ui(cub);		// potential addition

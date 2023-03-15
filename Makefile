@@ -24,8 +24,7 @@ SRC_FLS	:=	main.c 			\
 			color_shift		\
 			color_creat.c
 			
-
-SRCS	:= $(addprefix src/, $(SRC_FLS))
+RCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
 
@@ -103,3 +102,4 @@ fclean: clean
 re: clean all
 
 .PHONY: all, clean, fclean, re, libmlx
+
