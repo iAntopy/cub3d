@@ -18,11 +18,14 @@ SRC_FLS	:=		main.c 			\
 			renderer.c			\
 			player_controls.c	\
 			prebuilt_map_tools.c	\
+			floor_caster.c		\
+			tex_parse.c			\
+			texture.c			\
 			t_map_parse.c 		\
 			t_map_tool.c 		\
 			t_wall_chk.c		\
-			tex_parse.c			\
-			floor_caster.c
+			t_color_shift.c		\
+			t_color_creat.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
