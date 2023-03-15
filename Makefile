@@ -6,11 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-<<<<<<< HEAD
 #    Updated: 2023/03/14 19:39:12 by gehebert         ###   ########.fr        #
-=======
-#    Updated: 2023/03/12 21:46:30 by iamongeo         ###   ########.fr        #
->>>>>>> origin/ian_bonus
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,18 +20,11 @@ SRC_FLS	:=	main.c 			\
 			map_tool.c 		\
 			tex_parse.c		\
 			wall_chk.c		\
-<<<<<<< HEAD
 			floor_caster.c 	\
 			color_shift		\
 			color_creat.c
 			
-RCS	:= $(addprefix src/, $(SRC_FLS))
-=======
-			floor_caster.c	\
-			update_loop.c
-
-SRCS	:= $(addprefix src/, $(SRC_FLS))
->>>>>>> origin/ian_bonus
+SRC	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
 
