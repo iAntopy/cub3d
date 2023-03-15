@@ -15,13 +15,13 @@ SRC_FLS	:=		main.c 			\
 			error_handling.c 	\
 			init_raycaster.c	\
 			update_raycaster.c	\
-			renderer.c		\
+			renderer.c			\
 			player_controls.c	\
-			map_parse.c 		\
-			map_tool.c 		\
 			prebuilt_map_tools.c	\
-			tex_parse.c		\
-			wall_chk.c		\
+			t_map_parse.c 		\
+			t_map_tool.c 		\
+			t_wall_chk.c		\
+			tex_parse.c			\
 			floor_caster.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
