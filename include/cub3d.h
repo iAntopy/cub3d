@@ -122,7 +122,7 @@ typedef struct s_paint
 {
 	void *imgz[4];
 	void *mask[3];
-	void *txtr[imgz];
+	void *txtr;
 }	t_paint;
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.

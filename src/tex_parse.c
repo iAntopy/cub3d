@@ -215,7 +215,7 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 	else if (id == 4)
 		cub->tex.floor = mlx_load_png(&tex[1]);
 	else if (id == 5)
-		cub->tex.skymap = mlx_load_png(tex/skymap.png);
+		cub->tex.skymap = mlx_load_png(tex/sky_star.png);
 	return (cub);
 }
 
@@ -334,5 +334,3 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 	}	
 	return (setup_wall_textures(cub));
 }
-
-*/
