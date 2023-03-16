@@ -193,7 +193,7 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 //	return (0);
 }
 
-/*
+
 t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 {
 	// unsigned	color;
@@ -214,10 +214,11 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 		cub->tex.walls[S_SIDE] = mlx_load_png(&tex[1]);
 	else if (id == 4)
 		cub->tex.floor = mlx_load_png(&tex[1]);
-	// else if (id == 6)
-	// 	cub->tex.skymap = mlx_load_png(tex/skymap.png);
+	else if (id == 5)
+		cub->tex.skymap = mlx_load_png(tex/skymap.png);
 	return (cub);
 }
+
 		// while (line[i])
 			// 	if (!ft_in_set(line[i++], " ,0123456789"))
 			// 		return (0);
