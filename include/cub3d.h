@@ -265,16 +265,5 @@ void	cub_player_zoom(t_cub *cub, float dz);
 /// ERROR HANDLING ////////////
 int	report_mlx_init_error(void);
 int	report_malloc_error(void);
-/// color_parse
-
-int get_t (int trgb);
-int get_b (int trgb);
-int get_g (int trgb);
-int get_r (int trgb);
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_ut(int trgb);
-unsigned char get_ur(int trgb);
-unsigned char get_ug(int trgb);
-unsigned char get_ub(int trgb);
 
 #endif
