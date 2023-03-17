@@ -122,7 +122,7 @@ typedef struct s_paint
 {
 	void *imgz[4];
 	void *mask[3];
-	void *txtr;
+	// mlx_texture_t *txtr;
 }	t_paint;
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
@@ -136,6 +136,8 @@ typedef struct s_texture_data
 	char		**rgbx;
 	int 		color[2];
 	char 		*tex_n[4];		// tex_name
+			*img;
+	mlx_texture_t **txtr;
 }	t_tex;
 
 typedef struct s_raycaster_data		t_rcast;
