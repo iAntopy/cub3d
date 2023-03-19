@@ -2,6 +2,8 @@ G  "tex/w_side.png"
 N  "tex/n_side.png" 
 E  "tex/e_side.png"
 S  "tex/s_side.png"
+C 210,115,0
+F 155,155,10
 
 111111111111
 100001000001
