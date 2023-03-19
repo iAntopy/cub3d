@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/03/11 15:22:03 by iamongeo         ###   ########.fr       */
-=======
-/*   Updated: 2023/03/13 00:47:27 by iamongeo         ###   ########.fr       */
->>>>>>> origin/ian_bonus
+/*   Updated: 2023/03/19 18:27:01 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +51,6 @@ void	cub_key_handler(mlx_key_data_t event, void *param)
 		return ;
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
-<<<<<<< HEAD
 	else if (event.key == MLX_KEY_W)
 		cub_player_move(cub, 10, 0);
 	else if (event.key == MLX_KEY_S)
@@ -72,16 +67,6 @@ void	cub_key_handler(mlx_key_data_t event, void *param)
 		cub_player_zoom(cub, -0.1);
 	else if (event.key == MLX_KEY_DOWN)
 		cub_player_zoom(cub, 0.1);
-=======
-//	else if (event.key == MLX_KEY_W && event.action == MLX_PRESS)
-///		cub_player_move(cub, 10, 0);
-//	else if (event.key == MLX_KEY_S && event.action == MLX_PRESS)
-//		cub_player_move(cub, -10, 0);
-//	else if (event.key == MLX_KEY_A && event.action == MLX_PRESS)
-//		cub_player_move(cub, 0, -10);
-//	else if (event.key == MLX_KEY_D && event.action == MLX_PRESS)
-//		cub_player_move(cub, 0, 10);
->>>>>>> origin/ian_bonus
 }
 
 void	on_scroll(double deltax, double deltay, void *param)

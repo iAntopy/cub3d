@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/03/11 15:48:33 by iamongeo         ###   ########.fr       */
-=======
-/*   Updated: 2023/03/13 01:24:00 by iamongeo         ###   ########.fr       */
->>>>>>> origin/ian_bonus
+/*   Updated: 2023/03/19 18:30:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +20,8 @@
 # include <string.h>
 # include <math.h>
 
-# include "MLX42/MLX42.h"
-# include "libft.h"
+# include "../lib/MLX42/include/MLX42/MLX42.h"
+# include "../lib/libft/libft.h"
 # include "mtxlib.h"
 
 # define SCN_WIDTH  800

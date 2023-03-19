@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/14 19:39:12 by gehebert         ###   ########.fr        #
+#    Updated: 2023/03/19 18:27:25 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC_FLS	:=	main.c 			\
 			tex_parse.c		\
 			wall_chk.c		\
 			floor_caster.c 	\
-			color_shift		\
+			color_shift.c		\
 			color_creat.c
 			
 SRC	:= $(addprefix src/, $(SRC_FLS))
