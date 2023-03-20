@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/11 06:51:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:09:52 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 // #include "../include/textur.h"
 
 	//      // tex_pars

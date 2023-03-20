@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 19:45:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:09:58 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 int	renderer_clear(t_cub *cub)
 {
