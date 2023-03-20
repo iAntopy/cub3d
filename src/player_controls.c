@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 22:30:32 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:45:57 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 // Pass some positive/negative increment to rotate right/left
 void	cub_player_rotate(t_cub *cub, float rot)

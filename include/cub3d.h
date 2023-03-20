@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 22:31:19 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:47:29 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/libft/libft.h"
-# include "mtxlib.h"
+# include "../lib/mtxlib/includes/mtxlib.h"
 
 # define SCN_WIDTH  800
 # define SCN_HEIGHT 640
