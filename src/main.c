@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 22:40:04 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:04:02 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,8 +219,8 @@ int	main(int argc, char **argv)
 		printf("DEBUG: TEX_ TEST! START!\n");
 			
 		// 	// 	set img to be display
-			cub.tex.plain = mlx_load_png("tex/w_side.png");
-			cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.plain);
+			// cub.tex.plain = mlx_load_png("tex/w_side.png");
+			// cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.plain);
 			// mlx_image_to_window(cub.mlx, cub.imgz, 0, 0);	
 		// // ///test_img_to_window
 		// 	cub.color = mlx_new_image(cub.mlx, 128, 128);

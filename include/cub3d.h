@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 22:47:29 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:00:13 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,17 +301,18 @@ t_cub			path_from_line(t_cub cub);
 
 
 /// COLOR PARSE ////////////
-int 	str_to_color(int r, int g, int b, int t);
-int get_t (int trgb);
-int get_b (int trgb);
-int get_g (int trgb);
-int get_r (int trgb);
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_ut(int trgb);
-unsigned char get_ur(int trgb);
-unsigned char get_ug(int trgb);
-unsigned char get_ub(int trgb);
-
+int 			str_to_color(int r, int g, int b, int t);
+int 			get_t (int trgb);
+int				get_b (int trgb);
+int				get_g (int trgb);
+int 			get_r (int trgb);
+int 			create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+unsigned char	get_ut(int trgb);
+unsigned char	get_ur(int trgb);
+unsigned char	get_ug(int trgb);
+unsigned char	get_ub(int trgb);
+/// TEXTURE REF
+t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex);
 // void	    	print_map_next(t_map *m, int i, int j);
 // void    		print_map(t_map *m);
 // void			print_img(t_map *map, t_cub cub);

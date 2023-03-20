@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/19 22:49:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:01:32 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,35 +127,30 @@
 // 	return (((unsigned char *)&trgb)[0]);
 // }
 	/// should get file info about tex_color (sky/floor)
-// int 	parse_color(t_config *config, int key, char const *line)
-		// {
-		// 	int			i;
-		// 	unsigned	color;
-		// 	t_str		*str[2];
+t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
+{
+	// unsigned	color;
+	// char		*str[2];
+	// int			i;
 
-		// 	i = 1;
-		// 	while (line[i])
-		// 		if (!ft_in_set(line[i++], " ,0123456789"))
-		// 			return (0);
-		// 	str[0] = NULL;
-		// 	str[1] = NULL;
-		// 	if (!(str[0] = ft_split(line, ' ')) || str_length(str[0]) != 2
-		// 		|| !(str[1] = ft_split(str[0]->next->content, ','))
-		// 		|| str_length(str[1]) != 3)
-		// 		return (str_clear(&str[0]) || str_clear(&str[1]));
-		// 	if ((int)((color = str_to_color(str[1]))) < 0)
-		// 		return (str_clear(&str[0]) || str_clear(&str[1]));
-		// 	config->c[(key == C_F) ? TEX_FLOOR : TEX_SKY] = color;
-		// 	return ((str_clear(&str[0]) || str_clear(&str[1])) | 1);
-// }
-		//chk if arg = 12
-		// txtr_name + path * 4 = 8
-		// txtr_color_name + color_id * 2 = 4
+	// i = 1;
 
-	/// for each: chk_name ref AND chk_path
-		//		if (yes && yes) attib name to path ... 
-		//		also if (name is color_name) : str_to_color
+	// str[0] = tex;
 
+	if (id == 0)
+		cub->tex.walls[W_SIDE] = mlx_load_png(&tex[1]);
+	else if (id == 1)
+		cub->tex.walls[N_SIDE] = mlx_load_png(&tex[1]);
+	else if (id == 2)
+		cub->tex.walls[E_SIDE] = mlx_load_png(&tex[1]);
+	else if (id == 3)
+		cub->tex.walls[S_SIDE] = mlx_load_png(&tex[1]);
+	else if (id == 4)
+		cub->tex.floor = mlx_load_png(&tex[1]);
+	// else if (id == 6)
+	// 	cub->tex.skymap = mlx_load_png(tex/skymap.png);
+	return (cub);
+}
 
 static int	setup_wall_textures(t_cub *cub)
 {
@@ -220,24 +215,24 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 			if ( id < 0)
 				return (error_clear("9, Texture Name unmatching error !\n", map, &txtr));
 			else if (id < 4)
+				cub = get_tex_by_id(cub, id, txtr[1]);
+			else if (id < 7)
 			{
-				cub->tex.tex_n[id] = txtr[1];//
-				printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub->tex.tex_n[id]); 
-			}
-			else if (id < 6)
-			{
-				
-				color = ft_split(txtr[1], ',');
-				printf("DEBUG:  ID: %d :: color_num[0]: R = %s :: \n", id, color[0]); 
-				printf("DEBUG:  ID: %d :: color_num[1]: G = %s :: \n", id, color[1]); 
-				printf("DEBUG:  ID: %d :: color_num[2]: B = %s :: \n", id, color[2]); 
-				if (id == 4)
-					cub->tex.color[0] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),ft_atoi(color[2]), 0xff);
-				else if (id == 5)
-					cub->tex.color[1] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),ft_atoi(color[2]), 0xff);
-						// cub->tex.color[1] = str_to_color(color[0], color[1],color[2]);
-						// cub->tex.color[1] = str_to_color(cub->tex.rgbx);
-						// cub->tex.color[1] = str_to_color(ft_split(txtr[1], ','),1);
+				if (*txtr[1] < '0' || *txtr[1] > '9')
+					get_tex_by_id(cub, id, txtr[1]);
+				else
+				{
+					color = ft_split(txtr[1], ',');
+					printf("DEBUG:  ID: %d :: color_num[0]: R = %s :: \n", id, color[0]); 
+					printf("DEBUG:  ID: %d :: color_num[1]: G = %s :: \n", id, color[1]); 
+					printf("DEBUG:  ID: %d :: color_num[2]: B = %s :: \n", id, color[2]); 
+					if (id == 4)
+						cub->tex.color[0] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),
+							ft_atoi(color[2]), 0xff);
+					else if (id == 5)
+						cub->tex.color[1] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),
+							ft_atoi(color[2]), 0xff);
+				}
 			}
 		}
 		else 
