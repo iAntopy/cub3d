@@ -78,24 +78,13 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
-/// opacity
-enum	e_light
-{
-	MASK   = 0,
-	FULL   = 1,
-	SHADE  = 2,
-	SHADW  = 3
-};
-
-enum	e_mask
-{
-	LIGHT = 0,
-	SOFT  = 1,
-	DARK  = 2
-};
-
 /// PARSING ///////////////////
 // / coordonees standard
+typedef struct  s_pos
+{
+	int		x;
+	int		y;
+}   t_pos;
 
 typedef struct s_map_data
 {
@@ -113,17 +102,12 @@ typedef struct s_map_data
 	char	**tab;		// char input parsed
 	int 	pos_x;		// aqui_X
 	int		pos_y;		// aqui_y
-	int		lines_to_map;
-	int		hero_side;
-	int		flg_chk;
+//	int		cases;		// total case all gabarit
+//	char 	*array;		// char* array 
+	int	lines_to_map;
+	int	hero_side;
+	int	flg_chk;
 }	t_map;
-
-typedef struct s_paint
-{
-	void *imgz[4];
-	void *mask[3];
-	// mlx_texture_t *txtr;
-}	t_paint;
 
 // All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
 // Potentially, animated wall textures could be in a 2D array[side][anim_iteration] up to n nb of frames in the animation.
@@ -136,8 +120,6 @@ typedef struct s_texture_data
 	char		**rgbx;
 	int 		color[2];
 	char 		*tex_n[4];		// tex_name
-			*img;
-	mlx_texture_t **txtr;
 }	t_tex;
 
 typedef struct s_raycaster_data		t_rcast;
@@ -277,17 +259,17 @@ typedef struct s_cub3d_core_data
 
 /// PARSING ///////////////////
 //int	load_map(t_cub *cub, char *map_file);
-int		build_collision_map(t_map *map);
+int	build_collision_map(t_map *map);
 void	print_collision_map(t_map *map);
-int		build_grid_coords_map(t_map *map);
+int	build_grid_coords_map(t_map *map);
 void	print_map(t_map *map);
 
 
 /// MAP_CHECKER ///////////////
 //map_parse
 t_map			*init_map(t_map *map);
-int				map_checker(t_cub *cub, t_map *map, char *file);
-int				tex_parse(t_cub *cub, t_map *map, int fd);
+int			map_checker(t_cub *cub, t_map *map, char *file);
+int			tex_parse(t_cub *cub, t_map *map, int fd);
 t_map			*wall_check(t_map *map);
 // t_map			*map_frame(t_map *map, int fd);
 //map_tool
@@ -349,7 +331,16 @@ void	cub_player_zoom(t_cub *cub, float dz);
 /// ERROR HANDLING ////////////
 int	report_mlx_init_error(void);
 int	report_malloc_error(void);
+/// color_parse
 
-
+int get_t (int trgb);
+int get_b (int trgb);
+int get_g (int trgb);
+int get_r (int trgb);
+int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+unsigned char get_ut(int trgb);
+unsigned char get_ur(int trgb);
+unsigned char get_ug(int trgb);
+unsigned char get_ub(int trgb);
 
 #endif

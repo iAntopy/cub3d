@@ -88,21 +88,16 @@
 	// 	return (img);
 // }
 
-void	build_img(t_tex *tex)//t_paint *img)
-{
-	
-		tex->txtr[0] =  mlx_load_png("tex/mask/wall_x_0.png");
-        tex->txtr[1] =  mlx_load_png("tex/mask/wall_x_1.png");
-        tex->txtr[2] =  mlx_load_png("tex/mask/wall_x_2.png");
-        tex->txtr[3] =  mlx_load_png("tex/mask/wall_x_3.png");
-        tex->txtr[img[0]] =  mlx_load_png("tex/mask/wall_x_a.png");
-        tex->txtr[img[1]] =  mlx_load_png("tex/mask/wall_x_b.png");
-        tex->txtr[img[2]] =  mlx_load_png("tex/mask/wall_x_c.png");
-
-
-		// img->mask[0]  =  mlx_load_png(cub, "tex/n_side.xpm");
-        // img->mask[1]  =  mlx_load_png(cub, "tex/n_side.xpm");
-        // img->mask[2]  =  mlx_load_png(cub, "tex/n_side.xpm");
-
+// void	assigne_img(t_cub *cub, t_map *map, t_img *img)
+// {
+	// 	img->w_side = extract_img(cub, "tex/w_side.xpm");
+	// 	img->n_side = extract_img(cub, "tex/n_side.xpm");
+	// 	img->e_side = extract_img(cub, "tex/e_side.xpm");
+	// 	img->s_side = extract_img(cub, "tex/s_side.xpm");
 		
-}
+	// 	// img->floor = extract_img(cub, "tex/floor.xpm");
+	// 	// img->ciel = extract_img(cub, "tex/coin.xpm");
+	// 	// img->exit = extract_img(mlx, "img/exit.xpm");
+	// 	// img->wall = extract_img(mlx, "img/rock.xpm");
+	// 	// img->tile = extract_img(mlx, "img/tile.xpm");
+// }
