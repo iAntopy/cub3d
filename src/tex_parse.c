@@ -6,11 +6,12 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/19 21:34:25 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:32:19 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
+
 // #include "../include/textur.h"
 
 	//      // tex_pars
@@ -79,52 +80,52 @@
 
 
 /// color_to_int ...
-int 	str_to_color(int r, int g, int b, int t)
-{
-	return (t << 24 | r << 16 | g << 8 | b);
-}
+// int 	str_to_color(int r, int g, int b, int t)
+// {
+// 	return (t << 24 | r << 16 | g << 8 | b);
+// }
 
-int get_t (int trgb)
-{
-	return((trgb >> 24) & 0xFF);
-}
+// int get_t (int trgb)
+// {
+// 	return((trgb >> 24) & 0xFF);
+// }
 
-int get_b (int trgb)
-{
-	return((trgb >> 16) & 0xFF);
-}
+// int get_b (int trgb)
+// {
+// 	return((trgb >> 16) & 0xFF);
+// }
 
-int get_g (int trgb)
-{
-	return((trgb >> 8) & 0xFF);
-}
+// int get_g (int trgb)
+// {
+// 	return((trgb >> 8) & 0xFF);
+// }
 
-int get_r (int trgb)
-{
-	return(trgb & 0xFF);
-}
+// int get_r (int trgb)
+// {
+// 	return(trgb & 0xFF);
+// }
 
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
-{
-	return (*(int *)(unsigned char [4]){b, g, r, t});
-}
-unsigned char get_ut(int trgb)
-{
-	return (((unsigned char *)&trgb)[3]);
-}
+// int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
+// {
+// 	return (*(int *)(unsigned char [4]){b, g, r, t});
+// }
+// unsigned char get_ut(int trgb)
+// {
+// 	return (((unsigned char *)&trgb)[3]);
+// }
 
-unsigned char get_ur(int trgb)
-{
-	return (((unsigned char *)&trgb)[2]);
-}
-unsigned char get_ug(int trgb)
-{
-	return (((unsigned char *)&trgb)[1]);
-}
-unsigned char get_ub(int trgb)
-{
-	return (((unsigned char *)&trgb)[0]);
-}
+// unsigned char get_ur(int trgb)
+// {
+// 	return (((unsigned char *)&trgb)[2]);
+// }
+// unsigned char get_ug(int trgb)
+// {
+// 	return (((unsigned char *)&trgb)[1]);
+// }
+// unsigned char get_ub(int trgb)
+// {
+// 	return (((unsigned char *)&trgb)[0]);
+// }
 	/// should get file info about tex_color (sky/floor)
 // int 	parse_color(t_config *config, int key, char const *line)
 		// {

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 21:35:19 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:40:04 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,10 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, int side)
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = M_PI - side * cub->inv_two_pi;
-	cub->hero.cur_speed = 0;
-	cub->hero.movx = 0;
-	cub->hero.movy = 0;
-	
-//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
-
-
+		// cub->hero.cur_speed = 0;
+		// cub->hero.movx = 0;
+		// cub->hero.movy = 0;
+		//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
 	printf("SET PLAYER POS : ori : %f, sky_tex_offset : %d\n", cub->hero.ori, cub->skymap_tex_offset);
 	return (0);
 }
@@ -195,8 +192,8 @@ int	main(int argc, char **argv)
 
 	//// ESSENTIAL DATA FOR SKYMAP !! ////////
 	cub.skymap_radial_width = cub.tex.skymap->width * cub.inv_two_pi;// skymap.width / 2pi
-	cub.skymap_tex_offset = (int)(cub.hero.ori * cub.skymap_radial_width);
-	cub.skymap_fov_to_texture = FOV90 * cub.skymap_radial_width;
+	// cub.skymap_tex_offset = (int)(cub.hero.ori * cub.skymap_radial_width);
+	// cub.skymap_fov_to_texture = FOV90 * cub.skymap_radial_width;
 
 
 	printf("Init mlx SUCCESSFUL !\n");
@@ -239,7 +236,7 @@ int	main(int argc, char **argv)
 	mlx_key_hook(cub.mlx, &cub_key_handler, &cub);
 	mlx_scroll_hook(cub.mlx, &on_scroll, &cub);
 	mlx_close_hook(cub.mlx, &on_close, &cub);
-	mlx_loop_hook(cub.mlx, &cub_on_update, &cub);
+	// mlx_loop_hook(cub.mlx, &cub_on_update, &cub);
 
 	printf("Starting mlx loop\n");
 	mlx_loop(cub.mlx);

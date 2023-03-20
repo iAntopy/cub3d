@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 21:35:04 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:31:19 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,15 @@
 # define FOV60 1.047197551196597746f
 # define FOV60_HF 0.52359877559829887f
 
-# define FOV FOV60//	2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
-# define FOV_HF FOV60_HF//	1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define FOV20 0.349065850398865915f
+# define FOV20_HF 0.17453292519943295f
+
+// # define FOV FOV60//	2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+// # define FOV_HF FOV60_HF//	1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define FOV FOV60
+# define FOV_HF FOV60_HF
+# define FOV_MIN FOV20
+# define FOV_MAX FOV90
 # define PLAYER_HEIGHT 20// Height of player in pixels or Height of camera (used for floorcasting).
 
 # define ENABLE_MINIMAP 1
@@ -337,7 +344,8 @@ void	render_scene(t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void	cub_player_rotate(t_cub *cub, float rot);
-void	cub_player_move(t_cub *cub, float d_walk, float d_strafe, float d_time);
+// void	cub_player_move(t_cub *cub, float d_walk, float d_strafe, float d_time);
+void	cub_player_move(t_cub *cub, float d_walk, float d_strafe);
 void	cub_player_zoom(t_cub *cub, float dz);
 
 
