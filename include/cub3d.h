@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 18:30:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 21:35:04 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,59 @@ typedef struct s_texture_data
 	char 		*tex_n[4];		// tex_name
 }	t_tex;
 
+typedef struct s_raycaster_data		t_rcast;
+typedef struct s_cub3d_core_data	t_cub;
+
+typedef struct s_ray_collision_data
+{
+//	External ref
+	t_rcast	*rcast;
+
+//	Struct constants;
+	int		idx;
+	int		*pcx;//	hero cell position in x
+	int		*pcy;// hero cell position in y
+	float	*px;// hero position x; Pointer to cub->hero.px.
+	float	*py;// hero position y;
+	float	*p_dirx;// player's directional vector in x;
+	float	*p_diry;// player's directional vector in y;
+	float	*rx;// ray vector direction in x for specific ray; Pointer to rcast->rays[0] at rays idx.
+	float	*ry;// ray vector direction in y for specific ray; Pointer to rcast->rays[1] at rays idx.
+
+//	Init data
+	int		c_offx;//	x offset of cell to check in collision map
+	int		c_offy;//	y offset of cell to check in collision map
+	int		cincr_x;//	direction of cell move for vertical axis collision. Either 1 or -1.
+	int		cincr_y;//	direction of cell move for horizontal axis collision. Either 1 or -1.
+	float	a;//	ray slope
+	float	inv_a;//a inverse == 1/a;
+	float	b;//	ray y offset
+
+//	Tracked data (final value is resulting data)
+	int		cx;// tracked collision cell x; Init to hero.cell_x. Final value is collision cell x.
+	int		cy;// tracked collision cell y; Init to hero.cell_y. Final value is collision cell y.
+	
+//	Resulting data
+	int		side;// collision side. Can be compared to side enums.
+	float	hitx;// collision world coord x;
+	float	hity;// collision world coord y;
+	float	dist;// collision distance to projection plane.
+	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
+	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
+
+}	t_rdata;
+
+typedef struct s_raycaster_data
+{
+	t_cub		*cub;
+	t_map		*map;
+//	float		**grid_coords;// Only reference. Do not free.
+	t_mtx		*theta_offs;// Angle offsets for each angle from 0. Malloced mtx.
+	t_mtx		*ray_thetas;// Angles for each ray. Malloced mtx.
+	t_mtx		*rays[2];// X, Y part for each ray vector. index 0 are Xs, 1 are Ys Malloced mtx.
+	t_rdata		*rdata;//	malloced array of struct with collision data. len SCR_WIDTH
+}	t_rcast;
+
 typedef struct s_main_character_data
 {
 	int		cell_x;
@@ -138,6 +191,12 @@ typedef struct s_main_character_data
 	float	py;
 	float	ori;//	player orientation in radian
 	float	ori_factor;//	ori / 2pi, updated in cub_player_rotate
+	float	*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
+	float	*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
+	
+	t_rcast	rcast;
+}	t_hero;
+/*
 	t_mtx	*theta_offsets;	// linspace from -half_fov to +half_fov. DOES NOT take into account player orientation
 	t_mtx	*ray_thetas;	// theta_offsets + player ori. Specific thetas for player pos. Call update_rays().
 	t_mtx	*rays[2];	// first ptr is the cosine array from linspace thetas, second is sin array from thetas.
@@ -156,14 +215,8 @@ typedef struct s_main_character_data
 				//	0.5 * row[1] to SCN_MIDY + 0.5 * row[1] (and x is the index of the ray being
 				//	rendered.)
 				// 
-
-	float	*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
-	float	*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
-	
-	float	cur_speed;
-	float	movx;
-	float	movy;
-}	t_hero;
+*/
+//}	t_hero;
 
 typedef struct s_renderer
 {
@@ -173,7 +226,6 @@ typedef struct s_renderer
 	mlx_image_t	*imgz;
 	
 	
-
 
 //////	FLOOR CASTER ////////////
 	float	*near_z_dists;// Array of distances to every column of the projected
@@ -189,13 +241,13 @@ typedef struct s_renderer
 typedef struct s_cub3d_core_data
 {
 	mlx_t	*mlx;
-	xpm_t	*xpm;
-	mlx_image_t	*imgz;
-	mlx_image_t *color;
-	mlx_texture_t *texr;
+//	xpm_t	*xpm;
+	mlx_image_t		*imgz;
+	mlx_image_t		*color;
+	mlx_texture_t	*texr;
 
-	int	scn_midx;	// mid screen x coordinate
-	int	scn_midy;	// mid screen y coordinate
+	int		scn_midx;	// mid screen x coordinate
+	int		scn_midy;	// mid screen y coordinate
 	float	inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
 	float	inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float	inv_two_pi;	// 1 / 2pi;
@@ -206,10 +258,9 @@ typedef struct s_cub3d_core_data
 	float	near_proj_factor;// = CELL_WIDTH * cub->near_z;
 	float	skymap_radial_width;// skymap_tex.width / 2pi (const after texture load)
 	int		skymap_tex_offset;// hero.ori * radial_width. texture pixel column index;
-	float	skymap_fov_to_texture;//  fov * radial_width.
+	float	skymap_fov_to_tex;//  fov * radial_width.
 					// converts screen coords to texture coords
 					// by multiplying (x - scn_midx) / SCN_WIDTH to it and add ori_offset.
-
 	t_map	map;
 	t_tex	tex;
 	t_hero	hero;
@@ -263,12 +314,13 @@ void	cub_on_update(void *param);
 
 /// RAYCASTER /////////////////
 int		init_raycaster(t_cub *cub);
-int		raycast_all_vectors(t_cub *cub);
+int		raycaster_clear(t_rcast *rcast, int exit_status);
+//int		raycast_all_vectors(t_cub *cub);
 void	update_rays(t_cub *cub);
 void	update_fov(t_cub *cub, float fov);
-char	get_is_wall(t_map *map, int cx, int cy);
+int		get_is_wall(t_map *map, int cx, int cy);
 int		get_is_cell_within_bounds(t_map *map, int cx, int cy);
-float	*get_grid_coords(t_map *map, int cx, int cy);
+//float	*get_grid_coords(t_map *map, int cx, int cy);
 
 int		init_floorcaster(t_cub *cub);
 void	update_floorcaster_params(t_cub *cub);

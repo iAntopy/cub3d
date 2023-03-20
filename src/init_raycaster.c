@@ -7,194 +7,46 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2023/03/11 14:23:42 by iamongeo         ###   ########.fr       */
 =======
 /*   Updated: 2023/03/12 21:47:56 by iamongeo         ###   ########.fr       */
 >>>>>>> origin/ian_bonus
+=======
+/*   Updated: 2023/03/11 20:24:29 by iamongeo         ###   ########.fr       */
+>>>>>>> brave
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	get_is_cell_within_bounds(t_map *map, int cx, int cy)
+int	raycaster_clear(t_rcast *rcast, int exit_status)
 {
-	return ((0 <= cx) && (cx < map->width) && (0 <= cy) && (cy < map->height));
+	mtx_clear_list(4, rcast->theta_offs, rcast->ray_thetas,
+		rcast->rays[0], rcast->rays[1]);
+	ft_free_p((void **)&rcast->rdata);
+	return (exit_status);
 }
 
-char	get_is_wall(t_map *map, int cx, int cy)
+static void	init_raydata_consts(t_cub *cub, t_rcast *rcast)
 {
-	return (map->collision_map[cy * map->width + cx]);
-}
+	t_rdata	*rd;
 
-// Returns a float ptr to the x world coordinate of the NW corner of the
-// (cx, cy) cell coordinate. fptr + 1 is the pointer to the y world coordinate.
-float	*get_grid_coords(t_map *map, int cx, int cy)
-{
-	return (map->grid_coords[cy] + (cx << 1));
-}
-/*
-static void	print_rays(t_mtx *xs, t_mtx *ys)
-{
-	mtx_print(xs);
-	mtx_print(ys);
-}
-*/
-void	print_map(t_map *map)
-{
-	int	i;
-	char	**l;
-
-	l = map->tab - 1;
-	printf("printing map with w, h : %d, %d\n", map->width, map->height);
-	while (*(++l))
+	rd = rcast->rdata - 1;
+	while ((++rd - rcast->rdata) < SCN_WIDTH)
 	{
-		i = -1;
-		while (++i < map->width)
-		{
-			if ((*l)[i] == '\0')
-				printf(" ");
-			else
-				printf("%c", (*l)[i]);
-		}
-		printf("\n");
+		rd->idx = (rd - (rcast->rdata));
+		rd->rcast = rcast;
+		rd->pcx = &cub->hero.cell_x;
+		rd->pcy = &cub->hero.cell_y;
+		rd->px = &cub->hero.px;
+		rd->py = &cub->hero.py;
+		rd->p_dirx = cub->hero.dirx;
+		rd->p_diry = cub->hero.diry;
+		rd->rx = _mtx_index_fptr(rcast->rays[0], rd->idx, 0);
+		rd->ry = _mtx_index_fptr(rcast->rays[1], rd->idx, 0);
 	}
-}
-
-/*
-static void	print_grid_coords(t_map *map)
-{
-	int		i;
-	int		j;
-	float	*fptr;
-
-	i = -1;
-	while (++i < map->height)
-	{
-		j = -1;
-		while (++j < map->width)
-		{
-			fptr = get_grid_coords(map, j, i);
-			printf("(%.3f, %.3f), ", *fptr, *(fptr + 1));
-		}
-		printf("\n");
-	}
-}
-*/
-
-void	print_collision_map(t_map *map)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < map->height)
-	{
-		j = -1;
-		while (++j < map->width)
-		{
-			if (get_is_wall(map, j, i))
-				printf("1");
-			else
-				printf("0");
-		}
-		printf("\n");
-	}
-}
-
-typedef struct s_ray_intersect_data
-{
-	t_cub	*cub;
-	int	*cell;
-	int	*cside;
-	float	*collisions;
-	float	*dists;
-	float	*texr;
-//	float	*fish;
-	float	**grid_coords;
-	int		idx;
-
-	int		sx;//	starting cell x	
-	int		sy;//	starting cell y
-	float	px;//	hero pos x
-	float	py;//	hero pos y
-	float	rx;//	ray vector delta x
-	float	ry;//	ray vector delta y
-//	int	dir[2];
-	int		dirx;//	simple direction of ray. dx < 0 -> -1, dy >= 0 = 1
-	int		diry;//	simple direction of ray. dy < 0 -> -1, dy >= 0 = 1
-
-	int		c_offx;//	x offset of cell to check in collision map
-	int		c_offy;//	y offset of cell to check in collision map
-
-//	int		cx;//	current cell x
-//	int		cy;//	current cell y
-//	float	ix;//	current intersect x
-//	float	iy;//	current intersect y
-//	float	vdx;//	current vertical intersect delta from px;
-//	float	vdy;//	current vertical intersect delta from py;
-//	float	hdx;//	current horizontal intersect delta from px;
-//	float	hdy;//	current horizontal intersect delta from py;
-	float	p_dirx;//	x part of player's directional vector
-	float	p_diry;//	y part of player's directional vector
-
-	//	line func data Y = ax + b
-	float	a;//	ray slope
-	float	inv_a;//a inverse == 1/a;
-	float	b;//	ray y offset
-	
-//	float	*dist;//	ptr to distance array where to put distance results
-
-}	t_rayint;
-
-int	build_collision_map(t_map *map)
-{
-	char	*colls;
-	int	i;
-	int	j;
-
-	printf("build collision map : entered. malloc total cells : %d\n", map->total_cells);
-	colls = NULL;
-	if (!ft_malloc_p(sizeof(char) * map->total_cells, (void **)&colls))
-		return (-1);
-	printf("build collision map : malloced\n");
-	
-	i = -1;
-	while (++i < map->height)
-	{
-		printf("build collision map : loopy %d\n", i);
-		j = -1;
-		while (++j < map->width)
-			colls[i * map->width + j] = (map->tab[i][j] == '1');
-	}
-	printf("build collision map : out loopy\n");
-	map->collision_map = colls;
-	return (0);
-}
-
-int	build_grid_coords_map(t_map *map)
-{
-	int		i;
-	int		j;
-	float	**gcoords;
-
-	printf("build grid coords entered \n");
-	gcoords = NULL;
-	if (!ft_malloc_p(sizeof(float *) * (map->height + 1), (void **)&gcoords))
-		return (-1);
-	printf("build grid coords : going on loopy\n");
-	gcoords[map->height] = NULL;
-	i = -1;
-	while (++i < map->height)
-	{
-		if (!ft_malloc_p(2 * sizeof(float) * map->width, (void **)&gcoords[i]))
-			return (-1);
-		j = -1;
-		while (++j < map->width)
-		{
-			gcoords[i][j << 1] = j * CELL_WIDTH;
-			gcoords[i][(j << 1) + 1] = i * CELL_WIDTH;
-		}
-	}
+<<<<<<< HEAD
 	printf("build grid coords : going off loopy\n");
 
 	map->grid_coords = gcoords;
@@ -546,40 +398,29 @@ void	update_fov(t_cub *cub, float fov)
 //	printf("fisheye correctors : \n");
 //	mtx_print(cub->hero.fisheye_correctors);
 	update_rays(cub);	
+=======
+>>>>>>> brave
 }
 
 int	init_raycaster(t_cub *cub)
 {
-	t_hero	*hero;
+	t_rcast	*rcast;
 
 	printf("Init raycaster :\n");
-	hero = &cub->hero;
-	hero->theta_offsets = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-	hero->ray_thetas = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-//	hero->fisheye_correctors = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-	hero->rays[0] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-	hero->rays[1] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-	hero->coll_walls = mtx_create_empty(SCN_WIDTH, 2, DTYPE_I);
-	hero->coll_sides = mtx_create_empty(SCN_WIDTH, 1, DTYPE_I);
-	hero->collisions = mtx_create_empty(SCN_WIDTH, 2, DTYPE_F);
-	hero->distances = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
-		
-	// tex_infos :	row[0] : ratio of pixel column from left to right,
-	// 		row[1] : total height of 
-	hero->tex_infos = mtx_create_empty(SCN_WIDTH, 2, DTYPE_F);
-	if (!hero->theta_offsets || !hero->ray_thetas
-		|| !hero->rays[0] || !hero->rays[1] 
-		|| !hero->coll_walls || !hero->coll_sides || !hero->collisions
-		|| !hero->distances || !hero->tex_infos)
-		return (-1);
-
-	hero->dirx = _mtx_index_fptr(hero->rays[0], SCN_WIDTH / 2, 0);
-	hero->diry = _mtx_index_fptr(hero->rays[1], SCN_WIDTH / 2, 0);
+	rcast = &cub->hero.rcast;
+	rcast->cub = cub;
+	rcast->map = &cub->map;
+	rcast->theta_offs = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->ray_thetas = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->rays[0] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->rays[1] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->rdata = malloc(sizeof(t_rdata) * SCN_WIDTH);
+	if (!rcast->theta_offs || !rcast->ray_thetas || !rcast->ray_thetas
+		|| !rcast->rays[0] || !rcast->rays[1] || !rcast->rdata)
+		return (raycaster_clear(rcast, EXIT_FAILURE));
+	cub->hero.dirx = _mtx_index_fptr(rcast->rays[0], SCN_WIDTH / 2, 0);
+	cub->hero.diry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH / 2, 0);
+	init_raydata_consts(cub, rcast);
 	update_fov(cub, FOV);
-	printf("all matrix buffers created \n");
-//	mtx_print(hero->theta_offsets);
-//	mtx_print(hero->ray_thetas);
-//	mtx_print(hero->fisheye_correctors);
-//	print_rays(hero->rays[0], hero->rays[1]);
 	return (0);
 }

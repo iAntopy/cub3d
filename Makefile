@@ -6,25 +6,25 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/19 18:27:25 by gehebert         ###   ########.fr        #
+#    Updated: 2023/03/19 21:36:39 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
-SRC_FLS	:=	main.c 			\
+SRC_FLS	:=		main.c 			\
 			error_handling.c 	\
 			init_raycaster.c	\
-			renderer.c		\
+			update_raycaster.c	\
+			renderer.c			\
 			player_controls.c	\
-			map_parse.c 		\
-			map_tool.c 		\
-			tex_parse.c		\
-			wall_chk.c		\
-			floor_caster.c 	\
-			color_shift.c		\
-			color_creat.c
-			
-SRC	:= $(addprefix src/, $(SRC_FLS))
+			prebuilt_map_tools.c	\
+			t_map_parse.c 		\
+			t_map_tool.c 		\
+			t_wall_chk.c		\
+			tex_parse.c			\
+			floor_caster.c
+
+SRCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
 
