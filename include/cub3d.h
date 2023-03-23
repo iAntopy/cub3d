@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 23:07:19 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/23 10:59:09 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@
 # define FOV20 0.349065850398865915f
 # define FOV20_HF 0.17453292519943295f
 
+// # define FOV FOV60//	2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+// # define FOV_HF FOV60_HF//	1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
 # define FOV FOV60
 # define FOV_HF FOV60_HF
 # define FOV_MIN FOV20
 # define FOV_MAX FOV90
-
-# define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
-
+# define PLAYER_HEIGHT 20// Height of player in pixels or Height of camera (used for floorcasting).
 
 # define ENABLE_MINIMAP 1
 
@@ -70,6 +70,20 @@
 # define TEX_FLOOR			5
 
 # define MAP_CHARS "01WNES"
+
+// PLAYER MOVES DEFINES
+//# define PLR_MAX_SPEED_FRW 150.0f//player max speed in  pixels/sec;
+//# define PLR_MAX_SPEED 100.0f
+# define PLR_ACCEL 20.0f// player acceleration in pixels/sec
+# define PLR_RESIST_FRW 0.5f// player speed multiplier for forward vector
+# define PLR_RESIST 0.5f// player speed multiplier in all other directions
+
+
+// ANIMATION LOOP DEFINES
+# define MAX_FPS 100
+# define FRAME_UTIME (int)(1000000 / MAX_FPS)// on_update usleep value;
+ 
+
 
 enum	e_sides
 {
@@ -117,6 +131,7 @@ typedef struct s_texture_data
 	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
 	mlx_texture_t	*skymap;	// yessss
 	mlx_texture_t	*floor;	// yessss
+	mlx_texture_t	*plain;	// what wait!	
 	char		**rgbx;
 	int 		color[2];
 	char 		*tex_n[4];		// tex_name
@@ -215,6 +230,9 @@ typedef struct s_renderer
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
 	mlx_image_t	*ui_layer;
+	mlx_image_t	*imgz;
+	
+	
 
 //////	FLOOR CASTER ////////////
 	float	*near_z_dists;// Array of distances to every column of the projected
@@ -283,21 +301,24 @@ t_cub			path_from_line(t_cub cub);
 
 
 /// COLOR PARSE ////////////
-int 	str_to_color(int r, int g, int b, int t);
-int get_t (int trgb);
-int get_b (int trgb);
-int get_g (int trgb);
-int get_r (int trgb);
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_ut(int trgb);
-unsigned char get_ur(int trgb);
-unsigned char get_ug(int trgb);
-unsigned char get_ub(int trgb);
-
+int 			str_to_color(int r, int g, int b, int t);
+int 			get_t (int trgb);
+int				get_b (int trgb);
+int				get_g (int trgb);
+int 			get_r (int trgb);
+int 			create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
+unsigned char	get_ut(int trgb);
+unsigned char	get_ur(int trgb);
+unsigned char	get_ug(int trgb);
+unsigned char	get_ub(int trgb);
+/// TEXTURE REF
+t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex);
 // void	    	print_map_next(t_map *m, int i, int j);
 // void    		print_map(t_map *m);
 // void			print_img(t_map *map, t_cub cub);
 
+/// UPDATE LOOP ///////////////
+void	cub_on_update(void *param);
 
 /// RAYCASTER /////////////////
 int		init_raycaster(t_cub *cub);
@@ -324,6 +345,7 @@ void	render_scene(t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void	cub_player_rotate(t_cub *cub, float rot);
+// void	cub_player_move(t_cub *cub, float d_walk, float d_strafe, float d_time);
 void	cub_player_move(t_cub *cub, float d_walk, float d_strafe);
 void	cub_player_zoom(t_cub *cub, float dz);
 
@@ -333,14 +355,5 @@ int	report_mlx_init_error(void);
 int	report_malloc_error(void);
 /// color_parse
 
-int get_t (int trgb);
-int get_b (int trgb);
-int get_g (int trgb);
-int get_r (int trgb);
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_ut(int trgb);
-unsigned char get_ur(int trgb);
-unsigned char get_ug(int trgb);
-unsigned char get_ub(int trgb);
 
 #endif

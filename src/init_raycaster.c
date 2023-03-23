@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init_raycaster.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 20:24:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:18:14 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+
+#include "../include/cub3d.h"
 
 int	raycaster_clear(t_rcast *rcast, int exit_status)
 {
