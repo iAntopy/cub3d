@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/23 11:07:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/25 15:19:37 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,20 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 	// i = 1;
 
 	// str[0] = tex;
-	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, &tex[1]);
+	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, &tex[0]);
 
 	if (id == 0)
-		cub->tex.walls[W_SIDE] = mlx_load_png(&tex[1]);
+		cub->tex.walls[W_SIDE] = mlx_load_png(&tex[0]);
 	else if (id == 1)
-		cub->tex.walls[N_SIDE] = mlx_load_png(&tex[1]);
+		cub->tex.walls[N_SIDE] = mlx_load_png(&tex[0]);
 	else if (id == 2)
-		cub->tex.walls[E_SIDE] = mlx_load_png(&tex[1]);
+		cub->tex.walls[E_SIDE] = mlx_load_png(&tex[0]);
 	else if (id == 3)
-		cub->tex.walls[S_SIDE] = mlx_load_png(&tex[1]);
+		cub->tex.walls[S_SIDE] = mlx_load_png(&tex[0]);
 	else if (id == 4)
-		cub->tex.floor = mlx_load_png(&tex[1]);
+		cub->tex.skymap = mlx_load_png(&tex[0]);
 	else if (id == 5)
-		cub->tex.skymap = mlx_load_png(&tex[1]);
+		cub->tex.floor = mlx_load_png(&tex[0]);
 	return (cub);
 }
 
