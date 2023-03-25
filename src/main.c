@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 23:04:02 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:09:58 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,11 +168,11 @@ int	main(int argc, char **argv)
 	mlx_focus(cub.mlx);
 //	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	// cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
-	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
-	if ((cub.tex.walls[0]))
-		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
-	else 
-		printf("Try init Walls FAILS \n");	
+	// printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
+	// if ((cub.tex.walls[0]))
+	// 	printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
+	// else 
+	// 	printf("Try init Walls FAILS \n");	
 //	 return (0);
 
 
