@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/11 20:12:13 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/03/29 12:47:21 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ SRC_FLS	:=		main.c 			\
 			renderer.c			\
 			player_controls.c	\
 			prebuilt_map_tools.c	\
+			t_color_shift.c		\
+			t_color_creat.c 	\
 			t_map_parse.c 		\
 			t_map_tool.c 		\
 			t_wall_chk.c		\
