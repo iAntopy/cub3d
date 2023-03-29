@@ -4,8 +4,8 @@ N  "tex/n_side.png"
 S  "tex/s_side.png"
 E  "tex/e_side.png"
 
-C tex/sky_star.png
-F tex/floor.png
+C "tex/floor.png"
+F 55,55,10
 
 111111111
 100000001
@@ -16,4 +16,3 @@ F tex/floor.png
 100000001
 1000E0001
 111111111
-

@@ -1,11 +1,3 @@
-E  tex/e_side.png
-W  tex/w_side.png
-S  tex/s_side.png
-N  tex/n_side.png 
-
-C 210,115,0
-F 53,107,194
-
      111111111111
      100011000001
      100010000001

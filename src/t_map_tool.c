@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:02:25 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/15 00:30:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/12 13:53:12 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,15 @@ int	error(char *error, t_map *map)
 		free(map->tab[i]);
 	return (write(1, error, ft_strlen(error)));
 }
-	
+	//error("1. You are trying to open a dir.\n", map);
+	//error("2. Wrong file name or extention\n", map);
+	//error("3. There is an error in your map, Please verify\n", map);
+	// error("4. Your map isn't surrounded by walls", m);
+	//error("5. Your map is uncomplete, please verify", m);
+	// error("6. Map contains unrecognized characters", map);
+	// error("7, Texture mapping Name error !\n", map);
+	// error("8, Texture mapping Path error !\n", map);
+
 
 // line_len with "1":"0":" "
 int	int_strlen(const char *s)

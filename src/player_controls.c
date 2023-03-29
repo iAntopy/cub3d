@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   player_controls.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/19 22:45:57 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:42:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 // Pass some positive/negative increment to rotate right/left
 void	cub_player_rotate(t_cub *cub, float rot)
@@ -32,7 +32,7 @@ void	cub_player_rotate(t_cub *cub, float rot)
 
 // Pass some positive/negative increment to d_walk to move forward/backward
 // Pass some positive/negative increment to d_strafe to move left/right
-void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)//, float d_time)
+void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 {
 	float	dx;
 	float	dy;

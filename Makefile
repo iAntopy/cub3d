@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/03/19 22:43:22 by gehebert         ###   ########.fr        #
+#    Updated: 2023/03/11 20:12:13 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,11 @@ SRC_FLS	:=		main.c 			\
 			renderer.c			\
 			player_controls.c	\
 			prebuilt_map_tools.c	\
-			t_color_creat.c 	\
-			t_color_shift.c 	\
 			t_map_parse.c 		\
 			t_map_tool.c 		\
 			t_wall_chk.c		\
 			tex_parse.c			\
-			floor_caster.c		
-# update_loop.c 
+			floor_caster.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
@@ -64,19 +61,19 @@ NAME	:= cub3D
 all: $(NAME)
 
 $(SUBMOD_SRC):
-	@git submodule init
-
-git_submodule: $(SUBMOD_SRC)
-	@git submodule update --remote --merge
+	@echo "Submodule init"
+	git submodule init
+	git submodule update --remote --merge
 
 $(BLDGLFW):
-	@cmake -S $(GLFWDIR) -B $(BLDGLFW)
+	cmake -S $(GLFWDIR) -B $(BLDGLFW)
 
 $(LIBGLFW): $(BLDGLFW)
+	@echo "make glfw"
 	make -C $(BLDGLFW)
 
 $(BLDMLX): $(LIBGLFW)
-	@cmake -S $(MLXDIR) -B $(BLDMLX)
+	cmake -S $(MLXDIR) -B $(BLDMLX)
 
 $(LIBMLX): $(BLDMLX)
 	make -C $(BLDMLX) -j4
@@ -91,7 +88,8 @@ $(LIBMTX):
 	@$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
 
 #$(NAME): git_submodule $(LIBMTX) $(LIBMLX) $(LIBFT) $(OBJS)
-$(NAME): git_submodule $(PROJ_LIBS) $(OBJS)
+$(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(OBJS)
+	@echo "Linking executable"
 	@$(CC) $(OBJS) $(LIBS) $(INCL) -o $(NAME)
 
 clean:
@@ -105,4 +103,3 @@ fclean: clean
 re: clean all
 
 .PHONY: all, clean, fclean, re, libmlx
-

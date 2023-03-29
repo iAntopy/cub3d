@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/23 11:00:09 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/19 23:09:58 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,12 +198,9 @@ void	render_walls(t_cub *cub)
 //		scn_fheight = (int)*(++tex_info);//_mtx_index_f(cub->hero.tex_infos, i, 1);
 //		scn_height = ft_clamp(scn_fheight, 0, SCN_HEIGHT);
 
-		half_height = (scn_height >> 1);
+//		half_height = (scn_height >> 1);
 
 //		printf("scn_fheight : %d, scn_height : %d, tex_start_x : %d\n", scn_fheight, scn_height, tex_start_x);
-
-		// half_scnh = (scn_height >> 1);
-
 		scn_start_y = ((SCN_HEIGHT - scn_height) >> 1);// divide by 2. (SCN_HEIGHT / 2 - height / 2)
 //		y_offset = (tex->height >> 2);//(fheight - height) >> 1;// divide by 2
 //		printf("col %d, sx, sy : (%d, %d), fh, h: (%d, %d), yoff %d\n", i, tex_start_x, scn_start_y,
@@ -270,9 +267,7 @@ int	init_renderer(t_cub *cub)
 
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 //	mlx_set_instance_depth(cub->renderer.bg_layer->instances, 3);
-	// cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
-
-	cub->renderer.imgz = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);	
+	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 //	mlx_set_instance_depth(cub->renderer.walls_layer->instances, 2);
 	cub->renderer.ui_layer = mlx_new_image(cub->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
 
@@ -281,7 +276,7 @@ int	init_renderer(t_cub *cub)
 //	printf("bla2\n");
 //	mlx_set_instance_depth(cub->renderer.ui_layer->instances, 1);
 
-	if (!cub->renderer.bg_layer || !cub->renderer.imgz )
+	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer || !cub->renderer.ui_layer)
 		return (-1);
 	mlx_set_color_in_rows(cub->renderer.bg_layer, 0, SCN_HEIGHT >> 1, cub->tex.color[0]);//0xffffe77b);
 	mlx_set_color_in_rows(cub->renderer.bg_layer, SCN_HEIGHT >> 1, SCN_HEIGHT, cub->tex.color[1]);//0xff63615d);
@@ -296,7 +291,7 @@ int	init_renderer(t_cub *cub)
 //	else
 //		printf("SKYMAP MOCKUP FAILED\n");
 //	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
-	mlx_image_to_window(cub->mlx, cub->renderer.imgz, 0, 0);
+	mlx_image_to_window(cub->mlx, cub->renderer.walls_layer, 0, 0);
 //	mlx_image_to_window(cub->mlx, skymap_mockup, 0, SCN_HEIGHT - 128);
 	if (ENABLE_MINIMAP)
 		mlx_image_to_window(cub->mlx, cub->renderer.ui_layer,

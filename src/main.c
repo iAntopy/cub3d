@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/23 11:09:58 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/11 19:05:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	cub_init_core_data(t_cub *cub)
 	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
 	cub->inv_sw = 1.0f / (float)SCN_WIDTH;
 	cub->inv_two_pi = 0.5f / M_PI ;
-
 	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
 
 	return (0);
@@ -118,10 +117,8 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, int side)
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = M_PI - side * cub->inv_two_pi;
-		// cub->hero.cur_speed = 0;
-		// cub->hero.movx = 0;
-		// cub->hero.movy = 0;
-		//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
+//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
+	cub->skymap_tex_offset = (int)(cub->hero.ori * cub->skymap_radial_width);
 	printf("SET PLAYER POS : ori : %f, sky_tex_offset : %d\n", cub->hero.ori, cub->skymap_tex_offset);
 	return (0);
 }
@@ -149,7 +146,7 @@ int	main(int argc, char **argv)
 	// INIT INPUT	
 	if (map_checker(&cub, init_map(&cub.map), argv[1]) != 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	if (set_player_cell_pos(&cub, cub.map.pos_y, cub.map.pos_x, cub.map.hero_side) != 0)
+	if (set_player_cell_pos(&cub, cub.map.pos_x, cub.map.pos_y, cub.map.hero_side) != 0)
 	 	return (cub_clear(&cub, EXIT_FAILURE));
 
 //	return (cub_clear(&cub, EXIT_SUCCESS));
@@ -168,20 +165,20 @@ int	main(int argc, char **argv)
 	mlx_focus(cub.mlx);
 //	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
 	// cub.tex.walls[0] = mlx_load_png(cub.tex.tex_n[0]);	
-	// printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
-	// if ((cub.tex.walls[0]))
-	// 	printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
-	// else 
-	// 	printf("Try init Walls FAILS \n");	
+	printf("OYE OYE! Try init Walls ::%p:: \n",cub.tex.walls[0]);		
+	if ((cub.tex.walls[0]))
+		printf("Try init Walls W[%d] H[%d] \n", cub.tex.walls[0]->width, cub.tex.walls[0]->height);
+	else 
+		printf("Try init Walls FAILS \n");	
 //	 return (0);
 
 
-	// cub.tex.floor = mlx_load_png("tex/floor.png");
+	cub.tex.floor = mlx_load_png("tex/floor.png");
 	if (!cub.tex.floor)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	printf("Floor texture loaded SUCCESSFULLY !\n");
 	
-	// cub.tex.skymap = mlx_load_png("tex/sky_star.png");
+	cub.tex.skymap = mlx_load_png("tex/sky_star.png");
 	if (!cub.tex.skymap)
 	{
 		printf("loading skymap FAILED !! ptr : %p\n", cub.tex.skymap);
@@ -192,8 +189,7 @@ int	main(int argc, char **argv)
 
 	//// ESSENTIAL DATA FOR SKYMAP !! ////////
 	cub.skymap_radial_width = cub.tex.skymap->width * cub.inv_two_pi;// skymap.width / 2pi
-	// cub.skymap_tex_offset = (int)(cub.hero.ori * cub.skymap_radial_width);
-	// cub.skymap_fov_to_texture = FOV90 * cub.skymap_radial_width;
+
 
 
 	printf("Init mlx SUCCESSFUL !\n");
@@ -214,17 +210,20 @@ int	main(int argc, char **argv)
 	// return (0);
 	// return (cub_clear(&cub, EXIT_SUCCESS));
 	
-			///
 
-		printf("DEBUG: TEX_ TEST! START!\n");
-			
+		/// mlx_texture_to_image
+		// 	cub.tex.walls[0] = mlx_load_png("tex/w_side.png");
+		// 	if (!(cub.tex.walls[0]))
+		// 		error("B. You are trying but no png to tex.\n", map);
 		// 	// 	set img to be display
-			// cub.tex.plain = mlx_load_png("tex/w_side.png");
-			// cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.plain);
-			// mlx_image_to_window(cub.mlx, cub.imgz, 0, 0);	
-		// // ///test_img_to_window
+		// 	cub.imgz = mlx_texture_to_image(cub.mlx, cub.tex.walls[0]);
+		// 	if (!cub.imgz)
+		// 		error("C. You are trying to open img but no img.\n", map);
+		// /// image_to_window
+
+		// ///test_img_to_window
 		// 	cub.color = mlx_new_image(cub.mlx, 128, 128);
-			// mlx_image_to_window(cub.mlx, cub.color, 10, 10);
+		// 	mlx_image_to_window(cub.mlx, cub.color, 10, 10);
 	
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);
@@ -236,7 +235,7 @@ int	main(int argc, char **argv)
 	mlx_key_hook(cub.mlx, &cub_key_handler, &cub);
 	mlx_scroll_hook(cub.mlx, &on_scroll, &cub);
 	mlx_close_hook(cub.mlx, &on_close, &cub);
-	// mlx_loop_hook(cub.mlx, &cub_on_update, &cub);
+	
 
 	printf("Starting mlx loop\n");
 	mlx_loop(cub.mlx);
