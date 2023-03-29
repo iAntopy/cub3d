@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/29 12:52:50 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:43:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,22 +106,23 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 				cub->tex.tex_n[id] = txtr[1];//
 				printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id, cub->tex.tex_n[id]); 
 			}
-			else if (id < 6)
+			else if (id < 7)
 			{
-				
-				color = ft_split(txtr[1], ',');
-				printf("DEBUG:  ID: %d :: color_num[0]: R = %s :: \n", id, color[0]); 
-				printf("DEBUG:  ID: %d :: color_num[1]: G = %s :: \n", id, color[1]); 
-				printf("DEBUG:  ID: %d :: color_num[2]: B = %s :: \n", id, color[2]); 
-				if (id == 4)
-					cub->tex.color[0] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),
-						ft_atoi(color[2]), 0xff);
-				else if (id == 5)
-					cub->tex.color[1] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),
-						ft_atoi(color[2]), 0xff);
-						// cub->tex.color[1] = str_to_color(color[0], color[1],color[2]);
-						// cub->tex.color[1] = str_to_color(cub->tex.rgbx);
-						// cub->tex.color[1] = str_to_color(ft_split(txtr[1], ','),1);
+				if (*txtr[1] < '0' || *txtr[1] > '9')
+					get_tex_by_id(cub, id, txtr[1]);
+				else
+				{
+					color = ft_split(txtr[1], ',');
+					printf("DEBUG:  ID: %d :: color_num[0]: R = %s :: \n", id, color[0]); 
+					printf("DEBUG:  ID: %d :: color_num[1]: G = %s :: \n", id, color[1]); 
+					printf("DEBUG:  ID: %d :: color_num[2]: B = %s :: \n", id, color[2]); 
+					if (id == 4)
+						cub->tex.color[0] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),
+							ft_atoi(color[2]), 0xff);
+					else if (id == 5)
+						cub->tex.color[1] = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]),
+							ft_atoi(color[2]), 0xff);
+				}
 			}
 		}
 		else 
