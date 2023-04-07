@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 15:42:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/05 17:03:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	cub_player_rotate(t_cub *cub, float rot)
 //	printf("tex_offset after : %d\n", cub->skymap_tex_offset);
 //	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
 //	printf("ori / ori_factor : %f / %f\n", cub->hero.ori, cub->hero.ori_factor);
-	ft_deltatime_usec_note(NULL);
+//	ft_deltatime_usec_note(NULL);
 	update_rays(cub);
 //	printf("p_dirx, p_diry : (%f, %f)\n", *cub->hero.dirx, *cub->hero.diry);
 	render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
-	ft_deltatime_usec_note("Believe it or not !");
+//	ft_deltatime_usec_note("Believe it or not !");
 }
 
 //void	cub_player_wall_collision_correction(t_cub *cub, float dx, float dy)

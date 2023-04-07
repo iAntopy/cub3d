@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 22:42:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/06 23:41:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # define FOV FOV60
 # define FOV_HF FOV60_HF
 # define FOV_MIN FOV20
-# define FOV_MAX FOV90
+# define FOV_MAX FOV60
 
 # define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
 

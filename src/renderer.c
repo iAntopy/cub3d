@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 19:45:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/06 23:43:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,11 @@ void	cub_put_pixel(mlx_image_t *img, int x, int y, int col)
 int	get_texture_pixel(mlx_texture_t *tex, int x, int y)
 {
 //	printf("get_tex_pix : skymap width : %d, x : %d, y : %d\n", tex->width, x, y);
+//	if (x < 0 || y < 0)
+//	{
+//		dprintf(2, "x or y < 0 : %d, %d\n", x, y);
+//		return 0xffffffff;
+//	}
 	return (((uint32_t *)tex->pixels)[x + y * tex->width]);
 }
 
@@ -176,6 +181,7 @@ void	render_walls(t_cub *cub)
 //	sides = (int *)cub->hero.coll_sides->arr - 1;
 //	tex_info = (float *)cub->hero.tex_infos->arr - 1;//_mtx_index_fp(cub->hero->tex_infos, i, 0);
 //	printf("Dist for first ray : %f\n", _mtx_index_f(cub->hero.distances, 0, 0));
+
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
@@ -184,6 +190,12 @@ void	render_walls(t_cub *cub)
 		++rd;
 		tex = cub->tex.walls[rd->side];
 		half_texh = (tex->height >> 1);
+		
+//		dprintf(2, "tex ratio : %f, side : %d\n", rd->tex_ratio, rd->side);
+//		if (rd->tex_ratio < 0)
+			//rd->tex_ratio *= -1;
+//			dprintf(2, "WARNING : TEX RATIO IS NEGATIVE !\n");
+		
 		tex_start_x = (int)(rd->tex_ratio * tex->width);
 		scn_height = ft_clamp(rd->tex_height, 0, SCN_HEIGHT);
 		half_height = (scn_height >> 1);
@@ -191,6 +203,8 @@ void	render_walls(t_cub *cub)
 		ratio = (float)tex->height / (float)rd->tex_height;
 		pxls = (uint32_t *)tex->pixels + tex_start_x;
 
+//		if ((void *)pxls < (void *)tex->pixels)
+//			dprintf(2, "WARNING : TEX PIXELS OFFSET IS IN DANGER ZONE !\n");
 
 //		tex = cub->tex.walls[*(++sides)];
 //		half_texh = (tex->height >> 1);
@@ -215,11 +229,14 @@ void	render_walls(t_cub *cub)
 
 //		printf("Randy : wall while enter from height %d to %d\n", scn_start_y, scn_height);
 
+//		dprintf(2, "perso orientation : %f\n", ((float *)cub->hero.rcast.ray_thetas->arr)[SCN_WIDTH >> 1]);
+
 //////////////	WALLS RENDERING ///////////////////
 		j = -1;
 		while (++j < scn_height)
 			cub_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
 				pxls[(int)(((j - half_height) * ratio) + half_texh) * tex->width]);
+				//pxls[(int)(((half_height) * ratio) + half_texh) * tex->width]);
 //			mlx_put_pixel(cub->renderer.walls_layer, i, scn_start_y + j,
 //				find_wall_texture_pixel(pxls,
 //					((int)((j - (scn_height >> 1)) * ratio) + half_texh) * tex->width));

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:10:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 21:22:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/06 22:09:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,53 @@ static int	raycast_init_single_vect(t_rdata *rd)
 
 static int	raycast_gather_collision_info(t_rdata *rd, float *axs, float *isct, float *dists)
 {
+	float	ratio;
+	int		correction;
+	
 	if (dists[0] < dists[1])
 	{
 		rd->hitx = isct[0];
 		rd->hity = axs[1];
 		rd->dist = dists[0];
 		rd->side = 1 + (rd->c_offy << 1);
-		rd->tex_ratio = isct[0] - axs[0];
+		ratio = isct[0] - axs[0];
+		correction = (*rd->rx < 0) != (*rd->ry < 0);
+//		rd->tex_ratio = isct[0] - (axs[0] - rd->c_offx * CELL_WIDTH);
+//		if (rd->tex_ratio < 0)
+//			fprintf(stderr, "tex intersect %f (from isct[0] : %f - axs[0] : %f), is negative while side : %d\n", rd->tex_ratio, isct[0], axs[0], rd->side);
 	}
 	else
 	{
 		rd->hitx = axs[0];
 		rd->hity = isct[1];
 		rd->dist = dists[1];
-		rd->side = (rd->c_offx << 1);
-		rd->tex_ratio = isct[1] - axs[1];
+		rd->side = rd->c_offx << 1;
+		ratio = isct[1] - axs[1];
+		correction = (*rd->rx < 0) == (*rd->ry < 0);
+
+//		rd->tex_ratio = isct[1] - (axs[1] - rd->c_offy * CELL_WIDTH);
+//		if (rd->tex_ratio < 0)
+//			fprintf(stderr, "tex intersect %f (from isct[1] : %f - axs[1] : %f), is negative while side : %d\n", rd->tex_ratio, isct[1], axs[1], rd->side);
 	}
-	rd->tex_ratio = (rd->tex_ratio + CELL_WIDTH * rd->c_offy)
-		* rd->rcast->cub->inv_cw;
+//	dprintf(2, "side : %d, corr %d + (ratio %f / CELL_WIDTH)\n", rd->side, correction, ratio);
 	if ((rd->side == W_SIDE) || (rd->side == S_SIDE))
-		rd->tex_ratio = 1 - rd->tex_ratio;
+	{
+//	if (!rd->side | (rd->side == S_SIDE))
+//		printf("west or south -> ratio (%f) = -ratio (%f)\n", ratio, -ratio);
+		ratio = -ratio;
+	}	
+//		rd->tex_ratio = 1 - rd->tex_ratio;
+	rd->tex_ratio = correction + (ratio * rd->rcast->cub->inv_cw);
+//	dprintf(2, "side : %d, corr (rx (%f) < 0 == ry (%f) < 0) %d + (ratio %f / CELL_WIDTH) = %f\n", rd->side, *rd->rx, *rd->ry, correction, ratio, rd->tex_ratio);
+//	if (rd->tex_ratio < 0)
+//		fprintf(stderr, "idx %d, side %d, tex ratio < 0 : %f, ratio : %f, correctif : %d\n", rd->idx, rd->side, rd->tex_ratio, ratio, correction);
+		//fprintf(stderr, "tex intersect %f (from isct[0] : %f - axs[0] : %f), is negative while side : %d\n", rd->tex_ratio, isct[0], axs[0], rd->side);
+
+//	rd->tex_ratio *= rd->rcast->cub->inv_cw;
+//	rd->tex_ratio = (rd->tex_ratio + CELL_WIDTH * rd->c_offy)
+//		* rd->rcast->cub->inv_cw;
+
+
 	rd->tex_height = rd->rcast->cub->near_proj_factor / rd->dist;
 	return (0);
 }
@@ -68,9 +95,9 @@ static void	raycast_all_vectors(t_rcast *rcast, t_map *map)
 				+ ((rd->cx + rd->c_offx) << 1);
 			intersects[1] = rd->a * (*axies) + rd->b;
 			intersects[0] = (axies[1] - rd->b) * rd->inv_a;
-			dists[0] = (intersects[0] - (*rd->px)) * (*rd->p_dirx)
+			dists[0] = (intersects[0] - (*rd->px)) * (*rd->p_dirx)// hori hit
 				+ (axies[1] - (*rd->py)) * (*rd->p_diry);
-			dists[1] = (axies[0] - (*rd->px)) * (*rd->p_dirx)
+			dists[1] = (axies[0] - (*rd->px)) * (*rd->p_dirx)//	vert hit
 				+ (intersects[1] - (*rd->py)) * (*rd->p_diry);
 			if (dists[0] < dists[1])
 				rd->cy += rd->cincr_y;
