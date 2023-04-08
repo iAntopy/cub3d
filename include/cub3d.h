@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/06 23:41:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/07 22:31:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,48 +220,125 @@ typedef struct s_renderer
 	float	*near_z_dists;// Array of distances to every column of the projected
 				// plane (near_z). See floorcaster. 
 	float	*param_factors;// Pre-calc parametric multipliers for all pixels
-				// below scn_mixy. Every drawn pixel's on screen 
+				// below scn_midy. Every drawn pixels on screen 
 				// is mapped to a multiplier (see floor_caster.c)
 				// that stretches rx and ry to find the floor pixel it hits.
 
 	int		requires_update;
 }	t_rdr;
 
+//	Models are initialised only once at start. A pointer to a model is required
+//	for each drawable object created. They are a constante definition of a model type.
+//	eg.: a flying bullet, ennemy grunt ... They don't hold particular instance data such as position
+//	or distance. Only generic global information about a model type.
+typedef struct s_object_model
+{
+	char			*model_name;//	For debug info and logging purposes.
+	int				type_enum;
+	int				width;//		Width of object in world coords.
+	int				half_width;
+
+	int				max_texs;// Max nb of textures for this particular model.
+	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
+
+	/// OPTIONAL FIELDS //////
+	int				dmg;
+}	t_omdl;
+
+enum	e_object_types
+{
+	OBJ_NULL = 0,
+	OBJ_PORTAL = 1
+};
+
+typedef struct s_objects_list_elem
+{
+	t_omdl	*type;
+	int		_id;//	unique obj id. Objects are deletable by id.
+	
+	int		tex_idx;
+	
+	int		px;//	Position X
+	int		py;//	Position Y
+
+	/// VARS SET AT RENDER TIME ////////////
+	int		ox;//	obj delta x from player
+	int		oy;//	obj delta y from player
+	float	dist;//	distance from player
+
+	int		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
+	int		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
+	int		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
+	int		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
+	
+	s_objects_list_elem	*next;
+}	t_oinst;
+
+//	Container keeping all drawable object types as pointers to linked lists.
+//	Each object type has its own linked list struct type. Renderer will 
+//	go through each list and draw the objects on screen in any order 
+//	and check weither it is in FOV first. If true, will check for each screen 
+//	column it occupies (depending on object width and distance) if the object's 
+//	distance to screen is smaller then the rays distance (depth buffer, cub.hero.rcast.rdata[<column idx>].dist, length = SCN_WIDTH).
+//	If true, draw object's texture column on screen and update the distance in 
+//	depth buffer (rdata[i].dist). Each subsequant texture column being drawn checks 
+//	weither something has already been drawn in front of it. 
+//	Objects from this list should be able to be added to their list and removed and free
+//	
+//	There should be a MAX_OBJ_DIST defined to bailout of a draw early if obj is to far.
+typedef struct s_drawable_objects
+{
+	/// OBJECT MODELS (constant) /////////////////////////
+	t_omdl	portal;//	Portal object model;
+	
+	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
+	//t_oclct	*collectibles;
+	//t_oenmi	*ennemies;
+	t_oinst	*instances;
+}	t_objs;
+
 typedef struct s_cub3d_core_data
 {
+	/// MLX42 DATA
 	mlx_t	*mlx;
 //	xpm_t	*xpm;
 	mlx_image_t		*imgz;
 	mlx_image_t		*color;
 	mlx_texture_t	*texr;
 
+	/// CONSTANT VALUES ////////////////////////////////////////
 	int		scn_midx;	// mid screen x coordinate
 	int		scn_midy;	// mid screen y coordinate
 	float	inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
 	float	inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float	inv_two_pi;	// 1 / 2pi;
 
+	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float	fov;// = fov;// field of view
 	float	hfov;// = fov * 0.5f;// half fov
 	float	near_z;// = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
 	float	near_proj_factor;// = CELL_WIDTH * cub->near_z;
+
+	/// SKYMAP DATA ////////////////////////////////////////////
 	float	skymap_radial_width;// skymap_tex.width / 2pi (const after texture load)
 	int		skymap_tex_offset;// hero.ori * radial_width. texture pixel column index;
 	float	skymap_fov_to_tex;//  fov * radial_width.
 					// converts screen coords to texture coords
 					// by multiplying (x - scn_midx) / SCN_WIDTH to it and add ori_offset.
+
+	/// SUBSECTIONS ////////////////////////////////////////////
 	t_map	map;
 	t_tex	tex;
 	t_hero	hero;
 	t_rdr	renderer;
+	t_objs	objs;
 }	t_cub;
-
 
 /// PARSING ///////////////////
 //int	load_map(t_cub *cub, char *map_file);
-int	build_collision_map(t_map *map);
+int		build_collision_map(t_map *map);
 void	print_collision_map(t_map *map);
-int	build_grid_coords_map(t_map *map);
+int		build_grid_coords_map(t_map *map);
 void	print_map(t_map *map);
 
 

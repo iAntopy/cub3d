@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
+#    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/06 23:43:44 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/08 01:08:50 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,9 @@ SRC_FLS	:=		main.c 			\
 			prebuilt_map_tools.c	\
 			tex_parse.c		\
 			wall_chk.c		\
-			floor_caster.c
+			floor_caster.c	
+			error_msg.c		\
+			object_model_creation.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
