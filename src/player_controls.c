@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/05 17:03:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/08 08:28:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 //		printf("scene rendered\n");
 		cub->renderer.requires_update = 1;
 	}
-	printf("cell x, y after -> (%d, %d)\n", cx, cy);//cub->hero.cell_x, cub->hero.cell_y);
+	printf("cell x, y after -> (%d, %d), px, py after -> (%f, %f)\n", cx, cy, cub->hero.px, cub->hero.py);//cub->hero.cell_x, cub->hero.cell_y);
 }
 
 // Pass some positive/negative increment to zoom in/out by this factor.

@@ -6,15 +6,29 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:29:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/04 05:25:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/08 04:34:40 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int	report_err(char *msg)
+{
+	ft_eprintf(msg);
+	return (-1);
+}
+
 int	report_mlx_init_error(void)
 {
-	ft_eprintf("ERROR : mlx library failed to initialize.\n");
+//	ft_eprintf("ERROR : mlx library failed to initialize.\n");
+	ft_eprintf("%s\n", mlx_strerror(mlx_errno));
+	return (-1);
+}
+
+int	report_mlx_tex_load_failed(void)
+{
+//	ft_eprintf("ERROR : mlx texture failed to load.\n");
+	ft_eprintf("%s\n", mlx_strerror(mlx_errno));
 	return (-1);
 }
 

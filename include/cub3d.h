@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/07 22:31:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/08 10:26:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,12 @@ typedef struct s_main_character_data
 	float	ori_factor;//	ori / 2pi, updated in cub_player_rotate
 	float	*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
 	float	*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
-	
+
+	float	*fov_lx;// left most fov ray x
+	float	*fov_ly;// left most fov ray y 
+	float	*fov_rx;// right most fov ray x 
+	float	*fov_ry;// right most fov ray y 
+
 	t_rcast	rcast;
 }	t_hero;
 /*
@@ -236,9 +241,12 @@ typedef struct s_object_model
 	char			*model_name;//	For debug info and logging purposes.
 	int				type_enum;
 	int				width;//		Width of object in world coords.
-	int				half_width;
+	int				half_w;
+	int				height;//		Height of object in world coords.
+	int				half_h;
 
-	int				max_texs;// Max nb of textures for this particular model.
+	int				nb_texs;// Max nb of textures for this particular model.
+						// Multi textures used for animation or to simulate object orientation.
 	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
 
 	/// OPTIONAL FIELDS //////
@@ -258,20 +266,20 @@ typedef struct s_objects_list_elem
 	
 	int		tex_idx;
 	
-	int		px;//	Position X
-	int		py;//	Position Y
+	float		px;//	Position X
+	float		py;//	Position Y
 
 	/// VARS SET AT RENDER TIME ////////////
-	int		ox;//	obj delta x from player
-	int		oy;//	obj delta y from player
-	float	dist;//	distance from player
+	float		ox;//	obj delta x from player
+	float		oy;//	obj delta y from player
+	float		dist;//	distance from player
 
-	int		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
-	int		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
-	int		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
-	int		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
+	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
+	float		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
+	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
+	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
-	s_objects_list_elem	*next;
+	struct s_objects_list_elem	*next;
 }	t_oinst;
 
 //	Container keeping all drawable object types as pointers to linked lists.
@@ -404,9 +412,18 @@ void	cub_player_rotate(t_cub *cub, float rot);
 void	cub_player_move(t_cub *cub, float d_walk, float d_strafe);
 void	cub_player_zoom(t_cub *cub, float dz);
 
+/// OBJECT MANAGEMENT SYSTEM ////////
+int	init_obj_framework(t_cub *cub);
+void	clear_obj_framework(t_cub *cub);
+int	create_obj_instance(t_cub *cub, int px, int py, int type_enum);
+int	destroy_oinst_by_id(t_cub *cub, int id);
+int	destroy_oinst_by_type(t_cub *cub, int type_enum);
+void	destroy_all_obj_instances(t_cub *cub);
 
 /// ERROR HANDLING ////////////
+int	report_err(char *msg);
 int	report_mlx_init_error(void);
+int	report_mlx_tex_load_failed(void);
 int	report_malloc_error(void);
 /// color_parse
 

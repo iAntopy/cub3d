@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/08 01:08:50 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/08 07:13:21 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,8 @@ SRC_FLS	:=		main.c 			\
 			prebuilt_map_tools.c	\
 			tex_parse.c		\
 			wall_chk.c		\
-			floor_caster.c	
-			error_msg.c		\
-			object_model_creation.c
+			floor_caster.c		\
+			object_model_creation.c \
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
@@ -35,7 +34,8 @@ CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
 
 #LDFLAGS	:= -fsanitize=address
 
-CC		:= clang
+#CC		:= clang
+CC		:= gcc
 
 GLFWDIR	:= lib/glfw
 LIBGLFW	:= $(GLFWDIR)/build/src/libglfw3.a

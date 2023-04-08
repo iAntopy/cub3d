@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 23:27:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/08 07:20:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
 	floorcaster_clear(cub);
+	clear_obj_framework(cub);
 	printf("renderer_cleared\n");
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
@@ -226,6 +227,12 @@ int	main(int argc, char **argv)
 		// 	cub.color = mlx_new_image(cub.mlx, 128, 128);
 		// 	mlx_image_to_window(cub.mlx, cub.color, 10, 10);
 	
+
+	// INIT OBJECT FRAMEWORK MANAGING OBJECT INSTANCES. FRAMEWORK MUST BE CLEARED.
+	if (init_obj_framework(&cub) < 0)
+		return (cub_clear(&cub, EXIT_FAILURE));
+	create_obj_instance(&cub, 1 * 64 + (CELL_WIDTH >> 1), 1 * 64 + (CELL_WIDTH >> 1), OBJ_PORTAL);
+
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);
 	mlx_set_cursor_mode(cub.mlx, MLX_MOUSE_HIDDEN);

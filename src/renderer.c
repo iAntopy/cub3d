@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/06 23:43:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/08 11:54:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,12 +265,99 @@ void	render_walls(t_cub *cub)
 	}
 }
 
+static int	is_obj_in_fov(t_hero *hero, t_oinst *obj)
+{
+	return ((((*hero->fov_lx) * obj->oy + (*hero->fov_ly) * -obj->ox) > 0)
+		!= (((*hero->fov_rx) * obj->oy + (*hero->fov_ry) * -obj->ox) > 0));
+}
+
+static void	render_objects(t_cub *cub)
+{
+	t_oinst	*obj;
+	float	drawx;
+	float	u_proj;
+	float	ratio;
+//	int	i;
+	float	scn_width;
+	float	scn_height;
+	float	scn_halfw;
+	float	scn_halfh;
+	float	tex_incrx;
+	float	tex_incry;
+	int	start[2];
+	int	end[2];
+	int	i;
+	int	j;
+	mlx_texture_t	*tex;
+
+	obj = cub->objs.instances;
+	while (obj)
+	{
+		obj->ox = obj->px - cub->hero.px;
+		obj->oy = obj->py - cub->hero.py;
+		
+		u_proj = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
+		if ((u_proj <= 0) || !is_obj_in_fov(&cub->hero, obj))
+		{
+			obj = obj->next;
+			continue ;
+		}
+	//	drawx = (*cub->hero.diry) * obj->ox
+	//		- (*cub->hero.dirx) * obj->oy
+	//		+ cub->scn_midx;
+	//	drawx = cub->near_proj_factor / u_proj;
+		ratio = cub->near_z / u_proj;
+		drawx = ((*cub->hero.dirx) * obj->oy - (*cub->hero.diry) * obj->ox)
+			* ratio + cub->scn_midx;
+
+		scn_width = ratio * obj->type->width;
+		scn_halfw = scn_width / 2;
+		scn_height = ratio * obj->type->height;
+		scn_halfh = scn_height / 2;
+		tex = obj->type->texs[obj->tex_idx];
+		tex_incrx = tex->width / scn_width;
+		tex_incry = tex->height / scn_height;
+//		printf("tex increments x / y : %f, %f\n", tex_incrx, tex_incry);
+		start[0] = drawx - scn_halfw;
+		start[1] = cub->scn_midy - scn_halfh;
+		end[0] = drawx + scn_halfw;
+		end[1] = cub->scn_midy + scn_halfh;
+		//pxls = (uint32_t *)obj->type->texs[obj->tex_idx]->pixels;
+		if (start[0] < 0 || start[1] < 0 || end[0] >= SCN_WIDTH || end[1] >= SCN_HEIGHT)
+		{
+			obj = obj->next;
+			continue ;
+		}
+		i = -1;
+		while (++i < scn_height)
+		{
+			j = -1;
+			while (++j < scn_width)
+			{
+//				printf("put tex px (%d, %d) at scn coord (%d, %d).\n", (int)(j * tex_incrx),
+//					(int)(i * tex_incry), j + start[0], i + start[1]);
+				cub_put_pixel(cub->renderer.walls_layer, j + start[0], i + start[1], 
+				//	pxls[(int)(j * tex_incrx + i * tex_incry * obj->type->texs[obj->tex_idx]->width)]);
+					get_texture_pixel(tex,
+						(int)(j * tex_incrx),
+						(int)(i * tex_incry)));
+			}
+		}
+			
+		//printf("draw obj at scn col : %d, u_proj : %f, (ox, oy) : (%f, %f), scn w/h : %f, %f\n",
+		//	(int)drawx, u_proj, obj->ox, obj->oy, scn_width, scn_height);
+
+		obj = obj->next;
+	}
+}
+
 // Called anytime a noticeable change is made
 void	render_scene(t_cub *cub)
 {
 //	printf("(((_______( RENDERING THAT SCENE BABYY !! )_________)))\n\n");
 //	ft_deltatime_usec_note(NULL);
 	render_walls(cub);
+	render_objects(cub);
 //	ft_deltatime_usec_note("What a day to be  alive");
 	cub->renderer.requires_update = 0;
 ///	render_skymap(cub);	// potential addition

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/03/11 20:24:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/08 10:29:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,15 @@ int	init_raycaster(t_cub *cub)
 	if (!rcast->theta_offs || !rcast->ray_thetas || !rcast->ray_thetas
 		|| !rcast->rays[0] || !rcast->rays[1] || !rcast->rdata)
 		return (raycaster_clear(rcast, EXIT_FAILURE));
+	cub->hero.fov_lx = _mtx_index_fptr(rcast->rays[0], 0, 0);
+	cub->hero.fov_ly = _mtx_index_fptr(rcast->rays[1], 0, 0);
 	cub->hero.dirx = _mtx_index_fptr(rcast->rays[0], SCN_WIDTH / 2, 0);
 	cub->hero.diry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH / 2, 0);
+	cub->hero.fov_rx = _mtx_index_fptr(rcast->rays[0], SCN_WIDTH - 1, 0);
+	cub->hero.fov_ry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH - 1, 0);
 	init_raydata_consts(cub, rcast);
 	update_fov(cub, FOV);
+
+	printf("Init raycaster SUCCESSFUL !\n");
 	return (0);
 }
