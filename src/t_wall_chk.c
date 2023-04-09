@@ -12,6 +12,8 @@
 
 #include "../include/cub3d.h"
 
+int 
+
 t_map	    *wall_check(t_map *m)
 {
 
@@ -32,14 +34,10 @@ t_map	    *wall_check(t_map *m)
             o_cells = ft_in_set((&m->tab[m->pos_x][m->pos_y]), (const char *)MAP_CHARS);
             if (o_cells == 0)
             {
-                // printf("\tDEBUG: WALL CHK start O_cells = %d char {%c}\n", o_cells, (char)m->tab[m->pos_x][m->pos_y]); 
-                // printf("chek_pos o_cell \t REFS:[%d] [x:%d][y:%d]\n",  o_cells, m->pos_x, m->pos_y);
-
                 if(m->pos_x - 1)
                 {
                     if (ft_in_set(&m->tab[m->pos_x - 1][m->pos_y], (const char *)MAP_CHARS) == -1)
                     {
-                        // printf("\tDEBUG: WALL CHK inner x-1 [%d][%d]\n", m->pos_x - 1, m->pos_y);  
                         m->flg_chk = 1;
                         return (m);
                     }
@@ -48,7 +46,6 @@ t_map	    *wall_check(t_map *m)
                 {
                     if(ft_in_set(&m->tab[m->pos_x + 1][m->pos_y], (const char *)MAP_CHARS) == -1)
                     {
-                        // printf("\tDEBUG: WALL CHK inner x+1 [%d][%d]\n", m->pos_x +1, m->pos_y);  
                         m->flg_chk = 1;
                         return (m);
                     }
@@ -57,7 +54,6 @@ t_map	    *wall_check(t_map *m)
                 {
                     if (ft_in_set(&m->tab[m->pos_x][m->pos_y - 1], (const char *)MAP_CHARS) == -1)
                     {
-                        // printf("\tDEBUG: WALL CHK inner y-1 [%d][%d]\n", m->pos_x, m->pos_y - 1);  
                         m->flg_chk = 1;
                         return (m);
                     }
@@ -66,7 +62,6 @@ t_map	    *wall_check(t_map *m)
                 {
                     if (ft_in_set(&m->tab[m->pos_x][m->pos_y + 1], (const char *)MAP_CHARS) == -1)
                     {
-                        // printf("\tDEBUG: WALL CHK inner y+1 [%d][%d]\n", m->pos_x, m->pos_y + 1);
                         m->flg_chk = 1;
                         return (m);
                     }
@@ -84,7 +79,6 @@ t_map	    *wall_check(t_map *m)
                 hero_x = m->pos_x;
                 hero_y = m->pos_y;     
                 printf("\tDEBUG: HERO FOUND  side ref[%d]", m->hero_side);   
-                // printf("\t::hero_x[%d]: hero_y[%d] \n", hero_x, hero_y);
                 m->flg_chk = 2;               
             }
             m->pos_x++;    
