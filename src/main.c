@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/08 07:20:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/11 01:31:31 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,9 @@ int	main(int argc, char **argv)
 	// INIT OBJECT FRAMEWORK MANAGING OBJECT INSTANCES. FRAMEWORK MUST BE CLEARED.
 	if (init_obj_framework(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	create_obj_instance(&cub, 1 * 64 + (CELL_WIDTH >> 1), 1 * 64 + (CELL_WIDTH >> 1), OBJ_PORTAL);
+//	create_obj_instance(&cub, 1 * 64 + (CELL_WIDTH >> 1), 1 * 64 + (CELL_WIDTH >> 1), OBJ_PORTAL);
+	create_obj_instance(&cub, 4 * 64 + (CELL_WIDTH >> 1), 3 * 64 + (CELL_WIDTH >> 1), OBJ_PORTAL);
+//	create_obj_instance(&cub, 2 * 64 + (CELL_WIDTH >> 1), 1 * 64 + (CELL_WIDTH >> 1), OBJ_PORTAL);
 
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);
@@ -247,6 +249,8 @@ int	main(int argc, char **argv)
 
 	printf("Starting mlx loop\n");
 	mlx_loop(cub.mlx);
+	if (mlx_errno)
+		printf("mlx loop stopped with ERROR ! : %s\n", mlx_strerror(mlx_errno));
 	printf("mlx loop stopped !\n");
 	return (cub_clear(&cub, EXIT_SUCCESS));
 }

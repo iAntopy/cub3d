@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/08 10:26:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/11 00:55:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ typedef struct s_renderer
 {
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
+	mlx_image_t	*obj_layer;
 	mlx_image_t	*ui_layer;
 
 //////	FLOOR CASTER ////////////
@@ -272,6 +273,8 @@ typedef struct s_objects_list_elem
 	/// VARS SET AT RENDER TIME ////////////
 	float		ox;//	obj delta x from player
 	float		oy;//	obj delta y from player
+	float		ux;//	obj delta x from player
+	float		uy;//	obj delta y from player
 	float		dist;//	distance from player
 
 	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
