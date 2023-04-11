@@ -12,7 +12,7 @@
 
 #include "../include/cub3d.h"
 
-int 
+
 
 t_map	    *wall_check(t_map *m)
 {
