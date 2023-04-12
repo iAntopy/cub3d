@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tex_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/29 13:43:08 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/04/12 18:39:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 		cub->tex.walls[E_SIDE] = mlx_load_png(&tex[0]);
 	else if (id == 3)
 		cub->tex.walls[S_SIDE] = mlx_load_png(&tex[0]);
-	else if (id == 4)
-		cub->tex.skymap = mlx_load_png(&tex[0]);
-	else if (id == 5)
-		cub->tex.floor = mlx_load_png(&tex[0]);
+//	else if (id == 4)
+//		cub->tex.skymap = mlx_load_png(&tex[0]);
+//	else if (id == 5)
+//		cub->tex.floor = mlx_load_png(&tex[0]);
 	return (cub);
 }
 
