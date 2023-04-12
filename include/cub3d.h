@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/26 21:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/11 00:55:34 by iamongeo         ###   ########.fr       */
+/*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
+/*   Updated: 2023/04/12 18:39:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __CUB3D_H__
-# define __CUB3D_H__
+#ifndef CUB3D_H
+# define CUB3D_H
 
 # include <stdio.h>
 # include <unistd.h>
@@ -26,13 +26,13 @@
 
 # define SCN_WIDTH  800
 # define SCN_HEIGHT 640
-//# define ROT_FACTOR 0.012271846f // (2*PI / 512), soit 1 512e de tour pour chaque deltaX de souris (Temporaire, à teester)
+
 # define ROT_FACTOR 0.006135923f
 # define CELL_WIDTH 64
-# define M_TAU 6.283185307179586f// 2 * pi
+# define M_TAU 6.283185307179586f
 
-# define FOV120 2.0943951023931953f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
-# define FOV120_HF 1.0471975511965976f// 120 degrees : 2.0943951023931953f, 90 degrees : 1.5707963267948966f
+# define FOV120 2.0943951023931953f
+# define FOV120_HF 1.0471975511965976f
 
 # define FOV100 1.7453292519943295f
 # define FOV100_HF 0.8726646259971647f
@@ -51,16 +51,6 @@
 # define FOV_MIN FOV20
 # define FOV_MAX FOV60
 
-# define PLAYER_HEIGHT 32// Height of player in pixels or Height of camera (used for floorcasting).
-
-
-# define ENABLE_MINIMAP 1
-
-# define MINIMAP_WIDTH 200
-# define MINIMAP_HEIGHT 200
-# define MINIMAP_PADX 20
-# define MINIMAP_PADY 20
-
 # define TEXTURES			6
 # define TEX_WEST			0
 # define TEX_NORTH			1
@@ -78,48 +68,53 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
+/*
 /// PARSING ///////////////////
-// / coordonees standard
+// coordonees standard
 typedef struct  s_pos
 {
 	int		x;
 	int		y;
 }   t_pos;
+*/
 
+// collision_map : 1D array map where 1 is solid wall otherwise 0.
+// grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
+// file : map filename *.cub
+// tab : char input parsed
+// pos_x : aqui_X
+// pos_y : aqui_y
+// cases : total case all gabarit
+// array : char* array 
 typedef struct s_map_data
 {
-	int	width;
-	int	height;
-	int	total_cells;
-	int	width_px;
-	int	height_px;
-	int	total_area;
-	char	*collision_map;	// 1D array 
-	float	**grid_coords;	// top-left corner coordinate for grid indexed [cell_y][cell_x]
+	int		width;
+	int		height;
+	int		total_cells;
+	int		width_px;
+	int		height_px;
+	int		total_area;
+	char	*collision_map;
+	float	**grid_coords;
 
 	// Germain specific Stuff
-	char 	*file;		// map filename *.cub
-	char	**tab;		// char input parsed
-	int 	pos_x;		// aqui_X
-	int		pos_y;		// aqui_y
-//	int		cases;		// total case all gabarit
-//	char 	*array;		// char* array 
-	int	lines_to_map;
-	int	hero_side;
-	int	flg_chk;
+	char	*file;
+	char	**tab;
+	int		pos_x;
+	int		pos_y;
+	int		lines_to_map;
+	int		hero_side;
+	int		flg_chk;
 }	t_map;
 
-// All 4 elem arrays of textures organized as W, N, E, S, according to the side they represent.
-// Potentially, animated wall textures could be in a 2D array[side][anim_iteration] up to n nb of frames in the animation.
+// All 4 elem arrays of textures in order W, N, E, S.
+// walls : array of mlx_texture_t ptr foreach side.
 typedef struct s_texture_data
 {
-	xpm_t		*xwalls[4];
-	mlx_texture_t	*walls[4];	// pointers returned from mlx_load_png(path)
-	mlx_texture_t	*skymap;	// yessss
-	mlx_texture_t	*floor;	// yessss
-	char		**rgbx;
-	int 		color[2];
-	char 		*tex_n[4];		// tex_name
+	mlx_texture_t	*walls[4];
+	char			**rgbx;
+	int				color[2];
+	char			*tex_n[4];// tex_name
 }	t_tex;
 
 typedef struct s_raycaster_data		t_rcast;
@@ -168,7 +163,6 @@ typedef struct s_raycaster_data
 {
 	t_cub		*cub;
 	t_map		*map;
-//	float		**grid_coords;// Only reference. Do not free.
 	t_mtx		*theta_offs;// Angle offsets for each angle from 0. Malloced mtx.
 	t_mtx		*ray_thetas;// Angles for each ray. Malloced mtx.
 	t_mtx		*rays[2];// X, Y part for each ray vector. index 0 are Xs, 1 are Ys Malloced mtx.
@@ -185,179 +179,58 @@ typedef struct s_main_character_data
 	float	ori_factor;//	ori / 2pi, updated in cub_player_rotate
 	float	*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
 	float	*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
-
 	float	*fov_lx;// left most fov ray x
 	float	*fov_ly;// left most fov ray y 
 	float	*fov_rx;// right most fov ray x 
 	float	*fov_ry;// right most fov ray y 
-
 	t_rcast	rcast;
 }	t_hero;
-/*
-	t_mtx	*theta_offsets;	// linspace from -half_fov to +half_fov. DOES NOT take into account player orientation
-	t_mtx	*ray_thetas;	// theta_offsets + player ori. Specific thetas for player pos. Call update_rays().
-	t_mtx	*rays[2];	// first ptr is the cosine array from linspace thetas, second is sin array from thetas.
-	t_mtx	*fisheye_correctors;// = mtx_cos(theta_offsets); multiplied to collision dist to correct fisheye lens.
-	t_mtx	*coll_walls;	// cell coords of the wall that was hit for all rays.
-	t_mtx	*coll_sides;	// side that was hit checkable as e_side enum for all rays.
-	t_mtx	*collisions;	// intersections with walls in x y world coords;
-	t_mtx	*distances;	// 1D vect, len nb of rays, with distances to collisions
-	t_mtx	*tex_infos;	// 2D vect, len nb of rays;
-				// row[0] = ratio of wall hit position to CELL_WIDTH from
-				// 	the left to the right side of the wall. Multiply this ratio to texture width to 
-				// 	get exact column to draw in texture buffer.
-				// row[1] = height of column to draw on screen. Divide texture height by this nb
-				// 	to get the increment of pixels to travel in texture buffer column
-				//	for each screen pixel to draw on screen. Draw on screen buffer from y = SCN_MIDY -
-				//	0.5 * row[1] to SCN_MIDY + 0.5 * row[1] (and x is the index of the ray being
-				//	rendered.)
-				// 
-*/
-//}	t_hero;
 
 typedef struct s_renderer
 {
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
-	mlx_image_t	*obj_layer;
-	mlx_image_t	*ui_layer;
-
-//////	FLOOR CASTER ////////////
-	float	*near_z_dists;// Array of distances to every column of the projected
-				// plane (near_z). See floorcaster. 
-	float	*param_factors;// Pre-calc parametric multipliers for all pixels
-				// below scn_midy. Every drawn pixels on screen 
-				// is mapped to a multiplier (see floor_caster.c)
-				// that stretches rx and ry to find the floor pixel it hits.
-
-	int		requires_update;
+	int			requires_update;
 }	t_rdr;
-
-//	Models are initialised only once at start. A pointer to a model is required
-//	for each drawable object created. They are a constante definition of a model type.
-//	eg.: a flying bullet, ennemy grunt ... They don't hold particular instance data such as position
-//	or distance. Only generic global information about a model type.
-typedef struct s_object_model
-{
-	char			*model_name;//	For debug info and logging purposes.
-	int				type_enum;
-	int				width;//		Width of object in world coords.
-	int				half_w;
-	int				height;//		Height of object in world coords.
-	int				half_h;
-
-	int				nb_texs;// Max nb of textures for this particular model.
-						// Multi textures used for animation or to simulate object orientation.
-	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
-
-	/// OPTIONAL FIELDS //////
-	int				dmg;
-}	t_omdl;
-
-enum	e_object_types
-{
-	OBJ_NULL = 0,
-	OBJ_PORTAL = 1
-};
-
-typedef struct s_objects_list_elem
-{
-	t_omdl	*type;
-	int		_id;//	unique obj id. Objects are deletable by id.
-	
-	int		tex_idx;
-	
-	float		px;//	Position X
-	float		py;//	Position Y
-
-	/// VARS SET AT RENDER TIME ////////////
-	float		ox;//	obj delta x from player
-	float		oy;//	obj delta y from player
-	float		ux;//	obj delta x from player
-	float		uy;//	obj delta y from player
-	float		dist;//	distance from player
-
-	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
-	float		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
-	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
-	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
-	
-	struct s_objects_list_elem	*next;
-}	t_oinst;
-
-//	Container keeping all drawable object types as pointers to linked lists.
-//	Each object type has its own linked list struct type. Renderer will 
-//	go through each list and draw the objects on screen in any order 
-//	and check weither it is in FOV first. If true, will check for each screen 
-//	column it occupies (depending on object width and distance) if the object's 
-//	distance to screen is smaller then the rays distance (depth buffer, cub.hero.rcast.rdata[<column idx>].dist, length = SCN_WIDTH).
-//	If true, draw object's texture column on screen and update the distance in 
-//	depth buffer (rdata[i].dist). Each subsequant texture column being drawn checks 
-//	weither something has already been drawn in front of it. 
-//	Objects from this list should be able to be added to their list and removed and free
-//	
-//	There should be a MAX_OBJ_DIST defined to bailout of a draw early if obj is to far.
-typedef struct s_drawable_objects
-{
-	/// OBJECT MODELS (constant) /////////////////////////
-	t_omdl	portal;//	Portal object model;
-	
-	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
-	//t_oclct	*collectibles;
-	//t_oenmi	*ennemies;
-	t_oinst	*instances;
-}	t_objs;
 
 typedef struct s_cub3d_core_data
 {
 	/// MLX42 DATA
-	mlx_t	*mlx;
-//	xpm_t	*xpm;
+	mlx_t			*mlx;
 	mlx_image_t		*imgz;
 	mlx_image_t		*color;
 	mlx_texture_t	*texr;
-
 	/// CONSTANT VALUES ////////////////////////////////////////
-	int		scn_midx;	// mid screen x coordinate
-	int		scn_midy;	// mid screen y coordinate
-	float	inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
-	float	inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
-	float	inv_two_pi;	// 1 / 2pi;
-
+	int				scn_midx;	// mid screen x coordinate
+	int				scn_midy;	// mid screen y coordinate
+	float			inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
+	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
+	float			inv_two_pi;	// 1 / 2pi;
 	/// FOV AND PROJECTION DATA ///////////////////////////////
-	float	fov;// = fov;// field of view
-	float	hfov;// = fov * 0.5f;// half fov
-	float	near_z;// = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
-	float	near_proj_factor;// = CELL_WIDTH * cub->near_z;
-
-	/// SKYMAP DATA ////////////////////////////////////////////
-	float	skymap_radial_width;// skymap_tex.width / 2pi (const after texture load)
-	int		skymap_tex_offset;// hero.ori * radial_width. texture pixel column index;
-	float	skymap_fov_to_tex;//  fov * radial_width.
-					// converts screen coords to texture coords
-					// by multiplying (x - scn_midx) / SCN_WIDTH to it and add ori_offset.
-
+	float			fov;// = fov;// field of view
+	float			hfov;// = fov * 0.5f;// half fov
+	float			near_z;// = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
+	float			near_proj_factor;// = CELL_WIDTH * cub->near_z;
 	/// SUBSECTIONS ////////////////////////////////////////////
-	t_map	map;
-	t_tex	tex;
-	t_hero	hero;
-	t_rdr	renderer;
-	t_objs	objs;
+	t_map			map;
+	t_tex			tex;
+	t_hero			hero;
+	t_rdr			renderer;
 }	t_cub;
 
 /// PARSING ///////////////////
+
 //int	load_map(t_cub *cub, char *map_file);
 int		build_collision_map(t_map *map);
 void	print_collision_map(t_map *map);
 int		build_grid_coords_map(t_map *map);
 void	print_map(t_map *map);
 
-
 /// MAP_CHECKER ///////////////
 //map_parse
 t_map			*init_map(t_map *map);
-int			map_checker(t_cub *cub, t_map *map, char *file);
-int			tex_parse(t_cub *cub, t_map *map, int fd);
+int				map_checker(t_cub *cub, t_map *map, char *file);
+int				tex_parse(t_cub *cub, t_map *map, int fd);
 t_map			*wall_check(t_map *map);
 // t_map			*map_frame(t_map *map, int fd);
 //map_tool
@@ -365,79 +238,47 @@ int				error(char *error, t_map *map);
 int				int_strlen(const char *s);
 int				ft_in_set(char const *c, char const *set);
 int				ft_strfcmp(const char	*s1, const char	*s2, size_t n);
-char			*ft_strncpy_i(char *dst, const char *src, size_t len, unsigned int idx);
+char			*ft_strncpy_i(char *dst, const char *src, \
+size_t len, unsigned int idx);
 
 t_cub			path_from_line(t_cub cub);
 
-
 /// COLOR PARSE ////////////
-int 	str_to_color(int r, int g, int b, int t);
-int get_t (int trgb);
-int get_b (int trgb);
-int get_g (int trgb);
-int get_r (int trgb);
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_ut(int trgb);
-unsigned char get_ur(int trgb);
-unsigned char get_ug(int trgb);
-unsigned char get_ub(int trgb);
-
-// void	    	print_map_next(t_map *m, int i, int j);
-// void    		print_map(t_map *m);
-// void			print_img(t_map *map, t_cub cub);
-
+int				str_to_color(int r, int g, int b, int t);
+int				get_t(int trgb);
+int				get_b(int trgb);
+int				get_g(int trgb);
+int				get_r(int trgb);
+int				create_trgb(unsigned char t, unsigned char r, \
+unsigned char g, unsigned char b);
+unsigned char	get_ut(int trgb);
+unsigned char	get_ur(int trgb);
+unsigned char	get_ug(int trgb);
+unsigned char	get_ub(int trgb);
 
 /// RAYCASTER /////////////////
-int		init_raycaster(t_cub *cub);
-int		raycaster_clear(t_rcast *rcast, int exit_status);
-//int		raycast_all_vectors(t_cub *cub);
-void	update_rays(t_cub *cub);
-void	update_fov(t_cub *cub, float fov);
-int		get_is_wall(t_map *map, int cx, int cy);
-int		get_is_cell_within_bounds(t_map *map, int cx, int cy);
+int				init_raycaster(t_cub *cub);
+int				raycaster_clear(t_rcast *rcast, int exit_status);
+void			update_rays(t_cub *cub);
+void			update_fov(t_cub *cub, float fov);
+int				get_is_wall(t_map *map, int cx, int cy);
+int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
 //float	*get_grid_coords(t_map *map, int cx, int cy);
 
-int		init_floorcaster(t_cub *cub);
-void	update_floorcaster_params(t_cub *cub);
-float	get_floorcaster_param(t_cub *cub, int x, int y);
-int		floorcaster_clear(t_cub *cub);
-
-
 /// RENDERER /////////////////
-int	init_renderer(t_cub *cub);
-int	renderer_clear(t_cub *cub);
-//void	render_walls(t_cub *cub);
-void	render_scene(t_cub *cub);
-
+int				init_renderer(t_cub *cub);
+int				renderer_clear(t_cub *cub);
+void			render_scene(t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
-void	cub_player_rotate(t_cub *cub, float rot);
-void	cub_player_move(t_cub *cub, float d_walk, float d_strafe);
-void	cub_player_zoom(t_cub *cub, float dz);
-
-/// OBJECT MANAGEMENT SYSTEM ////////
-int	init_obj_framework(t_cub *cub);
-void	clear_obj_framework(t_cub *cub);
-int	create_obj_instance(t_cub *cub, int px, int py, int type_enum);
-int	destroy_oinst_by_id(t_cub *cub, int id);
-int	destroy_oinst_by_type(t_cub *cub, int type_enum);
-void	destroy_all_obj_instances(t_cub *cub);
+void			cub_player_rotate(t_cub *cub, float rot);
+void			cub_player_move(t_cub *cub, float d_walk, float d_strafe);
+void			cub_player_zoom(t_cub *cub, float dz);
 
 /// ERROR HANDLING ////////////
-int	report_err(char *msg);
-int	report_mlx_init_error(void);
-int	report_mlx_tex_load_failed(void);
-int	report_malloc_error(void);
-/// color_parse
-
-int get_t (int trgb);
-int get_b (int trgb);
-int get_g (int trgb);
-int get_r (int trgb);
-int create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b);
-unsigned char get_ut(int trgb);
-unsigned char get_ur(int trgb);
-unsigned char get_ug(int trgb);
-unsigned char get_ub(int trgb);
+int				report_err(char *msg);
+int				report_mlx_init_error(void);
+int				report_mlx_tex_load_failed(void);
+int				report_malloc_error(void);
 
 #endif
