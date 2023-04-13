@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/12 18:39:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:23:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ static int	error_clear(char *err, t_map *map, char ***txtr)
 
 int	tex_parse(t_cub *cub, t_map *map, int fd)
 {
-	char **txtr;
-	char *line;
-	char **color;
-	int nb;
-	int id;
+	char	**txtr;
+	char	*line;
+	char	**color;
+	int		nb;
+	int		id;
 
 	nb = 0;
 	while (nb < 6)
@@ -80,53 +80,31 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 			if (txtr[1][ft_strlen(txtr[1]) - 1] == '\n')
 				txtr[1][ft_strlen(txtr[1]) - 1] = '\0';
 			if (ft_strlen(txtr[0]) > 2)
-				return (error_clear("7, Texture mapping Name error !\n", map,
-						&txtr));
+				return (error_clear("7, Texture Name error !\n", map, &txtr));
 			if (!txtr[1])
-				return (error_clear("8, Texture mapping Path error !\n", map,
-						&txtr));
+				return (error_clear("8, Texture Path error !\n", map, &txtr));
 			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
 			if (id < 0)
-				return (error_clear("9, Texture Name unmatching error !\n", map,
-						&txtr));
+				return (error_clear("9, Texture unmatching!\n", map, &txtr));
 			else if (id < 4)
 			{
-				cub->tex.tex_n[id] = txtr[1]; //
+				cub->tex.tex_n[id] = txtr[1];
 				printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id,
-						cub->tex.tex_n[id]);
+					cub->tex.tex_n[id]);
 			}
-			else if (id < 7)
+			else
 			{
-				if (*txtr[1] < '0' || *txtr[1] > '9')
-					get_tex_by_id(cub, id, txtr[1]);
-				else
-				{
-					color = ft_split(txtr[1], ',');
-					printf("DEBUG:  ID: %d :: color_num[0]: R = %s :: \n", id,
-							color[0]);
-					printf("DEBUG:  ID: %d :: color_num[1]: G = %s :: \n", id,
-							color[1]);
-					printf("DEBUG:  ID: %d :: color_num[2]: B = %s :: \n", id,
-							color[2]);
-					if (id == 4)
-						cub->tex.color[0] = str_to_color(ft_atoi(color[0]),
-															ft_atoi(color[1]),
-															ft_atoi(color[2]),
-															0xff);
-					else if (id == 5)
-						cub->tex.color[1] = str_to_color(ft_atoi(color[0]),
-															ft_atoi(color[1]),
-															ft_atoi(color[2]),
-															0xff);
-				}
+				color = ft_split(txtr[1], ',');
+				if (id == 4)
+					cub->tex.color[0] = str_to_color(ft_atoi(color[0]),
+							ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
+				else if (id == 5)
+					cub->tex.color[1] = str_to_color(ft_atoi(color[0]),
+							ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
 			}
 			free(line);
 			nb++;
 		}
-		return (setup_wall_textures(cub));
-		//	return (0);
 	}
-	/**
- * @brief tex_parse too long split inot 2-3
- * 
- */
+	return (setup_wall_textures(cub));
+}

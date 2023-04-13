@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/12 18:39:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:13:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,19 @@ void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 	int		cx;
 	int		cy;
 	
-//	printf("\nMoving player : d_walk = %f, d_strafe = %f\n", d_walk, d_strafe);
-//	printf("pos berfore -> (%f, %f)\n", cub->hero.px, cub->hero.py);
 	dx = (d_walk * (*cub->hero.dirx)) - (d_strafe * (*cub->hero.diry));
 	dy = (d_walk * (*cub->hero.diry)) + (d_strafe * (*cub->hero.dirx));
-
-//	printf("pos after -> (%f, %f)\n", cub->hero.px + dx, cub->hero.py + dy);
-//	printf("cell x, y before -> (%d, %d)\n", cub->hero.cell_x, cub->hero.cell_y);
 	cx = (int)(cub->inv_cw * (cub->hero.px + dx));
 	cy = (int)(cub->inv_cw * (cub->hero.py + dy));
-//	printf("Checking if (%d, %d) is wall !\n", cx, cy);
 	if (get_is_cell_within_bounds(&cub->map, cx, cy)
 		&& !get_is_wall(&cub->map, cx, cy))
 	{
-//		printf("Is NOT wall !\n");
-		cub->hero.px += dx;//(d_walk * (*cub->hero.dirx)) + (d_strafe * -(*cub->hero.diry));
-		cub->hero.py += dy;//(d_walk * (*cub->hero.diry)) + (d_strafe * (*cub->hero.dirx));
-		cub->hero.cell_x = cx;//(int)(cub->inv_cw * cub->hero.px);
-		cub->hero.cell_y = cy;//(int)(cub->inv_cw * cub->hero.py);
+		cub->hero.px += dx;
+		cub->hero.py += dy;
+		cub->hero.cell_x = cx;
+		cub->hero.cell_y = cy;
 		update_rays(cub);
-//		printf("rays updated\n");
-		render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
+//		render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
 //		printf("scene rendered\n");
 		cub->renderer.requires_update = 1;
 	}
