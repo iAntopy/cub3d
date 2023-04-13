@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/12 21:46:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/12 22:06:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	cub_key_handler(mlx_key_data_t event, void *param)
 		return ;
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
-	//	else if (event.key == MLX_KEY_W)
-	//		cub_player_move(cub, 10, 0);
-	//	else if (event.key == MLX_KEY_S)
-	//		cub_player_move(cub, -10, 0);
-	//	else if (event.key == MLX_KEY_A)
-	//		cub_player_move(cub, 0, -10);
-	//	else if (event.key == MLX_KEY_D)
-	//		cub_player_move(cub, 0, 10);
+//	else if (event.key == MLX_KEY_W)
+//		cub_player_move(cub, 10, 0);
+//	else if (event.key == MLX_KEY_S)
+//		cub_player_move(cub, -10, 0);
+//	else if (event.key == MLX_KEY_A)
+//		cub_player_move(cub, 0, -10);
+//	else if (event.key == MLX_KEY_D)
+//		cub_player_move(cub, 0, 10);
 	else if (event.key == MLX_KEY_LEFT)
 		cub_player_rotate(cub, -10.0f * ROT_FACTOR);
 	else if (event.key == MLX_KEY_RIGHT)
@@ -85,16 +85,16 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 }
 
-// On pourra intégrer ces lignes là dans le parsing ou qqc du genre,
-	mais on va en avoir besoin.
+// On pourra intégrer ces lignes là dans le parsing ou qqc du genre, mais on va en avoir besoin. 
 int	cub_init_core_data(t_cub *cub)
 {
 	cub->scn_midx = SCN_WIDTH / 2;
 	cub->scn_midy = SCN_HEIGHT / 2;
 	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
 	cub->inv_sw = 1.0f / (float)SCN_WIDTH;
-	cub->inv_two_pi = 0.5f / M_PI;
+	cub->inv_two_pi = 0.5f / M_PI ;
 	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
+
 	return (0);
 }
 
@@ -108,11 +108,9 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, int side)
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = M_PI - side * cub->inv_two_pi;
-	//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
-	//	cub->skymap_tex_offset = (int)(cub->hero.ori
-				* cub->skymap_radial_width);
-	//	printf("SET PLAYER POS : ori : %f, sky_tex_offset : %d\n",
-				cub->hero.ori, cub->skymap_tex_offset);
+//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
+//	cub->skymap_tex_offset = (int)(cub->hero.ori * cub->skymap_radial_width);
+//	printf("SET PLAYER POS : ori : %f, sky_tex_offset : %d\n", cub->hero.ori, cub->skymap_tex_offset);
 	return (0);
 }
 
@@ -141,41 +139,46 @@ void	on_update(void *param)
 
 int	main(int argc, char **argv)
 {
-	t_cub	cub;
-
+	t_cub		cub;
+	
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
-	// INIT INPUT
+
+	// INIT INPUT	
 	if (map_checker(&cub, init_map(&cub.map), argv[1]) != 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	if (set_player_cell_pos(&cub, cub.map.pos_x, cub.map.pos_y,
-			cub.map.hero_side) != 0)
-		return (cub_clear(&cub, EXIT_FAILURE));
-	// Window Width, Height, title,
-		is_resizable. (option possible pour la window : full screen mode)
+	if (set_player_cell_pos(&cub, cub.map.pos_x, cub.map.pos_y, cub.map.hero_side) != 0)
+	 	return (cub_clear(&cub, EXIT_FAILURE));
+
+	// Window Width, Height, title, is_resizable. (option possible pour la window : full screen mode)
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	if (!cub.mlx)
-		return (cub_clear(&cub, report_mlx_init_error()));
+		return (cub_clear(&cub, report_mlx_init_error()));	
 	mlx_focus(cub.mlx);
 	printf("Init mlx SUCCESSFUL !\n");
+	
 	printf("Try init renderer\n");
-	if (init_renderer(&cub) < 0) // || init_floorcaster(&cub) < 0)
+	if (init_renderer(&cub) < 0)// || init_floorcaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	printf("Init renderer SUCCESSFUL !\n");
+	
 	if (init_raycaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
+
 	// INIT CURSOR SETTINGS
 	mlx_set_mouse_pos(cub.mlx, cub.scn_midx, cub.scn_midy);
 	mlx_set_cursor_mode(cub.mlx, MLX_MOUSE_HIDDEN);
+
 	// INIT HOOKS
 	mlx_cursor_hook(cub.mlx, &on_cursor_move, &cub);
 	mlx_key_hook(cub.mlx, &cub_key_handler, &cub);
 	mlx_loop_hook(cub.mlx, *on_update, &cub);
 	mlx_scroll_hook(cub.mlx, &on_scroll, &cub);
 	mlx_close_hook(cub.mlx, &on_close, &cub);
-	//	printf("Starting mlx loop\n");
+
+//	printf("Starting mlx loop\n");
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		printf("mlx loop stopped with ERROR ! : %s\n", mlx_strerror(mlx_errno));
