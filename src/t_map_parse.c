@@ -73,7 +73,7 @@ static t_map	*map_frame(t_map *map, int fd)
 
 	temp = skip_file_lines(map, fd, map->lines_to_map);
 	nb = 0;
-	while (temp && (nb < map->height))
+	while (temp && (nb++ < map->height))
 	{
 		map->tab[nb] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
 		if (map->width == int_strlen(temp))
@@ -83,8 +83,6 @@ static t_map	*map_frame(t_map *map, int fd)
 		}
 		else
 			map->tab[nb] = ft_strncpy_i(map->tab[nb], temp, map->width, 0);
-		free(temp);
-		nb++;
 		temp = get_next_line(fd);
 	}
 	if (temp)
@@ -104,22 +102,18 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		return (error("Could not open file", map)); /// TEX_PARSE
+		return (error("Could not open file", map));
 	if (tex_parse(cub, map, fd) < 0)
-		return (-1);            
-				// printf("*** tex_parse DONE\n");	///	TRANSCRIBE
-	if (transcribe(map, fd) < 3) // pre-count
+		return (-1);
+	if (transcribe(map, fd) < 3)
 		return (error("Map in file is too short", map));
-	close(fd); // printf("transcribe DONE\n");	/// RE-OPEN CALLOC
+	close(fd);
 	fd = open(file, O_RDONLY);
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
-			// printf("tab calloc DONE\n");	// MULTI_CHECK CONDITION MAP & MAP_FRAME
-			+ BUILD ...
 	if (!map->tab || !map_frame(map, fd) || !printf("map_frame DONE !\n")
 		|| build_grid_coords_map(map) < 0 || !printf("build_grid_coords DONE\n")
 		|| build_collision_map(map) < 0)
 		return (-1);
-			// printf("Collision map :\n");	// printf("DEBUG:Z. AFTER map_frame NEXT wall_chk\n");
 	print_collision_map(map);
 	close(fd);
 	return (0);

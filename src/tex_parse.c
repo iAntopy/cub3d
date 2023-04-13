@@ -25,10 +25,6 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 		cub->tex.walls[E_SIDE] = mlx_load_png(&tex[0]);
 	else if (id == 3)
 		cub->tex.walls[S_SIDE] = mlx_load_png(&tex[0]);
-//	else if (id == 4)
-//		cub->tex.skymap = mlx_load_png(&tex[0]);
-//	else if (id == 5)
-//		cub->tex.floor = mlx_load_png(&tex[0]);
 	return (cub);
 }
 
@@ -42,7 +38,7 @@ static int	setup_wall_textures(t_cub *cub)
 	if (src[W_SIDE] && src[N_SIDE] && src[E_SIDE] && src[S_SIDE])
 	{
 		printf("All textures available :  \n- %s- %s- %s- %s\n", src[W_SIDE],
-				src[N_SIDE], src[E_SIDE], src[S_SIDE]);
+			src[N_SIDE], src[E_SIDE], src[S_SIDE]);
 		dst[W_SIDE] = mlx_load_png(src[W_SIDE]);
 		dst[N_SIDE] = mlx_load_png(src[N_SIDE]);
 		dst[E_SIDE] = mlx_load_png(src[E_SIDE]);
@@ -59,16 +55,14 @@ static int	error_clear(char *err, t_map *map, char ***txtr)
 	return (error(err, map));
 }
 
-/// get input frm file
 int	tex_parse(t_cub *cub, t_map *map, int fd)
 {
-	char	**txtr;
-	char	*line;
-	char	**color;
-	int		nb;
-	int		id;
+	char **txtr;
+	char *line;
+	char **color;
+	int nb;
+	int id;
 
-	printf("DEBUG:Z. JOURNEY'S INTO TEX_PARSE\n");
 	nb = 0;
 	while (nb < 6)
 	{
@@ -91,7 +85,6 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 			if (!txtr[1])
 				return (error_clear("8, Texture mapping Path error !\n", map,
 						&txtr));
-			id = 0;
 			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
 			if (id < 0)
 				return (error_clear("9, Texture Name unmatching error !\n", map,
@@ -127,19 +120,13 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 															0xff);
 				}
 			}
+			free(line);
+			nb++;
 		}
-		else
-		{
-			printf("DEBG: UNABLE tex_parse!");
-		}
-		free(line);
-		nb++;
+		return (setup_wall_textures(cub));
+		//	return (0);
 	}
-	printf("DEBUG:Z. JOURNEY'S end TEX_PARSE\n");
-	return (setup_wall_textures(cub));
-	//	return (0);
-}
-/**
+	/**
  * @brief tex_parse too long split inot 2-3
  * 
  */

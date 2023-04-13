@@ -89,12 +89,8 @@ t_map	    *wall_check(t_map *m)
     {
         m->pos_x = hero_x;
         m->pos_y = hero_y;      
-        printf("\t::hero_x[%d]: hero_y[%d] \n", m->pos_x, m->pos_y);
-        printf("DEBUG: WALL CHK SUCCEED o_cells [%d]!!!\n", m->hero_side);
     }
     else 
-        m->flg_chk = 1;
-    
-        // printf("DEBUG:!!! FAIL CHK WALL [%d] o_cells x[%d] y[%d]!!!\n", o_cells, m->pos_x, m->pos_y);	
+        m->flg_chk = 1; 
     return (m);
 }
