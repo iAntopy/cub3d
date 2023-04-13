@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/12 18:39:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/12 21:50:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,8 @@ t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map, int fd);
 t_map			*wall_check(t_map *map);
-// t_map			*map_frame(t_map *map, int fd);
+char			*skip_file_lines(t_map *map, int fd, int nb_lines);
+int				is_empty_line(char *line);
 //map_tool
 int				error(char *error, t_map *map);
 int				int_strlen(const char *s);

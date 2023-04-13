@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/12 18:38:16 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/12 22:06:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void	cub_key_handler(mlx_key_data_t event, void *param)
 		return ;
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
-	else if (event.key == MLX_KEY_W)
-		cub_player_move(cub, 10, 0);
-	else if (event.key == MLX_KEY_S)
-		cub_player_move(cub, -10, 0);
-	else if (event.key == MLX_KEY_A)
-		cub_player_move(cub, 0, -10);
-	else if (event.key == MLX_KEY_D)
-		cub_player_move(cub, 0, 10);
+//	else if (event.key == MLX_KEY_W)
+//		cub_player_move(cub, 10, 0);
+//	else if (event.key == MLX_KEY_S)
+//		cub_player_move(cub, -10, 0);
+//	else if (event.key == MLX_KEY_A)
+//		cub_player_move(cub, 0, -10);
+//	else if (event.key == MLX_KEY_D)
+//		cub_player_move(cub, 0, 10);
 	else if (event.key == MLX_KEY_LEFT)
 		cub_player_rotate(cub, -10.0f * ROT_FACTOR);
 	else if (event.key == MLX_KEY_RIGHT)
@@ -114,6 +114,29 @@ int	set_player_cell_pos(t_cub *cub, int x, int y, int side)
 	return (0);
 }
 
+void	on_update(void *param)
+{
+	t_cub	*cub;
+	float	d_walk;
+	float	d_strafe;
+
+	cub = (t_cub *)param;
+	d_walk = 0;
+	d_strafe = 0;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
+		d_walk += 1;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
+		d_walk -= 1;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
+		d_strafe -= 1;
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
+		d_strafe += 1;
+	if (d_walk || d_strafe)
+		cub_player_move(cub, d_walk, d_strafe);
+	if (cub->renderer.requires_update)
+		render_scene(cub);
+}
+
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
@@ -151,6 +174,7 @@ int	main(int argc, char **argv)
 	// INIT HOOKS
 	mlx_cursor_hook(cub.mlx, &on_cursor_move, &cub);
 	mlx_key_hook(cub.mlx, &cub_key_handler, &cub);
+	mlx_loop_hook(cub.mlx, *on_update, &cub);
 	mlx_scroll_hook(cub.mlx, &on_scroll, &cub);
 	mlx_close_hook(cub.mlx, &on_close, &cub);
 

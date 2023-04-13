@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/12 18:40:26 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/12 21:19:57 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC_FLS	:=		main.c 			\
 			t_map_parse.c 		\
 			t_map_tool.c 		\
 			t_wall_chk.c		\
+			t_empty_line.c		\
 			tex_parse.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
