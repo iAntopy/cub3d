@@ -38,7 +38,7 @@ static int	setup_wall_textures(t_cub *cub)
 	if (src[W_SIDE] && src[N_SIDE] && src[E_SIDE] && src[S_SIDE])
 	{
 		printf("All textures available :  \n- %s- %s- %s- %s\n", src[W_SIDE],
-			src[N_SIDE], src[E_SIDE], src[S_SIDE]);
+				src[N_SIDE], src[E_SIDE], src[S_SIDE]);
 		dst[W_SIDE] = mlx_load_png(src[W_SIDE]);
 		dst[N_SIDE] = mlx_load_png(src[N_SIDE]);
 		dst[E_SIDE] = mlx_load_png(src[E_SIDE]);
