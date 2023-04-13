@@ -38,7 +38,7 @@ static int	setup_wall_textures(t_cub *cub)
 	if (src[W_SIDE] && src[N_SIDE] && src[E_SIDE] && src[S_SIDE])
 	{
 		printf("All textures available :  \n- %s- %s- %s- %s\n", src[W_SIDE],
-				src[N_SIDE], src[E_SIDE], src[S_SIDE]);
+			src[N_SIDE], src[E_SIDE], src[S_SIDE]);
 		dst[W_SIDE] = mlx_load_png(src[W_SIDE]);
 		dst[N_SIDE] = mlx_load_png(src[N_SIDE]);
 		dst[E_SIDE] = mlx_load_png(src[E_SIDE]);
@@ -54,6 +54,11 @@ static int	error_clear(char *err, t_map *map, char ***txtr)
 		strtab_clear(txtr);
 	return (error(err, map));
 }
+// t_cub *t_tex_parse(t_cub *cub, t_map *map, int fd)
+// {
+
+
+// }
 
 int	tex_parse(t_cub *cub, t_map *map, int fd)
 {
@@ -73,7 +78,7 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 			free(line);
 			line = get_next_line(fd);
 		}
-		if (line)
+		// if (line)
 		{
 			map->lines_to_map++;
 			txtr = ft_split(line, ' ');
@@ -92,7 +97,7 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 				printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id,
 					cub->tex.tex_n[id]);
 			}
-			else
+			if (id > 4)
 			{
 				color = ft_split(txtr[1], ',');
 				if (id == 4)
