@@ -12,8 +12,6 @@
 
 #include "../include/cub3d.h"
 
-// #include "../include/textur.h"
-
 t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 {
 	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, &tex[0]);
@@ -55,7 +53,7 @@ static int	error_clear(char *err, t_map *map, char ***txtr)
 	return (error(err, map));
 }
 
-static char *t_get_liner(t_map *map, int fd, char **txtr)
+static char	**t_get_liner(t_map *map, int fd, char **txtr)
 {
 	char	*line;
 
@@ -69,7 +67,6 @@ static char *t_get_liner(t_map *map, int fd, char **txtr)
 	if (line)
 	{
 		map->lines_to_map++;
-		/// t_split_tex (line, txtr)
 		txtr = ft_split(line, ' ');
 		if (txtr[1][ft_strlen(txtr[1]) - 1] == '\n')
 			txtr[1][ft_strlen(txtr[1]) - 1] = '\0';
@@ -85,7 +82,6 @@ static char *t_get_liner(t_map *map, int fd, char **txtr)
 int	tex_parse(t_cub *cub, t_map *map, int fd)
 {
 	char	**txtr;
-	char	**color;
 	int		nb;
 	int		id;
 
@@ -93,31 +89,14 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 	while (nb < 6)
 	{
 		txtr = t_get_liner(map, fd, txtr);
-
-			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
-		/// t_id_setter(id, cub,)
-			if (id < 0)
-				return (error_clear("9, Texture unmatching!\n", map, &txtr));
-			else if (id < 4)
-			{
-				cub->tex.tex_n[id] = txtr[1];
-				printf("DEBUG:  tex_id: %d :: tex_name: %s :: \n", id,
-					cub->tex.tex_n[id]);
-			}
-			else
-			{
-				color = ft_split(txtr[1], ',');
-				if (id == 4)
-					cub->tex.color[0] = str_to_color(ft_atoi(color[0]),
-							ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
-				else if (id == 5)
-					cub->tex.color[1] = str_to_color(ft_atoi(color[0]),
-							ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
-			}
-		///
-			
-			nb++;
-		}
+		id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
+		if (id < 0)
+			return (error_clear("9, Texture unmatching!\n", map, &txtr));
+		else if (id < 4)
+			cub->tex.tex_n[id] = txtr[1];
+		else
+			cub->tex.color = color_split(txtr, id);
+		nb++;
 	}
 	return (setup_wall_textures(cub));
 }

@@ -12,7 +12,20 @@
 
 #include "../include/cub3d.h"
 
+int     *color_split(char **txtr, int id);
+{
+    char	**color;
 
+    color = ft_split(txtr[1], ',');
+    if (id == 4)
+        cub->tex.color[0] = str_to_color(ft_atoi(color[0]),
+                ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
+    else if (id == 5)
+        cub->tex.color[1] = str_to_color(ft_atoi(color[0]),
+                ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
+ 
+
+}
 
 t_map	    *wall_check(t_map *m)
 {

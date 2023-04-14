@@ -64,7 +64,6 @@ static	int	transcribe(t_map *map, int fd)
 
 static t_map	*map_frame(t_map *map, int fd)
 {
-	t_map	*dup;
 	char	*temp;
 	int		nb;
 
@@ -86,8 +85,7 @@ static t_map	*map_frame(t_map *map, int fd)
 	}
 	if (temp)
 		free(temp);
-	dup = map;
-	map = wall_check(dup);
+	map = wall_check(map);
 	if (map->flg_chk == 1)
 		return (NULL);
 	return (map);
