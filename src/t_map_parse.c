@@ -17,6 +17,8 @@ t_map	*init_map(t_map *map)
 	map->pos_x = 1;
 	map->pos_y = 1;
 	map->hero_side = -1;
+	map->hero_x = -1;
+	map->hero_y = -1;
 	map->width = 0;
 	map->height = 0;
 	map->total_cells = 0;

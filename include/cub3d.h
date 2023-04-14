@@ -104,6 +104,8 @@ typedef struct s_map_data
 	int		pos_y;
 	int		lines_to_map;
 	int		hero_side;
+	int		hero_x;
+	int		hero_y;
 	int		flg_chk;
 }	t_map;
 
