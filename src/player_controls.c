@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/12 21:13:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/13 19:49:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,9 @@
 void	cub_player_rotate(t_cub *cub, float rot)
 {
 	cub->hero.ori += rot;
-//	printf("tex_offset before : %d\n", cub->skymap_tex_offset);
-//	cub->skymap_tex_offset = (int)(cub->hero.ori * cub->skymap_radial_width);
-//	printf("tex_offset after : %d\n", cub->skymap_tex_offset);
-//	cub->hero.ori_factor = fabsf(cub->hero.ori * cub->inv_two_pi);
-//	printf("ori / ori_factor : %f / %f\n", cub->hero.ori, cub->hero.ori_factor);
-//	ft_deltatime_usec_note(NULL);
 	update_rays(cub);
-//	printf("p_dirx, p_diry : (%f, %f)\n", *cub->hero.dirx, *cub->hero.diry);
-	render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
-//	ft_deltatime_usec_note("Believe it or not !");
+	cub->renderer.requires_update = 1;
 }
-
-//void	cub_player_wall_collision_correction(t_cub *cub, float dx, float dy)
 
 // Pass some positive/negative increment to d_walk to move forward/backward
 // Pass some positive/negative increment to d_strafe to move left/right
@@ -38,24 +28,27 @@ void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 	float	dy;
 	int		cx;
 	int		cy;
-	
+
 	dx = (d_walk * (*cub->hero.dirx)) - (d_strafe * (*cub->hero.diry));
 	dy = (d_walk * (*cub->hero.diry)) + (d_strafe * (*cub->hero.dirx));
 	cx = (int)(cub->inv_cw * (cub->hero.px + dx));
 	cy = (int)(cub->inv_cw * (cub->hero.py + dy));
-	if (get_is_cell_within_bounds(&cub->map, cx, cy)
-		&& !get_is_wall(&cub->map, cx, cy))
+	if (!get_is_cell_within_bounds(&cub->map, cx, cy))
+		return ;
+	if (is_wall(&cub->map, cx, cy))
+	{
+		cub->hero.px += dx * (cub->hero.cell_x == cx);
+		cub->hero.py += dy * (cub->hero.cell_y == cy);
+	}
+	else
 	{
 		cub->hero.px += dx;
 		cub->hero.py += dy;
-		cub->hero.cell_x = cx;
-		cub->hero.cell_y = cy;
-		update_rays(cub);
-//		render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
-//		printf("scene rendered\n");
-		cub->renderer.requires_update = 1;
 	}
-	printf("cell x, y after -> (%d, %d), px, py after -> (%f, %f)\n", cx, cy, cub->hero.px, cub->hero.py);//cub->hero.cell_x, cub->hero.cell_y);
+	cub->hero.cell_x = (int)(cub->inv_cw * cub->hero.px);
+	cub->hero.cell_y = (int)(cub->inv_cw * cub->hero.py);
+	update_rays(cub);
+	cub->renderer.requires_update = 1;
 }
 
 // Pass some positive/negative increment to zoom in/out by this factor.
@@ -76,6 +69,5 @@ void	cub_player_zoom(t_cub *cub, float dz)
 	{
 		update_fov(cub, new_fov);
 		cub->renderer.requires_update = 1;
-		render_scene(cub);//	REMOVE ME !! Move this to on_update() function eventually.
 	}
 }
