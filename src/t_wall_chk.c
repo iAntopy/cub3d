@@ -31,8 +31,8 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 	m->pos_x = pos_x;
 	m->pos_y = pos_y;
 
-	// m->flg_chk = 0;
-	while (m->pos_x != 0 && m->pos_y != 0 && m->pos_x < m->width && m->pos_y < m->height)
+	m->flg_chk = 0;
+	if (m->pos_x != 0 && m->pos_y != 0 && m->pos_x < m->width && m->pos_y < m->height)
 	{
 		if (m->pos_x - 1)
 			if (ft_in_set(&m->tab[m->pos_x - 1][m->pos_y],
@@ -87,9 +87,9 @@ t_map	*wall_check(t_map *m)
 					(const char *)MAP_CHARS);
 			printf("\tDEBUG: o_cell(%d):\n", o_cells);
 			if (o_cells == 0)
-				t_o_cell(m, m->pos_x, m->pos_y);
-			else if (o_cells > 1)
-				t_hero_cell(m, m->pos_x, m->pos_y);
+				m = t_o_cell(m, m->pos_x, m->pos_y);
+			if (o_cells > 1)
+				m = t_hero_cell(m, m->pos_x, m->pos_y);
 			m->pos_x++;
 		}
 		m->pos_y++;
