@@ -38,7 +38,7 @@ static int	setup_wall_textures(t_cub *cub)
 	if (src[W_SIDE] && src[N_SIDE] && src[E_SIDE] && src[S_SIDE])
 	{
 		printf("All textures available :  \n- %s- %s- %s- %s\n", src[W_SIDE],
-				src[N_SIDE], src[E_SIDE], src[S_SIDE]);
+			src[N_SIDE], src[E_SIDE], src[S_SIDE]);
 		dst[W_SIDE] = mlx_load_png(src[W_SIDE]);
 		dst[N_SIDE] = mlx_load_png(src[N_SIDE]);
 		dst[E_SIDE] = mlx_load_png(src[E_SIDE]);
@@ -55,10 +55,36 @@ static int	error_clear(char *err, t_map *map, char ***txtr)
 	return (error(err, map));
 }
 
+static char *t_get_liner(t_map *map, int fd, char **txtr)
+{
+	char	*line;
+
+	line = get_next_line(fd);
+	while (*line == '\n' || ft_strlen(line) < 2)
+	{
+		map->lines_to_map++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (line)
+	{
+		map->lines_to_map++;
+		/// t_split_tex (line, txtr)
+		txtr = ft_split(line, ' ');
+		if (txtr[1][ft_strlen(txtr[1]) - 1] == '\n')
+			txtr[1][ft_strlen(txtr[1]) - 1] = '\0';
+		if (ft_strlen(txtr[0]) > 2)
+			return (error_clear("7, Texture Ref error !\n", map, &txtr));
+		if (!txtr[1])
+			return (error_clear("8, Texture NameS error !\n", map, &txtr));
+		free(line);
+	}
+	return (txtr);
+}
+
 int	tex_parse(t_cub *cub, t_map *map, int fd)
 {
 	char	**txtr;
-	char	*line;
 	char	**color;
 	int		nb;
 	int		id;
@@ -66,24 +92,10 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 	nb = 0;
 	while (nb < 6)
 	{
-		line = get_next_line(fd);
-		while (*line == '\n' || ft_strlen(line) < 2)
-		{
-			map->lines_to_map++;
-			free(line);
-			line = get_next_line(fd);
-		}
-		if (line)
-		{
-			map->lines_to_map++;
-			txtr = ft_split(line, ' ');
-			if (txtr[1][ft_strlen(txtr[1]) - 1] == '\n')
-				txtr[1][ft_strlen(txtr[1]) - 1] = '\0';
-			if (ft_strlen(txtr[0]) > 2)
-				return (error_clear("7, Texture Name error !\n", map, &txtr));
-			if (!txtr[1])
-				return (error_clear("8, Texture Path error !\n", map, &txtr));
+		txtr = t_get_liner(map, fd, txtr);
+
 			id = ft_in_set((const char *)txtr[0], (const char *)"WNESCF");
+		/// t_id_setter(id, cub,)
 			if (id < 0)
 				return (error_clear("9, Texture unmatching!\n", map, &txtr));
 			else if (id < 4)
@@ -102,7 +114,8 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 					cub->tex.color[1] = str_to_color(ft_atoi(color[0]),
 							ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
 			}
-			free(line);
+		///
+			
 			nb++;
 		}
 	}
