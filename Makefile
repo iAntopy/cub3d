@@ -6,16 +6,18 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/12 21:19:57 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/13 21:12:15 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
 SRC_FLS	:=		main.c 			\
+			event_handlers.c	\
 			error_handling.c 	\
 			init_raycaster.c	\
 			update_raycaster.c	\
 			renderer.c			\
+			renderer_utils.c	\
 			player_controls.c	\
 			prebuilt_map_tools.c	\
 			t_color_shift.c		\

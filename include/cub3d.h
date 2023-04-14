@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/12 21:50:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/13 22:09:40 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ typedef struct s_map_data
 	int		pos_y;
 	int		lines_to_map;
 	int		hero_side;
+	int		hero_x;
+	int		hero_y;
 	int		flg_chk;
 }	t_map;
 
@@ -137,8 +139,8 @@ typedef struct s_ray_collision_data
 	float	*ry;// ray vector direction in y for specific ray; Pointer to rcast->rays[1] at rays idx.
 
 //	Init data
-	int		c_offx;//	x offset of cell to check in collision map
-	int		c_offy;//	y offset of cell to check in collision map
+	int		dx;//	x offset of cell to check in collision map
+	int		dy;//	y offset of cell to check in collision map
 	int		cincr_x;//	direction of cell move for vertical axis collision. Either 1 or -1.
 	int		cincr_y;//	direction of cell move for horizontal axis collision. Either 1 or -1.
 	float	a;//	ray slope
@@ -185,6 +187,19 @@ typedef struct s_main_character_data
 	float	*fov_ry;// right most fov ray y 
 	t_rcast	rcast;
 }	t_hero;
+
+// struct of parameters used by render_walls()
+typedef struct s_renderer_column_params
+{
+	mlx_texture_t	*tex;
+	uint32_t		*pxls;
+	int				half_texh;
+	int				scn_height;
+	int				half_height;
+	int				scn_start_y;
+	int				tex_start_x;
+	float			ratio;
+}	t_rcol;
 
 typedef struct s_renderer
 {
@@ -257,19 +272,31 @@ unsigned char	get_ur(int trgb);
 unsigned char	get_ug(int trgb);
 unsigned char	get_ub(int trgb);
 
+/// EVENT HANDLERS ////////////
+void			on_close(void *param);
+void			on_keypress(mlx_key_data_t event, void *param);
+void			on_scroll(double deltax, double deltay, void *param);
+void			on_update(void *param);
+void			on_cursor_move(double xpos, double ypos, void *param);
+
 /// RAYCASTER /////////////////
 int				init_raycaster(t_cub *cub);
 int				raycaster_clear(t_rcast *rcast, int exit_status);
 void			update_rays(t_cub *cub);
 void			update_fov(t_cub *cub, float fov);
-int				get_is_wall(t_map *map, int cx, int cy);
+int				is_wall(t_map *map, int cx, int cy);
 int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
 //float	*get_grid_coords(t_map *map, int cx, int cy);
 
 /// RENDERER /////////////////
 int				init_renderer(t_cub *cub);
 int				renderer_clear(t_cub *cub);
-void			render_scene(t_cub *cub);
+void			render_walls(t_cub *cub);
+void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
+void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
+void			clear_image_buffer(mlx_image_t *img);
+
+//void			render_scene(t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);
@@ -278,6 +305,7 @@ void			cub_player_zoom(t_cub *cub, float dz);
 
 /// ERROR HANDLING ////////////
 int				report_err(char *msg);
+int				report_err_strerror(char *msg);
 int				report_mlx_init_error(void);
 int				report_mlx_tex_load_failed(void);
 int				report_malloc_error(void);

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/08 10:29:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/13 19:17:37 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	init_raycaster(t_cub *cub)
 {
 	t_rcast	*rcast;
 
-	printf("Init raycaster :\n");
 	rcast = &cub->hero.rcast;
 	rcast->cub = cub;
 	rcast->map = &cub->map;
@@ -64,7 +63,5 @@ int	init_raycaster(t_cub *cub)
 	cub->hero.fov_ry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH - 1, 0);
 	init_raydata_consts(cub, rcast);
 	update_fov(cub, FOV);
-
-	printf("Init raycaster SUCCESSFUL !\n");
 	return (0);
 }
