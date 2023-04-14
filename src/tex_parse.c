@@ -97,9 +97,9 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 		else if (id < 4)
 			cub->tex.tex_n[id] = txtr[1];
 		else if (id == 4)
-			cub->color[0] = color_split(cub, txtr, id);
+			cub->tex.color[0] = color_split(txtr, id);
 		else if (id == 5)
-			cub->color[1] = color_split(cub, txtr, id);
+			cub->tex.color[1] = color_split(txtr, id);
 		nb++;
 	}
 	return (setup_wall_textures(cub));

@@ -247,6 +247,7 @@ t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map, int fd);
 t_map			*wall_check(t_map *map);
+int				color_split(char **txtr, int id);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
 int				is_empty_line(char *line);
 //map_tool
