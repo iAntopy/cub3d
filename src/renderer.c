@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 22:02:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:29:29 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,35 +22,64 @@ int	renderer_clear(t_cub *cub)
 	return (0);
 }
 
-static uint32_t	*init_column_data(t_cub *cub, t_rdata *rd, t_rcol *rc)
+static uint32_t	*init_column_data(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 {
-	rc->tex = cub->tex.walls[rd->side];
-	rc->half_texh = (rc->tex->height >> 1);
-	rc->tex_start_x = (int)(rd->tex_ratio * rc->tex->width);
+	mlx_texture_t	*tex;
+	int			tex_start_x;
+	int			tex_start_y;
+//	int			half_texh;
+
+	tex = cub->tex.walls[rd->side];
+	if (!tex)
+		printf("WOWOW ! tex is NULL at rendering for side %d\n", rd->side);
+	*tw = tex->width;
+//	half_texh = (tex->height >> 1);
+
+	tex_start_x = (int)(rd->tex_ratio * tex->width);
 	rc->scn_height = ft_clamp(rd->tex_height, 0, SCN_HEIGHT);
-	rc->half_height = (rc->scn_height >> 1);
-	rc->ratio = (float)rc->tex->height / (float)rd->tex_height;
+//	rc->half_height = (rc->scn_height >> 1);
+	rc->ratio = (float)tex->height / (float)rd->tex_height;
+
+	tex_start_y = (tex->height >> 1) - (int)((rc->scn_height >> 1) * rc->ratio);
+//	tex_start_y = (int)((float)(tex->height >> 1) - (float)(rc->scn_height >> 1) * rc->ratio);
+//	tex_start_y = (int)((tex->height * 0.5f) - (rc->scn_height * 0.5f) * rc->ratio);
+
 	rc->scn_start_y = ((SCN_HEIGHT - rc->scn_height) >> 1);
-	return ((uint32_t *)rc->tex->pixels + rc->tex_start_x);
+
+//	rc->px_incry = (int)(rc->ratio * tex->width);
+	rc->init_pxls = (uint32_t *)tex->pixels + tex_start_x + (tex_start_y * tex->width);
+
+//	if (col == (SCN_WIDTH >> 1))
+//		printf("%d : sx %d, sy %d, scn_h %d, ratio %f, px_incry %d\n", col,
+//			tex_start_x, tex_start_y, rc->scn_height, rc->ratio, rc->px_incry);
+	return (rc->init_pxls);
+	//return ((uint32_t *)tex->pixels + tex_start_x + (tex_start_y * tex->width));
 }
 
-void	render_walls(t_cub *cub)
+// rd is ptr to array of raycasting results data (array len = SCN_WIDTH).
+void	render_walls(t_cub *cub, t_rdata *rd)
 {
 	int			i;
 	int			j;
 	t_rcol		rc;
 	uint32_t	*pxls;
+	int			tex_width;
 
 	clear_image_buffer(cub->renderer.walls_layer);
+	rc.walls_layer = cub->renderer.walls_layer;
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
-		pxls = init_column_data(cub, cub->hero.rcast.rdata + i, &rc);
+		pxls = init_column_data(cub, rd + i, &rc, &tex_width);
 		j = -1;
 		while (++j < rc.scn_height)
-			cub_put_pixel(cub->renderer.walls_layer, i, rc.scn_start_y + j,
-				pxls[(int)(((j - rc.half_height) * rc.ratio)
-					+ rc.half_texh) *rc.tex->width]);
+		{
+			cub_put_pixel(rc.walls_layer, i, rc.scn_start_y + j, *pxls);
+//				pxls[(int)(((j - rc.half_height) * rc.ratio)
+//					+ rc.half_texh) *tex_width]);
+//			pxls += (int)(j * rc.ratio) * tex_width;
+			pxls = rc.init_pxls + ((int)(j * rc.ratio) * tex_width);
+		}
 	}
 	cub->renderer.requires_update = 0;
 }

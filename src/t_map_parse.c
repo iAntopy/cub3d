@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/13 18:01:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/15 02:02:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ static t_map	*map_frame(t_map *map, int fd)
 		free(temp);
 	map = wall_check(map);
 	if (map->flg_chk == 1)
+	{
+		printf("DEBUG WARNING : wall chk failed \n");
 		return (NULL);
+	}
 	return (map);
 }
 

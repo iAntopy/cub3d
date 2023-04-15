@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_tool.c                                         :+:      :+:    :+:   */
+/*   t_map_tool.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:02:25 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/12 13:53:12 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/04/15 02:30:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,20 @@ int	ft_strfcmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
+int	ft_in_set(const char c, const char *set)
+{
+	int	i;
+
+	i = 0;
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+/*
 int	ft_in_set(const char *c, const char *set)
 {
 	int	i;
@@ -76,6 +90,7 @@ int	ft_in_set(const char *c, const char *set)
 	}
 	return (-1);
 }
+*/
 
 char	*ft_strncpy_i(char *dst, const char *src, size_t len, unsigned int i)
 {

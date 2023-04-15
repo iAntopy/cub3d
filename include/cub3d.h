@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 22:09:40 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/14 22:52:51 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,14 +191,15 @@ typedef struct s_main_character_data
 // struct of parameters used by render_walls()
 typedef struct s_renderer_column_params
 {
+	mlx_image_t	*walls_layer;
 	mlx_texture_t	*tex;
-	uint32_t		*pxls;
-	int				half_texh;
+	uint32_t		*init_pxls;
+//	int				half_texh;
 	int				scn_height;
-	int				half_height;
+	//int				half_height;
 	int				scn_start_y;
-	int				tex_start_x;
 	float			ratio;
+//	int			px_incry;
 }	t_rcol;
 
 typedef struct s_renderer
@@ -253,7 +254,7 @@ int				is_empty_line(char *line);
 //map_tool
 int				error(char *error, t_map *map);
 int				int_strlen(const char *s);
-int				ft_in_set(char const *c, char const *set);
+int				ft_in_set(char const c, char const *set);
 int				ft_strfcmp(const char	*s1, const char	*s2, size_t n);
 char			*ft_strncpy_i(char *dst, const char *src, \
 size_t len, unsigned int idx);
@@ -292,7 +293,7 @@ int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
 /// RENDERER /////////////////
 int				init_renderer(t_cub *cub);
 int				renderer_clear(t_cub *cub);
-void			render_walls(t_cub *cub);
+void			render_walls(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);

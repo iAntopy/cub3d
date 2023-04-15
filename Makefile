@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/13 21:12:15 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/15 02:23:05 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS	:= $(addprefix src/, $(SRC_FLS))
 OBJS	:= $(SRCS:.c=.o)
 
 #CFLAGS	:= -Wextra -Wall -Werror  -g -fsanitize=address# -ffast-math -O3
+#CFLAGS	:= -Wextra -Wall -Werror -g
 CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
 
 #LDFLAGS	:= -fsanitize=address
@@ -95,12 +96,12 @@ $(LIBMTX):
 	make -C $(MTXDIR)
 
 %.o: %.c 
-	@$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
+	$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
 
 #$(NAME): git_submodule $(LIBMTX) $(LIBMLX) $(LIBFT) $(OBJS)
 $(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(OBJS)
 	@echo "Linking executable"
-	@$(CC) $(OBJS) $(LIBS) $(LDFLAGS) $(INCL) -o $(NAME)
+	$(CC) $(OBJS) $(LIBS) $(LDFLAGS) $(INCL) -o $(NAME)
 
 clean:
 	@rm -f $(OBJS)

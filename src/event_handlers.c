@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 21:00:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/14 22:01:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ void	on_update(void *param)
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
-		render_walls(cub);
-	//	render_scene(cub);
-		ft_deltatime_usec_note("this shit == bananas\n");
+		render_walls(cub, cub->hero.rcast.rdata);
+		ft_deltatime_usec_note("this shit == bananas");
 	}
 }
