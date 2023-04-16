@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/14 22:52:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:59:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_map_data
 	// Germain specific Stuff
 	char	*file;
 	char	**tab;
+	char	**txtr;
 	int		pos_x;
 	int		pos_y;
 	int		lines_to_map;
@@ -193,10 +194,10 @@ typedef struct s_renderer_column_params
 {
 	mlx_image_t	*walls_layer;
 	mlx_texture_t	*tex;
-	uint32_t		*init_pxls;
-//	int				half_texh;
+//	uint32_t		*init_pxls;// strat 2
+	int				half_texh;// strat 1
 	int				scn_height;
-	//int				half_height;
+	int				half_height;// strat 1
 	int				scn_start_y;
 	float			ratio;
 //	int			px_incry;
@@ -213,9 +214,11 @@ typedef struct s_cub3d_core_data
 {
 	/// MLX42 DATA
 	mlx_t			*mlx;
-	mlx_image_t		*imgz;
+//	mlx_image_t		*imgz;
 	mlx_image_t		*color;
-	mlx_texture_t	*texr;
+//	mlx_texture_t	*texr;
+
+	int				tex_id;
 	/// CONSTANT VALUES ////////////////////////////////////////
 	int				scn_midx;	// mid screen x coordinate
 	int				scn_midy;	// mid screen y coordinate
@@ -248,7 +251,7 @@ t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map, int fd);
 t_map			*wall_check(t_map *map);
-int				color_split(char **txtr, int id);
+int				color_split(t_map *map, int id);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
 int				is_empty_line(char *line);
 //map_tool

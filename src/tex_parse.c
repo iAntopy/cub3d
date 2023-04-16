@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/15 01:20:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 18:08:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex)
 	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, tex);
 	if (id < 0 || id > 3)
 		return (NULL);
-	cub->tex.walls[id] = mlx_load_png(tex);
+	if (!cub->tex.walls[id])
+	{
+		cub->tex.walls[id] = mlx_load_png(tex);
+		cub->tex_id++;
+	}
 	if (!cub->tex.walls[id])
 	{
 		printf("DEBUG WARNING : tex %s id %d failed to load !\n", tex, id);
@@ -63,14 +67,14 @@ static int	setup_wall_textures(t_cub *cub, char ***txtr)
 }
 */
 
-static int	error_clear(char *err, t_map *map, char ***txtr)
+static int	error_clear(char *err, t_map *map)
 {
-	if (txtr)
-		strtab_clear(txtr);
+	if (map->txtr)
+		strtab_clear(&map->txtr);
 	return (error(err, map));
 }
 
-static char	**t_get_liner(t_map *map, int fd, char **txtr)
+static char	**t_get_liner(t_map *map, int fd)
 {
 	char	*line;
 
@@ -84,47 +88,50 @@ static char	**t_get_liner(t_map *map, int fd, char **txtr)
 	if (line)
 	{
 		map->lines_to_map++;
-		txtr = ft_split(line, ' ');
-		ft_free_p((void **)&line);
-		if (!txtr[0] || !txtr[1] || ft_strlen(txtr[0]) > 2)
+		if (map->txtr)
 		{
-			error_clear("Texture ref format error !\n", map, &txtr);
+			printf("clearing txtr\n");
+			strtab_clear(&map->txtr);
+		}
+		map->txtr = ft_split(line, ' ');
+		ft_free_p((void **)&line);
+		if (!map->txtr[0] || !map->txtr[1] || ft_strlen(map->txtr[0]) > 2)
+		{
+			error_clear("Texture ref format error !\n", map);
 			return (NULL);
 		}
-		else if (txtr[1][ft_strlen(txtr[1]) - 1] == '\n')
-			txtr[1][ft_strlen(txtr[1]) - 1] = '\0';
+		else if (map->txtr[1][ft_strlen(map->txtr[1]) - 1] == '\n')
+			map->txtr[1][ft_strlen(map->txtr[1]) - 1] = '\0';
 	}
 	if (line)
 		ft_eprintf("DEBUG WARNING : returning from get_liner with line none NULL.\n");
-	return (txtr);
+	return (map->txtr);
 }
+
 
 
 
 int	tex_parse(t_cub *cub, t_map *map, int fd)
 {
-	char	**txtr;
 	int		nb;
 	int		id;
 
 	nb = 0;
 	while (nb < 6)
 	{
-		txtr = t_get_liner(map, fd, txtr);
-		if (!txtr)
+		if (!t_get_liner(map, fd))
 			return (-1);
-		id = ft_in_set(txtr[0][0], (const char *)"WNESCF");
+		id = ft_in_set(map->txtr[0][0], (const char *)"WNESCF");
 		if (id < 0)
-			return (error_clear("Invalid config label found!\n", map, &txtr));
-		else if (id < 4 && !get_tex_by_id(cub, id, txtr[1]))
-			return (error_clear("Texture load error!\n", map, &txtr));
-			//cub->tex.tex_n[id] = ft_strdup(txtr[1]);
+			return (error_clear("Invalid config label found!\n", map));
+		else if (id < 4 && !get_tex_by_id(cub, id, map->txtr[1]))
+			return (error_clear("Texture load error!\n", map));
 		else if (id == 4 || id == 5)
-			cub->tex.color[id - 4] = color_split(txtr, id);
-//		else if (id == 5)
-//			cub->tex.color[1] = color_split(txtr, id);
-		strtab_clear(&txtr);
+			cub->tex.color[id - 4] = color_split(map, id);
+		strtab_clear(&map->txtr);
 		nb++;
 	}
+	if (cub->tex_id != 3)
+		return (-1);
 	return (0);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/15 02:35:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:57:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-int	color_split(char **txtr, int id)
+int	color_split(t_map *map, int id)
 {
 	char		**color;
 	uint32_t	col;
@@ -20,7 +20,7 @@ int	color_split(char **txtr, int id)
 	if (!(id == 4 || id == 5))
 		return (0);
 	col = 0;
-	color = ft_split(txtr[1], ',');
+	color = ft_split(map->txtr[1], ',');
 	col = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
 	strtab_clear(&color);
 	return (col);
@@ -47,24 +47,6 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 		if (ft_in_set(m->tab[m->pos_y][m->pos_x + 1],
 			(const char *)MAP_CHARS) == -1)
 			m->flg_chk = 1;
-/*
-		if (m->pos_x - 1)
-			if (ft_in_set(&m->tab[m->pos_x - 1][m->pos_y],
-				(const char *)MAP_CHARS) == -1)
-				m->flg_chk = 1;
-		if (m->pos_x + 1)
-			if (ft_in_set(&m->tab[m->pos_x + 1][m->pos_y],
-				(const char *)MAP_CHARS) == -1)
-				m->flg_chk = 1;
-		if (m->pos_y - 1)
-			if (ft_in_set(&m->tab[m->pos_x][m->pos_y - 1],
-				(const char *)MAP_CHARS) == -1)
-				m->flg_chk = 1;
-		if (m->pos_y + 1)
-			if (ft_in_set(&m->tab[m->pos_x][m->pos_y + 1],
-				(const char *)MAP_CHARS) == -1)
-				m->flg_chk = 1;
-*/
 	}
 	else
 	{
@@ -83,7 +65,7 @@ static t_map	*t_hero_cell(t_map *m, int m_x, int m_y)
 		m->flg_chk = 1;
 	else
 	{
-		m->hero_side = o_cells;
+		m->hero_side = o_cells - 2;
 		m->hero_x = m->pos_x;
 		m->hero_y = m->pos_y;
 //		m->flg_chk = 2;

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:52:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 20:20:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 16:28:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ int	build_grid_coords_map(t_map *map)
 	float	**gcoords;
 
 	gcoords = NULL;
-	if (!ft_malloc_p(sizeof(float *) * (map->height + 1), (void **)&gcoords))
+	if (!ft_calloc_p(sizeof(float *) * (map->height + 1), (void **)&gcoords))
 		return (-1);
-	gcoords[map->height] = NULL;
 	i = -1;
 	while (++i < map->height)
 	{

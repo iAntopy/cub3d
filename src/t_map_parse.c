@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/15 02:02:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:35:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static	int	transcribe(t_map *map, int fd)
 
 	tmp = skip_file_lines(map, fd, 0);
 	map->width = int_strlen(tmp);
+	printf("transcribe : map width %d, tmp : %s\n", map->width, tmp);
 	map->height = 0;
 	while (tmp != NULL)
 	{
@@ -105,8 +106,12 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (error("Could not open file", map));
+	cub->tex_id = -1;
 	if (tex_parse(cub, map, fd) < 0)
+	{
+//		printf("map_checker :: tex_parse failed\n");
 		return (-1);
+	}
 	if (transcribe(map, fd) < 3)
 		return (error("Map in file is too short", map));
 	close(fd);

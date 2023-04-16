@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/15 02:14:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 18:14:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 int	cub_clear(t_cub *cub, int exit_status)
 {
+	int	i;
+	
 	printf("CUB CLEAR AT EXIT\n");
-	mlx_delete_texture(cub->tex.walls[0]);
-	mlx_delete_texture(cub->tex.walls[1]);
-	mlx_delete_texture(cub->tex.walls[2]);
-	mlx_delete_texture(cub->tex.walls[3]);
+	i = -1;
+	while (++i < 4)
+		if (cub->tex.walls[i])
+			mlx_delete_texture(cub->tex.walls[i]);
+	if (cub->map.txtr)
+		strtab_clear(&cub->map.txtr);
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
 	if (cub->mlx)
@@ -47,7 +51,7 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	cub->hero.cell_y = y;
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
-	cub->hero.ori = M_PI + (M_PI / 2) * (cub->map.hero_side - 2);
+	cub->hero.ori = M_PI + (M_PI / 2) * cub->map.hero_side;
 	cub->renderer.requires_update = 1;
 	return (0);
 }
