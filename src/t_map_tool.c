@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_map_tool.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:02:25 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/15 02:30:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 21:53:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	error(char *error, t_map *map)
 		return (1);
 	while (map->tab[++i])
 		free(map->tab[i]);
-	return (write(1, error, ft_strlen(error)));
+	return (write(2, error, ft_strlen(error)));
 }
 
 int	int_strlen(const char *s)

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/16 18:14:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 19:37:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	cub_clear(t_cub *cub, int exit_status)
 			mlx_delete_texture(cub->tex.walls[i]);
 	if (cub->map.txtr)
 		strtab_clear(&cub->map.txtr);
+	if (cub->map.tab)
+		strtab_clear(&cub->map.tab);
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
 	if (cub->mlx)
@@ -82,9 +84,11 @@ int	main(int argc, char **argv)
 		ft_eprintf("WOWOW map checker failed HARD !\n");
 		return (cub_clear(&cub, EXIT_FAILURE));
 	}
+	printf("GET OUT THE WAY !\n");
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
+	printf("GET OUT THE WAY 2!\n");
 	if (init_renderer(&cub) < 0 || init_raycaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	cub_setup_mlx_hooks_and_settings(&cub);

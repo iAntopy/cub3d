@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:05:30 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/12 21:19:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 20:28:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ char	*skip_file_lines(t_map *map, int fd, int nb_lines)
 
 	i = 0;
 	tmp = get_next_line(fd);
+	printf("line to map : %d, nb_lines : %d\n", map->lines_to_map, nb_lines);
 	while ((!nb_lines && is_empty_line(tmp)) || (tmp && i < nb_lines))
 	{
+		printf("i : %d, skippy!\n", i);
 		map->lines_to_map++;
 		i++;
-		free(tmp);
+		ft_free_p((void **)&tmp);
 		tmp = get_next_line(fd);
 	}
 	return (tmp);

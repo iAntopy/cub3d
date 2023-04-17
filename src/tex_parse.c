@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/16 18:08:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 21:55:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	error_clear(char *err, t_map *map)
 		strtab_clear(&map->txtr);
 	return (error(err, map));
 }
-
+/*
 static char	**t_get_liner(t_map *map, int fd)
 {
 	char	*line;
@@ -107,11 +107,9 @@ static char	**t_get_liner(t_map *map, int fd)
 		ft_eprintf("DEBUG WARNING : returning from get_liner with line none NULL.\n");
 	return (map->txtr);
 }
+*/
 
-
-
-
-int	tex_parse(t_cub *cub, t_map *map, int fd)
+int	tex_parse(t_cub *cub, t_map *map)
 {
 	int		nb;
 	int		id;
@@ -119,8 +117,9 @@ int	tex_parse(t_cub *cub, t_map *map, int fd)
 	nb = 0;
 	while (nb < 6)
 	{
-		if (!t_get_liner(map, fd))
-			return (-1);
+//		if (!t_get_liner(map, fd))
+//			return (-1);
+		map->txtr = ft_split(map->raw[nb], ' ');
 		id = ft_in_set(map->txtr[0][0], (const char *)"WNESCF");
 		if (id < 0)
 			return (error_clear("Invalid config label found!\n", map));

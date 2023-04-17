@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/16 17:35:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 22:02:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,37 @@ static char	*spc_chk(t_map *map, int j)
 	return (line);
 }
 
-static	int	transcribe(t_map *map, int fd)
+static	int	transcribe(t_map *map)
 {
-	char	*tmp;
+	char	**tmp;
+	int		len;
+	int		i;
 
-	tmp = skip_file_lines(map, fd, 0);
-	map->width = int_strlen(tmp);
-	printf("transcribe : map width %d, tmp : %s\n", map->width, tmp);
+//	tmp = skip_file_lines(map, fd, 0);
+	tmp = map->raw + 6;
+	i = 0;
+	while (tmp[i])
+	{
+		len = int_strlen(tmp[i]);
+		if (len > map->width)
+			map->width = len;
+		i++;
+	}
+	map->height = i;
+/*
 	map->height = 0;
 	while (tmp != NULL)
 	{
 		map->height++;
 		if (int_strlen(tmp) > map->width)
 			map->width = int_strlen(tmp);
-		free(tmp);
-		tmp = get_next_line(fd);
+		ft_free_p((void **)&tmp);
+//		tmp = get_next_line(fd);
+		printf("transcribe : %s\n", tmp);
+
 	}
+	ft_free_p((void **)&tmp);
+*/
 	map->total_cells = (map->height * map->width);
 	printf("DEBUG: map->h = %d:\n", map->height);
 	printf("DEBUG: map->w = %d:\n", map->width);
@@ -65,12 +80,27 @@ static	int	transcribe(t_map *map, int fd)
 	return (map->height);
 }
 
-static t_map	*map_frame(t_map *map, int fd)
+static t_map	*map_frame(t_map *map)
 {
-	char	*temp;
-	int		nb;
+//	char	*temp;
+//	int		nb;
 
-	temp = skip_file_lines(map, fd, map->lines_to_map);
+
+	char	**m;
+	int	i;
+
+	m = map->raw + 6;
+	i = 0;
+	while (i < map->height)
+	{
+		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
+		ft_strlcpy(map->tab[i], m[i], map->width);
+		map->tab[i] = spc_chk(map, i);
+		i++;
+	}
+	strtab_clear(&map->raw);
+/*
+//	temp = skip_file_lines(map, fd, map->lines_to_map);
 	nb = 0;
 	while (temp && (nb < map->height))
 	{
@@ -82,12 +112,14 @@ static t_map	*map_frame(t_map *map, int fd)
 		}
 		else
 			map->tab[nb] = ft_strncpy_i(map->tab[nb], temp, map->width, 0);
-		free(temp);
+		ft_free_p((void **)&temp);
 		nb++;
-		temp = get_next_line(fd);
+//		temp = get_next_line(fd);
 	}
-	if (temp)
-		free(temp);
+	ft_free_p((void **)&temp);
+*/
+//	if (temp)
+//		free(temp);
 	map = wall_check(map);
 	if (map->flg_chk == 1)
 	{
@@ -97,30 +129,63 @@ static t_map	*map_frame(t_map *map, int fd)
 	return (map);
 }
 
-int	map_checker(t_cub *cub, t_map *map, char *file)
+int	read_whole_file(t_map *map, char *filepath)
 {
 	int		fd;
-
-	if (ft_strfcmp(".cub", file, 4))
-		return (error("Wrong file extention.", map));
-	fd = open(file, O_RDONLY);
+	ssize_t	nc;
+	char	buffer[3000000];
+	char	**t;
+	
+	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (error("Could not open file", map));
+	nc = read(fd, buffer, INT_MAX);
+	printf("ca va : nc = %zd\n", nc);
+	if (nc < 0 || buffer[nc] != '\0')
+	{
+		close(fd);
+		return (error("Could not read file or buffer maxout", map));
+	}
+	map->raw = ft_split(buffer, '\n');
+	strtab_print(map->raw);
+	t = map->raw;
+	while (*t)
+	{
+		if (is_empty_line(*t))
+		{
+			ft_free_p((void **)t);
+			ft_memmove(t, t + 1, sizeof(char *) * (1 + strtab_len(t + 1)));
+		}
+		t++;
+	}
+	strtab_print(map->raw);
+	close(fd);
+	return (0);
+}
+
+int	map_checker(t_cub *cub, t_map *map, char *file)
+{
+	if (ft_strfcmp(".cub", file, 4))
+		return (error("Wrong file extention.", map));
+
+	if (read_whole_file(map, file) < 0)
+		return (-1);
 	cub->tex_id = -1;
-	if (tex_parse(cub, map, fd) < 0)
+	printf("tex_parse\n");
+	if (tex_parse(cub, map) < 0)
 	{
 //		printf("map_checker :: tex_parse failed\n");
 		return (-1);
 	}
-	if (transcribe(map, fd) < 3)
+	printf("transcribe\n");
+	if (transcribe(map) < 3)
 		return (error("Map in file is too short", map));
-	close(fd);
-	fd = open(file, O_RDONLY);
-		map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
-	if (!map->tab || !map_frame(map, fd) || build_grid_coords_map(map) < 0
+	//fd = open(file, O_RDONLY);
+
+	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
+	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
 		|| build_collision_map(map) < 0)
 		return (-1);
 	print_collision_map(map);
-	close(fd);
 	return (0);
 }

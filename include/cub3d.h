@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/16 17:59:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 21:53:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_map_data
 	char	*file;
 	char	**tab;
 	char	**txtr;
+	char	**raw;
 	int		pos_x;
 	int		pos_y;
 	int		lines_to_map;
@@ -117,7 +118,7 @@ typedef struct s_texture_data
 	mlx_texture_t	*walls[4];
 	char			**rgbx;
 	int				color[2];
-	char			*tex_n[4];// tex_name
+//	char			*tex_n[4];// tex_name
 }	t_tex;
 
 typedef struct s_raycaster_data		t_rcast;
@@ -249,7 +250,7 @@ void	print_map(t_map *map);
 //map_parse
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
-int				tex_parse(t_cub *cub, t_map *map, int fd);
+int				tex_parse(t_cub *cub, t_map *map);//, int fd);
 t_map			*wall_check(t_map *map);
 int				color_split(t_map *map, int id);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);

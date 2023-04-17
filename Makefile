@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/16 15:36:58 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/16 19:41:40 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,6 @@ SRC_FLS	:=		main.c 			\
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
-
 #CFLAGS	:= -Wextra -Wall -Werror  -g -fsanitize=address# -ffast-math -O3
 CFLAGS	:= -Wextra -Wall -Werror -g
 #CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
