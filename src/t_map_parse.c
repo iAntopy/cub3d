@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/16 22:02:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 22:15:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,17 +131,18 @@ static t_map	*map_frame(t_map *map)
 
 int	read_whole_file(t_map *map, char *filepath)
 {
+	char	buffer[10001];
 	int		fd;
 	ssize_t	nc;
-	char	buffer[3000000];
 	char	**t;
 	
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (error("Could not open file", map));
-	nc = read(fd, buffer, INT_MAX);
+	nc = read(fd, buffer, 10000);
+	buffer[nc] = '\0';
 	printf("ca va : nc = %zd\n", nc);
-	if (nc < 0 || buffer[nc] != '\0')
+	if (nc < 0)
 	{
 		close(fd);
 		return (error("Could not read file or buffer maxout", map));
