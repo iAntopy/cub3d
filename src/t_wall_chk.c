@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/16 23:57:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/17 02:41:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,17 @@ t_map	*wall_check(t_map *m)
 			printf("cell (%d, %d)\n", m->pos_x, m->pos_y);
 			o_cells = ft_in_set((m->tab[m->pos_y][m->pos_x]), \
 					(const char *)MAP_CHARS);
-			if (o_cells == 0)
+			if (o_cells == 0 || o_cells > 1)
+			{
 				m = t_o_cell(m, m->pos_x, m->pos_y);
-			m = t_o_cell(m, m->pos_x, m->pos_y);
-			if (m->flg_chk == 1)
-				break ;
-			if (o_cells > 1)
-				m = t_hero_cell(m, m->pos_x, m->pos_y);
+				if (m->flg_chk == 0 && o_cells > 1)
+					m = t_hero_cell(m, m->pos_x, m->pos_y);
+			}
+//			if (o_cells == 1)
+//				continue ;
+//			m = t_o_cell(m, m->pos_x, m->pos_y);
+//			if (m->flg_chk == 0 && o_cells > 1)
+//				m = t_hero_cell(m, m->pos_x, m->pos_y);
 			m->pos_x++;
 		}
 		m->pos_y++;
