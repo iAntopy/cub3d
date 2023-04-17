@@ -31,7 +31,6 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 	m->pos_x = pos_x;
 	m->pos_y = pos_y;
 	m->flg_chk = 0;
-//	if (m->pos_x != 0 && m->pos_y != 0 && m->pos_x < m->width && m->pos_y < m->height)
 	if ((0 < m->pos_x && m->pos_x < (m->width - 1))
 		&& (0 < m->pos_y && m->pos_y < (m->height - 1)))
 	{
@@ -68,7 +67,7 @@ static t_map	*t_hero_cell(t_map *m, int m_x, int m_y)
 		m->hero_side = o_cells - 2;
 		m->hero_x = m->pos_x;
 		m->hero_y = m->pos_y;
-//		m->flg_chk = 2;
+		m->flg_chk = 2;
 	}
 	return (m);
 }
@@ -84,7 +83,6 @@ t_map	*wall_check(t_map *m)
 		m->pos_x = 0;
 		while (m->pos_x < m->width && m->flg_chk == 0)
 		{
-//			printf("wall chk : (%d, %d)\n", m->pos_x, m->pos_y);
 			o_cells = ft_in_set((m->tab[m->pos_y][m->pos_x]), \
 					(const char *)MAP_CHARS);
 			if (o_cells == 0)
@@ -97,10 +95,5 @@ t_map	*wall_check(t_map *m)
 	}
 	if (m->hero_x <= 0 || m->hero_y <= 0)
 		m->flg_chk = 1;
-//	if (m->hero_x != -1)
-//	{
-//		m->pos_x = m->hero_x;
-//		m->pos_y = m->hero_y;
-//	}
 	return (m);
 }

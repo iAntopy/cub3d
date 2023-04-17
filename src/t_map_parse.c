@@ -48,7 +48,6 @@ static	int	transcribe(t_map *map)
 	int		len;
 	int		i;
 
-//	tmp = skip_file_lines(map, fd, 0);
 	tmp = map->raw + 6;
 	i = 0;
 	while (tmp[i])
@@ -59,20 +58,7 @@ static	int	transcribe(t_map *map)
 		i++;
 	}
 	map->height = i;
-/*
-	map->height = 0;
-	while (tmp != NULL)
-	{
-		map->height++;
-		if (int_strlen(tmp) > map->width)
-			map->width = int_strlen(tmp);
-		ft_free_p((void **)&tmp);
-//		tmp = get_next_line(fd);
-		printf("transcribe : %s\n", tmp);
 
-	}
-	ft_free_p((void **)&tmp);
-*/
 	map->total_cells = (map->height * map->width);
 	printf("DEBUG: map->h = %d:\n", map->height);
 	printf("DEBUG: map->w = %d:\n", map->width);
@@ -82,10 +68,6 @@ static	int	transcribe(t_map *map)
 
 static t_map	*map_frame(t_map *map)
 {
-//	char	*temp;
-//	int		nb;
-
-
 	char	**m;
 	int	i;
 
@@ -99,27 +81,6 @@ static t_map	*map_frame(t_map *map)
 		i++;
 	}
 	strtab_clear(&map->raw);
-/*
-//	temp = skip_file_lines(map, fd, map->lines_to_map);
-	nb = 0;
-	while (temp && (nb < map->height))
-	{
-		map->tab[nb] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
-		if (map->width == int_strlen(temp))
-		{
-			map->tab[nb] = ft_strncpy_i(map->tab[nb], temp, map->width, 0);
-			map->tab[nb] = spc_chk(map, nb);
-		}
-		else
-			map->tab[nb] = ft_strncpy_i(map->tab[nb], temp, map->width, 0);
-		ft_free_p((void **)&temp);
-		nb++;
-//		temp = get_next_line(fd);
-	}
-	ft_free_p((void **)&temp);
-*/
-//	if (temp)
-//		free(temp);
 	map = wall_check(map);
 	if (map->flg_chk == 1)
 	{
@@ -174,15 +135,10 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	cub->tex_id = -1;
 	printf("tex_parse\n");
 	if (tex_parse(cub, map) < 0)
-	{
-//		printf("map_checker :: tex_parse failed\n");
 		return (-1);
-	}
 	printf("transcribe\n");
 	if (transcribe(map) < 3)
 		return (error("Map in file is too short", map));
-	//fd = open(file, O_RDONLY);
-
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
 	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
 		|| build_collision_map(map) < 0)

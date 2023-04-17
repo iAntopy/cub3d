@@ -1,11 +1,10 @@
-E  tex/e_side.png
-W  tex/w_side.png
-S  tex/s_side.png
-N  tex/n_side.png 
+N  tex/sky_star.png
+W  tex/sky_star.png
+S  tex/sky_star.png
+E  tex/sky_star.png
 
-C 210,115,0
-
-F 53,107,194
+C 220,110,0
+F 220,110,200
 
 111111111111
 1000010000N1
