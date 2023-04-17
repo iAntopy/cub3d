@@ -48,11 +48,11 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 			(const char *)MAP_CHARS) == -1)
 			m->flg_chk = 1;
 	}
-	else
-	{
-		printf("DEBUG WARNING : Found 0 on edge of map !\n");
-		m->flg_chk = 1;
-	}
+	// else
+	// {
+	// 	printf("DEBUG WARNING : Found 0 on edge of map !\n");
+	// 	m->flg_chk = 1;
+	// }
 	return (m);
 }
 
