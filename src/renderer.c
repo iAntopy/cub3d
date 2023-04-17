@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 int	renderer_clear(t_cub *cub)
 {
@@ -21,47 +21,21 @@ int	renderer_clear(t_cub *cub)
 		mlx_delete_image(cub->mlx, cub->renderer.walls_layer);
 	return (0);
 }
-/*
-static uint32_t	*init_column_data_strat_2(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
+
+static uint32_t	*init_column_data_strat_1(t_cub *cub, \
+	t_rdata *rd, t_rcol *rc, int *tw)
 {
 	mlx_texture_t	*tex;
-	int			tex_start_x;
-	int			tex_start_y;
-
-	tex = cub->tex.walls[rd->side];
-//	if (!tex)
-//		printf("WOWOW ! tex is NULL at rendering for side %d\n", rd->side);
-	*tw = tex->width;
-
-	tex_start_x = (int)(rd->tex_ratio * tex->width);
-	rc->scn_height = ft_clamp(rd->tex_height, 0, SCN_HEIGHT);
-	rc->ratio = (float)tex->height / (float)rd->tex_height;
-
-	tex_start_y = (tex->height >> 1) - (int)((rc->scn_height >> 1) * rc->ratio);
-
-	rc->scn_start_y = ((SCN_HEIGHT - rc->scn_height) >> 1);
-
-	rc->init_pxls = (uint32_t *)tex->pixels + tex_start_x + (tex_start_y * tex->width);
-
-	return (rc->init_pxls);
-}
-*/
-static uint32_t	*init_column_data_strat_1(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
-{
-	mlx_texture_t	*tex;
-	int			tex_start_x;
+	int				tex_start_x;
 
 	tex = cub->tex.walls[rd->side];
 	*tw = tex->width;
 	rc->half_texh = (tex->height >> 1);
-
 	tex_start_x = (int)(rd->tex_ratio * tex->width);
 	rc->scn_height = ft_clamp(rd->tex_height, 0, SCN_HEIGHT);
 	rc->half_height = (rc->scn_height >> 1);
 	rc->ratio = (float)tex->height / (float)rd->tex_height;
-
 	rc->scn_start_y = ((SCN_HEIGHT - rc->scn_height) >> 1);
-
 	return ((uint32_t *)tex->pixels + tex_start_x);
 }
 
@@ -83,11 +57,6 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 		j = -1;
 		while (++j < rc.scn_height)
 		{
-			// strat 2
-//			cub_put_pixel(rc.walls_layer, i, rc.scn_start_y + j, *pxls);
-//			pxls = rc.init_pxls + ((int)(j * rc.ratio) * tex_width);// strat 2
-
-			/// Strat 1
 			cub_put_pixel(rc.walls_layer, i, rc.scn_start_y + j,
 				pxls[(int)(((j - rc.half_height) * rc.ratio)
 					+ rc.half_texh) *tex_width]);

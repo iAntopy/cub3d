@@ -21,7 +21,8 @@ int	color_split(t_map *map, int id)
 		return (0);
 	col = 0;
 	color = ft_split(map->txtr[1], ',');
-	col = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]), 0xff);
+	col = str_to_color(ft_atoi(color[0]), ft_atoi(color[1]), \
+		ft_atoi(color[2]), 0xff);
 	strtab_clear(&color);
 	return (col);
 }

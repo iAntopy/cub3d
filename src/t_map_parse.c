@@ -58,7 +58,6 @@ static	int	transcribe(t_map *map)
 		i++;
 	}
 	map->height = i;
-
 	map->total_cells = (map->height * map->width);
 	printf("DEBUG: map->h = %d:\n", map->height);
 	printf("DEBUG: map->w = %d:\n", map->width);
@@ -69,7 +68,7 @@ static	int	transcribe(t_map *map)
 static t_map	*map_frame(t_map *map)
 {
 	char	**m;
-	int	i;
+	int		i;
 
 	m = map->raw + 6;
 	i = 0;
@@ -96,7 +95,7 @@ int	read_whole_file(t_map *map, char *filepath)
 	int		fd;
 	ssize_t	nc;
 	char	**t;
-	
+
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (error("Could not open file", map));
@@ -129,7 +128,6 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
-
 	if (read_whole_file(map, file) < 0)
 		return (-1);
 	cub->tex_id = -1;

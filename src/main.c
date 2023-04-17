@@ -15,7 +15,7 @@
 int	cub_clear(t_cub *cub, int exit_status)
 {
 	int	i;
-	
+
 	printf("CUB CLEAR AT EXIT\n");
 	i = -1;
 	while (++i < 4)

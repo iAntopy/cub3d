@@ -70,27 +70,6 @@ int	ft_in_set(const char c, const char *set)
 	}
 	return (-1);
 }
-/*
-int	ft_in_set(const char *c, const char *set)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	while (c[j])
-	{
-		i = 0;
-		while (set[i])
-		{
-			if (c[j] == set[i])
-				return (i);
-			i++;
-		}
-		j++;
-	}
-	return (-1);
-}
-*/
 
 char	*ft_strncpy_i(char *dst, const char *src, size_t len, unsigned int i)
 {
