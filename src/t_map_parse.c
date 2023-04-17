@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/16 22:15:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 23:33:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ t_map	*init_map(t_map *map)
 	map->pos_x = 1;
 	map->pos_y = 1;
 	map->hero_side = -1;
-	map->hero_x = -1;
-	map->hero_y = -1;
+	map->hero_x = 0;
+	map->hero_y = 0;
 	map->width = 0;
 	map->height = 0;
 	map->total_cells = 0;
@@ -75,7 +75,7 @@ static t_map	*map_frame(t_map *map)
 	while (i < map->height)
 	{
 		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
-		ft_strlcpy(map->tab[i], m[i], map->width);
+		ft_strlcpy(map->tab[i], m[i], map->width + 1);
 		map->tab[i] = spc_chk(map, i);
 		i++;
 	}
@@ -91,7 +91,7 @@ static t_map	*map_frame(t_map *map)
 
 int	read_whole_file(t_map *map, char *filepath)
 {
-	char	buffer[10001];
+	char	buffer[100001];
 	int		fd;
 	ssize_t	nc;
 	char	**t;
@@ -99,7 +99,7 @@ int	read_whole_file(t_map *map, char *filepath)
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (error("Could not open file", map));
-	nc = read(fd, buffer, 10000);
+	nc = read(fd, buffer, 100000);
 	buffer[nc] = '\0';
 	printf("ca va : nc = %zd\n", nc);
 	if (nc < 0)

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/16 16:23:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 23:24:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int	renderer_clear(t_cub *cub)
 	return (0);
 }
 
-static uint32_t	*init_column_data_strat_1(t_cub *cub, \
-	t_rdata *rd, t_rcol *rc, int *tw)
+static uint32_t	*init_column_data(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 {
 	mlx_texture_t	*tex;
 	int				tex_start_x;
@@ -53,7 +52,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
-		pxls = init_column_data_strat_1(cub, rd + i, &rc, &tex_width);
+		pxls = init_column_data(cub, rd + i, &rc, &tex_width);
 		j = -1;
 		while (++j < rc.scn_height)
 		{

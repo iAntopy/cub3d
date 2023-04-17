@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/16 17:57:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/16 23:57:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,16 @@ static t_map	*t_hero_cell(t_map *m, int m_x, int m_y)
 	int	o_cells;
 
 	o_cells = ft_in_set(m->tab[m_y][m_x], (const char *)MAP_CHARS);
-	if (o_cells > 5)
+	if (o_cells > 5 || m->hero_x > 0 || m->hero_y > 0)
 		m->flg_chk = 1;
 	else
 	{
 		m->hero_side = o_cells - 2;
 		m->hero_x = m->pos_x;
 		m->hero_y = m->pos_y;
-		m->flg_chk = 2;
+	//	m->flg_chk = 2;
 	}
+		
 	return (m);
 }
 
@@ -84,10 +85,14 @@ t_map	*wall_check(t_map *m)
 		m->pos_x = 0;
 		while (m->pos_x < m->width && m->flg_chk == 0)
 		{
+			printf("cell (%d, %d)\n", m->pos_x, m->pos_y);
 			o_cells = ft_in_set((m->tab[m->pos_y][m->pos_x]), \
 					(const char *)MAP_CHARS);
 			if (o_cells == 0)
 				m = t_o_cell(m, m->pos_x, m->pos_y);
+			m = t_o_cell(m, m->pos_x, m->pos_y);
+			if (m->flg_chk == 1)
+				break ;
 			if (o_cells > 1)
 				m = t_hero_cell(m, m->pos_x, m->pos_y);
 			m->pos_x++;
