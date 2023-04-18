@@ -1,13 +1,35 @@
 # CUB3d
-Repo _wolfstein _mimic
+-   Reproduce a mimic of a Icon Game : WOFLSTEIN 3D
 
+## Mandatory Part
 
-* WASD to move, QE or Left/Right directional keys to rotate camera
-* I to toggle Interface, O to toggle crosshair, L to toggle shadows
-* ESC to quit
-* Textures or colors for each sides (North, South, West, East) and Sky/Floor
-* Shadows based on the distance
-* Crosshair
-* 3 different sprites
-* Minimap
-* Collectable items
+-    __Made Using Codam MLX 42__
+
+- - - - - 
+### Keybinding
+
+        * W,A,S,D : move
+        * Left & Right Arrow  : Directional keys to rotate camera
+        * Up & Down Arrow :  Zoom in & out   
+        * ESC to quit 
+
+### Textures
+
+        * Textures & colors differents for each sides 
+            * North: N, South: S, West: W, East: E
+        * Ceilling: C, Floor: F
+            * Color (R, G, B) set as [0,255]
+                * Ex "225, 110, 10"
+
+### Map request
+
+        * Containing only selected Char "01WNES"
+            * Surround by Wall
+                * '0' Spaces between '1' Walls
+            * Position Player Letter
+                * 'W,N,E,S' Direction to 'Look_ At'
+
+#### Any Misconfiguration 
+
+-           should lead to an descriptive "Error\n" Message
+
