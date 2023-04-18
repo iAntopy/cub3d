@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/16 23:19:34 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:59:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 	mlx_set_cursor_mode(cub->mlx, MLX_MOUSE_HIDDEN);
 	mlx_cursor_hook(cub->mlx, on_cursor_move, cub);
 	mlx_key_hook(cub->mlx, on_keypress, cub);
-	mlx_loop_hook(cub->mlx, on_update, cub);
+	mlx_loop_hook(cub->mlx, (void (*)(void *))on_update, cub);
 	mlx_scroll_hook(cub->mlx, on_scroll, cub);
 	mlx_close_hook(cub->mlx, on_close, cub);
 }
@@ -78,17 +78,17 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
-	if (map_checker(&cub, init_map(&cub.map), argv[1]) != 0
+	if (map_checker(&cub, &cub.map, argv[1]) != 0
 		|| set_player_cell_pos(&cub, cub.map.hero_x, cub.map.hero_y) != 0)
 	{
 		ft_eprintf("WOWOW map checker failed HARD !\n");
 		return (cub_clear(&cub, EXIT_FAILURE));
 	}
-	printf("GET OUT THE WAY !\n");
+	printf("Initializing MLX42 context.\n");
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
-	printf("GET OUT THE WAY 2!\n");
+	printf("MLX42 context initialized successfully !\n");
 	if (init_renderer(&cub) < 0 || init_raycaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	cub_setup_mlx_hooks_and_settings(&cub);

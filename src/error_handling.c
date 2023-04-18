@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:29:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/16 17:07:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:08:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ int	report_mlx_init_error(void)
 	return (EXIT_FAILURE);
 }
 
-int	report_mlx_tex_load_failed(void)
+void	*report_mlx_tex_load_failed(char *tex)
 {
-	ft_eprintf("Error\n\t- %s\n", mlx_strerror(mlx_errno));
-	return (-1);
+	ft_eprintf("Error\n\t- Failed to load texture %s. MLX err {%s}\n",
+		tex, mlx_strerror(mlx_errno));
+	return (NULL);
 }
 
 int	report_malloc_error(void)

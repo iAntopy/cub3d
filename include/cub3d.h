@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/16 21:53:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/17 19:44:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "../lib/libft/libft.h"
 # include "../lib/mtxlib/includes/mtxlib.h"
 
-# define SCN_WIDTH  800
-# define SCN_HEIGHT 640
+# define SCN_WIDTH  1024
+# define SCN_HEIGHT 780
 
 # define ROT_FACTOR 0.006135923f
 # define CELL_WIDTH 64
@@ -59,6 +59,7 @@
 # define TEX_SKY			4
 # define TEX_FLOOR			5
 
+# define CUBMAP_BUFMAX 100000
 # define MAP_CHARS "01WNES"
 
 enum	e_sides
@@ -193,7 +194,7 @@ typedef struct s_main_character_data
 // struct of parameters used by render_walls()
 typedef struct s_renderer_column_params
 {
-	mlx_image_t	*walls_layer;
+	mlx_image_t		*walls_layer;
 	mlx_texture_t	*tex;
 //	uint32_t		*init_pxls;// strat 2
 	int				half_texh;// strat 1
@@ -250,12 +251,13 @@ void	print_map(t_map *map);
 //map_parse
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
-int				tex_parse(t_cub *cub, t_map *map);//, int fd);
+int				tex_parse(t_cub *cub, t_map *map);
 t_map			*wall_check(t_map *map);
-int				color_split(t_map *map, int id);
+//int				color_split(t_map *map, int id);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
-int				is_empty_line(char *line);
+//int				is_empty_line(char *line);
 //map_tool
+void			flush_empty_lines(char **raw);
 int				error(char *error, t_map *map);
 int				int_strlen(const char *s);
 int				ft_in_set(char const c, char const *set);
@@ -282,7 +284,7 @@ unsigned char	get_ub(int trgb);
 void			on_close(void *param);
 void			on_keypress(mlx_key_data_t event, void *param);
 void			on_scroll(double deltax, double deltay, void *param);
-void			on_update(void *param);
+void			on_update(t_cub *param);
 void			on_cursor_move(double xpos, double ypos, void *param);
 
 /// RAYCASTER /////////////////
@@ -313,7 +315,7 @@ void			cub_player_zoom(t_cub *cub, float dz);
 int				report_err(char *msg);
 int				report_err_strerror(char *msg);
 int				report_mlx_init_error(void);
-int				report_mlx_tex_load_failed(void);
+void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 #endif

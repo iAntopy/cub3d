@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:52:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/16 16:28:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:42:09 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int	build_collision_map(t_map *map)
 	{
 		j = -1;
 		while (++j < map->width)
-			colls[i * map->width + j] = (map->tab[i][j] == '1');
+			colls[i * map->width + j] = (map->tab[i][j] == '1'
+					|| map->tab[i][j] == '\0');
 	}
 	map->collision_map = colls;
 	return (0);

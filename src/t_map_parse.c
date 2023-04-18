@@ -6,12 +6,12 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/16 23:33:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/17 19:37:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
+/*
 t_map	*init_map(t_map *map)
 {
 	map->pos_x = 1;
@@ -28,7 +28,7 @@ t_map	*init_map(t_map *map)
 	map->lines_to_map = 0;
 	return (map);
 }
-
+*/
 static char	*spc_chk(t_map *map, int j)
 {
 	char	*line;
@@ -38,7 +38,7 @@ static char	*spc_chk(t_map *map, int j)
 	i = -1;
 	while (++i < map->width)
 		if (!ft_strchr(MAP_CHARS, line[i]))
-			line[i] = ' ';
+			line[i] = '1';
 	return (line);
 }
 
@@ -59,9 +59,6 @@ static	int	transcribe(t_map *map)
 	}
 	map->height = i;
 	map->total_cells = (map->height * map->width);
-	printf("DEBUG: map->h = %d:\n", map->height);
-	printf("DEBUG: map->w = %d:\n", map->width);
-	printf("DEBUG: map->total_cells = %d:\n", map->total_cells);
 	return (map->height);
 }
 
@@ -82,45 +79,31 @@ static t_map	*map_frame(t_map *map)
 	strtab_clear(&map->raw);
 	map = wall_check(map);
 	if (map->flg_chk == 1)
-	{
-		printf("DEBUG WARNING : wall chk failed \n");
 		return (NULL);
-	}
 	return (map);
 }
 
-int	read_whole_file(t_map *map, char *filepath)
+static int	read_whole_file(t_map *map, char *filepath)
 {
-	char	buffer[100001];
+	char	buffer[CUBMAP_BUFMAX + 1];
 	int		fd;
 	ssize_t	nc;
-	char	**t;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (error("Could not open file", map));
-	nc = read(fd, buffer, 100000);
+	nc = read(fd, buffer, CUBMAP_BUFMAX);
 	buffer[nc] = '\0';
-	printf("ca va : nc = %zd\n", nc);
-	if (nc < 0)
+	if (nc < 0 || nc == CUBMAP_BUFMAX)
 	{
 		close(fd);
 		return (error("Could not read file or buffer maxout", map));
 	}
 	map->raw = ft_split(buffer, '\n');
-	strtab_print(map->raw);
-	t = map->raw;
-	while (*t)
-	{
-		if (is_empty_line(*t))
-		{
-			ft_free_p((void **)t);
-			ft_memmove(t, t + 1, sizeof(char *) * (1 + strtab_len(t + 1)));
-		}
-		t++;
-	}
-	strtab_print(map->raw);
+	flush_empty_lines(map->raw);
 	close(fd);
+	if (strtab_len(map->raw) < 6)
+		return (error("Missing info in config file.", map));
 	return (0);
 }
 
@@ -131,10 +114,8 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	if (read_whole_file(map, file) < 0)
 		return (-1);
 	cub->tex_id = -1;
-	printf("tex_parse\n");
 	if (tex_parse(cub, map) < 0)
 		return (-1);
-	printf("transcribe\n");
 	if (transcribe(map) < 3)
 		return (error("Map in file is too short", map));
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));

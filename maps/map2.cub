@@ -1,7 +1,10 @@
 N  tex/sky_star.png
 W  tex/sky_star.png
 S  tex/sky_star.png
-E  tex/sky_star.png
+E tex/sky_star.png
+
+                 
+                  
 C 220,210,0
 F 210,110,20
 

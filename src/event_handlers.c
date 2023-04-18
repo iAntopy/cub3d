@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/14 22:01:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/17 18:55:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,23 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 }
 
-void	on_update(void *param)
+void	on_update(t_cub *cub)
 {
-	t_cub	*cub;
 	float	d_walk;
 	float	d_strafe;
-	bool	shift_pressed;
+	int		shift_pressed;
 
-	cub = (t_cub *)param;
 	d_walk = 0;
 	d_strafe = 0;
-	shift_pressed = mlx_is_key_down(cub->mlx, MLX_KEY_LEFT_SHIFT);
+	shift_pressed = mlx_is_key_down(cub->mlx, MLX_KEY_LEFT_SHIFT) * 100;
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
-		d_walk += 1 + shift_pressed;
+		d_walk += (100 + shift_pressed) * cub->mlx->delta_time;
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
-		d_walk -= 1 + shift_pressed;
+		d_walk -= (100 + shift_pressed) * cub->mlx->delta_time;
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
-		d_strafe -= 1 + shift_pressed;
+		d_strafe -= (100 + shift_pressed) * cub->mlx->delta_time;
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
-		d_strafe += 1 + shift_pressed;
+		d_strafe += (100 + shift_pressed) * cub->mlx->delta_time;
 	if (d_walk || d_strafe)
 		cub_player_move(cub, d_walk, d_strafe);
 	if (cub->renderer.requires_update)
