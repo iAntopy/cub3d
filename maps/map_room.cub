@@ -1,8 +1,8 @@
 
-W  tex/w_side.png
-N  tex/n_side.png
-S  tex/s_side.png
-E  tex/e_side.png
+W  tex/ext/tree-dark.png
+N  tex/ext/ivy-caper-leaves.png
+S  tex/ext/hedge-wall.png
+E  tex/ext/grass-clover.png
 
 C 220,110,0
 F 25,105,195
