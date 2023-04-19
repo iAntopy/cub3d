@@ -6,29 +6,12 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/17 19:37:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/18 22:09:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-/*
-t_map	*init_map(t_map *map)
-{
-	map->pos_x = 1;
-	map->pos_y = 1;
-	map->hero_side = -1;
-	map->hero_x = 0;
-	map->hero_y = 0;
-	map->width = 0;
-	map->height = 0;
-	map->total_cells = 0;
-	map->file = NULL;
-	map->tab = NULL;
-	map->flg_chk = 0;
-	map->lines_to_map = 0;
-	return (map);
-}
-*/
+
 static char	*spc_chk(t_map *map, int j)
 {
 	char	*line;
@@ -78,6 +61,7 @@ static t_map	*map_frame(t_map *map)
 	}
 	strtab_clear(&map->raw);
 	map = wall_check(map);
+	printf("wall_chk returned with flg_chk == 1\n");
 	if (map->flg_chk == 1)
 		return (NULL);
 	return (map);
@@ -100,6 +84,8 @@ static int	read_whole_file(t_map *map, char *filepath)
 		return (error("Could not read file or buffer maxout", map));
 	}
 	map->raw = ft_split(buffer, '\n');
+	if (!map->raw)
+		return (report_malloc_error());
 	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
@@ -123,5 +109,6 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		|| build_collision_map(map) < 0)
 		return (-1);
 	print_collision_map(map);
+	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
 	return (0);
 }

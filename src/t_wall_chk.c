@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/17 22:25:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/18 20:53:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,16 @@ static t_map	*t_hero_cell(t_map *m, int m_x, int m_y)
 	return (m);
 }
 
+static int	check_hero_found(t_map *m)
+{
+	if (m->hero_x <= 0 || m->hero_y <= 0)
+	{
+		report_err("No player charater found in map.");
+		return (1);
+	}
+	return (0);	
+}
+
 t_map	*wall_check(t_map *m)
 {
 	int	o_cells;
@@ -80,7 +90,6 @@ t_map	*wall_check(t_map *m)
 		}
 		m->pos_y++;
 	}
-	if (m->hero_x <= 0 || m->hero_y <= 0)
-		m->flg_chk = 1;
+	m->flg_chk = check_hero_found(m);
 	return (m);
 }
