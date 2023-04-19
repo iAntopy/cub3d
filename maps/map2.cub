@@ -1,12 +1,12 @@
-N  tex/sky_star.png
-W  tex/sky_star.png
-S  tex/sky_star.png
-E tex/sky_star.png
+W  tex/ext/purple-cloth.png
+N  tex/ext/wall_rock_crak.png
+S  tex/ext/rusty-metal.png
+E  tex/ext/dark-metal.png
 
                  
                   
-C 220,210,0
-F 210,110,20
+C 20,10,0
+F 210,110,200
 
      111111111111
      100011000001
