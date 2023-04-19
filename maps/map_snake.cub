@@ -1,11 +1,11 @@
 
-N  tex/sky_star.png
+N  tex/ext/mountain_crack.png
 
 
 
-W  tex/sky_star.png
-S  tex/sky_star.png
-E  tex/sky_star.png
+W  tex/ext/mountain_rock.png
+S  tex/ext/mountain-rock.png
+E  tex/ext/mountain-stone-rock.png
 
 
 

@@ -1,10 +1,10 @@
-E  tex/e_side.png
-W  tex/w_side.png                   
-S  tex/s_side.png
-N  tex/n_side.png
+E  tex/ext/tree-dark.png
+W  tex/ext/tree-old.png                   
+S  tex/ext/tree-bark.png
+N  tex/ext/tree-branch.png
 
 C 220               ,110,              0
-F 30,150,230
+F 60,60,80
 
 111111111111
 1000010000S1
