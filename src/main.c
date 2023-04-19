@@ -72,11 +72,12 @@ void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
-
+	
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
+	printf("Start Dict_binding tx_num = [%d].\n", e_list_txtr());
 	if (map_checker(&cub, &cub.map, argv[1]) != 0
 		|| set_player_cell_pos(&cub, cub.map.hero_x, cub.map.hero_y) != 0)
 	{

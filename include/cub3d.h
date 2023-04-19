@@ -218,7 +218,6 @@ typedef struct s_cub3d_core_data
 	mlx_t			*mlx;
 //	mlx_image_t		*imgz;
 	mlx_image_t		*color;
-//	mlx_texture_t	*texr;
 
 	int				tex_id;
 	/// CONSTANT VALUES ////////////////////////////////////////
@@ -238,6 +237,13 @@ typedef struct s_cub3d_core_data
 	t_hero			hero;
 	t_rdr			renderer;
 }	t_cub;
+
+// typedef struct s_ref_tx
+// {
+// 	int 			tx_num;
+// 	mlx_texture_t	*texr;
+// 	unsigned char	*tx_name;
+// }	t_ref_tx;
 
 /// PARSING ///////////////////
 
@@ -318,4 +324,6 @@ int				report_mlx_init_error(void);
 void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
+/// TESTING TXTR_DICT
+int				e_list_txtr(void);
 #endif
