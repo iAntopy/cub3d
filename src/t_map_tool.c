@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:02:25 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/17 19:29:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/18 20:04:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,8 @@
 
 int	error(char *error, t_map *map)
 {
-	int	i;
-
-	i = -1;
-	if (map->tab == NULL)
-		return (1);
-	while (map->tab[++i])
-		free(map->tab[i]);
+	strtab_clear(&map->raw);
+	strtab_clear(&map->tab);
 	return (report_err(error));
 }
 

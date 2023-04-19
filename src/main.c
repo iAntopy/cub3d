@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/17 18:59:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/18 20:16:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ int	cub_clear(t_cub *cub, int exit_status)
 	while (++i < 4)
 		if (cub->tex.walls[i])
 			mlx_delete_texture(cub->tex.walls[i]);
-	if (cub->map.txtr)
-		strtab_clear(&cub->map.txtr);
-	if (cub->map.tab)
-		strtab_clear(&cub->map.tab);
+	ft_free_p((void **)&cub->map.collision_map);
+	strtab_clear(&cub->map.tab);
+	strtab_clear((char ***)&cub->map.grid_coords);
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
 	if (cub->mlx)
