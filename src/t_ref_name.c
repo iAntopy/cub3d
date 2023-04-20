@@ -17,16 +17,17 @@
 #include "../include/cub3d.h"
 
 // int main(void) 
-static e_link_tx(unsigned char ref, char *tx_name, de->d_name)
+static void e_link_tx(unsigned char ref, char *tx)
 {
-
+    printf(" %c = %s \n", ref, tx); 
 }
 
 int     e_list_txtr(void)
 { 
    /* de is Pointer for directory entry */
     struct dirent *de;  
-    const char* dir_path = "./tex/ext";
+    const char* dir_path = "./tex/ext/";
+    char *ref = NULL;
     int tx_num = 0;
     /*opendir() returns a pointer of DIR type.*/  
     DIR *dr = opendir(dir_path); 
@@ -38,16 +39,19 @@ int     e_list_txtr(void)
     } 
 
     while ((de = readdir(dr)) != NULL){
-        tx_num++;
-        printf("%d)- %s\n", tx_num, de->d_name); 
-        if (!ft_strcmp(de->d_name, ".cmp"))
-        {
-            if(tx_num < 27)
-                e_link_tx(tx_num + 65, de->d_name);
-            else if(tx_num < 53)
-                e_link_tx(tx_num + 97, de->d_name);
-            else if (tx_num > 52)  
+        if (strcmp(de->d_name, ".png"))
+        {  
+            ref = ft_strjoin(dir_path, de->d_name);
+            tx_num++;
+            printf("%d)-", tx_num); 
+            if (tx_num < 27 && (strcmp(de->d_name, ".png")))
+                e_link_tx(tx_num + 96, ref);
+            else if (tx_num > 26 && (strcmp(de->d_name, ".png")))
+                e_link_tx(tx_num + 64 - 26, ref);
+            else if (tx_num >= 52)  
+            {
                 printf("Too Many Textures , 52 is max for NOW !\n");
+                break ;}
         }
 
     }
