@@ -38,15 +38,16 @@ int     e_list_txtr(void)
         return 0; 
     } 
 
-    while ((de = readdir(dr)) != NULL){
-        if (strcmp(de->d_name, ".png"))
+    while ((de = readdir(dr)) != NULL)
+    {
+        if ((ft_strcmp(de->d_name, "ex.png")))
         {  
             ref = ft_strjoin(dir_path, de->d_name);
             tx_num++;
             printf("%d)-", tx_num); 
-            if (tx_num < 27 && (strcmp(de->d_name, ".png")))
+            if (tx_num < 27)
                 e_link_tx(tx_num + 96, ref);
-            else if (tx_num > 26 && (strcmp(de->d_name, ".png")))
+            else if (tx_num > 26)
                 e_link_tx(tx_num + 64 - 26, ref);
             else if (tx_num >= 52)  
             {
