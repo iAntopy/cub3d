@@ -238,12 +238,27 @@ typedef struct s_cub3d_core_data
 	t_rdr			renderer;
 }	t_cub;
 
-// typedef struct s_ref_tx
-// {
-// 	int 			tx_num;
-// 	mlx_texture_t	*texr;
-// 	unsigned char	*tx_name;
-// }	t_ref_tx;
+//////////////////////////
+/////// jeu de bleu
+typedef struct s_link
+{
+	unsigned char key_d;
+	mlx_texture_t	*ptr_d;
+}	t_link;
+//
+//// frame data size, char_ref, txtr *ptr add topping
+////////	key pairing LINK (unsigned char KEY_d, txtr *PTR_d)
+typedef struct s_ref
+{
+	int 			tx_id;
+	size_t 			tx_num;
+	unsigned char	tx_ref;
+	char 			*tx_name;
+	// mlx_texture_t	*tx_ptr;
+	// struct t_link	*link[];
+}	t_ref;
+////// hard_to_beleive //
+///////////////////////////
 
 /// PARSING ///////////////////
 
@@ -325,5 +340,5 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-int				e_list_txtr(void);
+int				e_link_txtr(void);
 #endif
