@@ -238,12 +238,12 @@ typedef struct s_cub3d_core_data
 	t_rdr			renderer;
 }	t_cub;
 
-// typedef struct s_ref_tx
-// {
-// 	int 			tx_num;
-// 	mlx_texture_t	*texr;
-// 	unsigned char	*tx_name;
-// }	t_ref_tx;
+typedef struct s_wall_matrx
+{
+	// mlx_texture_t	*texr;
+	char 				*id_path;
+	unsigned char		ref;
+}		t_matrx;
 
 /// PARSING ///////////////////
 
@@ -325,5 +325,8 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-int				e_list_txtr(void);
+int				e_list_txtr(char *full_path);
+//
+const char	 	*get_folder_name(char *full_path);
+char			*t_name_set(const char *dir_path, char *d_name);
 #endif
