@@ -16,16 +16,28 @@
 #include "../include/cub3d.h"
 #include <dirent.h> 
 
+t_box *xwalls_builder(t_matrx *mx, int i)
+{
+    // char   *xwalls;
+    char    *id;
+    char    *path;
+    t_box   *xbox;
 
-// static struct t_matrx *e_link_tx(unsigned char ref, char *tx, int tx_num)
-// void e_link_tx(t_matrx *mx)
-// {
-//     // while(mx != NULL )
-//     // {
-//         printf("MX->ref[%c] MX->id_path {%s} \n", mx->ref, mx->id_path);
-//         // ++mx;
-//     // }
-// }
+
+    xbox = NULL;
+    id = malloc(sizeof(char) + 1);
+    id[0] = (char)mx->ref;
+    id[1] = '\0';
+    printf("try_out = %c ::\n", id[0]);
+    id = ft_strjoin((char *)id, " ");
+    path = ft_strjoin(id, mx->id_path);
+
+    xbox->xwalls[i][0] = id;
+    xbox->xwalls[i][1] = path;
+    // xbox->xwalls[i] = xwalls[i];
+    return (xbox);
+}
+
 
 /// NEW Malloc struct to be fill : read second time
 t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
@@ -33,6 +45,7 @@ t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
     /*        de is Pointer for directory entry */
     struct dirent *de;  
     const char* dir_path;
+    // t_box *xbox;
     char *name_path;
     int i;
 
@@ -48,9 +61,12 @@ t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
             name_path = t_name_set(dir_path, de->d_name);
             mx->id_path = name_path;
             mx->ref = (i + 97);
-            printf("%d)- ref[%c] = {%s} \n", i + 1, mx->ref, mx->id_path); 
+            printf("%d)- ref[%c] = {%s} \n", i + 1, (char)mx->ref, mx->id_path); 
+            /* INSERT XWALLS BUILDER HERE*/
+            // xbox = xwalls_builder(mx, i);
+            // printf("%d)- [%s] --  {%s} \n", i + 1, xbox->xwalls[i][0], xbox->xwalls[i][1]); 
             ++i;
-            ++mx;
+            // ++mx;
         } 
     }
     closedir(dr);     

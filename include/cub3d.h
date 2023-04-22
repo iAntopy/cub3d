@@ -238,12 +238,17 @@ typedef struct s_cub3d_core_data
 	t_rdr			renderer;
 }	t_cub;
 
-typedef struct s_wall_matrx
+typedef struct s_matrx
 {
 	// mlx_texture_t	*texr;
 	char 				*id_path;
 	unsigned char		ref;
 }		t_matrx;
+
+typedef struct s_wall_box
+{
+	char 		**xwalls[4];
+}	t_box;
 
 /// PARSING ///////////////////
 
