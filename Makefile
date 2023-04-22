@@ -27,7 +27,8 @@ SRC_FLS	:=		main.c 			\
 			t_wall_chk.c		\
 			t_empty_line.c		\
 			tex_parse.c			\
-			t_ref_name.c
+			t_ref_name.c		\
+			t_ref_utils.c
 
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))

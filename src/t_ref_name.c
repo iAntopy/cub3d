@@ -1,93 +1,138 @@
 
-/*
-    Ref. Tex. By assign.
-        get a   txtr_name -> assign it to a char.
+/*  Ref. Tex. By assign.
+            get a   txtr_name -> assign it to a char.
                 enum : how many txtr to mapp.
                 dict : bind unsigned char ptr to txtr->path
                 link : load_png_to_txtr ==> ref by unsign_char 
-                result :  
+    
+    Result  :   LowerCase ('a-z')   = txtr. Mapping (path_name for now!)
+            :   UpperCase ('A-Z')   = wall txtr. matrix (tmx)  A = [a,b,c,d] :[West,North,East,Sud]
+            :   Numeric   ('0-9')   = floor casting type { 0 = basic }
+            :   Meta ('<,>,/,?,\,|,=,+,!,@,#,$,%,&') = reserve for object or spec.
 
 */
 //
 
-
-#include <stdio.h> 
+#include "../include/cub3d.h"
 #include <dirent.h> 
 
-#include "../include/cub3d.h"
-
-t_ref *init_dict(t_ref *dict)
+static char *xwalls_builder(t_matrx *mx, int i)
 {
-    dict->tx_id = 0;
-    dict->tx_num = 0;
-	dict->tx_name = NULL;
-    // dict->tx_ref = 0;
-    // dict->link[dict->id];
-    return (dict);
+    // char   *xwalls[4];
+    int     len;
+    char    *id;
+    char    *path;
+    // t_box   *xbox;
+
+    // xbox = NULL;
+
+    id = malloc(sizeof(char) + 1);
+    id[0] = (char)mx->ref;
+    id[1] = '\0';
+    // printf("simple try_out = %s ::\n", id);
+    // id = ft_strjoin((char *)id, " ");
+
+    len = ft_strlen(mx->id_path);
+    path = malloc(sizeof(char *) * (len + 1));
+    path = ft_strdup(mx->id_path);
+    // printf("alter _try_out = %s ::\n", path);  
+    // printf("ultra _try_out [%s] ==> {%s}.\n", id, path); 
+    path = ft_strjoin(id, path);
+    printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}.\n", i + 1, path[0], path); 
+    // xbox->xwalls[i][0] = id;
+    // xbox->xwalls[i][1] = path;
+    // xbox->xwalls[i] = xwalls[i];
+    return (path);
 }
 
-static t_ref *e_dict_txtr(unsigned char ref, char *name, t_ref *dict)
-{
-    dict->tx_name = name;
-    dict->tx_ref = ref;
-    printf("%d)-", dict->tx_id); 
-    printf(" %c = %s \n", dict->tx_ref, dict->tx_name);//, dict->tx_ptr);
-    dict->tx_id++;
-    return (dict);
-}
 
-// static t_ref *e_union_path(const char *path, char *name, t_ref *dict)
-// {
-//         // char *tx_name;
-//         // tx_name = NULL;
-//         dict->tx_name = ft_strjoin((char *)path, name);
-//         // dict->tx_ptr = 
-//         // printf("%d)-", dict->tx_id); 
-//         // printf(" %s \n", dict->tx_name);//, dict->tx_ptr);
-//         return (dict);
-// }
-
-
-int  e_link_txtr(void)
+/// NEW Malloc struct to be fill : read second time
+t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
 { 
-   /* de is Pointer for directory entry */
+    /*        de is Pointer for directory entry */
     struct dirent *de;  
-    const char* dir_path = "./tex/ext/";
-    t_ref *dict;
-    dict = NULL;
+    const char* dir_path;
+    // t_box *xbox;
+    char *name_path;
+    char *full;
+    int i;
 
-    /* init struct data quiering */
-    dict = init_dict(dict);
-
-    /*opendir() returns a pointer of DIR type.*/  
+    i = 0;
+    dir_path = get_folder_name(full_path);
+    printf("LINK_Open %s directory... \n", dir_path); 
+    // xbox = NULL;
+    full = NULL;
     DIR *dr = opendir(dir_path); 
-    if (dr == NULL)  /* opendir returns NULL if couldn't open directory */
+    while ((de = readdir(dr)) != NULL)
+    {   
+        if ((ft_strchr_set(de->d_name, "png") != NULL) && (i <= tx_num))
+        {
+            name_path = t_name_set(dir_path, de->d_name);
+            mx->id_path = name_path;
+            mx->ref = (i + 97);
+            // printf("%d)- ref[%c] = {%s} \n", i + 1, (char)mx->ref, mx->id_path); 
+            /* INSERT XWALLS BUILDER HERE*/
+            full = xwalls_builder(mx, i);
+            printf("%d)- [%c] --  {%s} \n", i + 1, full[0], full);//xbox->xwalls[i][0], xbox->xwalls[i][1]); 
+            ++i;
+            // ++mx;
+        } 
+    }
+    closedir(dr);     
+    return (mx); 
+}
+
+
+/// NEW Only count tx_num : read first time
+static int     e_mtrx_count(char *full_path)
+{ 
+    /*   de is Pointer for directory entry */
+    struct dirent *de;  
+    const char* dir_path;
+
+    int tx_num = 0;    
+    /*    set folder path name from av[1],*/ 
+    dir_path = get_folder_name(full_path);
+    printf("COUNT_Open %s directory... \n", dir_path); 
+
+    /*        opendir() returns a pointer of DIR type.*/  
+    DIR *dr = opendir(dir_path); 
+    if (dr == NULL) 
     { 
         printf("Could not open current directory\n"); 
         return 0; 
     } 
-    /* as long as ...*/
     while ((de = readdir(dr)) != NULL)
-    {
-        if (strcmp(de->d_name, ".png"))
-        {  
-            dict->tx_num++;
-            // dict = e_union_path(dir_path, de->d_name, dict);
-            dict->tx_name = ft_strjoin(dir_path, de->d_name);
-            printf("IM IN\n"); 
-
-            if (dict->tx_num < 27 && (strcmp(de->d_name, ".png")))
-                dict = e_dict_txtr(dict->tx_num + 96, dict->tx_name, dict);
-            else if (dict->tx_num > 26 && (strcmp(de->d_name, ".png")))
-                dict = e_dict_txtr(dict->tx_num + 64 - 26, dict->tx_name, dict);
-            else if (dict->tx_num >= 52)  
-            {
-                printf("Too Many Textures , 52 is max for NOW !\n You are at %ld", dict->tx_num);
-                break ;
-            }
-        }
-
+    {   
+        /*     find 'png' ended file*/
+        if ((ft_strchr_set(de->d_name, "png") != NULL) && (tx_num < 27 ))
+            ++tx_num;
+        else if (tx_num >= 27)  
+        {
+            printf("Too Many Textures , 52 is max for NOW !\n");
+            break ;
+        }       
     }
     closedir(dr);     
-    return (dict->tx_num); 
+    return (tx_num); 
+}
+/// Now pre_read folder +  Malloc + post_read linked
+int     e_list_txtr(char *full_path)
+{ 
+    t_matrx *mx;
+    int tx_num;
+   
+    tx_num = e_mtrx_count(full_path);
+    mx = malloc(sizeof(t_matrx) * tx_num + 1);
+    if (!mx)
+        return (0);
+    mx = e_mtrx_link(mx, full_path, tx_num);
+    // e_link_tx(mx);
+    // printf("MX->refREF[%c] MX->id_path {%s} \n", mx->ref, mx->id_path);
+        
+
+    /* */
+    // }
+    // closedir(dr);     
+    return (tx_num); 
 }
