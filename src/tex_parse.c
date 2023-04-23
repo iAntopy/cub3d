@@ -85,10 +85,17 @@ int	tex_parse(t_cub *cub, t_map *map)
 	nb = 0;
 	while (nb < 6 && map->raw[nb])
 	{
-		id = ft_in_set(map->raw[nb][0], (const char *)"WNESCF");
+		id = ft_in_set(map->raw[nb][0], (const char *)"WNESCFAB");
 		printf("id for tag %c : %d\n", map->raw[nb][0], id);
 		if (id < 0 || map->raw[nb][1] != ' ')
 			return (error_clr("Invalid config label found!\n", map));
+		else if (id > 5)
+		{
+			if (get_tex_by_ref(cub, id, map->raw[nb]))
+				nb = 3;
+			else
+				return (error_clr(NULL, map));
+		}
 		else if (id < 4 && !get_tex_by_id(cub, id, map->raw[nb]))
 			return (error_clr(NULL, map));
 		else if (id == 4 || id == 5)
