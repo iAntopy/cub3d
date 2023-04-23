@@ -16,43 +16,40 @@
 #include "../include/cub3d.h"
 #include <dirent.h> 
 
-static char *xwalls_builder(t_matrx *mx, int i)
+/// Malloc str:id(txtr_ref)  str:path(txtr_path)
+static char *xwalls_builder(t_matrx *mx)
 {
-    // char   *xwalls[4];
     int     len;
     char    *id;
     char    *path;
-    // t_box   *xbox;
-
-    // xbox = NULL;
-
+       // char   *xwalls[4];
+        // t_box   *xbox;
+        // xbox = NULL;
     id = malloc(sizeof(char) + 1);
     id[0] = (char)mx->ref;
     id[1] = '\0';
-    // printf("simple try_out = %s ::\n", id);
-    // id = ft_strjoin((char *)id, " ");
+    id = ft_strjoin(id, " ");
 
     len = ft_strlen(mx->id_path);
     path = malloc(sizeof(char *) * (len + 1));
     path = ft_strdup(mx->id_path);
-    // printf("alter _try_out = %s ::\n", path);  
-    // printf("ultra _try_out [%s] ==> {%s}.\n", id, path); 
+        // printf("simple try_out = %s ::\n", id);
+        // printf("alter _try_out = %s ::\n", path);  
+        // printf("ultra _try_out [%s] ==> {%s}.\n", id, path); 
     path = ft_strjoin(id, path);
-    printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}.\n", i + 1, path[0], path); 
-    // xbox->xwalls[i][0] = id;
-    // xbox->xwalls[i][1] = path;
-    // xbox->xwalls[i] = xwalls[i];
+    // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
+        // xbox->xwalls[i][0] = id;
+        // xbox->xwalls[i][1] = path;
+        // xbox->xwalls[i] = xwalls[i];
     return (path);
 }
 
-
 /// NEW Malloc struct to be fill : read second time
-t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
+static t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
 { 
     /*        de is Pointer for directory entry */
     struct dirent *de;  
     const char* dir_path;
-    // t_box *xbox;
     char *name_path;
     char *full;
     int i;
@@ -60,7 +57,6 @@ t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
     i = 0;
     dir_path = get_folder_name(full_path);
     printf("LINK_Open %s directory... \n", dir_path); 
-    // xbox = NULL;
     full = NULL;
     DIR *dr = opendir(dir_path); 
     while ((de = readdir(dr)) != NULL)
@@ -70,32 +66,30 @@ t_matrx *e_mtrx_link(t_matrx *mx, char *full_path, int tx_num)
             name_path = t_name_set(dir_path, de->d_name);
             mx->id_path = name_path;
             mx->ref = (i + 97);
-            // printf("%d)- ref[%c] = {%s} \n", i + 1, (char)mx->ref, mx->id_path); 
             /* INSERT XWALLS BUILDER HERE*/
-            full = xwalls_builder(mx, i);
-            printf("%d)- [%c] --  {%s} \n", i + 1, full[0], full);//xbox->xwalls[i][0], xbox->xwalls[i][1]); 
+            full = xwalls_builder(mx);
+            printf("%d)- REF:[id:%c]  PATH:{%s} \n", i + 1, full[0], full);//xbox->xwalls[i][0], xbox->xwalls[i][1]); 
+            printf("\n\t %d)- mx->ref[%c] = {%s} \n", i + 1, (char)mx->ref, mx->id_path); 
             ++i;
-            // ++mx;
         } 
     }
     closedir(dr);     
     return (mx); 
 }
 
-
 /// NEW Only count tx_num : read first time
-static int     e_mtrx_count(char *full_path)
+static int e_mtrx_count(char *full_path)
 { 
     /*   de is Pointer for directory entry */
     struct dirent *de;  
     const char* dir_path;
 
     int tx_num = 0;    
-    /*    set folder path name from av[1],*/ 
+     /*    set folder path name from av[1],*/ 
     dir_path = get_folder_name(full_path);
     printf("COUNT_Open %s directory... \n", dir_path); 
 
-    /*        opendir() returns a pointer of DIR type.*/  
+        /*        opendir() returns a pointer of DIR type.*/  
     DIR *dr = opendir(dir_path); 
     if (dr == NULL) 
     { 
