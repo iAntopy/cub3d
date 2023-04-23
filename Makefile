@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/18 22:11:20 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/23 13:52:24 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,14 +26,15 @@ SRC_FLS	:=		main.c 			\
 			t_map_tool.c 		\
 			t_wall_chk.c		\
 			t_empty_line.c		\
-			tex_parse.c
+			tex_parse.c		\
+			draw_threads.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
-#CFLAGS	:= -Wextra -Wall -Werror  -g -fsanitize=address# -ffast-math -O3
-CFLAGS	:= -Wextra -Wall -Werror -g
-#CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
+#CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address# -ffast-math -O3
+CFLAGS	:= -Wextra -Wall -Werror -pthread -g
+#CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
 #LDFLAGS	:= -fsanitize=address
 

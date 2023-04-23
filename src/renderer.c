@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/17 19:55:35 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/23 14:03:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	renderer_clear(t_cub *cub)
 	return (0);
 }
 
-static uint32_t	*init_column_data(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
+static inline uint32_t	*init_column_data(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 {
 	mlx_texture_t	*tex;
 	int				tex_start_x;
@@ -47,6 +47,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	uint32_t	*pxls;
 	int			tex_width;
 
+	printf("render_walls started \n");
 	clear_image_buffer(cub->renderer.walls_layer);
 	rc.walls_layer = cub->renderer.walls_layer;
 	i = -1;
@@ -62,6 +63,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 		}
 	}
 	cub->renderer.requires_update = 0;
+	printf("render_walls DONE \n");
 }
 
 // Called only once at start to initialize mlx image buffers by layer.

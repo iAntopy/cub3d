@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/17 19:44:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/23 12:54:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <math.h>
+# include <pthread.h>
 
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/libft/libft.h"
@@ -62,6 +63,8 @@
 # define CUBMAP_BUFMAX 100000
 # define MAP_CHARS "01WNES"
 
+# define NB_DRAW_THREADS 1
+
 enum	e_sides
 {
 	W_SIDE = 0,
@@ -69,6 +72,13 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
+
+typedef struct s_raycaster_data		t_rcast;
+typedef struct s_cub3d_core_data	t_cub;
+typedef struct s_ray_collision_data	t_rdata;
+typedef void				(*t_draw_func)(t_cub *, t_rdata *);
+
+
 /*
 /// PARSING ///////////////////
 // coordonees standard
@@ -121,9 +131,6 @@ typedef struct s_texture_data
 	int				color[2];
 //	char			*tex_n[4];// tex_name
 }	t_tex;
-
-typedef struct s_raycaster_data		t_rcast;
-typedef struct s_cub3d_core_data	t_cub;
 
 typedef struct s_ray_collision_data
 {
@@ -191,6 +198,19 @@ typedef struct s_main_character_data
 	t_rcast	rcast;
 }	t_hero;
 
+typedef struct s_draw_thread_profil
+{
+	t_cub		*cub;
+	pthread_mutex_t	start_lock;
+	pthread_mutex_t	end_lock;
+	t_draw_func	draw_func;
+	int			start_lock_isinit;
+	int			end_lock_isinit;
+	size_t		id;
+	int			isidle;
+	int			stop_request;
+}	t_thdraw;
+
 // struct of parameters used by render_walls()
 typedef struct s_renderer_column_params
 {
@@ -237,6 +257,7 @@ typedef struct s_cub3d_core_data
 	t_tex			tex;
 	t_hero			hero;
 	t_rdr			renderer;
+	t_thdraw		draw_threads[NB_DRAW_THREADS];
 }	t_cub;
 
 /// PARSING ///////////////////
@@ -305,6 +326,11 @@ void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
 
 //void			render_scene(t_cub *cub);
+
+/// DRAW THREADS API
+int				init_draw_threads(t_cub *cub, t_thdraw *threads);
+int				order_draw_call(t_thdraw *threads);
+void			stop_draw_threads(t_thdraw *threads);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);

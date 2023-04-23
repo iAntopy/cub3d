@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/18 20:16:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/23 12:41:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 	int	i;
 
 	printf("CUB CLEAR AT EXIT\n");
+	stop_draw_threads(cub->draw_threads);
 	i = -1;
 	while (++i < 4)
 		if (cub->tex.walls[i])
@@ -88,7 +89,8 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
 	printf("MLX42 context initialized successfully !\n");
-	if (init_renderer(&cub) < 0 || init_raycaster(&cub) < 0)
+	if (init_renderer(&cub) < 0 || init_raycaster(&cub) < 0
+		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	cub_setup_mlx_hooks_and_settings(&cub);
 	mlx_loop(cub.mlx);
