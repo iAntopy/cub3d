@@ -10,54 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-/*  Ref. Tex. By assign.
-            get a   txtr_name -> assign it to a char.
-                enum : how many txtr to mapp.
-                dict : bind unsigned char ptr to txtr->path
-                link : load_png_to_txtr ==> ref by unsign_char 
-    
-    Result  :   LowerCase ('a-z')   = txtr. Mapping (path_name for now!)
-            :   UpperCase ('A-Z')   = wall txtr. matrix (tmx)  A = [a,b,c,d] :[West,North,East,Sud]
-            :   Numeric   ('0-9')   = floor casting type { 0 = basic }
-            :   Meta ('<,>,/,?,\,|,=,+,!,@,#,$,%,&') = reserve for object or spec.
-
-*/
-//
-
 #include "../include/cub3d.h"
 #include <dirent.h> 
 
-/// Malloc str:id(txtr_ref)  str:path(txtr_path)
+/* Malloc str:id(txtr_ref)  str:path(txtr_path)*/
 char *xwalls_builder(t_matrx *mx)
 {
     int     len;
     char    *id;
     char    *path;
-       // char   *xwalls[4];
-        // t_box   *xbox;
-        // xbox = NULL;
+   
     id = malloc(sizeof(char) + 1);
     id[0] = (char)mx->ref;
     id[1] = '\0';
     id = ft_strjoin(id, " ");
-
     len = ft_strlen(mx->id_path);
     path = malloc(sizeof(char *) * (len + 1));
     path = ft_strdup(mx->id_path);
-        // printf("simple try_out = %s ::\n", id);
-        // printf("alter _try_out = %s ::\n", path);  
-        // printf("ultra _try_out [%s] ==> {%s}.\n", id, path); 
     path = ft_strjoin(id, path);
     // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
-        // xbox->xwalls[i][0] = id;
-        // xbox->xwalls[i][1] = path;
-        // xbox->xwalls[i] = xwalls[i];
     return (path);
 }
-
-/// NEW Malloc'd struct to be fill : mx->full
-t_matrx *e_mtrx_link(t_matrx *mx)//, char *full_path)
+/* NEW Malloc'd struct to be fill : mx->full */
+t_matrx *e_mtrx_link(t_matrx *mx)
 { 
     /*        de is Pointer for directory entry */
     struct dirent *de;  
@@ -89,13 +64,8 @@ int e_mtrx_count(t_matrx *mx, char *full_path)
 { 
     /*   de is Pointer for directory entry */
     struct dirent *de;  
-    // const char* dir_path;
-
-    // int tx_num = 0;    
-     /*    set folder path name from av[1],*/ 
+   
     mx->fld_path = get_folder_name(full_path);
-    // printf("COUNT_Open %s directory... \n", mx->fld_path); 
-        /*        opendir() returns a pointer of DIR type.*/  
     DIR *dr = opendir(mx->fld_path); 
     if (dr == NULL) 
     { 
@@ -132,3 +102,15 @@ int  e_list_txtr(t_cub *cub, char *full_path)
 
     return (0); 
 }
+/*  Ref. Tex. By assign.
+            get a   txtr_name -> assign it to a char.
+                enum : how many txtr to mapp.
+                dict : bind unsigned char ptr to txtr->path
+                link : load_png_to_txtr ==> ref by unsign_char 
+    
+    Result  :   LowerCase ('a-z')   = txtr. Mapping (path_name for now!)
+            :   UpperCase ('A-Z')   = wall txtr. matrix (tmx)  A = [a,b,c,d] :[West,North,East,Sud]
+            :   Numeric   ('0-9')   = floor casting type { 0 = basic }
+            :   Meta ('<,>,/,?,\,|,=,+,!,@,#,$,%,&') = reserve for object or spec.
+
+*/
