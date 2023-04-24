@@ -151,4 +151,14 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 				+ chk order [0.1.2.3] => [W,N,E,S]
 				+ find ref by pos
 				+ fill load_png with found attrib
+	NEXT 	:
+			:	Enable	MULTI XWALLS.  		-- OK -- choose (4 on 5) map3
+			:			MAP_RAW	xwalls[4]			dual choice (A - B)
+			:				ex: "A acbd"
+			:	Setting MAP_CHARTS
+			:			MAP_ floor_tex 	REF:('0'-'9')
+			:			MAP_ xwalls		REF:('A'-'Z')
+			:			MAP_ player		REF:('@') no_direction(N) default!
+			:			MAP_ object		REF:('meta-chars')
+			:
 */
