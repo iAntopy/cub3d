@@ -28,7 +28,7 @@ char *xwalls_builder(t_matrx *mx)
     path = malloc(sizeof(char *) * (len + 1));
     path = ft_strdup(mx->id_path);
     path = ft_strjoin(id, path);
-    // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
+    // printf("SUPER try_out path[0] = {%c} ==> full {%s}\n", path[0], path); 
     return (path);
 }
 /* NEW Malloc'd struct to be fill : mx->full */

@@ -91,7 +91,7 @@ typedef struct s_matrx
 	char 			*id_path;
 	char			**full;
 	char 			**xwalls[4];
-	// mlx_texture_t	*texr;
+	 mlx_texture_t	**xwalls[4];
 }		t_matrx;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
