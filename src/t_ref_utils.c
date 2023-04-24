@@ -8,28 +8,36 @@
 
 
 // transfere ref "A a,b,c,d" into xwalls[4]
-// static char *get_ref_str(t_cub *cub,int alt, char *xwalls)
-// {
-//     //find txtr ref 
-//     char *tex_str;
+char *get_ref_str(t_cub *cub, char *ref, int alt)
+{
+    //find txtr ref 
+    char *tex_str;
+    int x = 0;
 
-//     tex_str = 
+    while(*cub->mx->full[x])
+    {
+        if (*cub->mx->full[x] != ref[alt + 2])
+            x++;
+        else 
+            break;
+    }
+    // printf("::: SPACEX --id(%d) -- ref[%c] -- name{%s}\n", alt, ref[alt+2], cub->mx->full[x]);    
+    tex_str = cub->mx->full[x];
+    return (tex_str);       
+}
 
-// }
-
-t_cub	*get_tex_by_ref(t_cub *cub, int id, char *tex_str)
+t_cub	*get_tex_by_ref(t_cub *cub, int id, const char *tex_str)
 {
     /*
         OPTIMIZED :: struct t_matrx *mx link into *.cub
-            this the new fonct. to fit xwalls.
-                needs   :   - matrx char ref. str[0]
-                        :   - matrx array[4]. str[1]++
     */
 	char	*t;
-    // char    *xwalls;
+    const char    *aux;
     int     alt;
     alt = 0;
 	printf("______ HERE GET_BY_REF__[%d]___name  \n", id);
+    // printf("_______[%c]___name :", tex_str[0]);
+   
 	/* go get xwalls now : where */
     /*  
         get     : str* to deploy  == tex_str ***
@@ -45,24 +53,19 @@ t_cub	*get_tex_by_ref(t_cub *cub, int id, char *tex_str)
     */
     // tex_str == {"A a,b,c,d"}
     // xwalls = tex_str;
-    while (alt < 3)
+    while (alt <= 3)
     {
-        // get alt pos++  into array ref
-
-            //  tex_str = get_ref_str(alt, xwalls);
-            // tex_str = get_ref_str(cub, alt, xwalls);
         if (!cub->tex.walls[alt])
         {
-            while (*(++tex_str) && ft_isspace(*tex_str))
-                continue ;
-            t = tex_str;
-            while (*tex_str && !ft_isspace(*tex_str))
-                tex_str++ ;
-            *tex_str = '\0';
+            aux =  get_ref_str(cub, (char *)tex_str, alt);
+            // printf("_FULL__%s\n", aux);
+            t = ft_substr(aux, 2, ft_strlen(aux)-2);
+            printf("REF[%d] txtr_id(%c) TEX_PATH__%s\n", alt, tex_str[alt+2], t);
             cub->tex.walls[alt] = mlx_load_png(t);
             if (!cub->tex.walls[alt])
                 return (report_mlx_tex_load_failed(t));
             cub->tex_id++;
+            alt++;
         }
         else
         {

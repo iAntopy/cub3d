@@ -247,7 +247,7 @@ typedef struct s_cub3d_core_data
 	t_tex			tex;
 	t_hero			hero;
 	t_rdr			renderer;
-	t_matrx			mx;
+	t_matrx			*mx;
 }	t_cub;
 
 
@@ -336,9 +336,13 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-int				e_list_txtr(char *full_path);
+int				e_list_txtr(t_cub *cub, char *full_path);
+char 			*xwalls_builder(t_matrx *mx);
+t_matrx 		*e_mtrx_link(t_matrx *mx);//, char *full_path)
+int 			e_mtrx_count(t_matrx *mx, char *full_path);
 //
 const char	 	*get_folder_name(char *full_path);
 char			*t_name_set(const char *dir_path, char *d_name);
-t_cub			*get_tex_by_ref(t_cub *cub, int id, char *tex_str);
+t_cub			*get_tex_by_ref(t_cub *cub, int id, const char *tex_str);
+char 			*get_ref_str(t_cub *cub, char *ref, int alt);
 #endif
