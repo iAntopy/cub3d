@@ -31,6 +31,7 @@ char *xwalls_builder(t_matrx *mx)
     // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
     return (path);
 }
+
 /* NEW Malloc'd struct to be fill : mx->full */
 t_matrx *e_mtrx_link(t_matrx *mx)
 { 
@@ -59,33 +60,31 @@ t_matrx *e_mtrx_link(t_matrx *mx)
     return (mx); 
 }
 
-/// NEW Only count tx_num : read first time
-int e_mtrx_count(t_matrx *mx, char *full_path)
-{ 
-    /*   de is Pointer for directory entry */
-    struct dirent *de;  
-   
-    mx->fld_path = get_folder_name(full_path);
-    DIR *dr = opendir(mx->fld_path); 
-    if (dr == NULL) 
-    { 
-        printf("Could not open current directory\n"); 
-        return 0; 
-    } 
-    while ((de = readdir(dr)) != NULL)
-    {   
-        /*     find 'png' ended file*/
-        if ((ft_strchr_set(de->d_name, "png") != NULL) && (mx->xnum < 27 ))
-            mx->xnum++;
-        else if (mx->xnum >= 27)  
-        {
-            printf("Too Many Textures , 52 is max for NOW !\n");
-            break ;
-        }       
-    }
-    closedir(dr);     
-    return (mx->xnum); 
-}
+// /// NEW Only count tx_num : read first time
+// int e_mtrx_count(t_matrx *mx, char *full_path)
+    // { 
+    //     /*   de is Pointer for directory entry */
+    //     struct dirent *de;  
+    
+    //     printf("COUNT_Open FULL%s directory... \n", full_path); 
+    //     mx->fld_path = get_folder_name(full_path);
+    //     printf("COUNT_Open fld path %s file name... \n", mx->fld_path); 
+    //     DIR *dr = opendir(mx->fld_path); 
+    //     if (dr == NULL) 
+    //     { 
+    //         printf("Could not open current directory\n"); 
+    //         return 0; 
+    //     } 
+    //     while ((de = readdir(dr)) != NULL && mx->xnum == 0 )
+    //     {   
+    //         /*     find 'png' ended file*/
+    //         if (ft_strchr_set(de->d_name, "txt") != NULL) 
+    //             mx->xnum++;
+    //     }
+
+    //     closedir(dr);     
+    //     return (mx->xnum); 
+// }
 
 /// Now pre_read folder +  Malloc + post_read linked
 int  e_list_txtr(t_cub *cub, char *full_path)

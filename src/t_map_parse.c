@@ -142,7 +142,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	///		map_frame >> wall_chk >> (o_cell removed)
 
 /*
-	MOST OF IT	:	- read_whole_file 		*** (skip min lines < 6)
+	MOST OF IT	:	- read_whole_file 		
 				+ find holy ref.
 		
 				+ alt behavior for 'A' = xwalls[4]  *** (get_tex_by_ref) >>t_ref_utils

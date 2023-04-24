@@ -94,10 +94,21 @@ const char *get_folder_name(char *full_path)
     }
     folder_name = ft_substr(full_path, strt, (end - strt));
     folder_name = ft_strjoin ("tex", folder_name);
-    folder_name = ft_strjoin (folder_name, "/");
+    folder_name = ft_strjoin (folder_name, ".txt");
     printf("GET_FLD_NAME:: %s\n",folder_name); 
     return ((const char *)folder_name);
 }
+
+/*
+    While   reading .cub
+        :   get first line  - lowercase -- chk
+        :       until line  - number    -- chk
+        :   ++ count them   - ending legend parsing 
+    Then    read    preset line - uppercase
+        :   verify that its rely.       -- chk
+        :   ++ count them   - ending preset part
+
+*/
 /* go get xwalls now : where */
     /*  
         get     : str* to deploy  == tex_str ***

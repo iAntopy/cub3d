@@ -1,6 +1,0 @@
-a tex/map3/map3.txt
-b tex/map3/rusty-metal.png
-c tex/map3/tree-bark.png
-d tex/map3/tree-branch.png
-e tex/map3/tree-dark.png
-f tex/map3/tree-old.png
