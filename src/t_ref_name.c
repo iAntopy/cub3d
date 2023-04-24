@@ -109,9 +109,6 @@ int e_mtrx_count(t_matrx *mx, char *full_path)
 int  e_list_txtr(t_cub *cub, char *full_path)
 { 
     t_matrx *mx;
-    
-    // if (cub)
-    //     return (-1);
 
     mx = malloc(sizeof(t_matrx) * 1);
     if (!mx)
@@ -119,8 +116,6 @@ int  e_list_txtr(t_cub *cub, char *full_path)
     mx->xnum = e_mtrx_count(mx, full_path);
     mx->full = malloc(sizeof(char *) * (mx->xnum + 1));
     mx = e_mtrx_link(mx);
-    // e_link_tx(mx);
-    // printf("MX->refREF[%c] MX->id_path {%s} \n", mx->ref, mx->id_path);
     cub->mx = mx;
 
     return (0); 
