@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/23 14:03:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:38:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	uint32_t	*pxls;
 	int			tex_width;
 
-	printf("render_walls started \n");
+//	printf("render_walls started \n");
 	clear_image_buffer(cub->renderer.walls_layer);
 	rc.walls_layer = cub->renderer.walls_layer;
 	i = -1;
@@ -63,7 +63,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 		}
 	}
 	cub->renderer.requires_update = 0;
-	printf("render_walls DONE \n");
+//	printf("render_walls DONE \n");
 }
 
 // Called only once at start to initialize mlx image buffers by layer.

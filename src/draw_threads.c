@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/23 14:14:31 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:51:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,20 @@ void	*__draw_thread_routine(t_thdraw *th)
 {
 	if (!th)
 		return ((void *)1);
-	printf("Draw routine started : thread id : %zd\n", th->id);
+	printf("Draw routine started : thread id : %zd\n", (size_t)th->id);
 	th->isidle = 1;
 	while (!pthread_mutex_lock(&th->end_lock) && !pthread_mutex_unlock(&th->end_lock))
 	{
-		printf("thread : waiting for start_lock\n");
+//		printf("thread : waiting for start_lock\n");
 		pthread_mutex_lock(&th->start_lock);
-		printf("thread : start_lock acquired\n");
+//		printf("thread : start_lock acquired\n");
 		th->isidle = 0;
 		if (th->stop_request)
 			break ;
 		th->draw_func(th->cub, th->cub->hero.rcast.rdata);
-		printf("thread unlocking start_lock\n");
+//		printf("thread unlocking start_lock\n");
 		pthread_mutex_unlock(&th->start_lock);
-		printf("thread unlocking start_lock DONE\n");
+//		printf("thread unlocking start_lock DONE\n");
 		th->isidle = 1;
 	}
 	pthread_mutex_unlock(&th->start_lock);
@@ -103,6 +103,7 @@ int	report_threads_err(t_thdraw *threads, char *err, int print_strerr)
 int	order_draw_call(t_thdraw *threads)
 {
 	int	i;
+	int	nb_spins;
 
 	i = -1;
 	while (++i < NB_DRAW_THREADS)
@@ -111,13 +112,19 @@ int	order_draw_call(t_thdraw *threads)
 		pthread_mutex_unlock(&threads[i].start_lock);
 	}
 //	printf("WOWOW :: start_lock unlocked ! Drawing begins !\n");
-	usleep(10);
+//	usleep(10);
 	i = -1;
-	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);
-	while (++i < NB_DRAW_THREADS)
+	nb_spins = 0;
+//	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);
+	while (++i < NB_DRAW_THREADS && nb_spins < 10)
+	{
 		if (threads[i].isidle)
+		{
 			i = -1;
-	printf("Stop spinnin'\n");
+			nb_spins++;
+		}
+	}
+//	printf("Stop spinnin'\n");
 //	printf("WOWOW :: try lock start_lock\n");
 	i = -1;
 	while (++i < NB_DRAW_THREADS)
@@ -136,8 +143,8 @@ static int	start_draw_threads(t_thdraw *threads)
 	while (++i < NB_DRAW_THREADS)
 	{
 		pthread_mutex_lock(&threads[i].start_lock);
-		if (pthread_create(&threads[i].id, NULL, (void *(*)(void *))__draw_thread_routine,
-			threads + i) < 0)
+		if (pthread_create(&threads[i].id, NULL,
+			(void *(*)(void *))__draw_thread_routine, threads + i) < 0)
 			return (report_threads_err(threads, "Thread creation failed.", 1));
 	}
 	return (0);

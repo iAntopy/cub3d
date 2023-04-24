@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/23 12:54:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:33:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,15 +200,15 @@ typedef struct s_main_character_data
 
 typedef struct s_draw_thread_profil
 {
-	t_cub		*cub;
+	t_cub			*cub;
 	pthread_mutex_t	start_lock;
 	pthread_mutex_t	end_lock;
-	t_draw_func	draw_func;
-	int			start_lock_isinit;
-	int			end_lock_isinit;
-	size_t		id;
-	int			isidle;
-	int			stop_request;
+	t_draw_func		draw_func;
+	int				start_lock_isinit;
+	int				end_lock_isinit;
+	pthread_t		id;
+	int				isidle;
+	int				stop_request;
 }	t_thdraw;
 
 // struct of parameters used by render_walls()
