@@ -88,8 +88,8 @@ static int	read_whole_file(t_map *map, char *filepath)
 		return (report_malloc_error());
 	flush_empty_lines(map->raw);
 	close(fd);
-	if (strtab_len(map->raw) < 6)
-		return (error("Missing info in config file.", map));
+	// if (strtab_len(map->raw) < 6)
+	// 	return (error("Missing info in config file.", map));
 	return (0);
 }
 
@@ -112,3 +112,29 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
 	return (0);
 }
+
+/*
+	map_checker:
+	1	strfcmp .cub - chk file extention 
+	2 	read_whole_file - stock it all. = map->raw
+	3	tex_parse - chk map char by ref	= ( [6] == ref. xwalls fork.
+			ft_in_set (charset) - cmp char <> ref
+			get_tex_by_id (<4) -  attrib path from ref
+					spaceless , txtr[id] = load_png (path)
+			color_split (id 4/5) - bitshift_color process
+	4	transcribe
+	5	map_frame - gabarit!
+	6	wall_chk - floor / edge 
+			ft_in_set - floor / sibling	: t_o_cell
+			hero_cell - pos / dir		: t_hero_cell	
+*/
+/*
+	MOST OF IT	:	- read_whole_file 		*** (skip min lines < 6)
+				+ find holy ref.
+				+ alt behavior for 'A' = xwalls[4]  *** (get_tex_by_ref) >>t_ref_utils
+				+ ref for xwalls[4] to be build from preset
+					- tex_parse 
+				+ chk order [0.1.2.3] => [W,N,E,S]
+				+ find ref by pos
+				+ fill load_png with found attrib
+*/

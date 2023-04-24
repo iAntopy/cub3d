@@ -69,15 +69,26 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
+//// BONUS STRUCT MATRX
 /*
-/// PARSING ///////////////////
-// coordonees standard
-typedef struct  s_pos
-{
-	int		x;
-	int		y;
-}   t_pos;
+	meant to be the passing content for xwalls ***
+	xnum 	= (int) how many xwalls refs.
+	ref 	= (char) lowercase ref assing into xwalls
+	id_path	= (char *) full_name {"a  tex/flder_name/txtr_name.png"}
+	xwalls	= (char **[4]) xwalls[4] = [ref][id_path]
+	...
+	txtr	maybe need to load txtr before then stock *txtr ptr!
 */
+typedef struct s_matrx
+{
+	const char		*fld_path;
+	int				xnum;
+	unsigned char	ref;
+	char 			*id_path;
+	char			**full;
+	char 			**xwalls[4];
+	// mlx_texture_t	*texr;
+}		t_matrx;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
@@ -236,14 +247,14 @@ typedef struct s_cub3d_core_data
 	t_tex			tex;
 	t_hero			hero;
 	t_rdr			renderer;
+	t_matrx			*mx;
 }	t_cub;
 
-// typedef struct s_ref_tx
-// {
-// 	int 			tx_num;
-// 	mlx_texture_t	*texr;
-// 	unsigned char	*tx_name;
-// }	t_ref_tx;
+
+typedef struct s_wall_box
+{
+	char 		**xwalls[4];
+}	t_box;
 
 /// PARSING ///////////////////
 
@@ -325,5 +336,13 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-int				e_list_txtr(void);
+int				e_list_txtr(t_cub *cub, char *full_path);
+char 			*xwalls_builder(t_matrx *mx);
+t_matrx 		*e_mtrx_link(t_matrx *mx);//, char *full_path)
+int 			e_mtrx_count(t_matrx *mx, char *full_path);
+//
+const char	 	*get_folder_name(char *full_path);
+char			*t_name_set(const char *dir_path, char *d_name);
+t_cub			*get_tex_by_ref(t_cub *cub, int id, const char *tex_str);
+char 			*get_ref_str(t_cub *cub, char *ref, int alt);
 #endif
