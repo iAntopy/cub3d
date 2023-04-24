@@ -70,6 +70,7 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
+
 //// BONUS STRUCT MATRX
 /*
 	meant to be the passing content for xwalls ***
@@ -80,6 +81,7 @@ enum	e_sides
 	...
 	txtr	maybe need to load txtr before then stock *txtr ptr!
 */
+/// PARSING ///////////////////
 typedef struct s_matrx
 {
 	const char		*fld_path;
@@ -254,12 +256,6 @@ typedef struct s_cub3d_core_data
 }	t_cub;
 
 
-typedef struct s_wall_box
-{
-	char 		**xwalls[4];
-}	t_box;
-
-/// PARSING ///////////////////
 
 //int	load_map(t_cub *cub, char *map_file);
 int		build_collision_map(t_map *map);

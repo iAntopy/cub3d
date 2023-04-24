@@ -1,0 +1,4 @@
+a tex/map2/tree-bark.png
+b tex/map2/tree-branch.png
+c tex/map2/tree-dark.png
+d tex/map2/tree-old.png
