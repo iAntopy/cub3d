@@ -66,6 +66,8 @@ int e_mtrx_count(t_matrx *mx, char *full_path)
     struct dirent *de;  
    
     mx->fld_path = get_folder_name(full_path);
+    if (!mx->fld_path) 
+        return 0;
     DIR *dr = opendir(mx->fld_path); 
     if (dr == NULL) 
     { 
