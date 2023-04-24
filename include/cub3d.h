@@ -27,6 +27,9 @@
 # define SCN_WIDTH  1024
 # define SCN_HEIGHT 780
 
+# define MMP_WIDTH  100
+# define MMP_HEIGHT 100
+
 # define ROT_FACTOR 0.006135923f
 # define CELL_WIDTH 64
 # define M_TAU 6.283185307179586f
