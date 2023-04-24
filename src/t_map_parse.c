@@ -113,24 +113,31 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	return (0);
 }
 
-/*
+/* WAS LIKE ...
 	map_checker:
-	1	strfcmp .cub - chk file extention 
-	2 	read_whole_file - stock it all. = map->raw
-	3	tex_parse - chk map char by ref	= ( [6] == ref. xwalls fork.
-			ft_in_set (charset) - cmp char <> ref
-			get_tex_by_id (<4) -  attrib path from ref
-					spaceless , txtr[id] = load_png (path)
-			color_split (id 4/5) - bitshift_color process
-	4	transcribe
-	5	map_frame - gabarit!
-	6	wall_chk - floor / edge 
-			ft_in_set - floor / sibling	: t_o_cell
-			hero_cell - pos / dir		: t_hero_cell	
+		1	strfcmp .cub - chk file extention 
+		2 	read_whole_file - stock it all. = map->raw
+		3	tex_parse - chk map char by ref	= ( [6] == ref. xwalls fork.
+				ft_in_set (charset) - cmp char <> ref
+				get_tex_by_id (<4) -  attrib path from ref
+						spaceless , txtr[id] = load_png (path)
+				color_split (id 4/5) - bitshift_color process
+		4	transcribe
+		5	map_frame - gabarit!
+		6	wall_chk - floor / edge 
+				ft_in_set - floor / sibling	: t_o_cell
+				hero_cell - pos / dir		: t_hero_cell	
 */
+
+/// main >> e_list_txtr >> e_mtrx_count >> get_folder_namr
+	///		e_list_txtr >> e_mtrx_link >> t_name_set >> xwalls_builder
+///	map_checker >> tex_parse >> get_tex_by_ref >> get_ref_str
+	///		map_frame >> wall_chk >> (o_cell removed)
+
 /*
 	MOST OF IT	:	- read_whole_file 		*** (skip min lines < 6)
 				+ find holy ref.
+		
 				+ alt behavior for 'A' = xwalls[4]  *** (get_tex_by_ref) >>t_ref_utils
 				+ ref for xwalls[4] to be build from preset
 					- tex_parse 
