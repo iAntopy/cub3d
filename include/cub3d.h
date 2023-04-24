@@ -61,6 +61,7 @@
 
 # define CUBMAP_BUFMAX 100000
 # define MAP_CHARS "01WNES"
+# define MAP_CHARTS "N0123456789ABCDEFGH"
 
 enum	e_sides
 {
@@ -130,6 +131,8 @@ typedef struct s_texture_data
 	mlx_texture_t	*walls[4];
 	char			**rgbx;
 	int				color[2];
+	mlx_texture_t	*skymap;	// yessss
+	mlx_texture_t	*floor;	// yessss
 //	char			*tex_n[4];// tex_name
 }	t_tex;
 

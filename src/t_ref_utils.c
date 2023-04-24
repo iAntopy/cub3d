@@ -42,18 +42,18 @@ t_cub	*get_tex_by_ref(t_cub *cub, int id, const char *tex_str)
     {
         if (!cub->tex.walls[alt])
         {
+            cub->tex_id++;
             aux =  get_ref_str(cub, (char *)tex_str, alt);
             t = ft_substr(aux, 2, ft_strlen(aux)-2);
-            printf("REF[%d] txtr_id(%c) TEX_PATH__%s\n", alt, tex_str[alt+2], t);
+            printf("REF[%d] txtr_id(%c) TEX_PATH__%s\n", cub->tex_id, tex_str[alt+2], t);
             cub->tex.walls[alt] = mlx_load_png(t);
             if (!cub->tex.walls[alt])
                 return (report_mlx_tex_load_failed(t));
-            cub->tex_id++;
             alt++;
         }
         else
         {
-            ft_eprintf("Error\n\t- Trying to load texture id %d twice.\n", id);
+            ft_eprintf("Error\n\t- Trying to load texture_BY_Ref id %d twice.\n", id);
             return (NULL);
         }	
     }

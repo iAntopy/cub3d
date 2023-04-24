@@ -88,22 +88,29 @@ static int	read_whole_file(t_map *map, char *filepath)
 		return (report_malloc_error());
 	flush_empty_lines(map->raw);
 	close(fd);
-	// if (strtab_len(map->raw) < 6)
-	// 	return (error("Missing info in config file.", map));
+	if (strtab_len(map->raw) < 6)
+	 	return (error("Missing info in config file.", map));
+	else 
+		return(strtab_len(map->raw));
 	return (0);
 }
 
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
+	int map_len;
+
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
-	if (read_whole_file(map, file) < 0)
+	if ((map_len = read_whole_file(map, file)) == 0)
 		return (-1);
+	else 
+		printf("map len : (%d)\n", map_len);
 	cub->tex_id = -1;
 	if (tex_parse(cub, map) < 0)
 		return (-1);
 	if (transcribe(map) < 3)
 		return (error("Map in file is too short", map));
+	printf("map_raw len  : (%d)\n", map_len - map->height);
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
 	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
 		|| build_collision_map(map) < 0)

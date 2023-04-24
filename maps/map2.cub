@@ -1,7 +1,7 @@
 A acdb                 
                   
-C 20,10,0
-F 50,90,50
+0 "tex/ext/FloorTile4.png"
+9 "tex/ext/sky_star.png"
 
      AAAAAAAAAAAA
      A000AA00000A

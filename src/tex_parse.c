@@ -12,42 +12,42 @@
 
 #include "../include/cub3d.h"
 
-static int	error_color(char *err_str, char ***split_color)
-{
-	strtab_clear(split_color);
-	ft_eprintf("Error: Failed to parse this color string from file : %s\n",
-		err_str);
-	return (0);
-}
+// static int	error_color(char *err_str, char ***split_color)
+// {
+// 	strtab_clear(split_color);
+// 	ft_eprintf("Error: Failed to parse this color string from file : %s\n",
+// 		err_str);
+// 	return (0);
+// }
 
-static int	color_split(char *col_str, int *ret_col)
-{
-	char		**color;
-	int			rgb[3];
+// static int	color_split(char *col_str, int *ret_col)
+// {
+// 	char		**color;
+// 	int			rgb[3];
 
-	*ret_col = 0;
-	color = ft_split_set(col_str + 1, ", ");
-	if (strtab_len(color) != 3)
-		return (error_color(col_str, &color));
-	rgb[0] = ft_atoi(color[0]);
-	rgb[1] = ft_atoi(color[1]);
-	rgb[2] = ft_atoi(color[2]);
-	if (strtab_len(color) != 3 || (rgb[0] < 0 || rgb[0] > 255)
-		|| (rgb[1] < 0 || rgb[1] > 255) || (rgb[2] < 0 || rgb[2] > 255))
-		return (error_color(col_str, &color));
-	*ret_col = str_to_color(rgb[0], rgb[1], rgb[2], 0xff);
-	strtab_clear(&color);
-	return (*ret_col);
-}
+// 	*ret_col = 0;
+// 	color = ft_split_set(col_str + 1, ", ");
+// 	if (strtab_len(color) != 3)
+// 		return (error_color(col_str, &color));
+// 	rgb[0] = ft_atoi(color[0]);
+// 	rgb[1] = ft_atoi(color[1]);
+// 	rgb[2] = ft_atoi(color[2]);
+// 	if (strtab_len(color) != 3 || (rgb[0] < 0 || rgb[0] > 255)
+// 		|| (rgb[1] < 0 || rgb[1] > 255) || (rgb[2] < 0 || rgb[2] > 255))
+// 		return (error_color(col_str, &color));
+// 	*ret_col = str_to_color(rgb[0], rgb[1], rgb[2], 0xff);
+// 	strtab_clear(&color);
+// 	return (*ret_col);
+// }
 
 t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 {
 	char	*t;
 
-	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, tex_str);
-	if (id < 0 || id > 3)
-		return (NULL);
-	if (!cub->tex.walls[id])
+	printf("<<%d>>____ HERE GET_BY_ID__[%d]___name{%s}\n", cub->tex_id, id, tex_str);
+	// if (id < 0 || id > 3)
+	// 	return (NULL);
+	if (!cub->tex.walls[id] && id < 11)
 	{
 		while (*(++tex_str) && ft_isspace(*tex_str))
 			continue ;
@@ -55,7 +55,12 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 		while (*tex_str && !ft_isspace(*tex_str))
 			tex_str++ ;
 		*tex_str = '\0';
-		cub->tex.walls[id] = mlx_load_png(t);
+
+		if (id == 10)
+			cub->tex.skymap = mlx_load_png(tex_str);
+		if (id < 10)
+			cub->tex.floor = mlx_load_png(tex_str);
+		// cub->tex.walls[id] = mlx_load_png(t);
 		if (!cub->tex.walls[id])
 			return (report_mlx_tex_load_failed(t));
 		cub->tex_id++;
@@ -83,31 +88,21 @@ int	tex_parse(t_cub *cub, t_map *map)
 	int		id;
 
 	nb = 0;
-	while (nb < 6 && map->raw[nb])
+	while (cub->tex_id < 6 && map->raw[nb])
 	{
-		id = ft_in_set(map->raw[nb][0], (const char *)"WNESCFAB");
-		printf("id for tag %d : %c  \n", id,map->raw[nb][0]);
-		// printf("id for tag %d \n", map->raw[nb][1]);
+		id = ft_in_set(map->raw[nb][0], (const char *)MAP_CHARTS);
+		printf("id for tag %d : %c  \n", id, map->raw[nb][0]);
+		printf("then for ref %d \n", map->raw[nb][1]);
 		if (id < 0 || map->raw[nb][1] != ' ')
 			return (error_clr("Invalid config found!\n", map));
-		else if (id > 5)
-		{
-			if (get_tex_by_ref(cub, id, map->raw[nb]))
-				nb = 5;
-			else
+		else if (id > 10)
+			get_tex_by_ref(cub, id, map->raw[nb]);
+		else if ((id > 0 && id < 11 ) && !get_tex_by_id(cub, id, map->raw[nb]))
 				return (error_clr(NULL, map));
-		}
-		else if (id < 4 && !get_tex_by_id(cub, id, map->raw[nb]))
-			return (error_clr(NULL, map));
-		if (id == 4 || id == 5)
-		{
-			if (!color_split(map->raw[nb], cub->tex.color + (id - 4)))
-				return (-1);
-		}
 		printf("tex_parse nb = %d \n", nb);
 		nb++;
 	}
-	if (cub->tex_id != 3)
+	if (cub->tex_id < 6)
 		return (error_clr("Missing textures. \
 			At least one wall texture was not loaded\n", map));
 	return (0);
