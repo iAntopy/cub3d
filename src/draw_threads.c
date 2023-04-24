@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/24 15:51:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:29:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,9 @@ int	report_threads_err(t_thdraw *threads, char *err, int print_strerr)
 
 int	order_draw_call(t_thdraw *threads)
 {
-	int	i;
-	int	nb_spins;
+	int			i;
+	int			nb_spins;
+	const int	max_spins = 10;
 
 	i = -1;
 	while (++i < NB_DRAW_THREADS)
@@ -112,18 +113,20 @@ int	order_draw_call(t_thdraw *threads)
 		pthread_mutex_unlock(&threads[i].start_lock);
 	}
 //	printf("WOWOW :: start_lock unlocked ! Drawing begins !\n");
-//	usleep(10);
 	i = -1;
 	nb_spins = 0;
 //	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);
-	while (++i < NB_DRAW_THREADS && nb_spins < 10)
+	while (++i < NB_DRAW_THREADS && nb_spins < max_spins)
 	{
+		usleep(10);
 		if (threads[i].isidle)
 		{
 			i = -1;
 			nb_spins++;
 		}
 	}
+//	if (nb_spins == max_spins)
+//		printf("BREAKING NEWS : SPIN OUT EVENT\n");
 //	printf("Stop spinnin'\n");
 //	printf("WOWOW :: try lock start_lock\n");
 	i = -1;
