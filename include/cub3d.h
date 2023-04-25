@@ -63,7 +63,7 @@
 # define TEX_FLOOR			5
 
 # define CUBMAP_BUFMAX 100000
-# define MAP_CHARS "01WNES"
+# define MAP_CHARS "01WNES@A"
 # define MAP_NCHR "0123456789"
 # define MAP_LCHR "abcdefghijz"
 # define MAP_UCHR "ABCDEFGHIJ"

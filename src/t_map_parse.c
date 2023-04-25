@@ -25,13 +25,13 @@ static char	*spc_chk(t_map *map, int j)
 	return (line);
 }
 
-static	int	transcribe(t_map *map)
+static	int	transcribe(t_map *map, t_cub *cub)
 {
 	char	**tmp;
 	int		len;
 	int		i;
 
-	tmp = map->raw + 6;
+	tmp = map->raw + cub->box->xnum;
 	i = 0;
 	while (tmp[i])
 	{
@@ -42,16 +42,20 @@ static	int	transcribe(t_map *map)
 	}
 	map->height = i;
 	map->total_cells = (map->height * map->width);
+	// printf("WWWW m->tab_len = %d\n", map->height);
 	return (map->height);
 }
 
-static t_map	*map_frame(t_map *map)
+static t_map	*map_frame(t_map *map, t_cub *cub)
 {
 	char	**m;
 	int		i;
 
-	m = map->raw + 6;
+	printf("WWWW m->tab_len = %d\n", strtab_len(map->raw));
+	printf("WWWW map->height = %d\n", map->height);
+	m = map->raw + cub->box->xnum;
 	i = 0;
+	
 	while (i < map->height)
 	{
 		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
@@ -60,7 +64,7 @@ static t_map	*map_frame(t_map *map)
 		i++;
 	}
 	strtab_clear(&map->raw);
-	map = wall_check(map);
+	map = wall_check(map);	
 	printf("wall_chk returned with flg_chk == 1\n");
 	if (map->flg_chk == 1)
 		return (NULL);
@@ -87,7 +91,7 @@ static int	read_whole_file(t_map *map, char *filepath)
 	map->raw = ft_split(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
-	printf("*** line= %c \n",  *map->raw[0]);
+	// printf("*** line= %c \n",  *map->raw[0]);
 	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
@@ -108,12 +112,14 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	cub->tex_id = -1;
 	if (tex_parse(cub, map) < 0)
 		return (-1);
-	if (transcribe(map) < 3)
+	if (transcribe(map, cub) < 3)
 		return (error("Map in file is too short", map));
-	printf("map_raw len  : (%d)  map height [%d]\n", map_len, map->height);
-	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
-	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
-		|| build_collision_map(map) < 0)
+	printf("$$$map_raw len  : (%d)  map height [%d]\n", map_len, map->height);
+	map->tab = (char **)ft_calloc(sizeof(char *), (map->height));
+	if (!map->tab || !map_frame(map, cub))
+		return (-1);
+	printf("WWWW m->flg_ckk = %d\n", map->flg_chk);
+	if ( build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 )
 		return (-1);
 	print_collision_map(map);
 	printf("map (width, height) : (%d, %d)\n", map->width, map->height);

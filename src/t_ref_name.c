@@ -47,6 +47,7 @@ t_box *xwalls_builder(t_cub *cub, char **raw, int nb)
             if (id != -1)
             {
                 printf("BUILDER recett{%c} REF(%c) => ID:[%d]\n", rectt, ref, id);
+                cub->tex_id++;
                 pset->xwalls[fill] =  cub->box->xform[id];
             }
         }
