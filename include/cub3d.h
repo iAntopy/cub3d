@@ -91,8 +91,8 @@ typedef struct s_matrx
 {
 	int				xnum;
 	bool			isfloor; // 0 = is_floor / 1 =is_wall
-	mlx_texture_t	**xform; 	// 	
-	// char 			**xwalls[4];
+	char			**xform; 	// 	
+	mlx_texture_t	*xwalls[4];
 }		t_matrx;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.

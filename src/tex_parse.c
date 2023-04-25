@@ -36,21 +36,21 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 	// mlx_texture_t	*xform;
 
 	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, tex_str);
-	printf("tex_by_id __ xnum = %d \n", cub->mx->xnum);
-	// if (id < 0 || id > 3)
-	// 	return (NULL);
-	if (!cub->mx->xform[cub->tex_id++])
+	
+	cub->tex_id++;
+	if (!cub->mx->xwalls[id])
 	{
 		while (*(++tex_str) && ft_isspace(*tex_str))
 			continue ;
-		t = tex_str;	
+		t =  tex_str;
+		// t =  ft_substr(tex_str,0, ft_strlen(tex_str) - 2);
 		while (*tex_str && !ft_isspace(*tex_str))
 			tex_str++ ;
 		*tex_str = '\0';
-		cub->mx->xform[cub->tex_id] = mlx_load_png(t);
-		if (cub->mx->xform[cub->tex_id])
+		printf("tex_by_id __ t** = {%s} \n", t);
+		cub->mx->xwalls[id] = mlx_load_png(t);
+		if (cub->mx->xwalls[id])
 			return (report_mlx_tex_load_failed(t));
-		cub->tex_id++;
 	}
 		// if (!cub->tex.walls[id])
 		// {
@@ -87,9 +87,10 @@ int	tex_parse(t_cub *cub, t_map *map)
 	int		nb;
 	int		id;
 
-	nb = 0;
+	nb = 1;
 	cub =  e_list_txtr(cub);
-	printf(" %c id for tag %s  \n", map->raw[nb][0], map->raw[nb]);
+	printf("id for tag %d \n", map->raw[nb][0]);
+	printf("id for tag %s \n", map->raw[nb]);
 	while (map->raw[nb] )
 	{
 		id = ft_in_set(map->raw[nb][0], (const char *)MAP_LCHR);
