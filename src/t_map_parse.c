@@ -87,7 +87,7 @@ static int	read_whole_file(t_map *map, char *filepath)
 	map->raw = ft_split(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
-	// printf("*** line= %c \n",  *map->raw[0]);
+	printf("*** line= %c \n",  *map->raw[0]);
 	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)

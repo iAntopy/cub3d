@@ -42,14 +42,14 @@ t_cub	*get_tex_by_ref(t_cub *cub, int id, const char *tex_str)
     alt = 0;
     while (alt <= 3)
     {
-        if (!cub->mx->xform[cub->tex_id])
+        if (!cub->tex.walls[alt])
         {
             cub->tex_id++;
             t =  get_ref_str(cub, (char *)tex_str, alt);
             // t = ft_substr(aux, 2, ft_strlen(aux)-2);
             printf("REF[%d] txtr_id(%c) TEX_PATH__%s\n", cub->tex_id, tex_str[alt + 2], t);
-            cub->mx->xform[cub->tex_id] = mlx_load_png(t);
-            if (!cub->mx->xform[cub->tex_id])
+            cub->tex.walls[alt] = mlx_load_png(t);
+            if (!cub->tex.walls[alt])
                 return (report_mlx_tex_load_failed(t));
             alt++;
         }
