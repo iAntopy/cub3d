@@ -16,68 +16,45 @@
 /* Malloc str:id(txtr_ref)  str:path(txtr_path)*/
 t_box *xwalls_builder(t_cub *cub, char **raw, int nb)
 {
-    // mlx_texture_t	*xwlls;
-    t_matrx **pset;
+    t_matrx *pset;
     int     fill;
     int     len;
     int id;
+
     char ref;
+    char rectt;
     
     id = 0;
     (void)ref;
-    printf("WELCOME !!! XWLLS \n");
     len = 0;
-    pset = malloc(sizeof(t_matrx *) * cub->box->pset);
-
-                // pset = malloc(sizeof(t_matrx) * 1);
-                // if (!mx)
-                //     return (NULL);
-                    
-                // xwlls = malloc(sizeof(mlx_texture_t *) * 4);
-                // if (!xwlls)
-                // {
-                //     return (NULL);
-                // }
-    // pset = malloc(sizeof(mlx_texture_t *) * (cub->box->pset));
-    if (!pset)
-    {
-        printf("SHIT!!! XWLLS PSET = \n");
+    if (!(pset = malloc(sizeof(t_matrx *) * cub->box->pset)))
         return (NULL);
-    }
-    while(len <= cub->box->pset)
-    {
-        //get txtr val by ref * 4
-        printf("START PSET => %d \n", len);
-        printf("START RAW NB[%d]=> REF %c \n", nb, raw[nb][0]);
 
+    printf("XWLLS PRESET {%s} max len = %d \n", raw[nb], cub->box->pset);
+    while(len < cub->box->pset)
+    {
+        rectt = raw[nb][0];
+        printf("START RAW NB[%d]=> REF %c \n", len, raw[nb][0]);
+        id = ft_in_set(raw[nb][0], (const char *)MAP_UCHR);
+		if (id < 0 || raw[nb][1] != ' ')
+			return (NULL);
         //assing it to box->xform
         fill = -1;
-        while(fill++ < 4)
+        while(fill++ < 3)
         {
-
-            printf("WHILe PSET => %c \n", raw[nb][0]);
-            ref = raw[0][fill + 2];
-            printf("WHILL RAW NB[%d]=> REF %d \n", nb, id);
-            id = ft_in_set(raw[nb][fill + 2], cub->box->idx);
-            if (id == -1)
+            ref = raw[nb][fill + 2];
+            id = ft_in_set(raw[nb][fill + 2], MAP_LCHR);
+            if (id != -1)
             {
-               printf("SHIT!!! XWLLS PSET = \n");
-                return (NULL);
-            //     pset[len]->xwalls[fill] =  cub->box->xform[ref];
-            // else
+                printf("BUILDER recett{%c} REF(%c) => ID:[%d]\n", rectt, ref, id);
+                pset->xwalls[fill] =  cub->box->xform[id];
             }
-            // printf("PSET NAME => %s \n", 
-            //get arr valu 'a'
-            //get tex for val 
         }
-
         len++;
         nb++;
     }
     return (cub->box);
 }
-    // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
-
 
 // XFORM from RAW
 t_box *e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw)
@@ -103,14 +80,15 @@ t_box *e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw)
             tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i])- 2);
             printf("LINK legend name(%s) ::", tex_name);
             printf(" path {%s} \n", tex_path);
-            box->idx = ft_strjoin(box->idx,tex_name);
+            // box->idx = ft_strjoin(box->idx,tex_name);
             xform[i] = mlx_load_png(tex_path);
             if (!xform[i])
                 return (report_mlx_tex_load_failed(tex_path));
         } 
         ++i;
     }
-    printf("- - LINK - IDX<%s>\n", box->idx);
+    printf("- - LINK - IDX<%p>\n", xform[i-1]);
+    box->xform = xform;
     return (box); 
 }
 
@@ -159,6 +137,7 @@ t_cub  *e_list_txtr(t_cub *cub, t_map *map)
     }
     printf("XNUM = %d \n", box->xnum);
     cub->box = e_mtrx_link(box, form, map->raw);
+    printf("- - eLIST - IDX<%p>\n", cub->box->xform[0]);
     
     return (cub); 
 }

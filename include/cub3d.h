@@ -101,7 +101,6 @@ typedef struct s_box
 	int				pset;
 	mlx_texture_t	*form;
 	mlx_texture_t	**xform;
-	// t_matrx			*pset;
 }		t_box;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
@@ -262,7 +261,7 @@ typedef struct s_cub3d_core_data
 	t_tex			tex;
 	t_hero			hero;
 	t_rdr			renderer;
-	t_matrx			*mx;
+	t_matrx			mx;
 	t_box			*box;
 }	t_cub;
 

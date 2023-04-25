@@ -80,7 +80,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		cub->box->pset++;
 		nb++;
 	}
-	if (!xwalls_builder(cub, map->raw, nb))
+	if (!xwalls_builder(cub, map->raw, cub->box->xnum))
 		return (error_clr(NULL, map));
 	return (0);
 }
