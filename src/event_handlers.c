@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/24 23:51:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 04:13:02 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ static void	on_update_keypressed(t_cub *cub)
 	kp[5] = mlx_is_key_down(cub->mlx, MLX_KEY_RIGHT);
 	kp[6] = mlx_is_key_down(cub->mlx, MLX_KEY_UP);
 	kp[7] = mlx_is_key_down(cub->mlx, MLX_KEY_DOWN);
-	if ((*(size_t *)kp) || *(size_t *)(kp + 2))
+	if (kp[0] || kp[1] || *(size_t *)(kp + 2))
 		cub_player_move(cub, (kp[0] * (kp[0] + kp[8]) - kp[1] * (kp[1] + kp[8]))
 			* 100 * cub->mlx->delta_time,
 		(kp[3] * (kp[3] + kp[8]) - kp[2] * (kp[2] + kp[8]))
 			* 100 * cub->mlx->delta_time);
-	if (*((size_t *)kp + 4))
+	if (*((size_t *)(kp + 4)))
 		cub_player_rotate(cub, (kp[5] - kp[4]) * 1.0f * cub->mlx->delta_time);
-	if (*((size_t *)kp + 6))
+	if (*((size_t *)(kp + 6)))
 		cub_player_zoom(cub, (kp[7] - kp[6]) * 0.8f * cub->mlx->delta_time);
 }
 
@@ -108,6 +108,7 @@ void	on_update(t_cub *cub)
 		ft_deltatime_usec_note(NULL);
 		order_draw_call(cub->draw_threads);
 //		render_floor(cub, cub->hero.rcast.rdata);
+//		render_sky(cub, cub->hero.rcast.rdata);
 //		render_walls(cub, cub->hero.rcast.rdata);
 		ft_deltatime_usec_note("this shit == bananas");
 		cub->renderer.requires_update = 0;

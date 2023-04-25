@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 03:58:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/24 21:09:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 03:27:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ static void	print_near_z_dists(t_cub *cub)
 	printf("]\n");
 }
 */
-int	floorcaster_clear(t_cub *cub)
+int	clear_floorcaster(t_cub *cub)
 {
 	if (cub->renderer.near_z_dists)
 		ft_free_p((void **)&cub->renderer.near_z_dists);
-	if (cub->renderer.param_factors)
-		ft_free_p((void **)&cub->renderer.param_factors);
+	if (cub->renderer.floor_factors)
+		ft_free_p((void **)&cub->renderer.floor_factors);
 	return (0);
 }
 
@@ -76,7 +76,7 @@ void	update_near_z_dists(t_cub *cub)
 // (y MUST NOT == scn_midy)
 float	get_floorcaster_param(t_cub *cub, int x, int y)
 {
-	return (cub->renderer.param_factors[((y - cub->scn_midy) * SCN_WIDTH) + x]);
+	return (cub->renderer.floor_factors[((y - cub->scn_midy) * SCN_WIDTH) + x]);
 }
 
 // i should start at 1. First row will all be div/0.
@@ -89,7 +89,7 @@ void	update_floorcaster_params(t_cub *cub)
 	float		factor;
 
 	update_near_z_dists(cub);
-	ps = cub->renderer.param_factors;
+	ps = cub->renderer.floor_factors;
 	i = 0;
 	while (++i < cub->scn_midy)
 	{
@@ -112,7 +112,7 @@ int	init_floorcaster(t_cub *cub)
 //		sizeof(float) * (SCN_WIDTH / 2));
 	printf("init floorcaster entered \n");
 	if (!ft_malloc_p(sizeof(float) * SCN_WIDTH * cub->scn_midy,
-			(void **)&cub->renderer.param_factors)
+			(void **)&cub->renderer.floor_factors)
 		|| !ft_malloc_p(sizeof(float) * (SCN_WIDTH / 2),
 			(void **)&cub->renderer.near_z_dists))
 		return (report_malloc_error());

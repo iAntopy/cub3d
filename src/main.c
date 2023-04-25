@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/24 23:50:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 04:00:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	cub_clear(t_cub *cub, int exit_status)
 	strtab_clear((char ***)&cub->map.grid_coords);
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
-	floorcaster_clear(cub);
+	clear_floorcaster(cub);
+	clear_skycaster(cub);
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
 	printf("exit with status : %d\n", exit_status);
@@ -90,18 +91,22 @@ int	main(int argc, char **argv)
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
 	printf("MLX42 context initialized successfully !\n");
-	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
+
+
+	printf("loading floor texture\n");
+	cub.floor_tex = mlx_load_png("tex/FloorTile4.png");
+	cub.sky_tex = mlx_load_png("tex/sky_star.png");
+	if (!cub.floor_tex || !cub.sky_tex)
+		return (printf("floor_tex or sky_star load failed\n"));
+	printf("floor && sky_star textures LOADED\n");
+	cub.sky_radial_width = cub.sky_tex->width * cub.inv_two_pi;
+
+
+	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0 || init_skycaster(&cub) < 0
 		|| init_raycaster(&cub) < 0
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
-	printf("loading floor texture\n");
-	cub.floor_tex = mlx_load_png("tex/FloorTile4.png");
-	if (!cub.floor_tex)
-		return (printf("floor_tex load failed\n"));
-	printf("floor texture LOADED\n");
-		
-		
 	cub_setup_mlx_hooks_and_settings(&cub);
 	mlx_loop(cub.mlx);
 	if (mlx_errno)

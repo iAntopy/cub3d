@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/24 21:30:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 03:45:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	render_floor(t_cub *cub, t_rdata *rd)
 	
 	printf("render floor entered \n");
 
-	params = cub->renderer.param_factors - 1;
+	params = cub->renderer.floor_factors - 1;
 	pxls = (uint32_t *)cub->renderer.bg_layer->pixels
 		+ (SCN_WIDTH * (cub->scn_midy + 1)) - 1;
 //	printf("pxls (x, y) : (%ld, %ld)\n", (pxls - (uint32_t *)cub->renderer.bg_layer->pixels) % SCN_WIDTH, (pxls - (uint32_t *)cub->renderer.bg_layer->pixels) / SCN_WIDTH);
@@ -90,8 +90,11 @@ void	render_floor(t_cub *cub, t_rdata *rd)
 		rr = rd + SCN_WIDTH;
 		pxls_r = pxls + SCN_WIDTH;
 		iter_x = cub->scn_midx;
-		while (iter_x-- && ++r && --rr && ++params)//++j < cub->scn_midx)
+		while (iter_x--)//++j < cub->scn_midx)
 		{
+			++r;
+			--rr;
+			++params;
 			*(++pxls) = floor_get_pixel(cub->floor_tex, (int)(fmodf((*r->rx) * (*params)
 				+ (*r->px), CELL_WIDTH) * flr_texw_to_cellw),
 				(int)(fmodf((*r->ry) * (*params) + (*r->py), CELL_WIDTH)
