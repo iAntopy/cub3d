@@ -12,24 +12,6 @@
 
 #include "../include/cub3d.h"
 
-/// Now pre_read folder +  Malloc + post_read linked
-t_cub  *e_list_txtr(t_cub *cub)
-{ 
-    t_matrx *mx;
-	// mlx_texture_t	**xform;
-
-    mx = malloc(sizeof(t_matrx) * 1);
-    if (!mx)
-        return (NULL);
-    // mx->xnum = e_mtrx_count(mx, full_path);
-    // mx->full = malloc(sizeof(char *) * (mx->xnum + 1));
-    // mx = e_mtrx_link(mx);
-	mx->xnum = 0;
-    cub->mx = mx;
-
-    return (cub); 
-}
-
 t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 {
 	char	*t;
@@ -88,9 +70,9 @@ int	tex_parse(t_cub *cub, t_map *map)
 	int		id;
 
 	nb = 1;
-	cub =  e_list_txtr(cub);
-	printf("id for tag %d \n", map->raw[nb][0]);
-	printf("id for tag %s \n", map->raw[nb]);
+	cub =  e_list_txtr(cub, map);
+	printf("raw->xnum = %d \n", cub->box->xnum);
+	// printf("id for tag %s \n", map->raw[nb]);
 	while (map->raw[nb] )
 	{
 		id = ft_in_set(map->raw[nb][0], (const char *)MAP_LCHR);
@@ -105,12 +87,12 @@ int	tex_parse(t_cub *cub, t_map *map)
 					return (error_clr("Invalid config found!\n", map));
 				else if (!get_tex_by_ref(cub, id, map->raw[nb]))
 					return (error_clr(NULL, map));
-				cub->mx->xnum++;
+				cub->box->xnum++;
 			}
 		}
 		else if (!get_tex_by_id(cub, id, map->raw[nb]))
 			return (error_clr(NULL, map));
-		printf("tex_parse __ xnum = %d \n", cub->mx->xnum);
+		printf("tex_parse __ xnum = %d \n", cub->box->xnum);
 		nb++;
 	}
 	// if (cub->tex_id != 3)
@@ -118,3 +100,19 @@ int	tex_parse(t_cub *cub, t_map *map)
 	// 		At least one wall texture was not loaded\n", map));
 	return (0);
 }
+
+/* 	Start with 	:
+		: 	map->raw	-->	first lecture total len of the file
+		:		NCHR	-->	floor txtr legend	
+		:		LCHR	-->	wall  txtr legend
+		:		UCHR	-->	wall  txtr preset
+	Need to set	:
+		:		xnum	how many legend to build  (lower and num)
+		:		preset	how many preset to malloc	(uppercase)
+	Frame builder
+		:		FRAME one	: legend
+		:		xform = malloc(sizeof(mlx_texture_t *) * xnum)
+		:		FRAME two	: preset
+		:		xwalls = malloc(sizeof(void *) * 4)
+*/
+

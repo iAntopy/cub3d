@@ -136,11 +136,6 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 				hero_cell - pos / dir		: t_hero_cell	
 */
 
-/// main >> e_list_txtr >> e_mtrx_count >> get_folder_namr
-	///		e_list_txtr >> e_mtrx_link >> t_name_set >> xwalls_builder
-///	map_checker >> tex_parse >> get_tex_by_ref >> get_ref_str
-	///		map_frame >> wall_chk >> (o_cell removed)
-
 /*
 	MOST OF IT	:	- read_whole_file 		
 				+ find holy ref.

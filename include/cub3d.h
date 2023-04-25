@@ -64,8 +64,8 @@
 
 # define CUBMAP_BUFMAX 100000
 # define MAP_CHARS "01WNES"
-# define MAP_LCHR "abcdefghijz"
 # define MAP_NCHR "0123456789"
+# define MAP_LCHR "abcdefghijz"
 # define MAP_UCHR "ABCDEFGHIJ"
 
 enum	e_sides
@@ -76,24 +76,28 @@ enum	e_sides
 	S_SIDE = 3
 };
 
-//// BONUS STRUCT MATRX
+//// BONUS STRUCT MATRX	& BOX
 /*
-	meant to be the passing content for xwalls ***
+	meant to be the passing content for textures 
 	xnum 	= (int) how many xwalls refs.
-	ref 	= (char) lowercase ref assing into xwalls
+	ref 	= (unsigned char)ref assing to legend
 	id_path	= (char *) full_name {"a  tex/flder_name/txtr_name.png"}
-	xwalls	= (char **[4]) xwalls[4] = [ref][id_path]
 	...
 	txtr	maybe need to load txtr before then stock *txtr ptr!
 */
 /// PARSING ///////////////////
 typedef struct s_matrx
 {
-	int				xnum;
-	bool			isfloor; // 0 = is_floor / 1 =is_wall
-	char			**xform; 	// 	
 	mlx_texture_t	*xwalls[4];
 }		t_matrx;
+
+typedef struct s_box
+{
+	int 			xnum;	
+	unsigned char	ref;
+	mlx_texture_t	*form;
+	mlx_texture_t	*xform[4];
+}		t_box;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
@@ -137,7 +141,6 @@ typedef struct s_texture_data
 	int				color[2];
 	mlx_texture_t	*skymap;	// yessss
 	mlx_texture_t	*floor;	// yessss
-	// mlx_texture_t	**xform;	
 }	t_tex;
 
 typedef struct s_raycaster_data		t_rcast;
@@ -255,6 +258,7 @@ typedef struct s_cub3d_core_data
 	t_hero			hero;
 	t_rdr			renderer;
 	t_matrx			*mx;
+	t_box			*box;
 }	t_cub;
 
 
@@ -337,10 +341,10 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-t_cub			*e_list_txtr(t_cub *cub);
+t_cub			*e_list_txtr(t_cub *cub, t_map *map);
 char 			*xwalls_builder(t_matrx *mx);
-t_matrx 		*e_mtrx_link(t_matrx *mx);//, char *full_path)
-int 			e_mtrx_count(t_matrx *mx, char *full_path);
+t_box	 		*e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw);
+int 			e_mtrx_count(char **raw);
 //
 const char	 	*get_folder_name(char *full_path);
 char			*t_name_set(const char *dir_path, char *d_name);

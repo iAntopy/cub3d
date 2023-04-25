@@ -16,91 +16,121 @@
 /* Malloc str:id(txtr_ref)  str:path(txtr_path)*/
 // char *xwalls_builder(t_matrx *mx)
 // {
-//     int     len;
-//     char    *id;
-//     char    *path;
-   
-//     id = malloc(sizeof(char) + 1);
-//     id[0] = (char)mx->ref;
-//     id[1] = '\0';
-//     id = ft_strjoin(id, " ");
-//     len = ft_strlen(mx->id_path);
-//     path = malloc(sizeof(char *) * (len + 1));
-//     path = ft_strdup(mx->id_path);
-//     path = ft_strjoin(id, path);
-//     // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
-//     return (path);
-// }
-
-/* NEW Malloc'd struct to be fill : mx->full */
-// t_matrx *e_mtrx_link(t_matrx *mx)
-    // { 
-    //     /*        de is Pointer for directory entry */
-    //     struct dirent *de;  
-    //     char *name_path;
-    //     int i;
-
-    //     i = 0;
-    //     printf("LINK_Open %s directory... \n", mx->fld_path); 
-    //     DIR *dr = opendir(mx->fld_path); 
-    //     while ((de = readdir(dr)) != NULL)
-    //     {   
-    //         if ((ft_strchr_set(de->d_name, "png") != NULL) && (i <= mx->xnum))
-    //         {
-    //             name_path = t_name_set(mx->fld_path, de->d_name);
-    //             mx->id_path = name_path;
-    //             mx->ref = (i + 97);
-    //             /* INSERT XWALLS BUILDER HERE*/
-    //             mx->full[i] = xwalls_builder(mx);
-    //             printf("%d)- MX>> REF:[id:%c]  PATH:{%s} \n", i + 1, mx->full[i][0], mx->full[i]);
-    //             ++i;
-    //         } 
-    //     }
-    //     closedir(dr);     
-    //     return (mx); 
-// }
-
-// /// NEW Only count tx_num : read first time
-// int e_mtrx_count(t_matrx *mx, char *full_path)
-    // { 
-    //     /*   de is Pointer for directory entry */
-    //     struct dirent *de;  
+    //     int     len;
+    //     char    *id;
+    //     char    *path;
     
-    //     printf("COUNT_Open FULL%s directory... \n", full_path); 
-    //     mx->fld_path = get_folder_name(full_path);
-    //     printf("COUNT_Open fld path %s file name... \n", mx->fld_path); 
-    //     DIR *dr = opendir(mx->fld_path); 
-    //     if (dr == NULL) 
-    //     { 
-    //         printf("Could not open current directory\n"); 
-    //         return 0; 
-    //     } 
-    //     while ((de = readdir(dr)) != NULL && mx->xnum == 0 )
-    //     {   
-    //         /*     find 'png' ended file*/
-    //         if (ft_strchr_set(de->d_name, "txt") != NULL) 
-    //             mx->xnum++;
+    //     id = malloc(sizeof(char) + 1);
+    //     id[0] = (char)mx->ref;
+    //     id[1] = '\0';
+    //     id = ft_strjoin(id, " ");
+    //     len = ft_strlen(mx->id_path);
+    //     path = malloc(sizeof(char *) * (len + 1));
+    //     path = ft_strdup(mx->id_path);
+    //     path = ft_strjoin(id, path);
+    //     // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
+    //     return (path);
+// }
+
+    // while (alt <= 3)
+    // {
+    //     if (!cub->tex.walls[alt])
+    //     {
+    //         cub->tex_id++;
+    //         t =  get_ref_str(cub, (char *)tex_str, alt);
+    //         // t = ft_substr(aux, 2, ft_strlen(aux)-2);
+    //         printf("REF[%d] txtr_id(%c) TEX_PATH__%s\n", cub->tex_id, tex_str[alt + 2], t);
+    //         cub->tex.walls[alt] = mlx_load_png(t);
+    //         if (!cub->tex.walls[alt])
+    //             return (report_mlx_tex_load_failed(t));
+    //         alt++;
     //     }
 
-    //     closedir(dr);     
-    //     return (mx->xnum); 
-// }
+// get box and xform then fill it out!
+t_box *e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw)
+{ 
+    /*        de is Pointer for directory entry */
+    char    *tex_path;
+    char    *tex_name;
+    int i;
+    mlx_texture_t	*xform[box->xnum];
+
+    i = 0;
+    printf("- - LINK - \n\n");
+    (void)form;
+    while (i < box->xnum)
+    {   
+        // printf("LINK ref {%d} \n", (unsigned char)raw[i][0]);
+        if( raw[i][0] > 32)
+        {
+            tex_name = ft_substr(raw[i], 0, 1);
+            tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i])- 2);
+            printf("LINK legend name(%s) ::", tex_name);
+            printf(" path {%s} \n", tex_path);
+
+            xform[i] = mlx_load_png(tex_path);
+            // printf("POST:LINK texture [%ld] \n", *box->xform);
+            if (!xform[i])
+                return (report_mlx_tex_load_failed(tex_path));
+        } 
+        ++i;
+    }
+    return (box); 
+}
+
+// XNUM COUNT
+int e_mtrx_count(char **raw)
+{ 
+    int i;
+    int xnum;
+
+    i = -1;
+    xnum = 0;
+        // mx->fld_path = get_folder_name(full_path);
+        // printf("COUNT_Open fld path %s file name... \n", mx->fld_path); 
+    while(*raw && raw[++i])    
+    {
+        /*     find 'png' ended file*/
+        if (ft_strchr_set(raw[i], ".png") != NULL) 
+        {
+            printf("COUNT legende [%d] into_Raw {%s} ...\n", i, raw[i]); 
+            xnum++;
+        }
+    }
+    printf("LINE READ from RAW= %d \n", i);
+    // printf("LEGEND enum XNUM = %d \n", xnum);
+    return (xnum); 
+}
 
 /// Now pre_read folder +  Malloc + post_read linked
-// int  e_list_txtr(t_cub *cub, char *full_path)
-// { 
-//     t_matrx *mx;
+t_cub  *e_list_txtr(t_cub *cub, t_map *map)
+{ 
+    t_matrx *mx;
+    t_box   *box;
+	mlx_texture_t	*form;
+      
 
-//     mx = malloc(sizeof(t_matrx) * 1);
-//     if (!mx)
-//         return (-1);
-//     // mx->xnum = e_mtrx_count(mx, full_path);
-//     mx->full = malloc(sizeof(char *) * (mx->xnum + 1));
-//     mx = e_mtrx_link(mx);
-//     cub->mx = mx;
-
-//     return (0); 
-// }
+    // form = NULL;
+    mx = malloc(sizeof(t_matrx) * 1);
+    if (!mx)
+        return (NULL);
+    box = malloc(sizeof(t_box) * 1);
+    if (!box)
+        return (NULL);
+    box->xnum = 0;    //png ended file
+    box->xnum = e_mtrx_count(map->raw);
+    form = malloc(sizeof(mlx_texture_t *) * (box->xnum));
+    if (!form)
+    {
+        printf("SHIT!!! XNUM = %d \n", box->xnum);
+        return (NULL);
+    }
+    printf("XNUM = %d \n", box->xnum);
+    // cub->box->form = form;
+    cub->box = e_mtrx_link(box, form, map->raw);
+    cub->mx = mx;
+    return (cub); 
+}
 /*  Ref. Tex. By assign.
             get a   txtr_name -> assign it to a char.
                 enum : how many txtr to mapp.
