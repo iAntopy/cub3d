@@ -73,6 +73,7 @@ static int	read_whole_file(t_map *map, char *filepath)
 	int		fd;
 	ssize_t	nc;
 
+
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (error("Could not open file", map));
@@ -86,6 +87,7 @@ static int	read_whole_file(t_map *map, char *filepath)
 	map->raw = ft_split(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
+	// printf("*** line= %c \n",  *map->raw[0]);
 	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
@@ -103,8 +105,6 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	if ((map_len = read_whole_file(map, file)) == 0)
 		return (-1);
-	else 
-		printf("map len : (%d)\n", map_len);
 	cub->tex_id = -1;
 	if (tex_parse(cub, map) < 0)
 		return (-1);
