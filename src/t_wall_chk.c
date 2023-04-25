@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/18 20:53:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:33:20 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_map	*wall_check(t_map *m)
 {
 	int	o_cells;
 
+	printf("** ---- wall_check starts ---- **\n");
 	o_cells = -1;
 	m->pos_y = 0;
 	while (m->pos_y < m->height && m->flg_chk == 0)
@@ -91,5 +92,6 @@ t_map	*wall_check(t_map *m)
 		m->pos_y++;
 	}
 	m->flg_chk = check_hero_found(m);
+	printf("** ---- wall_check ends ---- **\n");
 	return (m);
 }

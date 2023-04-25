@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/18 22:20:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:13:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 	int		nb;
 	int		id;
 
+	printf("** ---- tex_parse starts ---- **\n");
 	cub =  e_list_txtr(cub, map);
 	nb = cub->box->xnum;
 	cub->box->pset = 0;
@@ -82,6 +83,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 	}
 	if (!xwalls_builder(cub, map->raw, cub->box->xnum))
 		return (error_clr(NULL, map));
+	printf("** ---- tex_parse ends ---- **\n");
 	return (0);
 }
 		// printf("raw->xnum = %d \n", cub->box->xnum);

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/18 22:09:35 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:40:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static	int	transcribe(t_map *map)
 	int		len;
 	int		i;
 
+	printf("** ---- transcribe starts ---- **\n");
 	tmp = map->raw + 6;
 	i = 0;
 	while (tmp[i])
@@ -42,6 +43,7 @@ static	int	transcribe(t_map *map)
 	}
 	map->height = i;
 	map->total_cells = (map->height * map->width);
+	printf("** ---- transcribe ends ---- **\n");
 	return (map->height);
 }
 
@@ -49,21 +51,27 @@ static t_map	*map_frame(t_map *map)
 {
 	char	**m;
 	int		i;
+	
+	printf("** ---- map_frame starts ---- **\n");
 
 	m = map->raw + 6;
 	i = 0;
 	while (i < map->height)
 	{
+		printf("calloc tab[%d]\n", i);
 		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
+		printf("calloced\n");
 		ft_strlcpy(map->tab[i], m[i], map->width + 1);
 		map->tab[i] = spc_chk(map, i);
 		i++;
 	}
 	strtab_clear(&map->raw);
+	printf("raw map cleared. Starting wall_check()\n");
 	map = wall_check(map);
-	printf("wall_chk returned with flg_chk == 1\n");
+	printf("Did wall_chk returned with flg_chk == 1 ? %d\n", map->flg_chk == 1);
 	if (map->flg_chk == 1)
 		return (NULL);
+	printf("** ---- map_frame ends ---- **\n");
 	return (map);
 }
 
@@ -101,6 +109,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int map_len;
 
+	printf("\n\n **------- (Move out the way ! Map checker is here !) ------**\n\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
 	if ((map_len = read_whole_file(map, file)) == 0)
@@ -117,6 +126,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	print_collision_map(map);
 	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
+	printf("\n\n **------- (Move in the way. Map checker has exited.) ------**\n\n");
 	return (0);
 }
 
