@@ -110,7 +110,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	if (transcribe(map) < 3)
 		return (error("Map in file is too short", map));
-	printf("map_raw len  : (%d)\n", map_len - map->height);
+	printf("map_raw len  : (%d)  map height [%d]\n", map_len, map->height);
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
 	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
 		|| build_collision_map(map) < 0)
