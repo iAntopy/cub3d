@@ -39,7 +39,7 @@ t_cub	*get_tex_by_ref(t_cub *cub, int id, const char *tex_str)
     // const char    *aux;
     int     alt;
 
-    alt = 0;
+    alt = 0;    
     while (alt <= 3)
     {
         if (!cub->mx->xform[cub->tex_id])

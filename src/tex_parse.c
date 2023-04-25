@@ -89,7 +89,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 
 	nb = 0;
 	cub =  e_list_txtr(cub);
-	printf("id for tag %d \n", map->raw[nb][0]);
+	printf(" %c id for tag %s  \n", map->raw[nb][0], map->raw[nb]);
 	while (map->raw[nb] )
 	{
 		id = ft_in_set(map->raw[nb][0], (const char *)MAP_LCHR);
@@ -104,7 +104,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 					return (error_clr("Invalid config found!\n", map));
 				else if (!get_tex_by_ref(cub, id, map->raw[nb]))
 					return (error_clr(NULL, map));
-					cub->mx->xnum++;
+				cub->mx->xnum++;
 			}
 		}
 		else if (!get_tex_by_id(cub, id, map->raw[nb]))
@@ -113,7 +113,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		nb++;
 	}
 	// if (cub->tex_id != 3)
-	// 	return (error_clr("Missing textures. \
+	// 	return (error_clr("Missing textures. 
 	// 		At least one wall texture was not loaded\n", map));
 	return (0);
 }
