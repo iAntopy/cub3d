@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/24 15:33:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 21:28:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@
 # define CUBMAP_BUFMAX 100000
 # define MAP_CHARS "01WNES"
 
-# define NB_DRAW_THREADS 1
+# define PLAYER_HEIGHT 32
+
+# define NB_DRAW_THREADS 2
 
 enum	e_sides
 {
@@ -229,6 +231,12 @@ typedef struct s_renderer
 {
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
+	float		*near_z_dists;// Array of distances to every column of the projected
+				// plane (near_z). See floorcaster. 
+	float		*param_factors;// Pre-calc parametric multipliers for all pixels
+			// below scn_midy. Every drawn pixels on screen 
+			// is mapped to a multiplier (see floor_caster.c)
+			// that stretches rx and ry to find the floor pixel it hits.
 	int			requires_update;
 }	t_rdr;
 
@@ -239,6 +247,9 @@ typedef struct s_cub3d_core_data
 //	mlx_image_t		*imgz;
 	mlx_image_t		*color;
 //	mlx_texture_t	*texr;
+
+	/// TEMP VARS FOR TESTING AND DEBUG ONLY ///////////////////
+	mlx_texture_t	*floor_tex;
 
 	int				tex_id;
 	/// CONSTANT VALUES ////////////////////////////////////////
@@ -321,11 +332,17 @@ int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
 int				init_renderer(t_cub *cub);
 int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub, t_rdata *rd);
+void			render_floor(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
-
 //void			render_scene(t_cub *cub);
+
+/// FLOORCASTING ///////////////
+int				init_floorcaster(t_cub *cub);
+void			update_floorcaster_params(t_cub *cub);
+float			get_floorcaster_param(t_cub *cub, int x, int y);
+int				floorcaster_clear(t_cub *cub);
 
 /// DRAW THREADS API
 int				init_draw_threads(t_cub *cub, t_thdraw *threads);

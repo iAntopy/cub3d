@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 19:49:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 23:49:37 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 // Pass some positive/negative increment to rotate right/left
 void	cub_player_rotate(t_cub *cub, float rot)
 {
+	if (!rot)
+		return ;
+	printf("rot : %f\n", rot);
 	cub->hero.ori += rot;
 	update_rays(cub);
 	cub->renderer.requires_update = 1;
@@ -29,6 +32,8 @@ void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 	int		cx;
 	int		cy;
 
+	if (!d_strafe && !d_walk)
+		return ;
 	dx = (d_walk * (*cub->hero.dirx)) - (d_strafe * (*cub->hero.diry));
 	dy = (d_walk * (*cub->hero.diry)) + (d_strafe * (*cub->hero.dirx));
 	cx = (int)(cub->inv_cw * (cub->hero.px + dx));

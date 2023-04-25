@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/18 22:09:35 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 23:35:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	if (read_whole_file(map, file) < 0)
 		return (-1);
+	printf("raw[0] : %s\n", map->raw[0]);
 	cub->tex_id = -1;
 	if (tex_parse(cub, map) < 0)
 		return (-1);

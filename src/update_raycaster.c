@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:10:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 20:06:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 21:02:20 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	update_fov(t_cub *cub, float fov)
 	cub->hfov = 0.5f * fov;
 	cub->near_z = (float)cub->scn_midx / tanf(cub->hfov);
 	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
+	update_floorcaster_params(cub);
 	mtx_linspace_update(cub->hero.rcast.theta_offs, -cub->hfov, cub->hfov, 1);
 	update_rays(cub);
 }

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/23 13:06:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/24 23:51:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,29 +71,43 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 }
 
+static void	on_update_keypressed(t_cub *cub)
+{
+	int	kp[9];
+
+	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
+	{
+		on_close(cub);
+		return ;
+	}
+	kp[8] = mlx_is_key_down(cub->mlx, MLX_KEY_LEFT_SHIFT);
+	kp[0] = mlx_is_key_down(cub->mlx, MLX_KEY_W);
+	kp[1] = mlx_is_key_down(cub->mlx, MLX_KEY_S);
+	kp[2] = mlx_is_key_down(cub->mlx, MLX_KEY_A);
+	kp[3] = mlx_is_key_down(cub->mlx, MLX_KEY_D);
+	kp[4] = mlx_is_key_down(cub->mlx, MLX_KEY_LEFT);
+	kp[5] = mlx_is_key_down(cub->mlx, MLX_KEY_RIGHT);
+	kp[6] = mlx_is_key_down(cub->mlx, MLX_KEY_UP);
+	kp[7] = mlx_is_key_down(cub->mlx, MLX_KEY_DOWN);
+	if ((*(size_t *)kp) || *(size_t *)(kp + 2))
+		cub_player_move(cub, (kp[0] * (kp[0] + kp[8]) - kp[1] * (kp[1] + kp[8]))
+			* 100 * cub->mlx->delta_time,
+		(kp[3] * (kp[3] + kp[8]) - kp[2] * (kp[2] + kp[8]))
+			* 100 * cub->mlx->delta_time);
+	if (*((size_t *)kp + 4))
+		cub_player_rotate(cub, (kp[5] - kp[4]) * 1.0f * cub->mlx->delta_time);
+	if (*((size_t *)kp + 6))
+		cub_player_zoom(cub, (kp[7] - kp[6]) * 0.8f * cub->mlx->delta_time);
+}
+
 void	on_update(t_cub *cub)
 {
-	float	d_walk;
-	float	d_strafe;
-	int		shift_pressed;
-
-	d_walk = 0;
-	d_strafe = 0;
-	shift_pressed = mlx_is_key_down(cub->mlx, MLX_KEY_LEFT_SHIFT) * 100;
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_W))
-		d_walk += (100 + shift_pressed) * cub->mlx->delta_time;
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_S))
-		d_walk -= (100 + shift_pressed) * cub->mlx->delta_time;
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_A))
-		d_strafe -= (100 + shift_pressed) * cub->mlx->delta_time;
-	if (mlx_is_key_down(cub->mlx, MLX_KEY_D))
-		d_strafe += (100 + shift_pressed) * cub->mlx->delta_time;
-	if (d_walk || d_strafe)
-		cub_player_move(cub, d_walk, d_strafe);
+	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
 		order_draw_call(cub->draw_threads);
+//		render_floor(cub, cub->hero.rcast.rdata);
 //		render_walls(cub, cub->hero.rcast.rdata);
 		ft_deltatime_usec_note("this shit == bananas");
 		cub->renderer.requires_update = 0;
