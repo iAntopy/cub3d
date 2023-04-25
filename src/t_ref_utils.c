@@ -36,7 +36,6 @@ char *get_ref_str(t_cub *cub, char *ref, int alt)
 t_cub	*get_tex_by_ref(t_cub *cub, int id, const char *tex_str)
 {
 	char	*t;
-    // const char    *aux;
     int     alt;
 
     alt = 0;    
@@ -100,6 +99,7 @@ const char *get_folder_name(char *full_path)
     printf("GET_FLD_NAME:: %s\n",folder_name); 
     return ((const char *)folder_name);
 }
+
 
 /*
     While   reading .cub

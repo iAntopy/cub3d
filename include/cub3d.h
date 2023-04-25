@@ -78,12 +78,15 @@ enum	e_sides
 
 //// BONUS STRUCT MATRX	& BOX
 /*
-	meant to be the passing content for textures 
-	xnum 	= (int) how many xwalls refs.
-	ref 	= (unsigned char)ref assing to legend
-	id_path	= (char *) full_name {"a  tex/flder_name/txtr_name.png"}
+	T_MATRX struct PREST
+		*walls[4] = preset from xform
+
+	T_BOX struct BOX builder content
+		xnum 	= legend count (lower + num)
+		pset	= recette count (upper)
+		form	=simple form to build bigger
+		xform	= preset final form
 	...
-	txtr	maybe need to load txtr before then stock *txtr ptr!
 */
 /// PARSING ///////////////////
 typedef struct s_matrx
@@ -93,10 +96,12 @@ typedef struct s_matrx
 
 typedef struct s_box
 {
+	char 			*idx;	
 	int 			xnum;	
-	unsigned char	ref;
+	int				pset;
 	mlx_texture_t	*form;
-	mlx_texture_t	*xform[4];
+	mlx_texture_t	**xform;
+	// t_matrx			*pset;
 }		t_box;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
@@ -342,7 +347,7 @@ int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
 t_cub			*e_list_txtr(t_cub *cub, t_map *map);
-char 			*xwalls_builder(t_matrx *mx);
+t_box 			*xwalls_builder(t_cub *cub, char **raw, int nb);
 t_box	 		*e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw);
 int 			e_mtrx_count(char **raw);
 //

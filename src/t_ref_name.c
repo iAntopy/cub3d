@@ -14,50 +14,86 @@
 #include <dirent.h> 
 
 /* Malloc str:id(txtr_ref)  str:path(txtr_path)*/
-// char *xwalls_builder(t_matrx *mx)
-// {
-    //     int     len;
-    //     char    *id;
-    //     char    *path;
+t_box *xwalls_builder(t_cub *cub, char **raw, int nb)
+{
+    // mlx_texture_t	*xwlls;
+    t_matrx **pset;
+    int     fill;
+    int     len;
+    int id;
+    char ref;
     
-    //     id = malloc(sizeof(char) + 1);
-    //     id[0] = (char)mx->ref;
-    //     id[1] = '\0';
-    //     id = ft_strjoin(id, " ");
-    //     len = ft_strlen(mx->id_path);
-    //     path = malloc(sizeof(char *) * (len + 1));
-    //     path = ft_strdup(mx->id_path);
-    //     path = ft_strjoin(id, path);
-    //     // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
-    //     return (path);
-// }
+    id = 0;
+    (void)ref;
+    printf("WELCOME !!! XWLLS \n");
+    len = 0;
+    pset = malloc(sizeof(t_matrx *) * cub->box->pset);
 
-    // while (alt <= 3)
-    // {
-    //     if (!cub->tex.walls[alt])
-    //     {
-    //         cub->tex_id++;
-    //         t =  get_ref_str(cub, (char *)tex_str, alt);
-    //         // t = ft_substr(aux, 2, ft_strlen(aux)-2);
-    //         printf("REF[%d] txtr_id(%c) TEX_PATH__%s\n", cub->tex_id, tex_str[alt + 2], t);
-    //         cub->tex.walls[alt] = mlx_load_png(t);
-    //         if (!cub->tex.walls[alt])
-    //             return (report_mlx_tex_load_failed(t));
-    //         alt++;
-    //     }
+                // pset = malloc(sizeof(t_matrx) * 1);
+                // if (!mx)
+                //     return (NULL);
+                    
+                // xwlls = malloc(sizeof(mlx_texture_t *) * 4);
+                // if (!xwlls)
+                // {
+                //     return (NULL);
+                // }
+    // pset = malloc(sizeof(mlx_texture_t *) * (cub->box->pset));
+    if (!pset)
+    {
+        printf("SHIT!!! XWLLS PSET = \n");
+        return (NULL);
+    }
+    while(len <= cub->box->pset)
+    {
+        //get txtr val by ref * 4
+        printf("START PSET => %d \n", len);
+        printf("START RAW NB[%d]=> REF %c \n", nb, raw[nb][0]);
 
-// get box and xform then fill it out!
+        //assing it to box->xform
+        fill = -1;
+        while(fill++ < 4)
+        {
+
+            printf("WHILe PSET => %c \n", raw[nb][0]);
+            ref = raw[0][fill + 2];
+            printf("WHILL RAW NB[%d]=> REF %d \n", nb, id);
+            id = ft_in_set(raw[nb][fill + 2], cub->box->idx);
+            if (id == -1)
+            {
+               printf("SHIT!!! XWLLS PSET = \n");
+                return (NULL);
+            //     pset[len]->xwalls[fill] =  cub->box->xform[ref];
+            // else
+            }
+            // printf("PSET NAME => %s \n", 
+            //get arr valu 'a'
+            //get tex for val 
+        }
+
+        len++;
+        nb++;
+    }
+    return (cub->box);
+}
+    // printf("SUPER (%d)try_out path[0] = {%c} ==> full {%s}\n", i + 1, path[0], path); 
+
+
+// XFORM from RAW
 t_box *e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw)
-{ 
-    /*        de is Pointer for directory entry */
+{
     char    *tex_path;
     char    *tex_name;
     int i;
+    char *idx;
     mlx_texture_t	*xform[box->xnum];
 
     i = 0;
+
     printf("- - LINK - \n\n");
     (void)form;
+    idx = malloc(sizeof(char) * (box->xnum + 1));
+    idx[box->xnum] = '\0';
     while (i < box->xnum)
     {   
         // printf("LINK ref {%d} \n", (unsigned char)raw[i][0]);
@@ -67,14 +103,14 @@ t_box *e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw)
             tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i])- 2);
             printf("LINK legend name(%s) ::", tex_name);
             printf(" path {%s} \n", tex_path);
-
+            box->idx = ft_strjoin(box->idx,tex_name);
             xform[i] = mlx_load_png(tex_path);
-            // printf("POST:LINK texture [%ld] \n", *box->xform);
             if (!xform[i])
                 return (report_mlx_tex_load_failed(tex_path));
         } 
         ++i;
     }
+    printf("- - LINK - IDX<%s>\n", box->idx);
     return (box); 
 }
 
@@ -105,15 +141,11 @@ int e_mtrx_count(char **raw)
 /// Now pre_read folder +  Malloc + post_read linked
 t_cub  *e_list_txtr(t_cub *cub, t_map *map)
 { 
-    t_matrx *mx;
     t_box   *box;
 	mlx_texture_t	*form;
       
 
     // form = NULL;
-    mx = malloc(sizeof(t_matrx) * 1);
-    if (!mx)
-        return (NULL);
     box = malloc(sizeof(t_box) * 1);
     if (!box)
         return (NULL);
@@ -126,9 +158,8 @@ t_cub  *e_list_txtr(t_cub *cub, t_map *map)
         return (NULL);
     }
     printf("XNUM = %d \n", box->xnum);
-    // cub->box->form = form;
     cub->box = e_mtrx_link(box, form, map->raw);
-    cub->mx = mx;
+    
     return (cub); 
 }
 /*  Ref. Tex. By assign.
