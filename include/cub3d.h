@@ -64,7 +64,9 @@
 
 # define CUBMAP_BUFMAX 100000
 # define MAP_CHARS "01WNES"
-# define MAP_CHARTS "N0123456789ABCDEFGH"
+# define MAP_LCHR "abcdefghijz"
+# define MAP_NCHR "0123456789"
+# define MAP_UCHR "ABCDEFGHIJ"
 
 enum	e_sides
 {
@@ -73,6 +75,7 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
+
 //// BONUS STRUCT MATRX
 /*
 	meant to be the passing content for xwalls ***
@@ -83,15 +86,13 @@ enum	e_sides
 	...
 	txtr	maybe need to load txtr before then stock *txtr ptr!
 */
+/// PARSING ///////////////////
 typedef struct s_matrx
 {
-	const char		*fld_path;
 	int				xnum;
-	unsigned char	ref;
-	char 			*id_path;
-	char			**full;
-	char 			**xwalls[4];
-	 mlx_texture_t	**xwalls[4];
+	bool			isfloor; // 0 = is_floor / 1 =is_wall
+	mlx_texture_t	**xform; 	// 	
+	// char 			**xwalls[4];
 }		t_matrx;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
@@ -136,7 +137,7 @@ typedef struct s_texture_data
 	int				color[2];
 	mlx_texture_t	*skymap;	// yessss
 	mlx_texture_t	*floor;	// yessss
-//	char			*tex_n[4];// tex_name
+	// mlx_texture_t	**xform;	
 }	t_tex;
 
 typedef struct s_raycaster_data		t_rcast;
@@ -257,12 +258,6 @@ typedef struct s_cub3d_core_data
 }	t_cub;
 
 
-typedef struct s_wall_box
-{
-	char 		**xwalls[4];
-}	t_box;
-
-/// PARSING ///////////////////
 
 //int	load_map(t_cub *cub, char *map_file);
 int		build_collision_map(t_map *map);
@@ -342,7 +337,7 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-int				e_list_txtr(t_cub *cub, char *full_path);
+t_cub			*e_list_txtr(t_cub *cub);
 char 			*xwalls_builder(t_matrx *mx);
 t_matrx 		*e_mtrx_link(t_matrx *mx);//, char *full_path)
 int 			e_mtrx_count(t_matrx *mx, char *full_path);

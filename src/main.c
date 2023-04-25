@@ -77,10 +77,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
-	if (e_list_txtr(&cub, argv[1]) != 0)
-		return (cub_clear(&cub, EXIT_FAILURE));
-
-	printf("Start Dict_binding tx_num = [%d].\n", cub.mx->xnum);
 	if (map_checker(&cub, &cub.map, argv[1]) != 0
 		|| set_player_cell_pos(&cub, cub.map.hero_x, cub.map.hero_y) != 0)
 	{
