@@ -260,7 +260,7 @@ typedef struct s_cub3d_core_data
 	t_tex			tex;
 	t_hero			hero;
 	t_rdr			renderer;
-	t_matrx			mx;
+	t_matrx			*pset;
 	t_box			box;
 }	t_cub;
 
@@ -344,8 +344,9 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
+t_box 			*xwalls_builder(t_cub *cub, char **raw);
+t_matrx			*pset_maker(t_cub *cub, char **raw, int queue);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
-t_box 			*xwalls_builder(t_cub *cub, char **raw, t_matrx *pset);
 t_box	 		*e_mtrx_link(t_box *box, char **raw);
 int 			e_mtrx_count(char **raw);
 //
