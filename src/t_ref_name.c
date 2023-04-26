@@ -27,10 +27,7 @@ t_box *e_mtrx_link(t_box *box, char **raw)
     printf("- - LINK - \n\n");
     box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
     if(!box->xform )
-    {
-        printf("SHIT!!! XNUM = %d \n", box->xnum);
-        return (NULL);
-    }    
+        return (NULL);    
     while (i < box->xnum)
     {   
         if(raw[i][0] > 32)
@@ -39,8 +36,6 @@ t_box *e_mtrx_link(t_box *box, char **raw)
             tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i])- 2);
             if (ft_in_set(raw[i][0], (const char *)MAP_NCHR) != -1)
                 box->pnum++;
-            printf("LINK legend name(%s) ::", tex_name);
-            printf(" path {%s} \n", tex_path);
             box->xform[i] = mlx_load_png(tex_path);
             if (!box->xform[i])
                 return (report_mlx_tex_load_failed(tex_path));

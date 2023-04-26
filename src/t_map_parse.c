@@ -12,6 +12,7 @@
 
 #include "../include/cub3d.h"
 
+/// hole filler
 static char	*spc_chk(t_map *map, int j)
 {
 	char	*line;
@@ -25,27 +26,7 @@ static char	*spc_chk(t_map *map, int j)
 	return (line);
 }
 
-static	int	transcribe(t_map *map, t_cub *cub)
-{
-	char	**tmp;
-	int		len;
-	int		i;
-
-	tmp = map->raw + cub->box.xnum;
-	i = 0;
-	while (tmp[i])
-	{
-		len = int_strlen(tmp[i]);
-		if (len > map->width)
-			map->width = len;
-		i++;
-	}
-	map->height = i;
-	map->total_cells = (map->height * map->width);
-	// printf("WWWW m->tab_len = %d\n", map->height);
-	return (map->height);
-}
-
+/// map-part of file  >> wall_check
 static t_map	*map_frame(t_map *map, t_cub *cub)
 {
 	char	**m;
@@ -71,12 +52,12 @@ static t_map	*map_frame(t_map *map, t_cub *cub)
 	return (map);
 }
 
+//// map_len
 static int	read_whole_file(t_map *map, char *filepath)
 {
 	char	buffer[CUBMAP_BUFMAX + 1];
 	int		fd;
 	ssize_t	nc;
-
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
@@ -91,7 +72,6 @@ static int	read_whole_file(t_map *map, char *filepath)
 	map->raw = ft_split(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
-	// printf("*** line= %c \n",  *map->raw[0]);
 	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
@@ -109,18 +89,11 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	if ((map_len = read_whole_file(map, file)) == 0)
 		return (-1);
-
 	if (tex_parse(cub, map) < 0)
 		return (-1);
-	if (transcribe(map, cub) < 3)
-		return (error("Map in file is too short", map));
-		
 	printf("$$$map_raw len  : (%d)  map height [%d]\n", map_len, map->height);
-	// map->tab = (char **)ft_calloc(sizeof(char *), (map->height +));
-	if (!map->tab || !map_frame(map, cub))
-		return (-1);
-	printf("WWWW m->flg_ckk = %d\n", map->flg_chk);
-	if ( build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 )
+	// map->tab = (char **)ft_calloc(sizeof(char *), (map->height ));
+	if ( build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 || !map_frame(map, cub))
 		return (-1);
 	print_collision_map(map);
 	printf("map (width, height) : (%d, %d)\n", map->width, map->height);

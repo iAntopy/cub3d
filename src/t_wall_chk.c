@@ -94,3 +94,12 @@ t_map	*wall_check(t_map *m)
 	m->flg_chk = check_hero_found(m);
 	return (m);
 }
+
+/*
+	map->check
+		:	map_frame	>>	calloc each line	>> wall_check >> chk each cell
+		:	wall_chk	>>	o_cell /hero_cell /hero_found
+		++	ptr. ass.	>>	set each tile with a ptr
+		
+	
+*/

@@ -72,31 +72,33 @@ t_box *xwalls_builder(t_cub *cub, char **raw, t_matrx *pset)
     printf("XWLLS PRESET {%s} max len = %d \n", raw[queue], cub->box.pset);
     while (len < cub->box.pset)
     {
-        printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
-		if (len < cub->box.pset && ft_in_set((const char )raw[queue][0], (const char *)MAP_UCHR) > -1)
-		{
-			// printf("#### BUILDER  MULTI:  REF(%c) recett{%s} <<ID %d>> \n", ref[0], ref, id);
-			fill = -1;
-			while(fill++ < 3)
-			{
-				ref = raw[queue];
-				id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-				printf("BUILDER  MULTI:  REF(%c) recett{%c} <<ID %d>> \n", ref[0], ref[fill + 2], id);
-				if (id != -1)
+		////
+				printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+				if (len < cub->box.pset && ft_in_set((const char )raw[queue][0], (const char *)MAP_UCHR) > -1)
 				{
-					pset[queue].xwalls[fill] =  cub->box.xform[id];
+					// printf("#### BUILDER  MULTI:  REF(%c) recett{%s} <<ID %d>> \n", ref[0], ref, id);
+					fill = -1;
+					while(fill++ < 3)
+					{
+						ref = raw[queue];
+						id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
+						printf("BUILDER  MULTI:  REF(%c) recett{%c} <<ID %d>> \n", ref[0], ref[fill + 2], id);
+						if (id != -1)
+						{
+							pset[queue].xwalls[fill] =  cub->box.xform[id];
+						}
+					}
+					queue++;
 				}
-			}
-			queue++;
-    	}
-		else if (cub->box.pnum && (ft_in_set((const char)raw[queue][0], (const char *)MAP_NCHR) > -1))
-		{
-			printf("BUILDER UNIQ : REF(%c) \n", raw[queue][0]);
-			pset[queue].xwalls[0] = cub->box.xform[queue];
-			pset[queue].xwalls[1] = NULL;
-			++queue;
-		}
-		len++;
+				else if (cub->box.pnum && (ft_in_set((const char)raw[queue][0], (const char *)MAP_NCHR) > -1))
+				{
+					printf("BUILDER UNIQ : REF(%c) \n", raw[queue][0]);
+					pset[queue].xwalls[0] = cub->box.xform[queue];
+					pset[queue].xwalls[1] = NULL;
+					++queue;
+				}
+				len++;
+		/////
 	}
     return (&cub->box);
 }

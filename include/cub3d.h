@@ -95,6 +95,7 @@ typedef struct s_matrx
 
 typedef struct s_box
 {	
+	char 			*map_chr;
 	int 			xnum;	
 	int				pnum;
 	int				pset;
