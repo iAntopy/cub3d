@@ -91,7 +91,8 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	if (tex_parse(cub, map) < 0)
 		return (-1);
-	printf("$$$map_raw len  : (%d)  map height [%d]\n", map_len, map->height);
+	printf("$$$map_raw len  : (%d)  map height [%d]\n\n", map_len, map->height);
+
 	// map->tab = (char **)ft_calloc(sizeof(char *), (map->height ));
 	if ( build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 || !map_frame(map, cub))
 		return (-1);

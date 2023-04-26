@@ -55,8 +55,6 @@
 	// 	return (cub);
 // }
 
-
-
 t_matrx *pset_maker(t_cub *cub, char **raw, int queue)
 {
 	int     fill;
@@ -71,14 +69,14 @@ t_matrx *pset_maker(t_cub *cub, char **raw, int queue)
 		while(fill++ < 3)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-			printf("MAKER: MULTI: recett{%c} :: index[%d] :: ptr<<%p>> ::\n", ref[fill + 2], id,  cub->box.xform[id]);
+			// printf("MAKER: MULTI: recett{%c} :: index[%d] :: ptr<<%p>> ::\n", ref[fill + 2], id,  cub->box.xform[id]);
 			if (id != -1)
 				cub->pset[queue].xwalls[fill] =  cub->box.xform[id];
 		}
 	}
-	else if (cub->box.pnum && (ft_in_set((const char)raw[queue][0], (const char *)MAP_NCHR) > -1))
+	else if ((ft_in_set((const char)raw[queue][0], (const char *)MAP_NCHR) > -1))
 	{
-		printf("MAKER: UNIQ: recett{%c} :: ptr<<%p>> ::\n", ref[fill + 2], cub->box.xform[queue]);
+		// printf("MAKER: UNIQ: recett{%c} :: ptr<<%p>> ::\n", ref[fill + 2], cub->box.xform[queue]);
 		cub->pset[queue].xwalls[0] = cub->box.xform[queue];
 		cub->pset[queue].xwalls[1] = NULL;
 	}
@@ -140,8 +138,6 @@ int	tex_parse(t_cub *cub, t_map *map)
 		return (error_clr(NULL, map));
 	return (0);
 }
-		// printf("raw->xnum = %d \n", cub->box->xnum);
-		// printf("id for tag %s \n", map->raw[nb]);
 
 /* 	Start with 	: VER.3
 		: 	map->raw	-->	first lecture total len of the file
