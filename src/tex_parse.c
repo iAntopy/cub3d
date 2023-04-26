@@ -55,7 +55,7 @@
 	// 	return (cub);
 // }
 
-t_matrx *pset_maker(t_cub *cub, char **raw, int queue)
+t_matrx *pset_maker(t_cub *cub, char **raw, int queue, int len)
 {
 	int     fill;
 	int 	id;
@@ -69,16 +69,16 @@ t_matrx *pset_maker(t_cub *cub, char **raw, int queue)
 		while(fill++ < 3)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-			// printf("MAKER: MULTI: recett{%c} :: index[%d] :: ptr<<%p>> ::\n", ref[fill + 2], id,  cub->box.xform[id]);
+		// printf("MAKER: MULTI: recett{%c} :: index[%d] :: ptr<<%p>> ::\n", ref[fill + 2], id,  cub->box.xform[id]);
 			if (id != -1)
-				cub->pset[queue].xwalls[fill] =  cub->box.xform[id];
+				cub->pset[len].xwalls[fill] =  cub->box.xform[id];
 		}
 	}
 	else if ((ft_in_set((const char)raw[queue][0], (const char *)MAP_NCHR) > -1))
 	{
-		// printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);
-		cub->pset[queue].xwalls[0] = cub->box.xform[queue];
-		cub->pset[queue].xwalls[1] = NULL;
+	// printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);
+		cub->pset[len].xwalls[0] = cub->box.xform[queue];
+		cub->pset[len].xwalls[1] = NULL;
 	}
     return (cub->pset);
 }
@@ -97,8 +97,8 @@ t_box *xwalls_builder(t_cub *cub, char **raw)
     {
 		ref = raw[queue];
     	printf("INDEX[%d]:: PRESET CHAR>>(%c) :: <<%d of %d>> \n", queue, ref[0], len+1, cub->box.pset);
-		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
-		cub->pset = pset_maker(cub, raw, queue);
+		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		cub->pset = pset_maker(cub, raw, queue, len);
 		len++;
 		queue++;
 	}

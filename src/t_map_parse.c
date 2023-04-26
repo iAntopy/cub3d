@@ -12,61 +12,76 @@
 
 #include "../include/cub3d.h"
 
+
+t_cub	*mx_struct(t_map *m, t_cub *cub)
+{
+
+	int		k;	
+	int		p_box; //	ptr
+
+	k = 0;
+
+	m->mx = (t_matrx ***)malloc(sizeof(t_matrx **) * m->height);
+	while (k++ < m->height)
+		m->mx[k] =(t_matrx**)malloc(sizeof(t_matrx *) * m->width);
+	printf("K is the thruth : %d\n", k);	
+	m->pos_y = 0;
+	while (m->pos_y <= m->height )
+	{
+		m->pos_x = 0;
+		while (m->pos_x < m->width)
+		{
+			p_box = ft_in_set((m->tab[m->pos_y][m->pos_x]), (const char *)cub->box.chrs);
+			if (p_box != -1)
+				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
+			// else if (p_box != -1)
+			// 	m->mx[pos_y][pos_x] = cub->pset[cub->box.pset-cub->box.pnum];
+			m->pos_x++;
+		}
+		m->pos_y++;
+	}
+	return (cub);
+}
+
 /// hole filler
-static char	*spc_chk(t_map *map, int j)
+static char	*spc_chk(t_cub *cub, t_map *m, int j)
 {
 	char	*line;
 	int		i;
 
-	line = map->raw[j];
+	line = m->raw[j];
 	i = -1;
-	while (++i < map->width)
-		if (!ft_strchr(MAP_CHARS, line[i]))
-			line[i] = '1';
+	while (++i < m->width)
+		if (!ft_strchr(cub->box.chrs, line[i]))
+			line[i] = 'A';
 	return (line);
 }
 
 /// map-part of file  >> wall_check
-// m** recive secound part of raw ... raw can die, im done with it !! 
-static t_map	*map_frame(t_map *map, t_cub *cub)
+static t_cub	*map_frame(t_map *map, t_cub *cub)
 {
+
 	char	**m;
 	int		i;	// = 0;
 	int 	q;	// after txtr ptr
-
-	i = 0;
-	q = strtab_len(map->raw) - map->height;
-
-	printf("cub to shut! pset = %d\n", cub->box.pset);
 	
+	i = 0;
+	q = strtab_len(map->raw) - map->height;	
 	m = (char **)malloc(sizeof(char *) * map->height + 1);
 	while(i < map->height)
 	{
-		m[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
+		m[i] = (char *)ft_calloc(sizeof(char *), (map->width));
 		printf("%s\n", map->raw[q]);
 		ft_strlcpy(map->raw[q], m[i], map->width + 1);
-		map->raw[i] = spc_chk(map, q);
+		map->raw[i] = spc_chk(cub, map, q);
 		m[i] = map->raw[q];
 		++q;
 		++i;
 	}
-		// i = 0;
-		// while (i < map->height)
-		// {
-		// 	map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
-		// 	ft_strlcpy(map->tab[i], m[i], map->width + 1);
-		// 	map->tab[i] = spc_chk(map, i);
-		// 	i++;
-		// }
-		// strtab_clear(&map->raw);
-
-	// map = wall_check(map);	
-
-
-	printf("wall_chk returned with flg_chk == 1\n");
-	if (map->flg_chk == 1)
-		return (NULL);
-	return (map);
+	// strtab_clear(&map->raw);
+	cub->map.m = m;
+	cub = wall_check(cub, &cub->map);
+	return (cub);
 }
 
 //// map_len
@@ -113,15 +128,14 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, (cub->box.xnum - cub->box.pnum) + cub->box.pset);
 	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
 
-	 if (!map_frame(map, cub))
+	if (!map_frame(map, cub))
 		return (-1);
-
-	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
-
-	if (!map->tab || build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 )
+	// printf("cub->pset[8][8] : (%c)\n", cub->map.tab[map->pos_y][map->pos_x] );
+	if (!mx_struct(map, cub))
+		return (-1);
+	if ( build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 )
 		return (-1);
 	print_collision_map(map);
-	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
 	return (0);
 }
 

@@ -12,6 +12,28 @@
 
 #include "../include/cub3d.h"
 
+// CHRS FEED
+t_cub *chsr_feed(t_cub *cub)
+{ 
+    int i;
+    int j;
+
+    j = 0;
+    i = -1;
+    cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
+    while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)    
+    {
+        if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97  && cub->map.raw[i][1] == 32)
+        {
+            cub->box.chrs[j] = cub->map.raw[i][0];
+            ++j;
+        }
+    }
+    cub->box.chrs[j++] = '@';
+    cub->box.chrs[j++] = '\0';
+    printf("NEW CHRS {%s} len[%d]\n\n",  cub->box.chrs, j);
+    return (cub); 
+}
 
 // XFORM from RAW
 t_box *e_mtrx_link(t_box *box, char **raw)
@@ -22,7 +44,6 @@ t_box *e_mtrx_link(t_box *box, char **raw)
 
     i = 0;
     box->pnum = 0;
-    printf("- - LINK - \n\n");
     box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
     if(!box->xform )
         return (NULL);    
@@ -64,7 +85,7 @@ t_cub *e_mtrx_count(t_cub *cub)
             ++cub->box.xnum;
         }
     }
-    printf("LINE READ from RAW= %d \n", i);
+    // printf("LINE READ from RAW= %d \n", i);
     return (cub); 
 }
 
@@ -73,10 +94,11 @@ t_cub  *e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 { 
       
     box->xnum = 0;    //png ended file
-    cub = e_mtrx_count(cub);
-    printf("XNUM = %d ", cub->box.xnum);
+    cub = e_mtrx_count(cub);    // xnum count
+    printf("\nXNUM = %d ", cub->box.xnum);
     printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
-    cub->box = *e_mtrx_link(box, map->raw);
+    cub->box = *e_mtrx_link(box, map->raw);  // link legend
+    cub = chsr_feed(cub);       // fill CHRS
     
     return (cub); 
 }

@@ -123,7 +123,8 @@ typedef struct s_map_data
 	float	**grid_coords;
 
 	// Germain specific Stuff
-	char	*file;
+
+	t_matrx	***mx;
 	char	**tab;
 	char	**raw;
 	char	**m;	// test mapping map
@@ -275,10 +276,10 @@ void	print_map(t_map *map);
 
 /// MAP_CHECKER ///////////////
 //map_parse
+t_cub			*wall_check(t_cub *cub,t_map *map);
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map);
-t_map			*wall_check(t_map *map);
 //int				color_split(t_map *map, int id);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
 //int				is_empty_line(char *line);
@@ -345,11 +346,12 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
+t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
 t_box 			*xwalls_builder(t_cub *cub, char **raw);
-t_matrx			*pset_maker(t_cub *cub, char **raw, int queue);
-t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
+t_cub			*chsr_feed(t_cub *cub);
 t_box	 		*e_mtrx_link(t_box *box, char **raw);
 t_cub			*e_mtrx_count(t_cub *cub);
+t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 //
 const char	 	*get_folder_name(char *full_path);
 char			*t_name_set(const char *dir_path, char *d_name);
