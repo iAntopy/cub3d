@@ -27,6 +27,9 @@
 # define SCN_WIDTH  1024
 # define SCN_HEIGHT 780
 
+# define MMP_WIDTH  100
+# define MMP_HEIGHT 100
+
 # define ROT_FACTOR 0.006135923f
 # define CELL_WIDTH 64
 # define M_TAU 6.283185307179586f
@@ -60,7 +63,10 @@
 # define TEX_FLOOR			5
 
 # define CUBMAP_BUFMAX 100000
-# define MAP_CHARS "01WNES"
+# define MAP_CHARS "0AB@"
+# define MAP_LCHR "abcdefghijz"
+# define MAP_NCHR "0123456789"
+# define MAP_UCHR "ABCDEFGHIJ"
 
 enum	e_sides
 {
@@ -69,26 +75,33 @@ enum	e_sides
 	E_SIDE = 2,
 	S_SIDE = 3
 };
-//// BONUS STRUCT MATRX
+
+//// BONUS STRUCT MATRX	& BOX
 /*
-	meant to be the passing content for xwalls ***
-	xnum 	= (int) how many xwalls refs.
-	ref 	= (char) lowercase ref assing into xwalls
-	id_path	= (char *) full_name {"a  tex/flder_name/txtr_name.png"}
-	xwalls	= (char **[4]) xwalls[4] = [ref][id_path]
+	T_MATRX struct PSET
+		*walls[4] = preset from xform
+
+	T_BOX  builder XFORM 
+		xnum 	= legend count (lower + num)
+		pset	= recette count (upper)
+		xform	= preset final form
 	...
-	txtr	maybe need to load txtr before then stock *txtr ptr!
 */
+/// PARSING ///////////////////
 typedef struct s_matrx
 {
-	const char		*fld_path;
-	int				xnum;
-	unsigned char	ref;
-	char 			*id_path;
-	char			**full;
-	char 			**xwalls[4];
-	// mlx_texture_t	*texr;
+	mlx_texture_t	*xwalls[4];
 }		t_matrx;
+
+typedef struct s_box
+{	
+	char 			*chrs;
+	int				chrs_len;
+	int 			xnum;	
+	int				pnum;
+	int				pset;
+	mlx_texture_t	**xform;
+}		t_box;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
@@ -112,8 +125,8 @@ typedef struct s_map_data
 	// Germain specific Stuff
 	char	*file;
 	char	**tab;
-	char	**txtr;
 	char	**raw;
+	char	**m;	// test mapping map
 	int		pos_x;
 	int		pos_y;
 	int		lines_to_map;
@@ -130,7 +143,8 @@ typedef struct s_texture_data
 	mlx_texture_t	*walls[4];
 	char			**rgbx;
 	int				color[2];
-//	char			*tex_n[4];// tex_name
+	mlx_texture_t	*skymap;	// yessss
+	mlx_texture_t	*floor;	// yessss
 }	t_tex;
 
 typedef struct s_raycaster_data		t_rcast;
@@ -207,7 +221,7 @@ typedef struct s_renderer_column_params
 {
 	mlx_image_t		*walls_layer;
 	mlx_texture_t	*tex;
-//	uint32_t		*init_pxls;// strat 2
+	//	uint32_t		*init_pxls;// strat 2
 	int				half_texh;// strat 1
 	int				scn_height;
 	int				half_height;// strat 1
@@ -247,16 +261,11 @@ typedef struct s_cub3d_core_data
 	t_tex			tex;
 	t_hero			hero;
 	t_rdr			renderer;
-	t_matrx			*mx;
+	t_matrx			*pset;
+	t_box			box;
 }	t_cub;
 
 
-typedef struct s_wall_box
-{
-	char 		**xwalls[4];
-}	t_box;
-
-/// PARSING ///////////////////
 
 //int	load_map(t_cub *cub, char *map_file);
 int		build_collision_map(t_map *map);
@@ -336,10 +345,11 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-int				e_list_txtr(t_cub *cub, char *full_path);
-char 			*xwalls_builder(t_matrx *mx);
-t_matrx 		*e_mtrx_link(t_matrx *mx);//, char *full_path)
-int 			e_mtrx_count(t_matrx *mx, char *full_path);
+t_box 			*xwalls_builder(t_cub *cub, char **raw);
+t_matrx			*pset_maker(t_cub *cub, char **raw, int queue);
+t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
+t_box	 		*e_mtrx_link(t_box *box, char **raw);
+t_cub			*e_mtrx_count(t_cub *cub);
 //
 const char	 	*get_folder_name(char *full_path);
 char			*t_name_set(const char *dir_path, char *d_name);
