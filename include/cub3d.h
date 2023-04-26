@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/25 23:20:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 16:39:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,9 @@ typedef struct s_cub3d_core_data
 	float			inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
 	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float			inv_two_pi;	// 1 / 2pi;
+
+	float			flrw_to_cw;
+	float			flrh_to_cw;
 	float			sky_radial_width;	// const sky texture width * inv_two_pi
 	float			sky_fov_to_tex;// FOV60 * sky_radial_width;
 	float			sky_ht_to_midy;//	tex_height / (SCN_HEIGHT / 2)

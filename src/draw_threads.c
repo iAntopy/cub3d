@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/25 22:11:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 15:27:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,12 @@ int	order_draw_call(t_cub *cub, t_thdraw *threads)
 //	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);
 	while (++i < NB_DRAW_THREADS && nb_spins < max_spins)
 	{
-		usleep(10);
 		if (threads[i].isidle)
 		{
 			i = -1;
 			nb_spins++;
 		}
+		usleep(10);
 	}
 //	if (nb_spins == max_spins)
 //		printf("BREAKING NEWS : SPIN OUT EVENT\n");

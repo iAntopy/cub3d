@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/25 04:08:29 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/26 17:30:03 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC_FLS	:=		main.c 			\
 			update_raycaster.c	\
 			renderer.c			\
 			renderer_draw_funcs.c	\
+			renderer_draw_floor.c	\
 			renderer_utils.c	\
 			player_controls.c	\
 			prebuilt_map_tools.c	\

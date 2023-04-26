@@ -6,13 +6,13 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/25 23:28:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:28:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static inline uint32_t	*init_wall_column_data(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
+static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 {
 	mlx_texture_t	*tex;
 	int				tex_start_x;
@@ -37,113 +37,46 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	uint32_t	*pxls;
 	int			tex_width;
 
-//	printf("render_walls started \n");
 	clear_image_buffer(cub->renderer.walls_layer);
 	rc.walls_layer = cub->renderer.walls_layer;
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
-		pxls = init_wall_column_data(cub, rd + i, &rc, &tex_width);
+		pxls = init_wcol(cub, rd + i, &rc, &tex_width);
 		j = -1;
 		while (++j < rc.scn_height)
-		{
 			cub_put_pixel(rc.walls_layer, i, rc.scn_start_y + j,
 				pxls[(int)(((j - rc.half_height) * rc.ratio)
 					+ rc.half_texh) *tex_width]);
-		}
 	}
 	cub->renderer.requires_update = 0;
-//	printf("render_walls DONE \n");
 }
 
 void	render_sky(t_cub *cub, t_rdata *rd)
 {
-	const uint32_t	tex_width = cub->sky_tex->width;
-	const int		mid_offset = cub->renderer.sky_ori_offset;
-	int				*texture_yoffsets = cub->renderer.sky_yoffsets;
-	int				texture_xoffsets[SCN_WIDTH];
-	int				*tof;
-	int				*tofy;
-	uint32_t		*pxls;
-	int				x;
-	int				y;
-
-//	const int	tex_col = (int)((x - cub->scn_midx) * cub->inv_sw * cub->skymap_fov_to_tex
-//		+ cub->skymap_tex_offset) % cub->tex.skymap->width;
+	int			texture_xoffsets[SCN_WIDTH];
+	uint32_t	*pxls;
+	int			*tofs[2];
+	int			x;
+	int			y;
 
 	(void)rd;
-	tof = texture_xoffsets - 1;
+	tofs[0] = texture_xoffsets - 1;
 	x = -1;
 	while (++x < SCN_WIDTH)
-	{
-		*(++tof) = (int)((x - cub->scn_midx) * cub->inv_sw	* cub->sky_fov_to_tex
-			+ mid_offset) % tex_width;
-		*(++tof) = (int)(((++x) - cub->scn_midx) * cub->inv_sw	* cub->sky_fov_to_tex
-			+ mid_offset) % tex_width;
-	}
-
+		*(++tofs[0]) = (int)((x - cub->scn_midx) * cub->inv_sw
+				* cub->sky_fov_to_tex
+				+ cub->renderer.sky_ori_offset) % cub->sky_tex->width;
 	pxls = (uint32_t *)cub->renderer.bg_layer->pixels;
-	tofy = texture_yoffsets;
+	tofs[1] = cub->renderer.sky_yoffsets - 1;
 	y = -1;
 	while (++y < cub->scn_midy)
 	{
-		tof = texture_xoffsets - 1;
+		tofs[0] = texture_xoffsets - 1;
+		++tofs[1];
 		x = -1;
 		while (++x < SCN_WIDTH)
-			*(++pxls) = ((uint32_t *)cub->sky_tex->pixels)[*(++tof) + (*tofy) * tex_width];
-		++tofy;
-	}
-}
-
-static uint32_t	floor_get_pixel(mlx_texture_t *tex, int x, int y)
-{
-	if (x < 0 || y < 0)
-		return (0);
-	return (((uint32_t *)tex->pixels)[x + y * tex->width]);
-}
-
-void	render_floor(t_cub *cub, t_rdata *rd)
-{
-//	const int	param_stride = sizeof(float) * SCN_WIDTH;
-	const float	flr_texw_to_cellw = cub->inv_cw * cub->floor_tex->width;
-	const float	flr_texh_to_cellw = cub->inv_cw * cub->floor_tex->height;
-	float		*params;
-	uint32_t	*pxls;
-	uint32_t	*pxls_r;
-	t_rdata		*r;
-	t_rdata		*rr;
-	int			iter_y;
-	int			iter_x;
-	
-//	printf("render floor entered \n");
-
-	params = cub->renderer.floor_factors - 1;
-	pxls = (uint32_t *)cub->renderer.bg_layer->pixels
-		+ (SCN_WIDTH * (cub->scn_midy + 1)) - 1;
-//	printf("pxls (x, y) : (%ld, %ld)\n", (pxls - (uint32_t *)cub->renderer.bg_layer->pixels) % SCN_WIDTH, (pxls - (uint32_t *)cub->renderer.bg_layer->pixels) / SCN_WIDTH);
-	pxls_r = pxls + SCN_WIDTH;
-	iter_y = cub->scn_midy;
-	while (iter_y--)//++i < SCN_HEIGHT)
-	{
-		r = rd - 1;
-		rr = rd + SCN_WIDTH;
-		pxls_r = pxls + SCN_WIDTH;
-		iter_x = cub->scn_midx;
-		while (iter_x--)//++j < cub->scn_midx)
-		{
-			++r;
-			--rr;
-			++params;
-			*(++pxls) = floor_get_pixel(cub->floor_tex, (int)(fmodf((*r->rx) * (*params)
-				+ (*r->px), CELL_WIDTH) * flr_texw_to_cellw),
-				(int)(fmodf((*r->ry) * (*params) + (*r->py), CELL_WIDTH)
-						* flr_texh_to_cellw));
-			*(--pxls_r) = floor_get_pixel(cub->floor_tex, (int)(fmodf((*rr->rx) * (*params)
-				+ (*rr->px), CELL_WIDTH) * flr_texw_to_cellw),
-				(int)(fmodf((*rr->ry) * (*params) + (*rr->py), CELL_WIDTH)
-						* flr_texh_to_cellw));
-		}
-		params += cub->scn_midx;
-		pxls += cub->scn_midx;
+			*(++pxls) = ((uint32_t *)cub->sky_tex->pixels)[*(++tofs[0])
+				+ (*tofs[1]) * cub->sky_tex->width];
 	}
 }
