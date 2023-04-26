@@ -1,22 +1,23 @@
-N  tex/sky_star.png
-W  tex/sky_star.png
-S  tex/sky_star.png
-E tex/sky_star.png
+a tex/ext/rusty-metal.png
+b tex/ext/tree-old.png
+c tex/ext/tree-bark.png
+d tex/ext/tree-branch.png
+e tex/ext/tree-dark.png
+z tex/ext/sky_star.png
+0 tex/ext/floortile4.png
 
-                 
-                  
-C 220,210,0
-F 210,110,20
+A abcd   
+B efef
 
-     111111111111
-     100011000001
-     100010000001
-     100000111111
-111111000001
-100000000001
-111000100001
-100000100001
-100100111001
-100100000001
-1N0100000001
-111111111111
+     AAAAAAAAAAAA
+     A000AA00000A
+     A000A000000A
+     A00000AAAAAA
+AAAAAA00000A
+B0000000000A
+BBB000A0000A
+B00000A0000A
+B00A00AAA00A
+A00A0000000A
+A@0A0000000A
+AAAAAAAAAAAA

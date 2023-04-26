@@ -75,7 +75,7 @@ void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 int	main(int argc, char **argv)
 {
 	t_cub		cub;
-
+	
 	if (argc != 2)
 		return (EXIT_FAILURE);
 	ft_memclear(&cub, sizeof(cub));

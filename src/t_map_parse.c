@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/24 23:35:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:17:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static	int	transcribe(t_map *map)
 	int		len;
 	int		i;
 
+	printf("** ---- transcribe starts ---- **\n");
 	tmp = map->raw + 6;
 	i = 0;
 	while (tmp[i])
@@ -42,6 +43,7 @@ static	int	transcribe(t_map *map)
 	}
 	map->height = i;
 	map->total_cells = (map->height * map->width);
+	printf("** ---- transcribe ends ---- **\n");
 	return (map->height);
 }
 
@@ -49,21 +51,27 @@ static t_map	*map_frame(t_map *map)
 {
 	char	**m;
 	int		i;
+	
+	printf("** ---- map_frame starts ---- **\n");
 
 	m = map->raw + 6;
 	i = 0;
 	while (i < map->height)
 	{
+		printf("calloc tab[%d]\n", i);
 		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
+		printf("calloced\n");
 		ft_strlcpy(map->tab[i], m[i], map->width + 1);
 		map->tab[i] = spc_chk(map, i);
 		i++;
 	}
 	strtab_clear(&map->raw);
+	printf("raw map cleared. Starting wall_check()\n");
 	map = wall_check(map);
-	printf("wall_chk returned with flg_chk == 1\n");
+	printf("Did wall_chk returned with flg_chk == 1 ? %d\n", map->flg_chk == 1);
 	if (map->flg_chk == 1)
 		return (NULL);
+	printf("** ---- map_frame ends ---- **\n");
 	return (map);
 }
 
@@ -72,6 +80,7 @@ static int	read_whole_file(t_map *map, char *filepath)
 	char	buffer[CUBMAP_BUFMAX + 1];
 	int		fd;
 	ssize_t	nc;
+
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
@@ -86,18 +95,24 @@ static int	read_whole_file(t_map *map, char *filepath)
 	map->raw = ft_split(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
+	printf("*** line= %c \n",  *map->raw[0]);
 	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
-		return (error("Missing info in config file.", map));
+	 	return (error("Missing info in config file.", map));
+	else 
+		return(strtab_len(map->raw));
 	return (0);
 }
 
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
+	int map_len;
+
+	printf("\n\n **------- (Move out the way ! Map checker is here !) ------**\n\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
-	if (read_whole_file(map, file) < 0)
+	if ((map_len = read_whole_file(map, file)) == 0)
 		return (-1);
 	printf("raw[0] : %s\n", map->raw[0]);
 	cub->tex_id = -1;
@@ -105,11 +120,51 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	if (transcribe(map) < 3)
 		return (error("Map in file is too short", map));
+	printf("map_raw len  : (%d)\n", map_len - map->height);
 	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
 	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
 		|| build_collision_map(map) < 0)
 		return (-1);
 	print_collision_map(map);
 	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
+	printf("\n\n **------- (Move in the way. Map checker has exited.) ------**\n\n");
 	return (0);
 }
+
+/* WAS LIKE ...
+	map_checker:
+		1	strfcmp .cub - chk file extention 
+		2 	read_whole_file - stock it all. = map->raw
+		3	tex_parse - chk map char by ref	= ( [6] == ref. xwalls fork.
+				ft_in_set (charset) - cmp char <> ref
+				get_tex_by_id (<4) -  attrib path from ref
+						spaceless , txtr[id] = load_png (path)
+				color_split (id 4/5) - bitshift_color process
+		4	transcribe
+		5	map_frame - gabarit!
+		6	wall_chk - floor / edge 
+				ft_in_set - floor / sibling	: t_o_cell
+				hero_cell - pos / dir		: t_hero_cell	
+*/
+
+/*
+	MOST OF IT	:	- read_whole_file 		
+				+ find holy ref.
+		
+				+ alt behavior for 'A' = xwalls[4]  *** (get_tex_by_ref) >>t_ref_utils
+				+ ref for xwalls[4] to be build from preset
+					- tex_parse 
+				+ chk order [0.1.2.3] => [W,N,E,S]
+				+ find ref by pos
+				+ fill load_png with found attrib
+	NEXT 	:
+			:	Enable	MULTI XWALLS.  		-- OK -- choose (4 on 5) map3
+			:			MAP_RAW	xwalls[4]			dual choice (A - B)
+			:				ex: "A acbd"
+			:	Setting MAP_CHARTS
+			:			MAP_ floor_tex 	REF:('0'-'9')
+			:			MAP_ xwalls		REF:('A'-'Z')
+			:			MAP_ player		REF:('@') no_direction(N) default!
+			:			MAP_ object		REF:('meta-chars')
+			:
+*/
