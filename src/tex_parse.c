@@ -76,7 +76,7 @@ t_matrx *pset_maker(t_cub *cub, char **raw, int queue)
 	}
 	else if ((ft_in_set((const char)raw[queue][0], (const char *)MAP_NCHR) > -1))
 	{
-		// printf("MAKER: UNIQ: recett{%c} :: ptr<<%p>> ::\n", ref[fill + 2], cub->box.xform[queue]);
+		// printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);
 		cub->pset[queue].xwalls[0] = cub->box.xform[queue];
 		cub->pset[queue].xwalls[1] = NULL;
 	}
@@ -108,7 +108,7 @@ t_box *xwalls_builder(t_cub *cub, char **raw)
 static int	error_clr(char *err, t_map *map)
 {
 	strtab_clear(&map->raw);
-	strtab_clear(&map->txtr);
+	// strtab_clear(&map->txtr);
 	if (err && err[0])
 		return (error(err, map));
 	return (-1);

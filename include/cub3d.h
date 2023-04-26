@@ -63,7 +63,7 @@
 # define TEX_FLOOR			5
 
 # define CUBMAP_BUFMAX 100000
-# define MAP_CHARS "01WNES@A"
+# define MAP_CHARS "0AB@"
 # define MAP_LCHR "abcdefghijz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
@@ -95,7 +95,8 @@ typedef struct s_matrx
 
 typedef struct s_box
 {	
-	char 			*map_chr;
+	char 			*chrs;
+	int				chrs_len;
 	int 			xnum;	
 	int				pnum;
 	int				pset;
@@ -124,8 +125,8 @@ typedef struct s_map_data
 	// Germain specific Stuff
 	char	*file;
 	char	**tab;
-	char	**txtr;
 	char	**raw;
+	char	**m;	// test mapping map
 	int		pos_x;
 	int		pos_y;
 	int		lines_to_map;
@@ -220,7 +221,7 @@ typedef struct s_renderer_column_params
 {
 	mlx_image_t		*walls_layer;
 	mlx_texture_t	*tex;
-//	uint32_t		*init_pxls;// strat 2
+	//	uint32_t		*init_pxls;// strat 2
 	int				half_texh;// strat 1
 	int				scn_height;
 	int				half_height;// strat 1
@@ -348,7 +349,7 @@ t_box 			*xwalls_builder(t_cub *cub, char **raw);
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_box	 		*e_mtrx_link(t_box *box, char **raw);
-int 			e_mtrx_count(char **raw);
+t_cub			*e_mtrx_count(t_cub *cub);
 //
 const char	 	*get_folder_name(char *full_path);
 char			*t_name_set(const char *dir_path, char *d_name);

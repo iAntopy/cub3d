@@ -18,7 +18,7 @@ static char	*spc_chk(t_map *map, int j)
 	char	*line;
 	int		i;
 
-	line = map->tab[j];
+	line = map->raw[j];
 	i = -1;
 	while (++i < map->width)
 		if (!ft_strchr(MAP_CHARS, line[i]))
@@ -27,25 +27,42 @@ static char	*spc_chk(t_map *map, int j)
 }
 
 /// map-part of file  >> wall_check
+// m** recive secound part of raw ... raw can die, im done with it !! 
 static t_map	*map_frame(t_map *map, t_cub *cub)
 {
 	char	**m;
-	int		i;
+	int		i;	// = 0;
+	int 	q;	// after txtr ptr
 
-	printf("WWWW m->tab_len = %d\n", strtab_len(map->raw));
-	printf("WWWW map->height = %d\n", map->height);
-	m = map->raw + cub->box.xnum;
 	i = 0;
+	q = strtab_len(map->raw) - map->height;
+
+	printf("cub to shut! pset = %d\n", cub->box.pset);
 	
-	while (i < map->height)
+	m = (char **)malloc(sizeof(char *) * map->height + 1);
+	while(i < map->height)
 	{
-		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
-		ft_strlcpy(map->tab[i], m[i], map->width + 1);
-		map->tab[i] = spc_chk(map, i);
-		i++;
+		m[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
+		printf("%s\n", map->raw[q]);
+		ft_strlcpy(map->raw[q], m[i], map->width + 1);
+		map->raw[i] = spc_chk(map, q);
+		m[i] = map->raw[q];
+		++q;
+		++i;
 	}
-	strtab_clear(&map->raw);
-	map = wall_check(map);	
+		// i = 0;
+		// while (i < map->height)
+		// {
+		// 	map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
+		// 	ft_strlcpy(map->tab[i], m[i], map->width + 1);
+		// 	map->tab[i] = spc_chk(map, i);
+		// 	i++;
+		// }
+		// strtab_clear(&map->raw);
+
+	// map = wall_check(map);	
+
+
 	printf("wall_chk returned with flg_chk == 1\n");
 	if (map->flg_chk == 1)
 		return (NULL);
@@ -91,10 +108,17 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	if (tex_parse(cub, map) < 0)
 		return (-1);
-	printf("$$$map_raw len  : (%d)  map height [%d]\n\n", map_len, map->height);
 
-	// map->tab = (char **)ft_calloc(sizeof(char *), (map->height ));
-	if ( build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 || !map_frame(map, cub))
+	map->height = map_len - (cub->box.xnum - cub->box.pnum + cub->box.pset);
+	printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, (cub->box.xnum - cub->box.pnum) + cub->box.pset);
+	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
+
+	 if (!map_frame(map, cub))
+		return (-1);
+
+	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
+
+	if (!map->tab || build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 )
 		return (-1);
 	print_collision_map(map);
 	printf("map (width, height) : (%d, %d)\n", map->width, map->height);

@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+#include <dirent.h> 
+
 
 
 // XFORM from RAW
@@ -22,7 +24,7 @@ t_box *e_mtrx_link(t_box *box, char **raw)
 
     i = 0;
     box->pnum = 0;
-    printf("- - LINK - \n\n");
+    // printf("- - LINK - \n\n");
     box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
     if(!box->xform )
         return (NULL);    
@@ -44,39 +46,47 @@ t_box *e_mtrx_link(t_box *box, char **raw)
 }
 
 // XNUM COUNT
-t_cub *e_mtrx_count(t_cub *cub)
+t_box   *e_mtrx_count(t_map *map, t_box *box)
 { 
     int i;
-    // int xnum;
+    // int len;
 
     i = -1;
-    cub->box.chrs_len = 1;
-    cub->box.xnum = 0;
-    while (*cub->map.raw && cub->map.raw[++i])    
+    box->chrs_len = 0;
+    while(*map->raw && map->raw[i++])    
     {
-
-        if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97  && cub->map.raw[i][1] == 32)
-            ++cub->box.chrs_len;
+        /*  add map_char ref count len */
+        if (map->raw[i][0] > 32 && map->raw[i][1] == 32)
+            ++box->chrs_len;
         /*     find 'png' ended file*/
-        if (ft_strchr_set(cub->map.raw[i], ".png") != NULL) 
-        {
-            printf("COUNT legende [%d] into_Raw {%s} ...\n", i, cub->map.raw[i]); 
-            ++cub->box.xnum;
-        }
+        if (ft_strchr_set(map->raw[i], ".png") != NULL) 
+            box->xnum++;
     }
-    printf("LINE READ from RAW= %d \n", i);
-    return (cub); 
+    // box->chrs = malloc(sizeof(char) * box->chrs_len + 2);
+    // box->chrs[box->chrs_len] = '\0';
+    // i = 0;
+    // len = 0;
+    // while (len < box->chrs_len)
+    // {
+    //     if (map->raw[i][0] > 32 && map->raw[i][1] == ' ')
+    //         box->chrs[len++] = map->raw[i][0];
+    // }
+    printf(">> LINE MADE to CHRS {%d}\n", box->chrs_len);
+    return (box); 
 }
+        
+            // printf("COUNT legende [%d] into_Raw {%s} ...\n", i, raw[i]); 
+        
 
 /// Now pre_read folder +  Malloc + post_read linked
 t_cub  *e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 { 
       
     box->xnum = 0;    //png ended file
-    cub = e_mtrx_count(cub);
-    printf("XNUM = %d ", cub->box.xnum);
-    printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
+    box = e_mtrx_count(map, box);
+    printf("XNUM = %d \n", box->xnum);
     cub->box = *e_mtrx_link(box, map->raw);
+    // printf("- - eLIST - IDX<%p>\n", cub->box.xform[0]);
     
     return (cub); 
 }
