@@ -6,81 +6,90 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/25 15:40:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:28:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-static char	*spc_chk(t_map *map, int j)
+
+t_cub	*mx_struct(t_map *m, t_cub *cub)
+{
+
+	int		k;	
+	int		p_box; //	ptr
+
+	k = 0;
+
+	m->mx = (t_matrx ***)malloc(sizeof(t_matrx **) * m->height);
+	while (k++ < m->height)
+		m->mx[k] =(t_matrx**)malloc(sizeof(t_matrx *) * m->width);
+	printf("K is the thruth : %d\n", k);	
+	m->pos_y = 0;
+	while (m->pos_y <= m->height )
+	{
+		m->pos_x = 0;
+		while (m->pos_x < m->width)
+		{
+			p_box = ft_in_set((m->tab[m->pos_y][m->pos_x]), (const char *)cub->box.chrs);
+			if (p_box != -1)
+				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
+			// else if (p_box != -1)
+			// 	m->mx[pos_y][pos_x] = cub->pset[cub->box.pset-cub->box.pnum];
+			m->pos_x++;
+		}
+		m->pos_y++;
+	}
+	return (cub);
+}
+
+/// hole filler
+static char	*spc_chk(t_cub *cub, t_map *m, int j)
 {
 	char	*line;
 	int		i;
 
-	line = map->tab[j];
+	line = m->raw[j];
 	i = -1;
-	while (++i < map->width)
-		if (!ft_strchr(MAP_CHARS, line[i]))
-			line[i] = '1';
+	while (++i < m->width)
+		if (!ft_strchr(cub->box.chrs, line[i]))
+			line[i] = 'A';
 	return (line);
 }
 
-static	int	transcribe(t_map *map)
+/// map-part of file  >> wall_check
+static t_cub	*map_frame(t_map *map, t_cub *cub)
 {
-	char	**tmp;
-	int		len;
-	int		i;
 
-	printf("** ---- transcribe starts ---- **\n");
-	tmp = map->raw + 6;
-	i = 0;
-	while (tmp[i])
-	{
-		len = int_strlen(tmp[i]);
-		if (len > map->width)
-			map->width = len;
-		i++;
-	}
-	map->height = i;
-	map->total_cells = (map->height * map->width);
-	printf("** ---- transcribe ends ---- **\n");
-	return (map->height);
-}
-
-static t_map	*map_frame(t_map *map)
-{
 	char	**m;
-	int		i;
+	int		i;	// = 0;
+	int 	q;	// after txtr ptr
 	
-	printf("** ---- map_frame starts ---- **\n");
-
-	m = map->raw + 6;
 	i = 0;
-	while (i < map->height)
+	q = strtab_len(map->raw) - map->height;	
+	m = (char **)malloc(sizeof(char *) * map->height + 1);
+	while(i < map->height)
 	{
-		printf("calloc tab[%d]\n", i);
-		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
-		printf("calloced\n");
-		ft_strlcpy(map->tab[i], m[i], map->width + 1);
-		map->tab[i] = spc_chk(map, i);
-		i++;
+		m[i] = (char *)ft_calloc(sizeof(char *), (map->width));
+		printf("%s\n", map->raw[q]);
+		ft_strlcpy(map->raw[q], m[i], map->width + 1);
+		map->raw[i] = spc_chk(cub, map, q);
+		m[i] = map->raw[q];
+		++q;
+		++i;
 	}
-	strtab_clear(&map->raw);
-	printf("raw map cleared. Starting wall_check()\n");
-	map = wall_check(map);
-	printf("Did wall_chk returned with flg_chk == 1 ? %d\n", map->flg_chk == 1);
-	if (map->flg_chk == 1)
-		return (NULL);
-	printf("** ---- map_frame ends ---- **\n");
-	return (map);
+	// strtab_clear(&map->raw);
+	cub->map.m = m;
+	cub = wall_check(cub, &cub->map);
+	return (cub);
 }
 
+//// map_len
 static int	read_whole_file(t_map *map, char *filepath)
 {
 	char	buffer[CUBMAP_BUFMAX + 1];
 	int		fd;
 	ssize_t	nc;
-
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
@@ -95,7 +104,6 @@ static int	read_whole_file(t_map *map, char *filepath)
 	map->raw = ft_split(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
-	printf("*** line= %c \n",  *map->raw[0]);
 	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
@@ -114,23 +122,25 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	if ((map_len = read_whole_file(map, file)) == 0)
 		return (-1);
-	cub->tex_id = -1;
 	if (tex_parse(cub, map) < 0)
 		return (-1);
-	if (transcribe(map) < 3)
-		return (error("Map in file is too short", map));
-	printf("map_raw len  : (%d)\n", map_len - map->height);
-	map->tab = (char **)ft_calloc(sizeof(char *), (map->height + 1));
-	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
-		|| build_collision_map(map) < 0)
+
+	map->height = map_len - (cub->box.xnum - cub->box.pnum + cub->box.pset);
+	printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, (cub->box.xnum - cub->box.pnum) + cub->box.pset);
+	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
+
+	if (!map_frame(map, cub))
+		return (-1);
+	// printf("cub->pset[8][8] : (%c)\n", cub->map.tab[map->pos_y][map->pos_x] );
+	if (!mx_struct(map, cub))
+		return (-1);
+	if ( build_grid_coords_map(map) < 0	|| build_collision_map(map) < 0 )
 		return (-1);
 	print_collision_map(map);
-	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
-	printf("\n\n **------- (Move in the way. Map checker has exited.) ------**\n\n");
 	return (0);
 }
 
-/* WAS LIKE ...
+/* WAS LIKE ... Ver.2
 	map_checker:
 		1	strfcmp .cub - chk file extention 
 		2 	read_whole_file - stock it all. = map->raw

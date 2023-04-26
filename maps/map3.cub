@@ -1,17 +1,25 @@
+a tex/ext/mountain_crack.png
+b tex/ext/mountain_rock.png
+c tex/ext/mountain-rock.png
+d tex/ext/mountain-stone-rock.png
+e tex/ext/red-mountain-rock.png
+f tex/ext/gray-mountain-rock.png
+z tex/ext/sky_star.png
+0 tex/ext/floortile4.png
+1 tex/ext/floor.png
+
 A aedb                 
-                  
-C 20,10,0
-F 50,90,50
+B ccff                   
 
      AAAAAAAAAAAA
      A000AA00000A
      A000A000000A
      A00000AAAAAA
-AAAAAA00000A
-A0000000000A
-AAA000A0000A
+BBBBBB00000A
+B0000000000A
+BB0000A0000A
 A00000A0000A
 A00A00AAA00A
 A00A0000000A
-AN0A0000000A
+A@0A0000000A
 AAAAAAAAAAAA

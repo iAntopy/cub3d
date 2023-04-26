@@ -11,137 +11,99 @@
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-#include <dirent.h> 
 
-/* Malloc str:id(txtr_ref)  str:path(txtr_path)*/
-t_box *xwalls_builder(t_cub *cub, char **raw, int nb)
-{
-    t_matrx *pset;
-    int     fill;
-    int     len;
-    int id;
+// CHRS FEED
+t_cub *chsr_feed(t_cub *cub)
+{ 
+    int i;
+    int j;
 
-    char ref;
-    char rectt;
-    
-    id = 0;
-    (void)ref;
-    len = 0;
-    if (!(pset = malloc(sizeof(t_matrx *) * cub->box->pset)))
-        return (NULL);
-
-    printf("XWLLS PRESET {%s} max len = %d \n", raw[nb], cub->box->pset);
-    while(len < cub->box->pset)
+    j = 0;
+    i = -1;
+    cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
+    while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)    
     {
-        rectt = raw[nb][0];
-        printf("START RAW NB[%d]=> REF %c \n", len, raw[nb][0]);
-        id = ft_in_set(raw[nb][0], (const char *)MAP_UCHR);
-		if (id < 0 || raw[nb][1] != ' ')
-			return (NULL);
-        //assing it to box->xform
-        fill = -1;
-        while(fill++ < 3)
+        if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97  && cub->map.raw[i][1] == 32)
         {
-            ref = raw[nb][fill + 2];
-            id = ft_in_set(raw[nb][fill + 2], MAP_LCHR);
-            if (id != -1)
-            {
-                printf("BUILDER recett{%c} REF(%c) => ID:[%d]\n", rectt, ref, id);
-                pset->xwalls[fill] =  cub->box->xform[id];
-            }
+            cub->box.chrs[j] = cub->map.raw[i][0];
+            ++j;
         }
-        len++;
-        nb++;
     }
-    return (cub->box);
+    cub->box.chrs[j++] = '@';
+    cub->box.chrs[j++] = '\0';
+    printf("NEW CHRS {%s} len[%d]\n\n",  cub->box.chrs, j);
+    return (cub); 
 }
 
 // XFORM from RAW
-t_box *e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw)
+t_box *e_mtrx_link(t_box *box, char **raw)
 {
     char    *tex_path;
     char    *tex_name;
     int i;
-    char *idx;
-    mlx_texture_t	*xform[box->xnum];
 
     i = 0;
-
-    printf("- - LINK - \n\n");
-    (void)form;
-    idx = malloc(sizeof(char) * (box->xnum + 1));
-    idx[box->xnum] = '\0';
+    box->pnum = 0;
+    box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
+    if(!box->xform )
+        return (NULL);    
     while (i < box->xnum)
     {   
-        // printf("LINK ref {%d} \n", (unsigned char)raw[i][0]);
-        if( raw[i][0] > 32)
+        if(raw[i][0] > 32)
         {
             tex_name = ft_substr(raw[i], 0, 1);
             tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i])- 2);
-            printf("LINK legend name(%s) ::", tex_name);
-            printf(" path {%s} \n", tex_path);
-            // box->idx = ft_strjoin(box->idx,tex_name);
-            xform[i] = mlx_load_png(tex_path);
-            if (!xform[i])
+            if (ft_in_set(raw[i][0], (const char *)MAP_NCHR) != -1)
+                box->pnum++;
+            box->xform[i] = mlx_load_png(tex_path);
+            if (!box->xform[i])
                 return (report_mlx_tex_load_failed(tex_path));
         } 
         ++i;
     }
-    printf("- - LINK - IDX<%p>\n", xform[i-1]);
-    box->xform = xform;
     return (box); 
 }
 
 // XNUM COUNT
-int e_mtrx_count(char **raw)
+t_cub *e_mtrx_count(t_cub *cub)
 { 
     int i;
-    int xnum;
+    // int xnum;
 
     i = -1;
-    xnum = 0;
-        // mx->fld_path = get_folder_name(full_path);
-        // printf("COUNT_Open fld path %s file name... \n", mx->fld_path); 
-    while(*raw && raw[++i])    
+    cub->box.chrs_len = 1;
+    cub->box.xnum = 0;
+    while (*cub->map.raw && cub->map.raw[++i])    
     {
+
+        if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97  && cub->map.raw[i][1] == 32)
+            ++cub->box.chrs_len;
         /*     find 'png' ended file*/
-        if (ft_strchr_set(raw[i], ".png") != NULL) 
+        if (ft_strchr_set(cub->map.raw[i], ".png") != NULL) 
         {
-            printf("COUNT legende [%d] into_Raw {%s} ...\n", i, raw[i]); 
-            xnum++;
+            printf("COUNT legende [%d] into_Raw {%s} ...\n", i, cub->map.raw[i]); 
+            ++cub->box.xnum;
         }
     }
-    printf("LINE READ from RAW= %d \n", i);
-    // printf("LEGEND enum XNUM = %d \n", xnum);
-    return (xnum); 
+    // printf("LINE READ from RAW= %d \n", i);
+    return (cub); 
 }
 
 /// Now pre_read folder +  Malloc + post_read linked
-t_cub  *e_list_txtr(t_cub *cub, t_map *map)
+t_cub  *e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 { 
-    t_box   *box;
-	mlx_texture_t	*form;
       
-
-    // form = NULL;
-    box = malloc(sizeof(t_box) * 1);
-    if (!box)
-        return (NULL);
     box->xnum = 0;    //png ended file
-    box->xnum = e_mtrx_count(map->raw);
-    form = malloc(sizeof(mlx_texture_t *) * (box->xnum));
-    if (!form)
-    {
-        printf("SHIT!!! XNUM = %d \n", box->xnum);
-        return (NULL);
-    }
-    printf("XNUM = %d \n", box->xnum);
-    cub->box = e_mtrx_link(box, form, map->raw);
-    printf("- - eLIST - IDX<%p>\n", cub->box->xform[0]);
+    cub = e_mtrx_count(cub);    // xnum count
+    printf("\nXNUM = %d ", cub->box.xnum);
+    printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
+    cub->box = *e_mtrx_link(box, map->raw);  // link legend
+    cub = chsr_feed(cub);       // fill CHRS
     
     return (cub); 
 }
-/*  Ref. Tex. By assign.
+
+/*  Ref. Tex. By assign.    VER.1
             get a   txtr_name -> assign it to a char.
                 enum : how many txtr to mapp.
                 dict : bind unsigned char ptr to txtr->path
