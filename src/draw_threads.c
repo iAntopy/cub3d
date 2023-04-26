@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/24 21:28:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 22:11:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	report_threads_err(t_thdraw *threads, char *err, int print_strerr)
 	return (-1);
 }
 
-int	order_draw_call(t_thdraw *threads)
+int	order_draw_call(t_cub *cub, t_thdraw *threads)
 {
 	int			i;
 	int			nb_spins;
@@ -113,6 +113,7 @@ int	order_draw_call(t_thdraw *threads)
 		pthread_mutex_unlock(&threads[i].start_lock);
 	}
 //	printf("WOWOW :: start_lock unlocked ! Drawing begins !\n");
+	render_sky(cub, NULL);
 	i = -1;
 	nb_spins = 0;
 //	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);

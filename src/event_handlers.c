@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/25 04:13:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 22:12:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,8 @@ void	on_update(t_cub *cub)
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
-		order_draw_call(cub->draw_threads);
+		order_draw_call(cub, cub->draw_threads);
 //		render_floor(cub, cub->hero.rcast.rdata);
-//		render_sky(cub, cub->hero.rcast.rdata);
 //		render_walls(cub, cub->hero.rcast.rdata);
 		ft_deltatime_usec_note("this shit == bananas");
 		cub->renderer.requires_update = 0;

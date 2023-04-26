@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/25 04:00:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 23:40:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
 	clear_floorcaster(cub);
-	clear_skycaster(cub);
+//	clear_skycaster(cub);
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
 	printf("exit with status : %d\n", exit_status);
@@ -95,14 +95,23 @@ int	main(int argc, char **argv)
 
 	printf("loading floor texture\n");
 	cub.floor_tex = mlx_load_png("tex/FloorTile4.png");
-	cub.sky_tex = mlx_load_png("tex/sky_star.png");
+	cub.sky_tex = mlx_load_png("tex/skymap3.png");
+	//cub.sky_tex = mlx_load_png("tex/sky_star.png");
 	if (!cub.floor_tex || !cub.sky_tex)
 		return (printf("floor_tex or sky_star load failed\n"));
 	printf("floor && sky_star textures LOADED\n");
 	cub.sky_radial_width = cub.sky_tex->width * cub.inv_two_pi;
+	cub.sky_fov_to_tex = FOV60 * cub.sky_radial_width;
+	cub.sky_ht_to_midy = cub.sky_tex->height / ((float)SCN_HEIGHT * 0.666f);
+	cub.renderer.sky_ori_offset = (int)(cub.hero.ori * cub.sky_radial_width);
+	int	i;
+
+	i = -1;
+	while (++i < cub.scn_midy)
+		cub.renderer.sky_yoffsets[i] = (int)(i * cub.sky_ht_to_midy);
 
 
-	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0 || init_skycaster(&cub) < 0
+	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0// || init_skycaster(&cub) < 0
 		|| init_raycaster(&cub) < 0
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));

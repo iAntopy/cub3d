@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/25 03:41:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 23:20:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include "../lib/mtxlib/includes/mtxlib.h"
 
 # define SCN_WIDTH  1024
-# define SCN_HEIGHT 780
+# define SCN_HEIGHT 720
 
 # define ROT_FACTOR 0.006135923f
 # define CELL_WIDTH 64
@@ -237,8 +237,9 @@ typedef struct s_renderer
 			// below scn_midy. Every drawn pixels on screen 
 			// is mapped to a multiplier (see floor_caster.c)
 			// that stretches rx and ry to find the floor pixel it hits.
-	int			*sky_base_toffs;
-	int			*sky_toffs;
+//	int			*sky_base_toffs;
+//	int			*sky_toffs;
+	int			sky_yoffsets[SCN_HEIGHT >> 1];
 	int			sky_ori_offset;
 	int			requires_update;
 }	t_rdr;
@@ -263,7 +264,8 @@ typedef struct s_cub3d_core_data
 	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float			inv_two_pi;	// 1 / 2pi;
 	float			sky_radial_width;	// const sky texture width * inv_two_pi
-	float			sky_fov_to_tex;	// FOV60 * sky_radial_width;
+	float			sky_fov_to_tex;// FOV60 * sky_radial_width;
+	float			sky_ht_to_midy;//	tex_height / (SCN_HEIGHT / 2)
 	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float			fov;// = fov;// field of view
 	float			hfov;// = fov * 0.5f;// half fov
@@ -339,6 +341,7 @@ int				init_renderer(t_cub *cub);
 int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub, t_rdata *rd);
 void			render_floor(t_cub *cub, t_rdata *rd);
+void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
@@ -349,17 +352,17 @@ int				init_floorcaster(t_cub *cub);
 void			update_floorcaster_params(t_cub *cub);
 float			get_floorcaster_param(t_cub *cub, int x, int y);
 int				clear_floorcaster(t_cub *cub);
-
+/*
 /// SKYCASTING ///////////////
 int				init_skycaster(t_cub *cub);
 void			update_sky_base_toffs(t_cub *cub, int *base_toffs, int *toffs);
 void			update_sky_toffs(t_cub *cub, int *base_toffs, int *toffs);
 int				clear_skycaster(t_cub *cub);
-
+*/
 
 /// DRAW THREADS API
 int				init_draw_threads(t_cub *cub, t_thdraw *threads);
-int				order_draw_call(t_thdraw *threads);
+int				order_draw_call(t_cub *cub, t_thdraw *threads);
 void			stop_draw_threads(t_thdraw *threads);
 
 /// CHARACTER CONTROLS ////////

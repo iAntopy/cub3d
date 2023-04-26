@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/25 03:45:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/25 23:28:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,45 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 //	printf("render_walls DONE \n");
 }
 
+void	render_sky(t_cub *cub, t_rdata *rd)
+{
+	const uint32_t	tex_width = cub->sky_tex->width;
+	const int		mid_offset = cub->renderer.sky_ori_offset;
+	int				*texture_yoffsets = cub->renderer.sky_yoffsets;
+	int				texture_xoffsets[SCN_WIDTH];
+	int				*tof;
+	int				*tofy;
+	uint32_t		*pxls;
+	int				x;
+	int				y;
+
+//	const int	tex_col = (int)((x - cub->scn_midx) * cub->inv_sw * cub->skymap_fov_to_tex
+//		+ cub->skymap_tex_offset) % cub->tex.skymap->width;
+
+	(void)rd;
+	tof = texture_xoffsets - 1;
+	x = -1;
+	while (++x < SCN_WIDTH)
+	{
+		*(++tof) = (int)((x - cub->scn_midx) * cub->inv_sw	* cub->sky_fov_to_tex
+			+ mid_offset) % tex_width;
+		*(++tof) = (int)(((++x) - cub->scn_midx) * cub->inv_sw	* cub->sky_fov_to_tex
+			+ mid_offset) % tex_width;
+	}
+
+	pxls = (uint32_t *)cub->renderer.bg_layer->pixels;
+	tofy = texture_yoffsets;
+	y = -1;
+	while (++y < cub->scn_midy)
+	{
+		tof = texture_xoffsets - 1;
+		x = -1;
+		while (++x < SCN_WIDTH)
+			*(++pxls) = ((uint32_t *)cub->sky_tex->pixels)[*(++tof) + (*tofy) * tex_width];
+		++tofy;
+	}
+}
+
 static uint32_t	floor_get_pixel(mlx_texture_t *tex, int x, int y)
 {
 	if (x < 0 || y < 0)
@@ -76,7 +115,7 @@ void	render_floor(t_cub *cub, t_rdata *rd)
 	int			iter_y;
 	int			iter_x;
 	
-	printf("render floor entered \n");
+//	printf("render floor entered \n");
 
 	params = cub->renderer.floor_factors - 1;
 	pxls = (uint32_t *)cub->renderer.bg_layer->pixels
