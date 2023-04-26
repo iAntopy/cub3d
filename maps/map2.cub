@@ -5,8 +5,10 @@ d tex/ext/tree-branch.png
 e tex/ext/tree-dark.png
 z tex/ext/sky_star.png
 0 tex/ext/floortile4.png
+1 tex/ext/floor.png
 
 A abcd   
+B eded
 
      AAAAAAAAAAAA
      A000AA00000A

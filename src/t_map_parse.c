@@ -31,7 +31,7 @@ static	int	transcribe(t_map *map, t_cub *cub)
 	int		len;
 	int		i;
 
-	tmp = map->raw + cub->box->xnum;
+	tmp = map->raw + cub->box.xnum;
 	i = 0;
 	while (tmp[i])
 	{
@@ -53,7 +53,7 @@ static t_map	*map_frame(t_map *map, t_cub *cub)
 
 	printf("WWWW m->tab_len = %d\n", strtab_len(map->raw));
 	printf("WWWW map->height = %d\n", map->height);
-	m = map->raw + cub->box->xnum;
+	m = map->raw + cub->box.xnum;
 	i = 0;
 	
 	while (i < map->height)
@@ -109,13 +109,14 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	if ((map_len = read_whole_file(map, file)) == 0)
 		return (-1);
-	cub->tex_id = -1;
+
 	if (tex_parse(cub, map) < 0)
 		return (-1);
 	if (transcribe(map, cub) < 3)
 		return (error("Map in file is too short", map));
+		
 	printf("$$$map_raw len  : (%d)  map height [%d]\n", map_len, map->height);
-	map->tab = (char **)ft_calloc(sizeof(char *), (map->height));
+	// map->tab = (char **)ft_calloc(sizeof(char *), (map->height +));
 	if (!map->tab || !map_frame(map, cub))
 		return (-1);
 	printf("WWWW m->flg_ckk = %d\n", map->flg_chk);
@@ -126,7 +127,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	return (0);
 }
 
-/* WAS LIKE ...
+/* WAS LIKE ... Ver.2
 	map_checker:
 		1	strfcmp .cub - chk file extention 
 		2 	read_whole_file - stock it all. = map->raw
