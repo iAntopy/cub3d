@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:52:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/17 15:42:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 21:05:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,18 @@ int	build_collision_map(t_map *map)
 	int		i;
 	int		j;
 
+	printf("build_collision_map started \n");
+
 	colls = NULL;
-	if (!ft_malloc_p(sizeof(char) * map->total_cells, (void **)&colls))
+	if (!ft_malloc_p(sizeof(char) * map->width * map->height, (void **)&colls))
 		return (-1);
 	i = -1;
 	while (++i < map->height)
 	{
 		j = -1;
 		while (++j < map->width)
-			colls[i * map->width + j] = (map->tab[i][j] == '1'
-					|| map->tab[i][j] == '\0');
+			colls[i * map->width + j] = (ft_strchr(MAP_UCHR, map->m[i][j]) != NULL);//(map->m[i][j] == '1'
+					//|| map->m[i][j] == '\0');
 	}
 	map->collision_map = colls;
 	return (0);
@@ -77,6 +79,7 @@ int	build_grid_coords_map(t_map *map)
 	int		j;
 	float	**gcoords;
 
+	printf("build_grid_coords_map started \n");
 	gcoords = NULL;
 	if (!ft_calloc_p(sizeof(float *) * (map->height + 1), (void **)&gcoords))
 		return (-1);
@@ -93,5 +96,6 @@ int	build_grid_coords_map(t_map *map)
 		}
 	}
 	map->grid_coords = gcoords;
+	printf("map->grid_coords : %p\n", map->grid_coords);
 	return (0);
 }

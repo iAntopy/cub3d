@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 18:17:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 20:33:54 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@
 # define TEX_FLOOR			5
 
 # define CUBMAP_BUFMAX 100000
-# define MAP_CHARS "01WNES"
-# define MAP_NCHR "0123456789"
+# define MAP_CHARS "0AB@"
 # define MAP_LCHR "abcdefghijz"
+# define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
 
 # define PLAYER_HEIGHT 32
@@ -88,13 +88,12 @@ typedef void				(*t_draw_func)(t_cub *, t_rdata *);
 
 
 /*
-	T_MATRX struct PREST
+	T_MATRX struct PSET
 		*walls[4] = preset from xform
 
-	T_BOX struct BOX builder content
+	T_BOX  builder XFORM 
 		xnum 	= legend count (lower + num)
 		pset	= recette count (upper)
-		form	=simple form to build bigger
 		xform	= preset final form
 	...
 */
@@ -105,13 +104,15 @@ typedef struct s_matrx
 }		t_matrx;
 
 typedef struct s_box
-{
-	char 			*idx;	
+{	
+	char 			*chrs;
+	int				chrs_len;
 	int 			xnum;	
+	int				pnum;
 	int				pset;
-	mlx_texture_t	*form;
 	mlx_texture_t	**xform;
-}		t_box;
+	mlx_texture_t	*sky;	
+}	t_box;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
@@ -133,10 +134,11 @@ typedef struct s_map_data
 	float	**grid_coords;
 
 	// Germain specific Stuff
-	char	*file;
-	char	**tab;
-	char	**txtr;
+
+	t_matrx	***mx;
+//	char	**tab;
 	char	**raw;
+	char	**m;	// test mapping map
 	int		pos_x;
 	int		pos_y;
 	int		lines_to_map;
@@ -241,7 +243,7 @@ typedef struct s_renderer_column_params
 {
 	mlx_image_t		*walls_layer;
 	mlx_texture_t	*tex;
-//	uint32_t		*init_pxls;// strat 2
+	//	uint32_t		*init_pxls;// strat 2
 	int				half_texh;// strat 1
 	int				scn_height;
 	int				half_height;// strat 1
@@ -262,6 +264,11 @@ typedef struct s_renderer
 			// that stretches rx and ry to find the floor pixel it hits.
 //	int			*sky_base_toffs;
 //	int			*sky_toffs;
+	float		flrw_to_cw;
+	float		flrh_to_cw;
+	float		sky_radial_width;	// const sky texture width * inv_two_pi
+	float		sky_fov_to_tex;// FOV60 * sky_radial_width;
+	float		sky_ht_to_midy;//	tex_height / (SCN_HEIGHT / 2)
 	int			sky_yoffsets[SCN_HEIGHT >> 1];
 	int			sky_ori_offset;
 	int			requires_update;
@@ -287,11 +294,6 @@ typedef struct s_cub3d_core_data
 	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float			inv_two_pi;	// 1 / 2pi;
 
-	float			flrw_to_cw;
-	float			flrh_to_cw;
-	float			sky_radial_width;	// const sky texture width * inv_two_pi
-	float			sky_fov_to_tex;// FOV60 * sky_radial_width;
-	float			sky_ht_to_midy;//	tex_height / (SCN_HEIGHT / 2)
 	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float			fov;// = fov;// field of view
 	float			hfov;// = fov * 0.5f;// half fov
@@ -303,8 +305,9 @@ typedef struct s_cub3d_core_data
 	t_hero			hero;
 	t_rdr			renderer;
 	t_thdraw		draw_threads[NB_DRAW_THREADS];
-	t_matrx			mx;
-	t_box			*box;
+	t_matrx			*pset;
+	t_box			box;
+//	t_matrx			mx;
 }	t_cub;
 
 
@@ -317,10 +320,10 @@ void	print_map(t_map *map);
 
 /// MAP_CHECKER ///////////////
 //map_parse
+t_cub			*wall_check(t_cub *cub,t_map *map);
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map);
-t_map			*wall_check(t_map *map);
 //int				color_split(t_map *map, int id);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
 //int				is_empty_line(char *line);
@@ -380,9 +383,10 @@ int				init_floorcaster(t_cub *cub);
 void			update_floorcaster_params(t_cub *cub);
 float			get_floorcaster_param(t_cub *cub, int x, int y);
 int				clear_floorcaster(t_cub *cub);
-/*
-/// SKYCASTING ///////////////
+
+/// SKYCASTING //////////////
 int				init_skycaster(t_cub *cub);
+/*
 void			update_sky_base_toffs(t_cub *cub, int *base_toffs, int *toffs);
 void			update_sky_toffs(t_cub *cub, int *base_toffs, int *toffs);
 int				clear_skycaster(t_cub *cub);
@@ -406,10 +410,12 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// TESTING TXTR_DICT
-t_cub			*e_list_txtr(t_cub *cub, t_map *map);
-t_box 			*xwalls_builder(t_cub *cub, char **raw, int nb);
-t_box	 		*e_mtrx_link(t_box *box, mlx_texture_t *form, char **raw);
-int 			e_mtrx_count(char **raw);
+t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
+t_box 			*xwalls_builder(t_cub *cub, char **raw);
+t_cub			*chsr_feed(t_cub *cub);
+t_box	 		*e_mtrx_link(t_box *box, char **raw);
+t_cub			*e_mtrx_count(t_cub *cub);
+t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 //
 const char	 	*get_folder_name(char *full_path);
 char			*t_name_set(const char *dir_path, char *d_name);

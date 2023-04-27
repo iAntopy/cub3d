@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 19:17:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 21:14:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ static void	init_raydata_consts(t_cub *cub, t_rcast *rcast)
 		rd->rx = _mtx_index_fptr(rcast->rays[0], rd->idx, 0);
 		rd->ry = _mtx_index_fptr(rcast->rays[1], rd->idx, 0);
 	}
+	printf("\n\n\nhero cell_x/y : %d, %d\n", cub->hero.cell_x, cub->hero.cell_y);
+	printf("*rd->pcx/y : %d, %d\n", *rcast->rdata->pcx, *rcast->rdata->pcy);
 }
 
 int	init_raycaster(t_cub *cub)
 {
 	t_rcast	*rcast;
 
+	printf("init raycaster starts \n");
 	rcast = &cub->hero.rcast;
 	rcast->cub = cub;
 	rcast->map = &cub->map;
@@ -63,5 +66,6 @@ int	init_raycaster(t_cub *cub)
 	cub->hero.fov_ry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH - 1, 0);
 	init_raydata_consts(cub, rcast);
 	update_fov(cub, FOV);
+	printf("init raycaster exits \n");
 	return (0);
 }

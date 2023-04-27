@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 17:06:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 21:25:02 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 		if (cub->tex.walls[i])
 			mlx_delete_texture(cub->tex.walls[i]);
 	ft_free_p((void **)&cub->map.collision_map);
-	strtab_clear(&cub->map.tab);
+//	strtab_clear(&cub->map.tab);
 	strtab_clear((char ***)&cub->map.grid_coords);
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
@@ -88,40 +88,21 @@ int	main(int argc, char **argv)
 	}
 	printf("Initializing MLX42 context.\n");
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
+	printf("What happened MLX42 context.\n");
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
 	printf("MLX42 context initialized successfully !\n");
 
-
-	printf("loading floor texture\n");
-	cub.floor_tex = mlx_load_png("tex/FloorTile4.png");
-	cub.sky_tex = mlx_load_png("tex/skymap3.png");
-	//cub.sky_tex = mlx_load_png("tex/sky_star.png");
-	if (!cub.floor_tex || !cub.sky_tex)
-		return (printf("floor_tex or sky_star load failed\n"));
-	printf("floor && sky_star textures LOADED\n");
-	cub.flrw_to_cw = cub.inv_cw * cub.floor_tex->width;
-	cub.flrh_to_cw = cub.inv_cw * cub.floor_tex->height;
-	cub.sky_radial_width = cub.sky_tex->width * cub.inv_two_pi;
-	cub.sky_fov_to_tex = FOV60 * cub.sky_radial_width;
-	cub.sky_ht_to_midy = cub.sky_tex->height / ((float)SCN_HEIGHT * 0.666f);
-	cub.renderer.sky_ori_offset = (int)(cub.hero.ori * cub.sky_radial_width);
-	int	i;
-
-	i = -1;
-	while (++i < cub.scn_midy)
-		cub.renderer.sky_yoffsets[i] = (int)(i * cub.sky_ht_to_midy);
-
-
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0// || init_skycaster(&cub) < 0
-		|| init_raycaster(&cub) < 0
-		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
+//		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
 	cub_setup_mlx_hooks_and_settings(&cub);
+	printf("Party time babyyyyy !\n");
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub,
-				report_err_strerror("mlx loop stopped with ERROR ! : %s ")));
+				report_err_strerror("mlx loop stopped with ERROR ! : %s")));
 	return (cub_clear(&cub, EXIT_SUCCESS));
 }

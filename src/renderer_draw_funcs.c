@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 17:28:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/26 21:48:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 	mlx_texture_t	*tex;
 	int				tex_start_x;
 
-	tex = cub->tex.walls[rd->side];
+	//if (rd->cx < 0 || rd->cy < 0 || rd->cx >= cub->map.width || rd->cy >= cub->map.height)
+//	printf("ABÉRATION ! cx, cy : %d, %d\n", rd->cx, rd->cy);
+	tex = cub->map.mx[rd->cy][rd->cx]->xwalls[rd->side];
+//	tex = cub->tex.walls[rd->side];
 	*tw = tex->width;
 	rc->half_texh = (tex->height >> 1);
 	tex_start_x = (int)(rd->tex_ratio * tex->width);
@@ -65,7 +68,7 @@ void	render_sky(t_cub *cub, t_rdata *rd)
 	x = -1;
 	while (++x < SCN_WIDTH)
 		*(++tofs[0]) = (int)((x - cub->scn_midx) * cub->inv_sw
-				* cub->sky_fov_to_tex
+				* cub->renderer.sky_fov_to_tex
 				+ cub->renderer.sky_ori_offset) % cub->sky_tex->width;
 	pxls = (uint32_t *)cub->renderer.bg_layer->pixels;
 	tofs[1] = cub->renderer.sky_yoffsets - 1;
