@@ -1,4 +1,0 @@
-a tex/ext/tree-bark.png
-b tex/ext/tree-branch.png
-c tex/ext/tree-dark.png
-d tex/ext/tree-old.png
