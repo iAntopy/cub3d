@@ -1,55 +1,73 @@
+///                                 init textr
 tex/ext/a_tex_256.png
-tex/ext/beach_sand.png
-b_tex_256.png
-tex/ext/comida_pan.png
-tex/ext/comida_queso.png
-
+tex/ext/b_tex_256.png
 tex/ext/c_tex_256.png
-
-
-tex/ext/dark-metal.png
-tex/ext/dirty-sand-.png
+///                                 original
+tex/ext/w_side.png
+tex/ext/n_side.png
 tex/ext/e_side.png
+tex/ext/s_side.png
+///                                 sky
+tex/ext/skymap3.png
+tex/ext/sky_star.png
+///                                 floor
 tex/ext/floor.png
 tex/ext/floortile4.png
-tex/ext/grass-clover.png
+
+///                                 object
+tex/ext/Portal1.png
+tex/ext/portal.png
+
+///                                 sand
+tex/ext/red-sand-ground.png
+tex/ext/smooth-sand-dunes.png
+tex/ext/dirty-sand.png
+tex/ext/beach_sand.png
+
+///                                 mountain
 tex/ext/gray-mountain-rock.png
-tex/ext/grunge-rock.png
-tex/ext/hay-straw.png
-tex/ext/hedge-wall_a.png
-tex/ext/hedge-wall.png
-tex/ext/irregular-concrete-wall.png
-tex/ext/ivy-caper-leaves.png
 tex/ext/mountain_crack.png
 tex/ext/mountain-rock.png
 tex/ext/mountain_rock.png
 tex/ext/mountain-stone-rock.png
-tex/ext/n_side.png
-tex/ext/old-wood-planks.png
-tex/ext/pink-flowers.png
-tex/ext/Portal1.png
-tex/ext/portal.png
-tex/ext/purple-cloth.png
-tex/ext/purple-flowers.png
-tex/ext/red-brick-wall.png
 tex/ext/red-mountain-rock.png
-tex/ext/red-sand-ground.png
+tex/ext/stone-mountain-rock.png
+tex/ext/white-mountain-rock.png
+
+///                                 wall
+tex/ext/red-brick-wall.png
+tex/ext/wall_256.jpg
+tex/ext/wall_concret.png
+tex/ext/wall_rock_crak.png
+tex/ext/irregular-concrete-wall.png
 tex/ext/rock2.png
 tex/ext/rock-wall.png
-tex/ext/rusty-metal.png
-tex/ext/skymap3.png
-tex/ext/sky_star.png
-tex/ext/smooth-sand-dunes.png
-tex/ext/s_side.png
-tex/ext/stone-mountain-rock.png
-tex/ext/travertine-stone.png
+
+///                                 nature
+tex/ext/ivy-caper-leaves.png
+tex/ext/hay-straw.png
+tex/ext/grass-clover.png
+tex/ext/hedge-wall_a.png
+tex/ext/hedge-wall.png
+tex/ext/purple-flowers.png
+tex/ext/pink-flowers.png
+
+
+///                                 wood
+tex/ext/old-wood-planks.png
 tex/ext/tree-bark.png
 tex/ext/tree-branch.png
 tex/ext/tree-dark.png
 tex/ext/tree-old.png
-tex/ext/wall_256.jpg
-tex/ext/wall_concret.png
-tex/ext/wall_rock_crak.png
+
+///                                 others
+tex/ext/rusty-metal.png
+tex/ext/dark-metal.png
+tex/ext/grunge-rock.png
+tex/ext/travertine-stone.png
 tex/ext/white-marble.png
-tex/ext/white-mountain-rock.png
-tex/ext/w_side.png
+
+///                                 funny
+tex/ext/purple-cloth.png
+tex/ext/comida_pan.png
+tex/ext/comida_queso.png
