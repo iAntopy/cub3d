@@ -12,7 +12,35 @@
 
 #include "../include/cub3d.h"
 
-// CHRS FEED
+t_cub	*mx_struct(t_map *m, t_cub *cub)
+{
+	int			k;	
+	int			p_box;
+	const char	*chrs;
+
+	printf("mx_struct start \n");
+	chrs = cub->box.chrs;
+	k = -1;
+	m->mx = (t_matrx ***)malloc(sizeof(t_matrx **) * m->height);
+	while (++k < m->height)
+		m->mx[k] = (t_matrx **)malloc(sizeof(t_matrx *) * m->width);
+	m->pos_y = 0;
+	while (m->pos_y < m->height)
+	{
+		m->pos_x = 0;
+		while (m->pos_x < m->width)
+		{
+			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
+			if (p_box != -1 || p_box == (int)ft_strlen(chrs) - 1)
+				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
+			m->pos_x++;
+		}
+		m->pos_y++;
+	}
+	printf("mx_struct exit\n");
+	return (cub);
+}
+
 t_cub *chsr_feed(t_cub *cub)
 { 
     int i;
@@ -35,7 +63,6 @@ t_cub *chsr_feed(t_cub *cub)
     return (cub); 
 }
 
-// XFORM from RAW
 t_box *e_mtrx_link(t_box *box, char **raw)
 {
     char    *tex_path;
@@ -66,7 +93,6 @@ t_box *e_mtrx_link(t_box *box, char **raw)
     return (box); 
 }
 
-// XNUM COUNT
 t_cub *e_mtrx_count(t_cub *cub)
 { 
     int i;
@@ -91,7 +117,6 @@ t_cub *e_mtrx_count(t_cub *cub)
     return (cub); 
 }
 
-/// Now pre_read folder +  Malloc + post_read linked
 t_cub  *e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 { 
       
