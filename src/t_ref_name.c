@@ -24,7 +24,7 @@ t_cub	*mx_struct(t_map *m, t_cub *cub)
 	m->mx = (t_matrx ***)malloc(sizeof(t_matrx **) * m->height);
 	while (++k < m->height)
 		m->mx[k] = (t_matrx **)malloc(sizeof(t_matrx *) * m->width);
-	m->pos_y = 0;
+	m->pos_y = 0;git 
 	while (m->pos_y < m->height)
 	{
 		m->pos_x = 0;
