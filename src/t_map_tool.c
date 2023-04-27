@@ -16,7 +16,6 @@ int	error(char *error, t_map *map)
 {
 	strtab_clear(&map->raw);
 	strtab_clear(&map->m);
-	//strtab_clear(&map->tab);
 	return (report_err(error));
 }
 

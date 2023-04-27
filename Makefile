@@ -32,7 +32,6 @@ SRC_FLS	:=		main.c 			\
 			t_empty_line.c		\
 			tex_parse.c			\
 			t_ref_name.c		\
-			t_ref_utils.c		\
 			draw_threads.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))

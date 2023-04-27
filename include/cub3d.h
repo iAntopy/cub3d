@@ -87,16 +87,6 @@ typedef struct s_ray_collision_data	t_rdata;
 typedef void				(*t_draw_func)(t_cub *, t_rdata *);
 
 
-/*
-	T_MATRX struct PSET
-		*walls[4] = preset from xform
-
-	T_BOX  builder XFORM 
-		xnum 	= legend count (lower + num)
-		pset	= recette count (upper)
-		xform	= preset final form
-	...
-*/
 /// PARSING ///////////////////
 typedef struct s_matrx
 {
@@ -136,7 +126,6 @@ typedef struct s_map_data
 	// Germain specific Stuff
 
 	t_matrx	***mx;
-//	char	**tab;
 	char	**raw;
 	char	**m;	// test mapping map
 	int		pos_x;
@@ -152,11 +141,11 @@ typedef struct s_map_data
 // walls : array of mlx_texture_t ptr foreach side.
 typedef struct s_texture_data
 {
-	mlx_texture_t	*walls[4];
-	char			**rgbx;
 	int				color[2];
+	mlx_texture_t	*walls[4];
 	mlx_texture_t	*skymap;	// yessss
-	mlx_texture_t	*floor;	// yessss
+	mlx_texture_t	*floor;		// yessss
+	char			**rgbx;
 }	t_tex;
 
 typedef struct s_ray_collision_data
@@ -278,9 +267,8 @@ typedef struct s_cub3d_core_data
 {
 	/// MLX42 DATA
 	mlx_t			*mlx;
-//	mlx_image_t		*imgz;
+//	mlx_image_t		*imgz;	// maybe for mini_map
 	mlx_image_t		*color;
-//	mlx_texture_t	*texr;
 
 	/// TEMP VARS FOR TESTING AND DEBUG ONLY ///////////////////
 	mlx_texture_t	*floor_tex;
@@ -307,10 +295,7 @@ typedef struct s_cub3d_core_data
 	t_thdraw		draw_threads[NB_DRAW_THREADS];
 	t_matrx			*pset;
 	t_box			box;
-//	t_matrx			mx;
 }	t_cub;
-
-
 
 //int	load_map(t_cub *cub, char *map_file);
 int		build_collision_map(t_map *map);
@@ -324,7 +309,6 @@ t_cub			*wall_check(t_cub *cub,t_map *map);
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map);
-//int				color_split(t_map *map, int id);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
 //int				is_empty_line(char *line);
 //map_tool
@@ -417,9 +401,5 @@ t_box	 		*e_mtrx_link(t_box *box, char **raw);
 t_cub			*e_mtrx_count(t_cub *cub);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
-//
-const char	 	*get_folder_name(char *full_path);
-char			*t_name_set(const char *dir_path, char *d_name);
-t_cub			*get_tex_by_ref(t_cub *cub, int id, const char *tex_str);
-char 			*get_ref_str(t_cub *cub, char *ref, int alt);
+
 #endif
