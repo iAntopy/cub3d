@@ -34,3 +34,4 @@ C0000000000C         D000D A00000000000A
 C0000CCCCCCC        D00000D A000000000A
 CCCCCC               D000D   AA00000AA
                       DDD      AAAAA
+git status
