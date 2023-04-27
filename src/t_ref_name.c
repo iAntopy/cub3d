@@ -24,7 +24,7 @@ t_cub	*mx_struct(t_map *m, t_cub *cub)
 	m->mx = (t_matrx ***)malloc(sizeof(t_matrx **) * m->height);
 	while (++k < m->height)
 		m->mx[k] = (t_matrx **)malloc(sizeof(t_matrx *) * m->width);
-	m->pos_y = 0;git 
+	m->pos_y = 0;
 	while (m->pos_y < m->height)
 	{
 		m->pos_x = 0;
@@ -116,8 +116,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
 	box->xnum = 0;
 	cub = e_mtrx_count(cub);
-	printf("\nXNUM = %d ", cub->box.xnum);
-	printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
+	// printf("\nXNUM = %d ", cub->box.xnum);
+	// printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
 	cub->box = *e_mtrx_link(box, map->raw);
 	cub = chsr_feed(cub);
 	return (cub);

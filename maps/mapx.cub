@@ -1,18 +1,28 @@
+a tex/ext/rusty-metal.png
+b tex/ext/dark-metal.png
+c tex/ext/grunge-rock.png
+d tex/ext/travertine-stone.png
+e tex/ext/white-marble.png
+f tex/ext/rusty-metal.png
+g tex/ext/dark-metal.png
+z tex/ext/sky_star.png
+0 tex/ext/floor.png
+
+
 A abcd
+B efef
+C gggg
 
-C 220,110,0
-F 60,60,80
-
-    AAAAAAAAAAAA
-    A000AA00000A
-    A000A000000A
-    A000AAAAAAAA
-AAAAA000A
-A0000000A
-A0000000A
- A00000A
- A00A00A
-A0000000A
-A0000000A
-A0N00000A
-AAAAAAAAA
+AAAAAAAAAAAAAA
+A000000000000A  
+A000000000000A
+A0000000BBBBBB
+AABBB00000000A
+A000000000000A
+A000000000000A
+ B00000A00000A
+ B00A00B00000A
+B000000C00000A
+B000@00000000A
+B000000000000A
+BAABBAAABBBAAA
