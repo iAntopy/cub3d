@@ -14,7 +14,7 @@
 
 t_cub	*mx_struct(t_map *m, t_cub *cub)
 {
-	int			k;	
+	int			k;
 	int			p_box;
 	const char	*chrs;
 
@@ -43,69 +43,70 @@ t_cub	*mx_struct(t_map *m, t_cub *cub)
 
 t_cub	*chsr_feed(t_cub *cub)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    j = 0;
-    i = -1;
-    cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
-    while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)    
-    {
-        if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97  && cub->map.raw[i][1] == 32)
-        {
-            cub->box.chrs[j] = cub->map.raw[i][0];
-            ++j;
-        }
-    }
-    cub->box.chrs[j++] = '@';
-    cub->box.chrs[j++] = '\0';
-    printf("NEW CHRS {%s} len[%d]\n\n",  cub->box.chrs, j);
-    return (cub); 
+	j = 0;
+	i = -1;
+	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
+	while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)
+	{
+		if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97
+			&& cub->map.raw[i][1] == 32)
+		{
+			cub->box.chrs[j] = cub->map.raw[i][0];
+			++j;
+		}
+	}
+	cub->box.chrs[j++] = '@';
+	cub->box.chrs[j++] = '\0';
+	printf("NEW CHRS {%s} len[%d]\n\n", cub->box.chrs, j);
+	return (cub);
 }
 
-t_box *e_mtrx_link(t_box *box, char **raw)
+t_box	*e_mtrx_link(t_box *box, char **raw)
 {
-    char    *tex_path;
-    char    *tex_name;
-    int i;
+	char	*tex_path;
+	char	*tex_name;
+	int		i;
 
-    i = -1;
-    box->pnum = 0;
-    box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
-    if(!box->xform )
-        return (NULL);    
-    while (++i < box->xnum)
-    {   
-        if(raw[i][0] > 32)
-        {
-            tex_name = ft_substr(raw[i], 0, 1);
-            tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i])- 2);
-            if (ft_in_set(raw[i][0], (const char *)MAP_NCHR) != -1)
-                box->pnum++;
-            box->xform[i] = mlx_load_png(tex_path);
-            if (!box->xform[i])
-                return (report_mlx_tex_load_failed(tex_path));
-            if (tex_name[0] == 'z')
-                box->sky = box->xform[i];                
-        } 
+	i = -1;
+	box->pnum = 0;
+	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
+	if (!box->xform)
+		return (NULL);
+	while (++i < box->xnum)
+	{
+		if (raw[i][0] > 32)
+		{
+			tex_name = ft_substr(raw[i], 0, 1);
+			tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i]) - 2);
+			if (ft_in_set(raw[i][0], (const char *)MAP_NCHR) != -1)
+				box->pnum++;
+			box->xform[i] = mlx_load_png(tex_path);
+			if (!box->xform[i])
+				return (report_mlx_tex_load_failed(tex_path));
+			if (tex_name[0] == 'z')
+				box->sky = box->xform[i];
+		}
 	}
 	return (box);
 }
 
 t_cub	*e_mtrx_count(t_cub *cub)
 {
-	int		i;
-	char	*rawz;
+	int			i;
+	const char	*rawz;
 
 	i = -1;
-	rawz = cub->map.raw;
 	cub->box.chrs_len = 1;
 	cub->box.xnum = 0;
 	while (*cub->map.raw && cub->map.raw[++i])
 	{
-		if (rawz[i][0] > 32 && rawz[i][0] < 97 && rawz[i][1] == 32)
+		rawz = cub->map.raw[i];
+		if (rawz[0] > 32 && rawz[0] < 97 && rawz[1] == 32)
 			++cub->box.chrs_len;
-		if (ft_strchr_set(rawz[i], ".png") != NULL)
+		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
 	}
 	return (cub);

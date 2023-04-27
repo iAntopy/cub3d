@@ -12,103 +12,61 @@
 
 #include "../include/cub3d.h"
 
-// t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
-	// {
-	// 	char	*t;
-	// 	// mlx_texture_t	*xform;
-
-	// 	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, tex_str);
-		
-	// 	cub->tex_id++;
-	// 	if (!cub->mx->xwalls[id])
-	// 	{
-	// 		while (*(++tex_str) && ft_isspace(*tex_str))
-	// 			continue ;
-	// 		t =  tex_str;
-	// 		// t =  ft_substr(tex_str,0, ft_strlen(tex_str) - 2);
-	// 		while (*tex_str && !ft_isspace(*tex_str))
-	// 			tex_str++ ;
-	// 		*tex_str = '\0';
-	// 		printf("tex_by_id __ t** = {%s} \n", t);
-	// 		cub->mx->xwalls[id] = mlx_load_png(t);
-	// 		if (cub->mx->xwalls[id])
-	// 			return (report_mlx_tex_load_failed(t));
-	// 	}
-	// 		// if (!cub->tex.walls[id])
-	// 		// {
-	// 		// 	while (*(++tex_str) && ft_isspace(*tex_str))
-	// 		// 		continue ;
-	// 		// 	t = tex_str;	
-	// 		// 	while (*tex_str && !ft_isspace(*tex_str))
-	// 		// 		tex_str++ ;
-	// 		// 	*tex_str = '\0';
-	// 		// 	cub->tex.walls[id] = mlx_load_png(t);
-	// 		// 	if (!cub->tex.walls[id])
-	// 		// 		return (report_mlx_tex_load_failed(t));
-	// 		// 	cub->tex_id++;
-	// 		// }
-	// 	else
-	// 	{
-	// 		ft_eprintf("Error\n\t- Trying to load texture id %d twice.\n", id);
-	// 		return (NULL);
-	// 	}	
-	// 	return (cub);
-// }
-
-t_matrx *pset_maker(t_cub *cub, char **raw, int queue, int len)
+t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 {
-	int     fill;
-	int 	id;
-	char 	*ref;
+	int		fill;
+	int		id;
+	char	*ref;
 
 	id = 0;
 	fill = -1;
 	ref = raw[queue];
-	if (ft_in_set((const char )raw[queue][0], (const char *)MAP_UCHR) > -1)
+	if (ft_in_set((const char)raw[queue][0], (const char *)MAP_UCHR) > -1)
 	{
-		while(fill++ < 3)
+		while (fill++ < 3)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-		// printf("MAKER: MULTI: recett{%c} :: index[%d] :: ptr<<%p>> ::\n", ref[fill + 2], id,  cub->box.xform[id]);
+			printf("MAKER: MULTI: recett{%c} :: index[%d]\n", ref[fill + 2],
+				id);
 			if (id != -1)
-				cub->pset[len].xwalls[fill] =  cub->box.xform[id];
+				cub->pset[len].xwalls[fill] = cub->box.xform[id];
 		}
 	}
-	else if ((ft_in_set((const char)raw[queue][0], (const char *)MAP_NCHR) > -1))
+	else if ((ft_in_set((const char)raw[queue][0],
+			(const char *)MAP_NCHR) > -1))
 	{
-	// printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);
 		cub->pset[len].xwalls[0] = cub->box.xform[queue];
 		cub->pset[len].xwalls[1] = NULL;
 	}
-    return (cub->pset);
+	return (cub->pset);
 }
+		/* printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);*/
+		/* printf(" ptr<<%p>> ::\n", cub->box.xform[id]); */
 
-t_box *xwalls_builder(t_cub *cub, char **raw)
+t_box	*xwalls_builder(t_cub *cub, char **raw)
 {
-	int 	queue;
-	int 	len;
+	int		queue;
+	int		len;
 	char	*ref;
 
-	
-	queue = cub->box.xnum - cub->box.pnum;    
+	queue = cub->box.xnum - cub->box.pnum;
 	len = 0;
-	
-    while (len < cub->box.pset)
-    {
+	while (len < cub->box.pset)
+	{
 		ref = raw[queue];
-    	printf("INDEX[%d]:: PRESET CHAR>>(%c) :: <<%d of %d>> \n", queue, ref[0], len+1, cub->box.pset);
+		printf("INDEX[%d]:: PRESET CHAR>>(%c)", queue, ref[0]);
+		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
 		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		len++;
 		queue++;
 	}
-    return (&cub->box);
+	return (&cub->box);
 }
 
 static int	error_clr(char *err, t_map *map)
 {
 	strtab_clear(&map->raw);
-	// strtab_clear(&map->txtr);
 	if (err && err[0])
 		return (error(err, map));
 	return (-1);
@@ -116,11 +74,10 @@ static int	error_clr(char *err, t_map *map)
 
 int	tex_parse(t_cub *cub, t_map *map)
 {
-	// t_matrx *pset;
-	int		nb;
-	int		id;
+	int	nb;
+	int	id;
 
-	cub =  e_list_txtr(cub, &cub->box, map);
+	cub = e_list_txtr(cub, &cub->box, map);
 	nb = cub->box.xnum;
 	cub->box.pset = cub->box.pnum;
 	while (map->raw[nb] && map->raw[nb][0] != ' ')
@@ -133,14 +90,14 @@ int	tex_parse(t_cub *cub, t_map *map)
 	}
 	cub->pset = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.pset);
 	if (!cub->pset)
-        return (-1);
+		return (-1);
 	if (!xwalls_builder(cub, map->raw))
 		return (error_clr(NULL, map));
-	printf("** ---- tex_parse ends ---- **\n");
 	return (0);
 }
 
-/* 	Start with 	: VER.3
+/* 
+	Start with 	: VER.3
 		: 	map->raw	-->	first lecture total len of the file
 		:		NCHR	-->	floor txtr legend	
 		:		LCHR	-->	wall  txtr legend
@@ -154,4 +111,3 @@ int	tex_parse(t_cub *cub, t_map *map)
 		:		FRAME two	: preset
 		:		xwalls = malloc(sizeof(void *) * 4)
 */
-
