@@ -24,6 +24,8 @@ t_map	*check_hero_found(t_map *m)
 	m->hero_x = m->pos_x;
 	m->hero_y = m->pos_y;
 	m->m[m->pos_y][m->pos_x] = '0';
+	printf("player x[%d]", m->pos_x);
+	printf("player y[%d]\n\n", m->pos_y);
 	return (m);
 }
 
@@ -42,7 +44,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 					(const char *)cub->box.chrs);
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0')
 				m->m[m->pos_y][m->pos_x] = 'A';
-			if (o_cells == 4)
+			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
 				m = check_hero_found(m);
 			m->pos_x++;
 		}

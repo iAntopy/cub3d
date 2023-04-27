@@ -84,7 +84,8 @@ int	tex_parse(t_cub *cub, t_map *map)
 	{
 		id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
 		if (id < 0 || map->raw[nb][1] != ' ')
-			return (error_clr("Invalid config found!\n", map));
+			break;
+		printf("PSET[%d]:: PNUM[%d]  REF = %c \n", cub->box.pset, cub->box.pnum, map->raw[nb][0]);
 		cub->box.pset++;
 		nb++;
 	}

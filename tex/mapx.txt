@@ -8,11 +8,11 @@ tex/ext/n_side.png
 tex/ext/e_side.png
 tex/ext/s_side.png
 ///                                 sky
-tex/ext/skymap3.png
 tex/ext/sky_star.png
-///                                 floor
-tex/ext/floor.png
+tex/ext/skymap3.png
 tex/ext/floortile4.png
+tex/ext/floor.png
+///                                 floor
 
 ///                                 object
 tex/ext/Portal1.png

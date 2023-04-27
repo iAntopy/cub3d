@@ -3,22 +3,21 @@ b tex/ext/tree-old.png
 c tex/ext/tree-bark.png
 d tex/ext/tree-branch.png
 e tex/ext/tree-dark.png
-f tex/ext/purple-cloth.png
 z tex/ext/sky_star.png
 0 tex/ext/floortile4.png
 
-A abcd   
+A abcd
 B eded
 
-     AAAAAAAAAAAA
-     A000AA00000A
-     A000A000000A
-     A00000AAAAAA
-     AAAAAA00000A
-     B0000000000A
-     BBB000A0000A
-     B00000A0000A
-     B00A00AAA00A
-     A00A0000000A
-     A@0A0000000A
-     AAAAAAAAAAAA
+AAAAAAAAAAAA
+A000AA00000A
+A000A000000A
+A00000AAAAAA
+AAAAAA00000A
+B0000000000A
+BBB000A0000A
+B00000A0000A
+BBAA00AAABBA
+A0000000000A
+A@000000000A
+AAAAAAAAAAAA

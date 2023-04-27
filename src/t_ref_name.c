@@ -51,15 +51,15 @@ t_cub	*chsr_feed(t_cub *cub)
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)
 	{
-		if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97
-			&& cub->map.raw[i][1] == 32)
+		if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97 &&
+			cub->map.raw[i][1] == 32)
 		{
 			cub->box.chrs[j] = cub->map.raw[i][0];
 			++j;
 		}
 	}
 	cub->box.chrs[j++] = '@';
-	cub->box.chrs[j++] = '\0';
+	cub->box.chrs[j] = '\0';
 	printf("NEW CHRS {%s} len[%d]\n\n", cub->box.chrs, j);
 	return (cub);
 }
@@ -84,6 +84,7 @@ t_box	*e_mtrx_link(t_box *box, char **raw)
 			if (ft_in_set(raw[i][0], (const char *)MAP_NCHR) != -1)
 				box->pnum++;
 			box->xform[i] = mlx_load_png(tex_path);
+			// printf("inventaire: pnum:[%d] xnum:[%d] \n\n", box->pnum, box->xnum);
 			if (!box->xform[i])
 				return (report_mlx_tex_load_failed(tex_path));
 			if (tex_name[0] == 'z')
@@ -108,6 +109,7 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			++cub->box.chrs_len;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
+		// printf("COUNT legende [%d] into_Raw {%s} ...\n", i, cub->map.raw[i]); 
 	}
 	return (cub);
 }
@@ -116,8 +118,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
 	box->xnum = 0;
 	cub = e_mtrx_count(cub);
-	// printf("\nXNUM = %d ", cub->box.xnum);
-	// printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
+	printf("\nXNUM = %d ", cub->box.xnum);
+	printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
 	cub->box = *e_mtrx_link(box, map->raw);
 	cub = chsr_feed(cub);
 	return (cub);
