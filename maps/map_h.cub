@@ -1,20 +1,25 @@
-W  tex/w_side.png
-N  tex/n_side.png 
-E  tex/e_side.png
-S  tex/s_side.png
+a tex/ext/rusty-metal.png
+b tex/ext/dark-metal.png
+c tex/ext/grunge-rock.png
+d tex/ext/travertine-stone.png
+e tex/ext/white-marble.png
+f tex/ext/comida_pan.png
+z tex/ext/sky_star.png
+0 tex/ext/floor.png
 
-C 210,115,0
-F 53,107,194
+A abcd
+B efef
+C aaaa
 
-     111111111111
-     100011000001
-     100010000001
-     100000000001
-11111111100001111111
-10000000000000000001
-10000010000000000001
-11111110000000000001
-10000000000111111001
-100010000001    1001
-100010000001    10W1
-111111111111    1111
+     AAAAAAAAAAAA
+     A000AA00000A
+     A000A000000A
+     A0000000000A
+AAAAAAAAA0000AAAAAAA
+A000000000000000000A
+A00000A000000000000A
+AAAAAAA000000000000A
+A0000000000AAAAAA00A
+A000A000000A    A00A
+A000A000000A    A0WA
+AAAAAAAAAAAA    AAAA

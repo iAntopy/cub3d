@@ -12,6 +12,7 @@ tex/ext/sky_star.png
 tex/ext/skymap3.png
 tex/ext/floortile4.png
 tex/ext/floor.png
+tex/ext/grass-floor.png
 ///                                 floor
 
 ///                                 object
