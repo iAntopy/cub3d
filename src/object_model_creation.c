@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 10:13:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 11:07:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_omdl	*init_portal_model(t_objs *objs)
 	if (!tex)
 		return (report_mlx_tex_load_failed((char *)tex_path));
 	printf("Init Portal model ; png load SUCCESSFUL !\n");
-	objs->portal.width = 32;//CELL_WIDTH;
+	objs->portal.width = CELL_WIDTH;
 	objs->portal.half_w = objs->portal.width >> 1;
 	objs->portal.height = objs->portal.width * (tex->height / tex->width);
 	objs->portal.half_h = objs->portal.height >> 1;
@@ -148,6 +148,7 @@ void	clear_obj_framework(t_cub *cub)
 	destroy_all_obj_instances(cub);
 	clear_obj_model(&cub->objs.portal);
 	// ADD clear_obj_model() calls as nb of init object models grow.
+	printf("Clearing objects framework SUCCESS\n");
 }
 
 // If more drawable models should exist, initiaize their models here.

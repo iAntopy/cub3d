@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 10:47:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 10:57:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	render_objects(t_cub *cub, t_rdata *rd)
 			|| is_point_in_fov(&cub->hero,
 				obj->ox - (*cub->hero.diry) * obj->type->half_w,
 				obj->oy + (*cub->hero.dirx) * obj->type->half_w)
-			//|| !is_point_in_fov(&cub->hero, obj->ox_right, obj->oy_right))//!is_obj_in_fov(&cub->hero, obj))
 			|| is_point_in_fov(&cub->hero,
 				obj->ox + (*cub->hero.diry) * obj->type->half_w,
 				obj->oy - (*cub->hero.dirx) * obj->type->half_w)))
@@ -145,7 +144,7 @@ void	render_objects(t_cub *cub, t_rdata *rd)
 //				printf("put tex px (%d, %d) at scn coord (%d, %d).\n", (int)(j * tex_incrx),
 //					(int)(i * tex_incry), j + start[0], i + start[1]);
 				cub_put_pixel(cub->renderer.objs_layer, j + start[0], i + start[1],
-					tex->pixels[
+					((uint32_t *)tex->pixels)[
 						(int)((j + tex_offx) * tex_incrx)
 						+ (int)((i + tex_offy) * tex_incry) * tex->width]);
 			//		pxls[(int)(j * tex_incrx + i * tex_incry * tex->width)]);
