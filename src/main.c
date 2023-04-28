@@ -101,6 +101,7 @@ int	main(int argc, char **argv)
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
 	mlx_loop(cub.mlx);
+	free(cub.box.chrs );
 	if (mlx_errno)
 		return (cub_clear(&cub,
 				report_err_strerror("mlx loop stopped with ERROR ! : %s")));
