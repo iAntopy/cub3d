@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 02:30:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 21:24:16 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:00:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ int	init_skycaster(t_cub *cub)
 		return (report_err("No sky texture provided.\n"));
 	printf("sky textures LOADED\n");
 	cub->tex.skymap = cub->box.sky;
-	printf("cub ptr : %p\n", cub);
+	printf("sky ptr : %p\n", cub->tex.skymap);
 
+	cub->tex.open_sky = 1;
 	// MOVE THESE SOMEWHERE !
 //	cub->renderer.flrw_to_cw = cub->inv_cw * cub->floor_tex->width;
 //	cub->renderer.flrh_to_cw = cub->inv_cw * cub->floor_tex->height;
