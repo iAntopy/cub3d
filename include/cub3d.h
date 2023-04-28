@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 18:52:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 09:30:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define SCN_WIDTH  1024
 # define SCN_HEIGHT 780
 
-# define MMP_WIDTH  100
-# define MMP_HEIGHT 100
+# define MMP_WIDTH  150
+# define MMP_HEIGHT 150
 
 # define ROT_FACTOR 0.006135923f
 # define CELL_WIDTH 64
@@ -246,6 +246,7 @@ typedef struct s_renderer
 {
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
+	mlx_image_t	*mmap_layer;
 	float		*near_z_dists;// Array of distances to every column of the projected
 				// plane (near_z). See floorcaster. 
 	float		*floor_factors;// Pre-calc parametric multipliers for all pixels

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 20:30:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 08:55:29 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,15 @@ int	main(int argc, char **argv)
 
 
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
-	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0// || init_skycaster(&cub) < 0
-		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
-		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
+//		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
 	mlx_loop(cub.mlx);
-	free(cub.box.chrs );
+	ft_free_p((void **)&cub.box.chrs);
 	if (mlx_errno)
 		return (cub_clear(&cub,
 				report_err_strerror("mlx loop stopped with ERROR ! : %s")));
