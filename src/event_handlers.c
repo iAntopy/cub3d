@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 20:54:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 10:39:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	on_update(t_cub *cub)
 		render_walls(cub, cub->hero.rcast.rdata);
 //		printf("drawing floor\n");
 		render_floor_sky(cub, cub->hero.rcast.rdata);
+		render_objects(cub, cub->hero.rcast.rdata);
 //		printf("drawing sky\n");
 //		render_sky(cub, cub->hero.rcast.rdata);
 		printf("ALL DONE \n");
