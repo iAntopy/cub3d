@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 15:27:28 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:02:09 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	order_draw_call(t_cub *cub, t_thdraw *threads)
 	int			nb_spins;
 	const int	max_spins = 10;
 
+	(void)cub;
 	i = -1;
 	while (++i < NB_DRAW_THREADS)
 	{
@@ -113,7 +114,7 @@ int	order_draw_call(t_cub *cub, t_thdraw *threads)
 		pthread_mutex_unlock(&threads[i].start_lock);
 	}
 //	printf("WOWOW :: start_lock unlocked ! Drawing begins !\n");
-	render_sky(cub, NULL);
+//	render_sky(cub, NULL);
 	i = -1;
 	nb_spins = 0;
 //	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);
@@ -176,7 +177,7 @@ int	init_draw_threads(t_cub *cub, t_thdraw *threads)
 	/// Associate each thread to their draw_func. Add more as needed and 
 	/// raise NB_DRAW_THREADS to the amount necessary.
 	threads[0].draw_func = render_walls;
-	threads[1].draw_func = render_floor;
+	threads[1].draw_func = render_floor_sky;
 	/// ...
 	start_draw_threads(threads);
 	return (0);

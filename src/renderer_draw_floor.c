@@ -6,16 +6,17 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 22:19:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:05:51 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static uint32_t	floor_get_pixel(mlx_texture_t *tex, int x, int y)
+static uint32_t	get_tex_pixel(mlx_texture_t *tex, int x, int y)
 {
 //	if (x < 0 || y < 0)
 //		return (0);
+//	printf("px: x %d, y %d", x, y);
 	return (((uint32_t *)tex->pixels)[x + y * tex->width]);
 }
 
@@ -37,17 +38,100 @@ static void	__render_floor_incr(float **ps, const float **rays, uint32_t **bs)
 	++(bs[1]);
 }
 
-void	render_floor(t_cub *cub, t_rdata *rd)
+void	__render_sky(t_cub *cub, t_rdata *rd)
 {
-	const float		flr_ratios[2] = {cub->renderer.flrw_to_cw, cub->renderer.flrh_to_cw};
+	int			texture_xoffsets[SCN_WIDTH];
+	uint32_t	*pxls;
+	int			*tofs[2];
+	int			x;
+	int			y;
+
+	(void)rd;
+	tofs[0] = texture_xoffsets - 1;
+	x = -1;
+	while (++x < SCN_WIDTH)
+		*(++tofs[0]) = (int)((x - cub->scn_midx) * cub->inv_sw
+				* cub->renderer.sky_fov_to_tex
+				+ cub->renderer.sky_ori_offset) % cub->tex.skymap->width;
+	pxls = (uint32_t *)cub->renderer.bg_layer->pixels;
+	tofs[1] = cub->renderer.sky_yoffsets - 1;
+	y = -1;
+	while (++y < cub->scn_midy)
+	{
+		tofs[0] = texture_xoffsets - 1;
+		++tofs[1];
+		x = -1;
+		while (++x < SCN_WIDTH)
+			*(++pxls) = ((uint32_t *)cub->tex.skymap->pixels)[*(++tofs[0])
+				+ (*tofs[1]) * cub->tex.skymap->width];
+	}
+}
+
+static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
+{
+//	const float		flr_ratios[2] = {};//{cub->renderer.flrw_to_cw, cub->renderer.flrh_to_cw};
 	const float		*rays[2] = {rd[0].rx, rd[0].ry};
 	float			*params;
 	uint32_t		*buffs[2];
 	int				incr[2];
-	float			cx;
-	float			cy;
-//	int				mx;
-//	int				my;
+	int				cx;
+	int				cy;
+	float			mx;
+	float			my;
+	float			x;
+	float			y;
+	mlx_texture_t	**tex_arr;
+
+	__render_sky(cub, rd);
+	__render_floor_init(cub, buffs, &params);
+	incr[1] = 0;
+	while (++incr[1] < cub->scn_midy)
+	{
+		incr[0] = -1;
+		while (++incr[0] < SCN_WIDTH)
+		{
+			__render_floor_incr(&params, rays, buffs);
+			x = *rays[0] * (*params) + cub->hero.px;
+			y = *rays[1] * (*params) + cub->hero.py;
+	//		printf("x, y : %f, %f\n", x, y);
+//			printf("cx, cy : %d, %d\n", cx, cy);
+			if (*buffs[1] || x < 0.0f || y < 0.0f)
+//				|| x >= cub->map.width || y >= cub->map.height)
+				continue ;
+			cx = (int)(x * cub->inv_cw);//fmodf(x, CELL_WIDTH);
+			cy = (int)(y * cub->inv_cw);//fmodf(y, CELL_WIDTH);
+			if (cx >= cub->map.width || cy >= cub->map.height)
+				continue ;
+			mx = x - (cx * CELL_WIDTH);//fmodf(x, CELL_WIDTH);//x - cx;
+			my = y - (cy * CELL_WIDTH);//fmodf(y, CELL_WIDTH);//y - cy;
+			tex_arr = cub->map.mx[cy][cx]->xwalls;
+	//		printf("tex_arr : %p, mx %f, my %f\n", tex_arr, mx, my);
+			if (!tex_arr || tex_arr[1] != NULL)
+				continue ;
+	//		printf("drawing on mx %f, my %f\n", mx, my);
+			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,//* flr_ratios[0],
+				my * tex_arr[0]->height * cub->inv_cw);//flr_ratios[1]);
+//			*buffs[0] = floor_get_pixel(cub->floor_tex,
+//					(int)(fmodf(*rays[0] * (*params) + cub->hero.px, CELL_WIDTH)
+//						* flr_ratios[0]),
+//					(int)(fmodf(*rays[1] * (*params) + cub->hero.py, CELL_WIDTH)
+//						* flr_ratios[1]));
+		}
+		rays[0] = rd[0].rx;
+		rays[1] = rd[0].ry;
+	}
+}
+
+static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
+{
+	const float		*rays[2] = {rd[0].rx, rd[0].ry};
+	float			*params;
+	uint32_t		*buffs[2];
+	int				incr[2];
+	int				cx;
+	int				cy;
+	float			mx;
+	float			my;
 	float			x;
 	float			y;
 	mlx_texture_t	**tex_arr;
@@ -62,20 +146,25 @@ void	render_floor(t_cub *cub, t_rdata *rd)
 			__render_floor_incr(&params, rays, buffs);
 			x = *rays[0] * (*params) + cub->hero.px;
 			y = *rays[1] * (*params) + cub->hero.py;
-			printf("x, y : %f, %f\n", x, y);
-			cx = fmodf(x, CELL_WIDTH);
-			cy = fmodf(y, CELL_WIDTH);
-			printf("cx, cy : %f, %f\n", cx, cy);
-			if (*buffs[1] || cx < 0 || cy < 0
-				|| cx >= cub->map.width || cy >= cub->map.height)
+	//		printf("x, y : %f, %f\n", x, y);
+//			printf("cx, cy : %d, %d\n", cx, cy);
+			if (*buffs[1] || x < 0.0f || y < 0.0f)
+//				|| x >= cub->map.width || y >= cub->map.height)
 				continue ;
-//			mx = x - cx;
-//			my = y - cy;
-			tex_arr = cub->map.mx[(int)cy][(int)cx]->xwalls;
-			if (tex_arr[1] != NULL)
+			cx = (int)(x * cub->inv_cw);//fmodf(x, CELL_WIDTH);
+			cy = (int)(y * cub->inv_cw);//fmodf(y, CELL_WIDTH);
+			if (cx >= cub->map.width || cy >= cub->map.height)
+				continue ;			
+			mx = x - (cx * CELL_WIDTH);//fmodf(x, CELL_WIDTH);//x - cx;
+			my = y - (cy * CELL_WIDTH);//fmodf(y, CELL_WIDTH);//y - cy;
+			tex_arr = cub->map.mx[cy][cx]->xwalls;
+	//		printf("tex_arr : %p, mx %f, my %f\n", tex_arr, mx, my);
+			if (!tex_arr || tex_arr[1] != NULL)
 				continue ;
-			*buffs[0] = floor_get_pixel(tex_arr[0], (x - cx) * flr_ratios[0],
-				(y - cy) * flr_ratios[1]);
+	//		printf("drawing on mx %f, my %f\n", mx, my);
+			*buffs[0] = get_tex_pixel(tex_arr[0],
+				mx * tex_arr[0]->width * cub->inv_cw,//* flr_ratios[0],
+				my * tex_arr[0]->height * cub->inv_cw);//flr_ratios[1]);
 //			*buffs[0] = floor_get_pixel(cub->floor_tex,
 //					(int)(fmodf(*rays[0] * (*params) + cub->hero.px, CELL_WIDTH)
 //						* flr_ratios[0]),
@@ -85,4 +174,12 @@ void	render_floor(t_cub *cub, t_rdata *rd)
 		rays[0] = rd[0].rx;
 		rays[1] = rd[0].ry;
 	}
-}	
+}
+
+void	render_floor_sky(t_cub *cub, t_rdata *rd)
+{
+	if (cub->tex.open_sky)
+		__render_floor_sky(cub, rd);
+	else
+		__render_floor_ceiling(cub, rd);
+}

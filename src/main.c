@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 21:25:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:02:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	cub->hero.cell_y = y;
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
-	cub->hero.ori = M_PI + (M_PI / 2) * cub->map.hero_side;
+	cub->hero.ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
 	cub->renderer.requires_update = 1;
 	return (0);
 }
@@ -93,9 +93,10 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, report_mlx_init_error()));
 	printf("MLX42 context initialized successfully !\n");
 
+	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0// || init_skycaster(&cub) < 0
-		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
-//		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
+		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
 	cub_setup_mlx_hooks_and_settings(&cub);

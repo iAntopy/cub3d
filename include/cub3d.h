@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 20:33:54 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:52:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ typedef struct s_texture_data
 	mlx_texture_t	*skymap;	// yessss
 	mlx_texture_t	*floor;		// yessss
 	char			**rgbx;
+	int				open_sky;
 }	t_tex;
 
 typedef struct s_ray_collision_data
@@ -271,8 +272,8 @@ typedef struct s_cub3d_core_data
 	mlx_image_t		*color;
 
 	/// TEMP VARS FOR TESTING AND DEBUG ONLY ///////////////////
-	mlx_texture_t	*floor_tex;
-	mlx_texture_t	*sky_tex;
+//	mlx_texture_t	*floor_tex;
+//	mlx_texture_t	*sky_tex;
 
 	int				tex_id;
 	/// CONSTANT VALUES ////////////////////////////////////////
@@ -355,8 +356,8 @@ int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
 int				init_renderer(t_cub *cub);
 int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub, t_rdata *rd);
-void			render_floor(t_cub *cub, t_rdata *rd);
-void			render_sky(t_cub *cub, t_rdata *rd);
+void			render_floor_sky(t_cub *cub, t_rdata *rd);
+//void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);

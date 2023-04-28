@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/26 20:12:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 17:36:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ t_cub	*mx_struct(t_map *m, t_cub *cub)
 	printf("mx_struct start \n");
 	chrs = cub->box.chrs;
 	k = -1;
-	m->mx = (t_matrx ***)malloc(sizeof(t_matrx **) * m->height);
+	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
 	while (++k < m->height)
-		m->mx[k] = (t_matrx **)malloc(sizeof(t_matrx *) * m->width);
+		m->mx[k] = (t_matrx **)calloc(sizeof(t_matrx *), m->width);
 	m->pos_y = 0;
 	while (m->pos_y < m->height)
 	{

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 21:48:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:39:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	}
 	cub->renderer.requires_update = 0;
 }
-
+/*
 void	render_sky(t_cub *cub, t_rdata *rd)
 {
 	int			texture_xoffsets[SCN_WIDTH];
@@ -83,3 +83,4 @@ void	render_sky(t_cub *cub, t_rdata *rd)
 				+ (*tofs[1]) * cub->sky_tex->width];
 	}
 }
+*/
