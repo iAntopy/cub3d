@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/04/28 18:02:48 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/04/28 10:34:46 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC_FLS	:=		main.c 			\
 			renderer.c			\
 			renderer_draw_funcs.c	\
 			renderer_draw_floor.c	\
+			renderer_draw_objs.c	\
 			renderer_utils.c	\
 			player_controls.c	\
 			prebuilt_map_tools.c	\
@@ -32,7 +33,8 @@ SRC_FLS	:=		main.c 			\
 			t_empty_line.c		\
 			tex_parse.c			\
 			t_ref_name.c		\
-			draw_threads.c
+			draw_threads.c		\
+			object_model_creation.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 

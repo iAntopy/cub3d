@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 08:55:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 10:45:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
 	renderer_clear(cub);
 	clear_floorcaster(cub);
+	clear_obj_framework(cub);
 //	clear_skycaster(cub);
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
@@ -99,9 +100,14 @@ int	main(int argc, char **argv)
 
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
-		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
+		|| init_obj_framework(&cub))
 //		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
+
+	/// FOR DEBUG PURPOSES ONLY ! DELETE ME !
+	create_obj_instance(&cub, (cub.map.width - 2) * CELL_WIDTH, CELL_WIDTH * 2, OBJ_PORTAL);
+	printf("portal ptr : %p\n", cub.objs.instances);
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");

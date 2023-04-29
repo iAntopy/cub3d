@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 09:30:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 10:40:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,81 @@ typedef struct s_draw_thread_profil
 	int				stop_request;
 }	t_thdraw;
 
+//	Models are initialised only once at start. A pointer to a model is required
+//	for each drawable object created. They are a constante definition of a model type.
+//	eg.: a flying bullet, ennemy grunt ... They don't hold particular instance data such as position
+//	or distance. Only generic global information about a model type.
+typedef struct s_object_model
+{
+	char			*model_name;//	For debug info and logging purposes.
+	int				type_enum;
+	int				width;// Width of object in world coords.
+	int				half_w;
+	int				height;// Height of object in world coords (set auto).
+	int				half_h;
+
+	int				nb_texs;// Max nb of textures for this particular model.
+						// Multi textures used for animation or to simulate object orientation.
+	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
+
+	/// OPTIONAL FIELDS //////
+	int				dmg;
+}	t_omdl;
+
+enum	e_object_types
+{
+	OBJ_NULL = 0,
+	OBJ_PORTAL = 1
+};
+
+typedef struct s_objects_list_elem
+{
+	t_omdl	*type;
+	int		_id;//	unique obj id. Objects are deletable by id.
+	
+	int		tex_idx;
+	
+	float		px;//	Position X
+	float		py;//	Position Y
+
+	/// VARS SET AT RENDER TIME ////////////
+	float		ox;//	obj delta x from player
+	float		oy;//	obj delta y from player
+	float		ux;//	obj delta x from player
+	float		uy;//	obj delta y from player
+	float		dist;//	distance from player
+
+	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
+	float		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
+	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
+	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
+	
+	struct s_objects_list_elem	*next;
+}	t_oinst;
+
+//	Container keeping all drawable object types as pointers to linked lists.
+//	Each object type has its own linked list struct type. Renderer will 
+//	go through each list and draw the objects on screen in any order 
+//	and check weither it is in FOV first. If true, will check for each screen 
+//	column it occupies (depending on object width and distance) if the object's 
+//	distance to screen is smaller then the rays distance (depth buffer, cub.hero.rcast.rdata[<column idx>].dist, length = SCN_WIDTH).
+//	If true, draw object's texture column on screen and update the distance in 
+//	depth buffer (rdata[i].dist). Each subsequant texture column being drawn checks 
+//	weither something has already been drawn in front of it. 
+//	Objects from this list should be able to be added to their list and removed and free
+//	
+//	There should be a MAX_OBJ_DIST defined to bailout of a draw early if obj is to far.
+typedef struct s_drawable_objects
+{
+	/// OBJECT MODELS (constant) /////////////////////////
+	t_omdl	portal;//	Portal object model;
+	
+	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
+	//t_oclct	*collectibles;
+	//t_oenmi	*ennemies;
+	t_oinst	*instances;
+}	t_objs;
+
 // struct of parameters used by render_walls()
 typedef struct s_renderer_column_params
 {
@@ -246,6 +321,7 @@ typedef struct s_renderer
 {
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
+	mlx_image_t	*objs_layer;
 	mlx_image_t	*mmap_layer;
 	float		*near_z_dists;// Array of distances to every column of the projected
 				// plane (near_z). See floorcaster. 
@@ -294,6 +370,7 @@ typedef struct s_cub3d_core_data
 	t_tex			tex;
 	t_hero			hero;
 	t_rdr			renderer;
+	t_objs			objs;
 	t_thdraw		draw_threads[NB_DRAW_THREADS];
 	t_matrx			*pset;
 	t_box			box;
@@ -358,6 +435,7 @@ int				init_renderer(t_cub *cub);
 int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub, t_rdata *rd);
 void			render_floor_sky(t_cub *cub, t_rdata *rd);
+void			render_objects(t_cub *cub, t_rdata *rd);
 //void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
@@ -382,6 +460,14 @@ int				clear_skycaster(t_cub *cub);
 int				init_draw_threads(t_cub *cub, t_thdraw *threads);
 int				order_draw_call(t_cub *cub, t_thdraw *threads);
 void			stop_draw_threads(t_thdraw *threads);
+
+/// OBJECT MANAGEMENT SYSTEM ////////
+int				init_obj_framework(t_cub *cub);
+void			clear_obj_framework(t_cub *cub);
+int				create_obj_instance(t_cub *cub, int px, int py, int type_enum);
+int				destroy_oinst_by_id(t_cub *cub, int id);
+int				destroy_oinst_by_type(t_cub *cub, int type_enum);
+void			destroy_all_obj_instances(t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);
