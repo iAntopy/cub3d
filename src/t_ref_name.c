@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/28 17:36:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:09:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_box	*e_mtrx_link(t_box *box, char **raw)
 
 	i = -1;
 	box->pnum = 0;
-	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
+	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *), box->xnum + 1);
 	if (!box->xform)
 		return (NULL);
 	while (++i < box->xnum)
