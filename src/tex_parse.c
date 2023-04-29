@@ -94,6 +94,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		return (-1);
 	if (!xwalls_builder(cub, map->raw))
 		return (error_clr(NULL, map));
+		
 	return (0);
 }
 

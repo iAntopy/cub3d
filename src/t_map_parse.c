@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/26 21:55:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:03:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
 	print_collision_map(map);
+	clr_legend_strct(cub->box);
+	printf("Clear DONE\n");
 	return (0);
 }

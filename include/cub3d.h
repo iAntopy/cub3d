@@ -402,5 +402,6 @@ t_box	 		*e_mtrx_link(t_box *box, char **raw);
 t_cub			*e_mtrx_count(t_cub *cub);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
+void			clr_legend_strct(t_box box);
 
 #endif

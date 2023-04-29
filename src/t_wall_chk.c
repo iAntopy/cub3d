@@ -12,6 +12,17 @@
 
 #include "../include/cub3d.h"
 
+void	clr_legend_strct(t_box box)
+{
+	while (box.xform[box.xnum])
+	{
+		free(box.xform[box.xnum]);
+		box.xnum--;
+	}
+	free(*box.xform);
+}
+
+
 t_map	*check_hero_found(t_map *m)
 {
 	if (m->pos_x <= 0 || m->pos_y <= 0)
