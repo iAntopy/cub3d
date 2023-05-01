@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 11:36:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/30 23:18:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int	renderer_clear(t_cub *cub)
 	if (cub->renderer.walls_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.walls_layer);
 	printf("renderer clear walls DONE \n");
+//	if (cub->renderer.proj_layer)
+//		mlx_delete_image(cub->mlx, cub->renderer.objs_layer);
+//	printf("renderer clear walls DONE \n");
 	if (cub->renderer.objs_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.objs_layer);
 	printf("renderer clear objs DONE\n");
@@ -35,10 +38,14 @@ int	init_renderer(t_cub *cub)
 {
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
+//	cub->renderer.proj_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.objs_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.mmap_layer = mlx_new_image(cub->mlx, MMP_WIDTH, MMP_HEIGHT);
 	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer
+//		|| !cub->renderer.proj_layer
+		|| !cub->renderer.objs_layer
 		|| !cub->renderer.mmap_layer)
+
 		return (-1);
 	mlx_set_color_in_rows(cub->renderer.bg_layer,
 		0, SCN_HEIGHT >> 1, cub->tex.color[0]);
@@ -48,6 +55,7 @@ int	init_renderer(t_cub *cub)
 		0, MMP_HEIGHT, 0x7f7a4e3b);
 	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->renderer.walls_layer, 0, 0);
+//	mlx_image_to_window(cub->mlx, cub->renderer.proj_layer, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->renderer.objs_layer, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->renderer.mmap_layer,
 		(int)(SCN_WIDTH * 0.03f),

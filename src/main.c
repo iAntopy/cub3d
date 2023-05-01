@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 10:45:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/30 20:52:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	cub_clear(t_cub *cub, int exit_status)
 {
-	int	i;
+//	int	i;
 
 	printf("CUB CLEAR AT EXIT\n");
 	stop_draw_threads(cub->draw_threads);
-	i = -1;
-	while (++i < 4)
-		if (cub->tex.walls[i])
-			mlx_delete_texture(cub->tex.walls[i]);
+//	i = -1;
+//	while (++i < 4)
+//		if (cub->tex.walls[i])
+//			mlx_delete_texture(cub->tex.walls[i]);
 	ft_free_p((void **)&cub->map.collision_map);
 //	strtab_clear(&cub->map.tab);
 	strtab_clear((char ***)&cub->map.grid_coords);
@@ -42,8 +42,9 @@ int	cub_init_core_data(t_cub *cub)
 	cub->scn_midy = SCN_HEIGHT / 2;
 	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
 	cub->inv_sw = 1.0f / (float)SCN_WIDTH;
-	cub->inv_two_pi = 0.5f / M_PI ;
-	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
+	cub->inv_two_pi = 0.5f / M_PI;
+	cub->near_z = (float)cub->scn_midx / tanf(FOV_HF);
+	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
 	return (0);
 }
 
@@ -67,7 +68,7 @@ void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 	mlx_focus(cub->mlx);
 	mlx_set_cursor_mode(cub->mlx, MLX_MOUSE_HIDDEN);
 	mlx_cursor_hook(cub->mlx, on_cursor_move, cub);
-//	mlx_key_hook(cub->mlx, on_keypress, cub);
+	mlx_key_hook(cub->mlx, (void (*)(struct mlx_key_data, void *))on_keypress, cub);
 	mlx_loop_hook(cub->mlx, (void (*)(void *))on_update, cub);
 	mlx_scroll_hook(cub->mlx, on_scroll, cub);
 	mlx_close_hook(cub->mlx, on_close, cub);
@@ -105,9 +106,25 @@ int	main(int argc, char **argv)
 //		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
+
 	/// FOR DEBUG PURPOSES ONLY ! DELETE ME !
-	create_obj_instance(&cub, (cub.map.width - 2) * CELL_WIDTH, CELL_WIDTH * 2, OBJ_PORTAL);
+	int	pos[2];
+	pos[0] = (cub.map.width - 2) * CELL_WIDTH;
+	pos[1] = CELL_WIDTH * 2;
+	
+	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
+	
+	pos[0] = 7 * CELL_WIDTH;
+	pos[1] = 10 * CELL_WIDTH;
+
+	create_obj_instance(&cub, pos, OBJ_PORTAL, get_oinst_by_id(&cub, portal1_id));
+//	if (activate_portal(cub.objs.instances, OBJ_ACTIVATE) < 0)
+//		printf("Portal activation FAILURE\n");
+//	else
+//		printf("Portal activation SUCCESS\n");
 	printf("portal ptr : %p\n", cub.objs.instances);
+
+
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");

@@ -1,19 +1,21 @@
 a tex/ext/mountain_crack.png
 b tex/ext/mountain_rock.png
-c tex/ext/mountain-rock.png
-d tex/ext/mountain-stone-rock.png
+c tex/ext/e_side.png
+d tex/ext/n_side.png
 e tex/ext/red-mountain-rock.png
-f tex/ext/gray-mountain-rock.png
+f tex/ext/hay-straw.png
 z tex/ext/sky_star.png
 0 tex/ext/floortile4.png
+1 tex/FloorTile2.png
 
-A aedb                 
-B ccfe                   
+A aedb
+B cdcd
+C cfdf
 
-     AAAAAAAAAAAA
-     A000AA00000A
-     A000A000000A
-     A00000AAAAAA
+     CCCCCCBCBBCC
+     A111AA11111B
+     A111A111111C
+     A11111CBCBCC
 BBBBBB00000A
 B0000000000B
 BB0000A0000A

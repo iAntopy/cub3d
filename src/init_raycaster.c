@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 21:14:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/30 21:39:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,37 @@
 
 int	raycaster_clear(t_rcast *rcast, int exit_status)
 {
-	mtx_clear_list(4, rcast->theta_offs, rcast->ray_thetas,
+	mtx_clear_list(5, rcast->theta_offs, rcast->fwd_rayspan, rcast->ray_thetas,
 		rcast->rays[0], rcast->rays[1]);
 	ft_free_p((void **)&rcast->rdata);
+	ft_free_p((void **)&rcast->prtl_proj);
 	return (exit_status);
 }
 
-static void	init_raydata_consts(t_cub *cub, t_rcast *rcast)
+static void	init_raydata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd)
 {
-	t_rdata	*rd;
+	int	i;
 
-	rd = rcast->rdata - 1;
-	while ((++rd - rcast->rdata) < SCN_WIDTH)
+	i = -1;
+	while (++i < SCN_WIDTH)
 	{
-		rd->idx = (rd - (rcast->rdata));
-		rd->rcast = rcast;
-		rd->pcx = &cub->hero.cell_x;
-		rd->pcy = &cub->hero.cell_y;
-		rd->px = &cub->hero.px;
-		rd->py = &cub->hero.py;
-		rd->p_dirx = cub->hero.dirx;
-		rd->p_diry = cub->hero.diry;
-		rd->rx = _mtx_index_fptr(rcast->rays[0], rd->idx, 0);
-		rd->ry = _mtx_index_fptr(rcast->rays[1], rd->idx, 0);
+		rd[i].idx = i;
+//		rd[i].rcast = rcast;
+		rd[i].inv_cw = cub->inv_cw;
+		rd[i].near_proj_factor = &cub->near_proj_factor;
+		rd[i].pcx = &cub->hero.cell_x;
+		rd[i].pcy = &cub->hero.cell_y;
+		rd[i].px = &cub->hero.px;
+		rd[i].py = &cub->hero.py;
+		rd[i].p_dirx = cub->hero.dirx;
+		rd[i].p_diry = cub->hero.diry;
+		rd[i].rx = _mtx_index_fptr(rc->rays[0], i, 0);
+		rd[i].ry = _mtx_index_fptr(rc->rays[1], i, 0);
+		pd[i].rdata = rd + i;
+		pd[i].fwd_len = _mtx_index_fptr(rc->fwd_rayspan, i, 0);
 	}
 	printf("\n\n\nhero cell_x/y : %d, %d\n", cub->hero.cell_x, cub->hero.cell_y);
-	printf("*rd->pcx/y : %d, %d\n", *rcast->rdata->pcx, *rcast->rdata->pcy);
+	printf("*rd->pcx/y : %d, %d\n", *rc->rdata->pcx, *rc->rdata->pcy);
 }
 
 int	init_raycaster(t_cub *cub)
@@ -54,7 +59,9 @@ int	init_raycaster(t_cub *cub)
 	rcast->ray_thetas = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	rcast->rays[0] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	rcast->rays[1] = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
+	rcast->fwd_rayspan = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
 	rcast->rdata = malloc(sizeof(t_rdata) * SCN_WIDTH);
+	rcast->prtl_proj = malloc(sizeof(t_pdata) * SCN_WIDTH);
 	if (!rcast->theta_offs || !rcast->ray_thetas || !rcast->ray_thetas
 		|| !rcast->rays[0] || !rcast->rays[1] || !rcast->rdata)
 		return (raycaster_clear(rcast, EXIT_FAILURE));
@@ -64,7 +71,7 @@ int	init_raycaster(t_cub *cub)
 	cub->hero.diry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH / 2, 0);
 	cub->hero.fov_rx = _mtx_index_fptr(rcast->rays[0], SCN_WIDTH - 1, 0);
 	cub->hero.fov_ry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH - 1, 0);
-	init_raydata_consts(cub, rcast);
+	init_raydata_consts(cub, rcast, rcast->rdata, rcast->prtl_proj);
 	update_fov(cub, FOV);
 	printf("init raycaster exits \n");
 	return (0);

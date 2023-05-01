@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 10:39:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 01:10:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,17 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	cub = (t_cub *)param;
 	if (event.action != MLX_PRESS)
 		return ;
+
+	if (event.key == MLX_KEY_ENTER)
+	{
+		activate_portal(cub->objs.instances, (cub->objs.instances->isactive)
+			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
+		activate_portal(cub->objs.instances->next, (cub->objs.instances->isactive)
+			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
+	}
+	cub->renderer.requires_update = 1;
+
+/*
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
 	else if (event.key == MLX_KEY_LEFT)
@@ -38,6 +49,7 @@ void	on_keypress(mlx_key_data_t event, void *param)
 		cub_player_zoom(cub, -0.1);
 	else if (event.key == MLX_KEY_DOWN)
 		cub_player_zoom(cub, 0.1);
+*/
 }
 
 void	on_scroll(double deltax, double deltay, void *param)

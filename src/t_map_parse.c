@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/28 21:20:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 01:19:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_cub	*map_frame(t_map *map, t_cub *cub)
 
 	i = 0;
 	q = strtab_len(map->raw) - map->height;
-	m = (char **)malloc(sizeof(char *) * map->height + 1);
+	m = (char **)malloc(sizeof(char *) * (map->height + 1));
 	m[map->height] = NULL;
 	printf("MAP FRAME : map width : %d\n", map->width);
 	while (i < map->height)

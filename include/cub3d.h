@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 10:40:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/30 22:57:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ enum	e_sides
 typedef struct s_raycaster_data		t_rcast;
 typedef struct s_cub3d_core_data	t_cub;
 typedef struct s_ray_collision_data	t_rdata;
+typedef struct s_objects_list_elem	t_oinst;
 typedef void				(*t_draw_func)(t_cub *, t_rdata *);
 
 
@@ -142,7 +143,7 @@ typedef struct s_map_data
 typedef struct s_texture_data
 {
 	int				color[2];
-	mlx_texture_t	*walls[4];
+//	mlx_texture_t	*walls[4];
 	mlx_texture_t	*skymap;	// yessss
 	mlx_texture_t	*floor;		// yessss
 	char			**rgbx;
@@ -152,10 +153,12 @@ typedef struct s_texture_data
 typedef struct s_ray_collision_data
 {
 //	External ref
-	t_rcast	*rcast;
+//	t_rcast	*rcast;
 
 //	Struct constants;
 	int		idx;
+	float		inv_cw;
+	float		*near_proj_factor;
 	int		*pcx;//	hero cell position in x
 	int		*pcy;// hero cell position in y
 	float	*px;// hero position x; Pointer to cub->hero.px.
@@ -188,14 +191,42 @@ typedef struct s_ray_collision_data
 
 }	t_rdata;
 
+typedef struct s_portal_projection_data
+{
+	t_rdata	*rdata;
+	
+//	Struct const
+	float	*fwd_len;// sin(theta offset for this ray). used in portal projection to find ray collision on obj
+
+//	Init data;
+	int		px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
+	int		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
+	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
+	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
+	int		tgt_px;//	x coord ray collision with object
+	int		tgt_py;//	y coord ray collision with object
+	int		tgt_cx;//	cell x of collision with object
+	int		tgt_cy;//	cell y of collision with object
+	
+//	Resulting data
+	int		side;// collision side. Can be compared to side enums.
+	float	hitx;// collision world coord x;
+	float	hity;// collision world coord y;
+	float	dist;// collision distance to projection plane.
+	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
+	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
+}	t_pdata;
+
 typedef struct s_raycaster_data
 {
 	t_cub		*cub;
 	t_map		*map;
 	t_mtx		*theta_offs;// Angle offsets for each angle from 0. Malloced mtx.
 	t_mtx		*ray_thetas;// Angles for each ray. Malloced mtx.
+	t_mtx		*fwd_rayspan;// sin of all theta_offs. updated in update_fov.
 	t_mtx		*rays[2];// X, Y part for each ray vector. index 0 are Xs, 1 are Ys Malloced mtx.
 	t_rdata		*rdata;//	malloced array of struct with collision data. len SCR_WIDTH
+	t_pdata		*prtl_proj;//	idem but used excusively for raycasting portal projections
 }	t_rcast;
 
 typedef struct s_main_character_data
@@ -240,6 +271,7 @@ typedef struct s_object_model
 	int				half_w;
 	int				height;// Height of object in world coords (set auto).
 	int				half_h;
+	uint32_t		proj_clr;// Reference color on which to render portal projections;
 
 	int				nb_texs;// Max nb of textures for this particular model.
 						// Multi textures used for animation or to simulate object orientation.
@@ -251,8 +283,10 @@ typedef struct s_object_model
 
 enum	e_object_types
 {
-	OBJ_NULL = 0,
-	OBJ_PORTAL = 1
+	OBJ_NULL,
+	OBJ_ACTIVATE,
+	OBJ_DEACTIVATE,
+	OBJ_PORTAL
 };
 
 typedef struct s_objects_list_elem
@@ -268,8 +302,8 @@ typedef struct s_objects_list_elem
 	/// VARS SET AT RENDER TIME ////////////
 	float		ox;//	obj delta x from player
 	float		oy;//	obj delta y from player
-	float		ux;//	obj delta x from player
-	float		uy;//	obj delta y from player
+//	float		ux;//	obj unit delta x from player
+//	float		uy;//	obj unit delta y from player
 	float		dist;//	distance from player
 
 	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
@@ -277,6 +311,10 @@ typedef struct s_objects_list_elem
 	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
 	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
+	int		isactive;
+	// PORTAL SPECIFIC
+	t_oinst		*link;
+
 	struct s_objects_list_elem	*next;
 }	t_oinst;
 
@@ -306,7 +344,7 @@ typedef struct s_drawable_objects
 // struct of parameters used by render_walls()
 typedef struct s_renderer_column_params
 {
-	mlx_image_t		*walls_layer;
+	mlx_image_t		*layer;
 	mlx_texture_t	*tex;
 	//	uint32_t		*init_pxls;// strat 2
 	int				half_texh;// strat 1
@@ -321,6 +359,7 @@ typedef struct s_renderer
 {
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
+	mlx_image_t	*proj_layer;
 	mlx_image_t	*objs_layer;
 	mlx_image_t	*mmap_layer;
 	float		*near_z_dists;// Array of distances to every column of the projected
@@ -464,10 +503,14 @@ void			stop_draw_threads(t_thdraw *threads);
 /// OBJECT MANAGEMENT SYSTEM ////////
 int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
-int				create_obj_instance(t_cub *cub, int px, int py, int type_enum);
+int				create_obj_instance(t_cub *cub, int *pos, int type_enum, void *param);
 int				destroy_oinst_by_id(t_cub *cub, int id);
+t_oinst			*get_oinst_by_id(t_cub *cub, int id);
 int				destroy_oinst_by_type(t_cub *cub, int type_enum);
 void			destroy_all_obj_instances(t_cub *cub);
+
+/// OBJECT ACTIVATION FUNCS /////////
+int				activate_portal(t_oinst *obj, int deactivate);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);

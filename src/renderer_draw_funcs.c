@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 19:28:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/30 22:21:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,18 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	uint32_t	*pxls;
 	int			tex_width;
 
-	clear_image_buffer(cub->renderer.walls_layer);
-	rc.walls_layer = cub->renderer.walls_layer;
+	rc.layer = cub->renderer.walls_layer;
+	clear_image_buffer(rc.layer);
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
 		pxls = init_wcol(cub, rd + i, &rc, &tex_width);
 		j = -1;
 		while (++j < rc.scn_height)
-			cub_put_pixel(rc.walls_layer, i, rc.scn_start_y + j,
+			cub_put_pixel(rc.layer, i, rc.scn_start_y + j,
 				pxls[(int)(((j - rc.half_height) * rc.ratio)
 					+ rc.half_texh) *tex_width]);
 	}
-	cub->renderer.requires_update = 0;
 }
 /*
 void	render_sky(t_cub *cub, t_rdata *rd)

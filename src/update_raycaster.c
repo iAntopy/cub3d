@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:10:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 17:55:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/30 21:40:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,20 @@ static int	probe(t_rdata *rd, float *axs, float *isct, float *dists)
 	}
 	if ((rd->side == W_SIDE) || (rd->side == S_SIDE))
 		ratio = -ratio;
-	rd->tex_ratio = correction + (ratio * rd->rcast->cub->inv_cw);
-	rd->tex_height = rd->rcast->cub->near_proj_factor / rd->dist;
+	rd->tex_ratio = correction + (ratio * rd->inv_cw);
+	rd->tex_height = (*rd->near_proj_factor) / rd->dist;
 	return (0);
 }
 
-static void	raycast_all_vectors(t_rcast *rcast, t_map *map)
+static void	raycast_all_vectors(t_rdata *rdata, t_map *map)
 {
 	t_rdata	*rd;
 	float	*axs;
 	float	isct[2];
 	float	dists[2];
 
-	rd = rcast->rdata - 1;
-	while ((++rd - rcast->rdata) < SCN_WIDTH && raycast_init_single_vect(rd))
+	rd = rdata - 1;
+	while ((++rd - rdata) < SCN_WIDTH && raycast_init_single_vect(rd))
 	{
 		while (1)
 		{
@@ -93,7 +93,7 @@ void	update_rays(t_cub *cub)
 		cub->hero.ori - cub->hfov, cub->hero.ori + FOV_HF, 1);
 	mtx_cos(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[0]);
 	mtx_sin(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[1]);
-	raycast_all_vectors(&cub->hero.rcast, &cub->map);
+	raycast_all_vectors(cub->hero.rcast.rdata, &cub->map);
 }
 
 // If Zoom level (fov) changes call this function.
@@ -103,11 +103,28 @@ void	update_rays(t_cub *cub)
 //	factor by the rays length to get draw height.
 void	update_fov(t_cub *cub, float fov)
 {
+//	int	i;
+//	float	*arr;
+
 	cub->fov = fov;
 	cub->hfov = 0.5f * fov;
 	cub->near_z = (float)cub->scn_midx / tanf(cub->hfov);
+	printf("near proj factor before : %f\n", cub->near_proj_factor);
 	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
+	printf("near proj factor after : %f\n", cub->near_proj_factor);
 	update_floorcaster_params(cub);
 	mtx_linspace_update(cub->hero.rcast.theta_offs, -cub->hfov, cub->hfov, 1);
+	mtx_cos(cub->hero.rcast.theta_offs, cub->hero.rcast.fwd_rayspan);
+//	mtx_print(cub->hero.rcast.fwd_rayspan);
+	_mtx_ridivf_pscalar(1.0f, cub->hero.rcast.fwd_rayspan);
+//	mtx_print(cub->hero.rcast.fwd_rayspan);
+//	i = -1;
+//	arr = cub->hero.rcast.fwd_rayspan->arr;
+//	while (++i < cub->scn_midx)
+//	{
+//		*arr = -(*arr);
+//		arr++;
+//	}
+//	mtx_print(cub->hero.rcast.fwd_rayspan);
 	update_rays(cub);
 }

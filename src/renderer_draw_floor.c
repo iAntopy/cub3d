@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/28 19:48:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 01:42:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ static void	__render_ceiling_init(t_cub *cub, uint32_t **b, float **p)
 
 static void	__render_floor_incr(float **ps, const float **rays, uint32_t **bs)
 {
+//	static int	i;
+
+//	printf("i : %d ", i++);
 	++(*ps);
 	++rays[0];
 	++rays[1];
@@ -109,6 +112,8 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
 		while (++incr[0] < SCN_WIDTH)
 		{
 			__render_floor_incr(&params, rays, buffs);
+//			printf("*rays[0] %f, ", *rays[0]);
+//			printf("*params %f\n", *params);
 			x = *rays[0] * (*params) + cub->hero.px;
 			y = *rays[1] * (*params) + cub->hero.py;
 	//		printf("x, y : %f, %f\n", x, y);
