@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/03 00:24:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 06:16:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	cub->renderer.requires_update = 0;
 }
 */
-static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int *tw, int max_h)
+static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int *tw, int max_h)//, int *start_x)
 {
 	mlx_texture_t	*tex;
 	int				tex_start_x;
@@ -225,7 +225,8 @@ static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int 
 	rc->scn_start_y = ((SCN_HEIGHT - rc->scn_height) >> 1);
 //	printf("init proj wcol : proj col %p, tex_start_x %d, tex_width %d, scn_height %d, ratio %f, scn_start_y %d\n", 
 //		(void *)(size_t)cub->objs.portal.proj_clr, tex_start_x, *tw, rc->scn_height, rc->ratio, rc->scn_start_y);
-
+//	*start_x = tex_start_x;
+	printf("tex_start_x : %d\n", tex_start_x);
 	return ((uint32_t *)tex->pixels + tex_start_x);// + ((int)(rc->scn_start_y * rc->ratio) * tex->width));
 }
 /*
@@ -390,7 +391,9 @@ static void	__render_portal_with_projection(t_cub *cub, int dist, t_oinst *obj, 
 		if (pd[i].rdata->dist < dist)
 			continue ;
 		prtl_proj_vector(pd + i, &cub->map, obj);
-		ppxs = init_proj_wcol(cub, pd + i, &rc, &ptex_width, dims[1]);// init projected wall data.
+
+	//	int tex_start_x;
+		ppxs = init_proj_wcol(cub, pd + i, &rc, &ptex_width, dims[1]);//, &tex_start_x);// init projected wall data.
 		j = -1;
 		while (++j < dims[1])//rc.scn_height)
 		{
@@ -403,8 +406,9 @@ static void	__render_portal_with_projection(t_cub *cub, int dist, t_oinst *obj, 
 			//	tex_col = ppxs[(int)(((j - rc.half_height) * rc.ratio) + rc.half_texh) * ptex_width];
 				//tex_col = ppxs[((int)((i + toffs[1]) * tincrs[1])) * tex->width];
 				//printf("scn delta y : %d, tex y : %f\n", (scn_y - cub->scn_midy), (scn_y - cub->scn_midy) * rc.ratio + rc.half_texh);
-				tex_col = ppxs[((int)((scn_y - cub->scn_midy) * rc.ratio) + rc.half_texh) * tex->width];
-
+	//			printf("(x, y) : (%d, %d)\n", tex_start_x, (int)((scn_y - cub->scn_midy) * rc.ratio) + rc.half_texh);
+				tex_col = ppxs[((int)((scn_y - cub->scn_midy) * rc.ratio) + rc.half_texh) * ptex_width]
+					& 0x9fffffff;
 //				obj_put_pixel(cub->renderer.objs_layer, j + loffs[0], i + loffs[1],
 //					pxls[(int)((j + toffs[0]) * tex_incrs[0])
 //						+ (int)((i + toffs[1]) * tex_incrs[1]) * tex->width]);		
