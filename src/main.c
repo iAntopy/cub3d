@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/30 20:52:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:51:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
 
-	/// FOR DEBUG PURPOSES ONLY ! DELETE ME !
+/////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 	int	pos[2];
 	pos[0] = (cub.map.width - 2) * CELL_WIDTH;
 	pos[1] = CELL_WIDTH * 2;
@@ -123,7 +123,7 @@ int	main(int argc, char **argv)
 //	else
 //		printf("Portal activation SUCCESS\n");
 	printf("portal ptr : %p\n", cub.objs.instances);
-
+/////// END OF DEBUG SECTION
 
 
 	cub_setup_mlx_hooks_and_settings(&cub);

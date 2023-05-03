@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 02:06:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 19:09:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	activate_portal(t_oinst *obj, int mode)
 static t_omdl	*init_portal_model(t_objs *objs)
 {
 	const char	*tex_path1 = "tex/ext/Portal1.png";
-	const char	*tex_path2 = "tex/ext/Portal_void.png";
+	const char	*tex_path2 = "tex/ext/Portal_void_whitealpha.png";
 	mlx_texture_t	*tex;
 
 	objs->portal.model_name = "Portal";
@@ -65,7 +65,7 @@ static t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.half_w = objs->portal.width >> 1;
 	objs->portal.height = objs->portal.width * (tex->height / tex->width);
 	objs->portal.half_h = objs->portal.height >> 1;
-	objs->portal.proj_clr = ((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
+//	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
 	printf("Portal object model initialized !\n");
 	return (&objs->portal);
 }

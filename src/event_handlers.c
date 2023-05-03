@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 01:10:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 19:09:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	if (event.action != MLX_PRESS)
 		return ;
 
-	if (event.key == MLX_KEY_ENTER)
+	if (event.key == MLX_KEY_SPACE)
 	{
 		activate_portal(cub->objs.instances, (cub->objs.instances->isactive)
 			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
@@ -123,7 +123,7 @@ void	on_update(t_cub *cub)
 		render_walls(cub, cub->hero.rcast.rdata);
 //		printf("drawing floor\n");
 		render_floor_sky(cub, cub->hero.rcast.rdata);
-		render_objects(cub, cub->hero.rcast.rdata);
+		render_objects(cub);//, cub->hero.rcast.rdata);
 //		printf("drawing sky\n");
 //		render_sky(cub, cub->hero.rcast.rdata);
 		printf("ALL DONE \n");
