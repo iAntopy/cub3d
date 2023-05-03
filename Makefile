@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/01 01:42:12 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/02 22:36:40 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ OBJS	:= $(SRCS:.c=.o)
 CFLAGS	:= -Wextra -Wall -Werror -pthread -g
 #CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
-#LDFLAGS	:= -fsanitize=address
+LDFLAGS	:= -fsanitize=address
 
 #CC		:= clang
 CC		:= gcc
