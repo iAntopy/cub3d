@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/30 23:18:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 07:32:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	renderer_clear(t_cub *cub)
 	printf("renderer clear objs DONE\n");
 	if (cub->renderer.mmap_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.mmap_layer);
+	if (cub->renderer.dbuff)
+		ft_free_p((void **)&cub->renderer.dbuff);
 	printf("renderer clear mmap DONE : SUCCESS \n");
 	return (0);
 }
@@ -41,16 +43,23 @@ int	init_renderer(t_cub *cub)
 //	cub->renderer.proj_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.objs_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.mmap_layer = mlx_new_image(cub->mlx, MMP_WIDTH, MMP_HEIGHT);
+
 	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer
 //		|| !cub->renderer.proj_layer
 		|| !cub->renderer.objs_layer
 		|| !cub->renderer.mmap_layer)
-
 		return (-1);
-	mlx_set_color_in_rows(cub->renderer.bg_layer,
-		0, SCN_HEIGHT >> 1, cub->tex.color[0]);
-	mlx_set_color_in_rows(cub->renderer.bg_layer,
-		SCN_HEIGHT >> 1, SCN_HEIGHT, cub->tex.color[1]);
+
+	if (!ft_malloc_p(2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
+			(void **)&cub->renderer.dbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
+		return (-1);
+	cub->renderer.dpbuff = cub->renderer.dbuff + sizeof(float) * SCN_WIDTH * SCN_HEIGHT;//	ref to projection 
+											//	depth buff
+
+//	mlx_set_color_in_rows(cub->renderer.bg_layer,
+//		0, SCN_HEIGHT >> 1, cub->tex.color[0]);
+//	mlx_set_color_in_rows(cub->renderer.bg_layer,
+//		SCN_HEIGHT >> 1, SCN_HEIGHT, cub->tex.color[1]);
 	mlx_set_color_in_rows(cub->renderer.mmap_layer,
 		0, MMP_HEIGHT, 0x7f7a4e3b);
 	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
