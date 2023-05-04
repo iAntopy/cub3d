@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 19:08:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 07:25:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,6 +362,8 @@ typedef struct s_renderer
 	mlx_image_t	*proj_layer;
 	mlx_image_t	*objs_layer;
 	mlx_image_t	*mmap_layer;
+	float		*dbuff;//	 depth buffer for drawable world entities. 
+	float		*dpbuff;//	 depth buffer for portal projection entities. 
 	float		*near_z_dists;// Array of distances to every column of the projected
 				// plane (near_z). See floorcaster. 
 	float		*floor_factors;// Pre-calc parametric multipliers for all pixels
