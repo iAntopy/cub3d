@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 15:51:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/05 19:19:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	main(int argc, char **argv)
 
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 	int	pos[2];
-	pos[0] = (cub.map.width - 2) * CELL_WIDTH;
+	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
 	pos[1] = CELL_WIDTH * 2;
 	
 	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
