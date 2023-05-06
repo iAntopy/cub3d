@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/02 22:36:40 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/05 22:28:22 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC_FLS	:=		main.c 			\
 			renderer.c			\
 			renderer_draw_funcs.c	\
 			renderer_draw_floor.c	\
+			renderer_draw_floor_sky_proj.c	\
 			renderer_draw_objs.c	\
 			renderer_utils.c	\
 			player_controls.c	\
