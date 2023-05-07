@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 07:32:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/06 20:13:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,18 @@ int	renderer_clear(t_cub *cub)
 		mlx_delete_image(cub->mlx, cub->renderer.mmap_layer);
 	if (cub->renderer.dbuff)
 		ft_free_p((void **)&cub->renderer.dbuff);
+	if (cub->renderer.dpbuff)
+		ft_free_p((void **)&cub->renderer.dpbuff);
 	printf("renderer clear mmap DONE : SUCCESS \n");
 	return (0);
+}
+
+uint32_t	get_tex_pixel(mlx_texture_t *tex, int x, int y)
+{
+//	if (x < 0 || y < 0)
+//		return (0);
+//	printf("px: x %d, y %d", x, y);
+	return (((uint32_t *)tex->pixels)[x + y * tex->width]);
 }
 
 // Called only once at start to initialize mlx image buffers by layer.
@@ -50,10 +60,12 @@ int	init_renderer(t_cub *cub)
 		|| !cub->renderer.mmap_layer)
 		return (-1);
 
-	if (!ft_malloc_p(2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
-			(void **)&cub->renderer.dbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
+	if (!ft_calloc_p(sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
+			(void **)&cub->renderer.dbuff)
+		|| !ft_calloc_p(sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
+			(void **)&cub->renderer.dpbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
 		return (-1);
-	cub->renderer.dpbuff = cub->renderer.dbuff + sizeof(float) * SCN_WIDTH * SCN_HEIGHT;//	ref to projection 
+//	cub->renderer.dpbuff = cub->renderer.dbuff + sizeof(float) * SCN_WIDTH * SCN_HEIGHT;//	ref to projection 
 											//	depth buff
 
 //	mlx_set_color_in_rows(cub->renderer.bg_layer,

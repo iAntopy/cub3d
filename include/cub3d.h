@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:22:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/07 04:27:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@
 # define PLAYER_HEIGHT 32
 
 # define NB_DRAW_THREADS 2
+
+# define LENS_EFFECT_RAD FOV60//(M_PI * 0.5)
 
 enum	e_sides
 {
@@ -199,14 +201,26 @@ typedef struct s_portal_projection_data
 	float	*fwd_len;// sin(theta offset for this ray). used in portal projection to find ray collision on obj
 
 //	Init data;
-	int		px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
-	int		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
+	float		odist;//distance to obj;
+	float		px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
+	float		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
 	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
 	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
 	int		tgt_px;//	x coord ray collision with object
 	int		tgt_py;//	y coord ray collision with object
 	int		tgt_cx;//	cell x of collision with object
 	int		tgt_cy;//	cell y of collision with object
+	float		rx;
+	float		ry;
+
+	int		dx;//	x offset of cell to check in collision map
+	int		dy;//	y offset of cell to check in collision map
+	int		cincr_x;//	direction of cell move for vertical axis collision. Either 1 or -1.
+	int		cincr_y;//	direction of cell move for horizontal axis collision. Either 1 or -1.
+	float	a;//	ray slope
+	float	inv_a;//a inverse == 1/a;
+	float	b;//	ray y offset
+
 	
 //	Resulting data
 	int		side;// collision side. Can be compared to side enums.
@@ -269,6 +283,8 @@ typedef struct s_object_model
 	int				type_enum;
 	int				width;// Width of object in world coords.
 	int				half_w;
+	float				h_to_w;// height to width ratio
+	float				w_to_h;// height to width ratio
 	int				height;// Height of object in world coords (set auto).
 	int				half_h;
 //	uint32_t		bypass_clr;// exterior color around the portal that should nor be drawn.
@@ -310,6 +326,8 @@ typedef struct s_objects_list_elem
 	float		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
 	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
 	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
+
+//	float		divergent_lens_ra
 	
 	int		isactive;
 	// PORTAL SPECIFIC
@@ -481,6 +499,7 @@ void			render_objects(t_cub *cub);//, t_rdata *rd);
 //void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
+uint32_t		get_tex_pixel(mlx_texture_t *tex, int x, int y);
 void			clear_image_buffer(mlx_image_t *img);
 //void			render_scene(t_cub *cub);
 

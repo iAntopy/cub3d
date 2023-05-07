@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/03 22:57:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/07 04:07:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ static t_omdl	*init_portal_model(t_objs *objs)
 	printf("Init Portal model ; png load SUCCESSFUL !\n");
 	objs->portal.width = CELL_WIDTH;
 	objs->portal.half_w = objs->portal.width >> 1;
-	objs->portal.height = objs->portal.width * (tex->height / tex->width);
+	objs->portal.h_to_w = ((float)tex->height / tex->width);
+	objs->portal.w_to_h = 1.0f / objs->portal.h_to_w;
+	objs->portal.height = objs->portal.width * objs->portal.h_to_w;
 	objs->portal.half_h = objs->portal.height >> 1;
 //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
 	printf("Portal object model initialized !\n");
@@ -107,6 +109,8 @@ static int	create_portal_instance(t_cub *cub, int *pos, int *obj_id, t_oinst *li
 		printf("linking portal %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
 		link->link = new_obj;
 	}
+	else
+		new_obj->link = new_obj;
 	new_obj->isactive = 0;
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;

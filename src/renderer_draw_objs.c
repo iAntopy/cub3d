@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:26:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/07 04:23:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,53 @@ static int	prtl_init_single_vect(t_pdata *pd, const t_rdata *rd, t_oinst *obj)//
 
 static int	prtl_proj_init_single_vect(t_pdata *pd, t_rdata *rd, t_oinst *obj, t_oinst *link)
 {
-	float	ray_scalar_to_obj;
+	const float	divergent_lens_rad = (LENS_EFFECT_RAD / obj->type->width);
+	float	opx;
+	float	opy;
+	float	dpx;
+	float	dpy;
+
+	float	focal_divergence_angle;
+
+	float	sn;
+	float	cs;
+
 
 //	printf("pd id %d\n", pd->rdata->idx);
-	ray_scalar_to_obj = obj->dist * (*pd->fwd_len);
+	pd->odist = obj->dist * (*pd->fwd_len);
 //	printf("prtl_proj_init_single_vect, link %p\n", link);
 	pd->dist = obj->dist;
 
 /// EXTRAS
-	pd->px = *rd->px + (int)(ray_scalar_to_obj * (*rd->rx)) + (link->px - obj->px);
-	pd->py = *rd->py + (int)(ray_scalar_to_obj * (*rd->ry)) + (link->py - obj->py);
+	opx = *rd->px + pd->odist * (*rd->rx);
+	opy = *rd->py + pd->odist * (*rd->ry);
+
+	dpx = opx - obj->px;
+	dpy = opy - obj->py;
+
+	focal_divergence_angle = (-dpx * (*rd->p_diry) + dpy * (*rd->p_dirx)) * divergent_lens_rad;
+	printf("focal_divergence_angle : %f\n", focal_divergence_angle);
+
+	sn = sinf(focal_divergence_angle);
+	cs = cosf(focal_divergence_angle);
+
+	pd->rx = (cs * (*rd->rx)) - (sn * (*rd->ry));
+	pd->ry = (sn * (*rd->rx)) + (cs * (*rd->ry));
+	
+	pd->px = opx + (link->px - obj->px);
+	pd->py = opy + (link->py - obj->py);
+//	pd->px = *rd->px + pd->odist * (*rd->rx) + (link->px - obj->px);
+//	pd->py = *rd->py + pd->odist * (*rd->ry) + (link->py - obj->py);
 
 	pd->cx = (int)(pd->px * rd->inv_cw);
 	pd->cy = (int)(pd->py * rd->inv_cw);
-
-	rd->b = pd->py - (rd->a * pd->px);
+	pd->dx = (pd->rx >= 0);
+	pd->dy = (pd->ry >= 0);
+	pd->cincr_x = (pd->dx << 1) - 1;
+	pd->cincr_y = (pd->dy << 1) - 1;
+	pd->a = pd->ry / pd->rx;
+	pd->inv_a = 1.0f / pd->a;
+	pd->b = pd->py - (pd->a * pd->px);
 	return (1);
 }
 
@@ -85,18 +117,18 @@ static int	prtl_proj_probe(t_pdata *pd, float *axs, float *isct, float *dists)
 		pd->dist += dists[0];
 		pd->hitx = isct[0];
 		pd->hity = axs[1];
-		pd->side = 1 + (rd->dy << 1);
+		pd->side = 1 + (pd->dy << 1);
 		ratio = isct[0] - axs[0];
-		correction = (*rd->rx < 0) != (*rd->ry < 0);
+		correction = (pd->rx < 0) != (pd->ry < 0);
 	}
 	else
 	{
 		pd->dist += dists[1];
 		pd->hitx = axs[0];
 		pd->hity = isct[1];
-		pd->side = rd->dx << 1;
+		pd->side = pd->dx << 1;
 		ratio = isct[1] - axs[1];
-		correction = (*rd->rx < 0) == (*rd->ry < 0);
+		correction = (pd->rx < 0) == (pd->ry < 0);
 	}
 	if ((pd->side == W_SIDE) || (pd->side == S_SIDE))
 		ratio = -ratio;
@@ -140,17 +172,17 @@ static int	prtl_proj_vector(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)/
 		prtl_proj_init_single_vect(pd, pd->rdata, obj, obj->link);
 		while (!(is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0))
 		{
-			axs = map->grid_coords[pd->cy + rd->dy] + ((pd->cx + rd->dx) << 1);
-			isct[1] = rd->a * axs[0] + rd->b;
-			isct[0] = (axs[1] - rd->b) * rd->inv_a;
+			axs = map->grid_coords[pd->cy + pd->dy] + ((pd->cx + pd->dx) << 1);
+			isct[1] = pd->a * axs[0] + pd->b;
+			isct[0] = (axs[1] - pd->b) * pd->inv_a;
 			dists[0] = (isct[0] - pd->px) * (*rd->p_dirx)
 				+ (axs[1] - pd->py) * (*rd->p_diry);
 			dists[1] = (axs[0] - pd->px) * (*rd->p_dirx)
 				+ (isct[1] - pd->py) * (*rd->p_diry);
 			if (dists[0] < dists[1])
-				pd->cy += rd->cincr_y;
+				pd->cy += pd->cincr_y;
 			else
-				pd->cx += rd->cincr_x;
+				pd->cx += pd->cincr_x;
 		}
 		++pd;
 		++rd;
@@ -432,31 +464,45 @@ static void	__render_portal_with_projection(t_cub *cub, int dist, t_oinst *obj, 
 int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs, int *pframe)//, int *end)
 {
+	int		toffs_y[SCN_HEIGHT];
+	int		loffs_y[SCN_HEIGHT];
 	float		*dbuff = cub->renderer.dbuff;
 	int			i;
 	int			j;
+	int			scn_offx;
+	int			tex_offx;
 	uint32_t	*pxls;
 	uint32_t	tex_col;
 //	int			pframe[4];
+
+	j = -1;
+	while (++j < dims[1])
+	{
+		toffs_y[j] = (int)((j + toffs[1]) * tex_incrs[1]) * tex->width;
+		loffs_y[j] = j + loffs[1];
+	}
 
 	pframe[0] = INT_MAX;
 	pframe[1] = INT_MAX;
 	pframe[2] = 0;
 	pframe[3] = 0;
 
+//	dbuff = cub->renderer.dbuff;
 	pxls = (uint32_t *)tex->pixels;
 	i = -1;
 	while (++i < dims[0])
 	{
-		if (rd[i + loffs[0]].dist < dist)
+		scn_offx = i + loffs[0];
+		if (rd[scn_offx].dist < dist)
 			continue ;
-		dbuff = cub->renderer.dbuff + i * SCN_HEIGHT;
+		dbuff = cub->renderer.dbuff + scn_offx * SCN_HEIGHT;
+		tex_offx = (int)((i + toffs[0]) * tex_incrs[0]);
 		j = -1;
 		while (++j < dims[1])
 		{
-			tex_col = pxls[(int)((i + toffs[0]) * tex_incrs[0])
-				+ (int)((j + toffs[1]) * tex_incrs[1]) * tex->width];
-			if (!tex_col || (dbuff[j] && dist > dbuff[j]))
+			tex_col = pxls[tex_offx + toffs_y[j]];
+//				+ (int)((j + toffs[1]) * tex_incrs[1]) * tex->width];
+			if (!tex_col || (*dbuff && dist > *dbuff))
 				continue ;
 			if (tex_col == 0xffbcbbb0)
 			{
@@ -469,9 +515,10 @@ int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd,
 				if (j > pframe[3])
 					pframe[3] = j;
 			}
-			cub_put_pixel(cub->renderer.objs_layer, i + loffs[0], j + loffs[1],
+			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j],
 				tex_col);
-			dbuff[j] = dist;
+			*(dbuff++) = dist;
+		//	dbuff[i + j * SCN_WIDTH] = dist;
 		}
 	}
 	if (pframe[0] == INT_MAX)
@@ -495,29 +542,45 @@ static inline void	obj_put_pixel(mlx_image_t *img, int x, int y, uint32_t col)
 void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs)//, int *end)
 {
-	float		*dbuff = cub->renderer.dbuff;
+	int		toffs_y[SCN_HEIGHT];
+	int		loffs_y[SCN_HEIGHT];
+	float		*dbuff;
 	int			i;
 	int			j;
+	int			scn_offx;
+	int			tex_offx;
 	uint32_t	*pxls;
 	uint32_t	tex_col;
 
+//	printf("dpbuff - dbuff : %ld\n", (cub->renderer.dpbuff - cub->renderer.dbuff) / (SCN_WIDTH * sizeof(float)));
+	j = -1;
+	while (++j < dims[1])
+	{
+		toffs_y[j] = (int)((j + toffs[1]) * tex_incrs[1]) * tex->width;
+		loffs_y[j] = j + loffs[1];
+	}
+
+//	dbuff = cub->renderer.dbuff;
 	pxls = (uint32_t *)tex->pixels;
 	i = -1;
 	while (++i < dims[0])
 	{
 		if (rd[i + loffs[0]].dist < dist)
 			continue ;
-		dbuff = cub->renderer.dbuff + i * SCN_HEIGHT;
+		scn_offx = i + loffs[0];
+		dbuff = cub->renderer.dbuff + scn_offx * SCN_HEIGHT;
+		tex_offx = (int)((i + toffs[0]) * tex_incrs[0]);
+
 		j = -1;
 		while (++j < dims[1])
 		{
-			tex_col = pxls[(int)((i + toffs[0]) * tex_incrs[0])
-				+ (int)((j + toffs[1]) * tex_incrs[1]) * tex->width];
-			if (!tex_col || (dbuff[j] && dist > dbuff[j]))
+//			scn_offs[1] = j + loffs[1];
+			tex_col = pxls[tex_offx + toffs_y[j]];//(int)(toffs_y[j] * tex_incrs[1]) * tex->width];
+			if (!tex_col || (*dbuff && dist > *dbuff))
 				continue ;
-			cub_put_pixel(cub->renderer.objs_layer, i + loffs[0], j + loffs[1],
-				tex_col);
-			dbuff[j] = dist;
+			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j], tex_col);
+			*(++dbuff) = dist;
+	//		dbuff[i + j * SCN_WIDTH] = dist;
 		}
 	}
 }
@@ -546,14 +609,12 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 
 	int		loffs[4];
 	int		toffs[2];
-	float	tincrs[2];
+	float		tincrs[2];
 	int		dims[2];
 	int		pframe[4];
 
 
 	clear_image_buffer(cub->renderer.objs_layer);
-	memset(cub->renderer.dbuff, 0, 2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
-
 	obj = cub->objs.instances;
 	while (obj)
 	{

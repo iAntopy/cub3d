@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 19:25:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:21:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	{
 		activate_portal(cub->objs.instances, (cub->objs.instances->isactive)
 			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
-		activate_portal(cub->objs.instances->next, (cub->objs.instances->isactive)
-			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
+//		activate_portal(cub->objs.instances->next, (cub->objs.instances->isactive)
+//			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
 	}
 	cub->renderer.requires_update = 1;
 
@@ -83,14 +83,14 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 }
 
-static void	on_update_keypressed(t_cub *cub)
+static int	on_update_keypressed(t_cub *cub)
 {
 	int	kp[9];
 
 	if (mlx_is_key_down(cub->mlx, MLX_KEY_ESCAPE))
 	{
 		on_close(cub);
-		return ;
+		return (-1);
 	}
 	kp[8] = mlx_is_key_down(cub->mlx, MLX_KEY_LEFT_SHIFT);
 	kp[0] = mlx_is_key_down(cub->mlx, MLX_KEY_W);
@@ -110,28 +110,30 @@ static void	on_update_keypressed(t_cub *cub)
 		cub_player_rotate(cub, (kp[5] - kp[4]) * 1.0f * cub->mlx->delta_time);
 	if (*((size_t *)(kp + 6)))
 		cub_player_zoom(cub, (kp[7] - kp[6]) * 0.8f * cub->mlx->delta_time);
+	return (0);
 }
 
 void	on_update(t_cub *cub)
 {
-	static const float	incr = 0.1f;
-	static int			counter;
+//	static const float	incr = 0.1f;
+//	static int			counter;
 	static ssize_t	delta_time;
 
 	delta_time = ft_deltatime_usec();
-	if (delta_time < 30000)
-	{
-		cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
-		cub->renderer.requires_update = 1;
-	}
-	else
+//	printf("delta time : %zd\n", delta_time);
+//	cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
+//	cub->renderer.requires_update = 1;
+	if (delta_time > 50000)
 		delta_time = 0;
 
 
-	on_update_keypressed(cub);
+	if (on_update_keypressed(cub) < 0)
+		return ;
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
+		ft_memclear(cub->renderer.dbuff, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
+		ft_memclear(cub->renderer.dpbuff, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
 //		order_draw_call(cub, cub->draw_threads);
 //		printf("drawing walls\n");
 		render_walls(cub, cub->hero.rcast.rdata);
