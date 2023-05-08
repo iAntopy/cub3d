@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/07 04:23:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:35:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -502,6 +502,8 @@ int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd,
 		{
 			tex_col = pxls[tex_offx + toffs_y[j]];
 //				+ (int)((j + toffs[1]) * tex_incrs[1]) * tex->width];
+//			if (tex_col & 0xff000000 && tex_col & 0x00ffffff)
+//				printf("drawing transparent portal px with actual color\n");
 			if (!tex_col || (*dbuff && dist > *dbuff))
 				continue ;
 			if (tex_col == 0xffbcbbb0)

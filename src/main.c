@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/06 21:48:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:47:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,22 @@ int	main(int argc, char **argv)
 	cub.map.width_px = cub.map.width * CELL_WIDTH;
 	cub.map.height_px = cub.map.height * CELL_WIDTH;
 	int	pos[2];
-//	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
-//	pos[1] = CELL_WIDTH * 2;
-	pos[0] = 7 * CELL_WIDTH;
-	pos[1] = 10 * CELL_WIDTH;
-	
-	//int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
-	create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
-	
+	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
+	pos[1] = CELL_WIDTH * 2;
 //	pos[0] = 7 * CELL_WIDTH;
 //	pos[1] = 10 * CELL_WIDTH;
+	
+	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
+	
+//	pos[0] = 6 * CELL_WIDTH;
+//	pos[1] = 10 * CELL_WIDTH + (CELL_WIDTH >> 1);
+//	int	portal2_id = create_obj_instance(&cub, pos, OBJ_PORTAL, get_oinst_by_id(&cub, portal1_id));
+//	create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
+	
+	pos[0] = 7 * CELL_WIDTH;
+	pos[1] = 10 * CELL_WIDTH;
 
-//	create_obj_instance(&cub, pos, OBJ_PORTAL, get_oinst_by_id(&cub, portal1_id));
+	create_obj_instance(&cub, pos, OBJ_PORTAL, get_oinst_by_id(&cub, portal1_id));
 //	if (activate_portal(cub.objs.instances, OBJ_ACTIVATE) < 0)
 //		printf("Portal activation FAILURE\n");
 //	else

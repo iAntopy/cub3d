@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/06 19:21:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:46:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	{
 		activate_portal(cub->objs.instances, (cub->objs.instances->isactive)
 			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
-//		activate_portal(cub->objs.instances->next, (cub->objs.instances->isactive)
-//			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
+		activate_portal(cub->objs.instances->next, (cub->objs.instances->next->isactive)
+			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
 	}
 	cub->renderer.requires_update = 1;
 

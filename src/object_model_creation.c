@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/07 04:07:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 12:45:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	activate_portal(t_oinst *obj, int mode)
 	mlx_texture_t	*tex;
 
 	if (obj->type->type_enum != OBJ_PORTAL)
-		return (ft_eprintf("ACTIVATION FAILED : obj id %d (%p) is not a portal obj !\n", obj->_id, obj));
+		return (ft_eprintf("ACTIVATION FAILED : obj id %d (%p) is not a portal obj !\n",
+			obj->_id, obj), -1);
 	if (obj->isactive && mode == OBJ_DEACTIVATE)
 	{
 		printf("DEACTIVATING PORTAL id %d\n", obj->_id);

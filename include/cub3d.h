@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/07 04:27:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/07 04:45:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@
 
 # define NB_DRAW_THREADS 2
 
-# define LENS_EFFECT_RAD FOV60//(M_PI * 0.5)
+# define LENS_EFFECT_RAD FOV90//(M_PI * 0.5)
 
 enum	e_sides
 {
