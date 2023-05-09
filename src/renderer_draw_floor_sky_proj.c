@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/09 01:14:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:36:02 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)//, int *pdims)
 static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pframe)
 {
 //	const float	*rays[2];// = {pd[pframe[0]].rdata->rx, pd[pframe[0]].rdata->ry};
+	const int			pheight_inv = (float)(pframe[3] - pframe[1]);
 	float			*params = cub->renderer.floor_factors;// + pframe[0] - 1;
 //	int				mids[2] = {(pframe[2] - pframe[0]) >> 1, (pframe[3] - pframe[1]) >> 1};
 	int				i;
@@ -160,7 +161,7 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 			++pd;
 			if (!isproj[i] || dpbuff[i])
 				continue ;
-			divergent_lens_ratio = (j - cub->scn_midy) / (float)(pframe[3] - pframe[1]);
+			divergent_lens_ratio = (j - cub->scn_midy) * pheight_inv;
 			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH]//(*pms) - pd->odist;
 				* cosf(divergent_lens_ratio * LENS_EFFECT_RAD) - pd->odist;
 
@@ -222,7 +223,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 	uint32_t		*pf;
 	uint32_t		*pc;
 	float			*dpbuff_flr;
-	float			*dpbuff_cil;
+//	float			*dpbuff_cil;
 	t_matrx			*pset;
 	mlx_texture_t	*tex_flr;
 	mlx_texture_t	*tex_cil;
@@ -241,7 +242,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 //		pms = params + (j - cub->scn_midy) * SCN_WIDTH;
 //		printf("pms[(j (%d) - midy (%d)) (%d)] : %f\n", j, cub->scn_midy, (j - cub->scn_midy), *pms);
 		dpbuff_flr = cub->renderer.dpbuff + j;
-		dpbuff_cil = cub->renderer.dpbuff + (SCN_HEIGHT - j);
+//		dpbuff_cil = cub->renderer.dpbuff + (SCN_HEIGHT - j);
 		isproj = cub->renderer.isproj + j;
 	//	printf("pframe[0] : %d, cil y %d, flr y %d\n", pframe[0], (SCN_HEIGHT - j), j);
 		pf = pbuff + pframe[0] + j * SCN_WIDTH - 1;
