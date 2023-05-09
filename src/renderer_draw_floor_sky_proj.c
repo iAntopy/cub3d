@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/07 04:23:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/09 01:14:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)//, int *pdims)
 	int			j;
 	float		*dpbuff;
 	uint32_t	*pb;
-	int		*tp;
+	int			*tp;
+	char		*isproj;
 //	uint32_t	tex_col;
 //	uint32_t	*prtl_col_p;
 
@@ -91,9 +92,10 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)//, int *pdims)
 //		tofs[0] = tofs_p;
 //		printf("j : %d\n", j);
 		sky_offy = cub->renderer.sky_yoffsets + j;
-		dpbuff = cub->renderer.dpbuff + j;
+		dpbuff = cub->renderer.dpbuff + j * SCN_WIDTH;
 		pb = pbuff + pframe[0] + j * SCN_WIDTH;
 		tp = toffs_x + pframe[0];
+		isproj = cub->renderer.isproj + j * SCN_WIDTH;
 //		++tofs[1];
 		i = pframe[0] - 1;
 		while (++i < pframe[2])//SCN_WIDTH)
@@ -101,8 +103,7 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)//, int *pdims)
 //			prtl_col_p = pb + i;//pbuff + (x + y * SCN_WIDTH);
 //			if (dpbuff[i * SCN_HEIGHT])// + y])
 //				printf("OOPS ! dpbuff (%d, %d) : %f\n", i, j, dpbuff[i * SCN_HEIGHT]);
-			
-			if (*pb == 0xffbcbbb0 && !dpbuff[i * SCN_HEIGHT])// + y])
+			if (isproj[i] && !dpbuff[i])// + y])
 			{
 	//			printf("tex_offx : %d, tex_offy : %d\n", *tp, *sky_offy);
 				*pb = ((uint32_t *)cub->tex.skymap->pixels)[*tp//*(++tofs[0])
@@ -120,22 +121,23 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)//, int *pdims)
 static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pframe)
 {
 //	const float	*rays[2];// = {pd[pframe[0]].rdata->rx, pd[pframe[0]].rdata->ry};
-	float		*params = cub->renderer.floor_factors;// + pframe[0] - 1;
-//	int		mids[2] = {(pframe[2] - pframe[0]) >> 1, (pframe[3] - pframe[1]) >> 1};
-	int		i;
-	int		j;
-	float		p[2];
-	int		c[2];
-	float		t[2];
+	float			*params = cub->renderer.floor_factors;// + pframe[0] - 1;
+//	int				mids[2] = {(pframe[2] - pframe[0]) >> 1, (pframe[3] - pframe[1]) >> 1};
+	int				i;
+	int				j;
+	float			p[2];
+	int				c[2];
+	float			t[2];
 //	float		*pms;
-	uint32_t	*pb;
-	float		*dpbuff;
-	t_matrx		*pset;
+//	uint32_t		*pb;
+	float			*dpbuff;
+	t_matrx			*pset;
 	mlx_texture_t	*tex;
-	t_pdata		*pd;
-	float		divergent_lens_ratio;
-
-	float		ray_scalar;
+	t_pdata			*pd;
+	char			*isproj;
+	float			divergent_lens_ratio;
+	float			ray_scalar;
+	
 
 	__render_proj_sky(cub, pbuff, pframe);
 
@@ -146,8 +148,9 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 	{
 //		pms = params + (j - cub->scn_midy) * SCN_WIDTH;
 //		printf("pms[(j (%d) - midy (%d)) (%d)] : %f\n", j, cub->scn_midy, (j - cub->scn_midy), *pms);
-		dpbuff = cub->renderer.dpbuff + j;
-		pb = pbuff + pframe[0] + j * SCN_WIDTH - 1;
+		dpbuff = cub->renderer.dpbuff + j * SCN_WIDTH;
+		isproj = cub->renderer.isproj + j * SCN_WIDTH;
+//		pb = pbuff + pframe[0] + j * SCN_WIDTH - 1;
 		i = pframe[0] - 1;
 //		divergent_lens_ratio = 
 		pd = pdata + i;//pframe[0] - 1;
@@ -155,9 +158,8 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 		{
 //			++pms;
 			++pd;
-			if (*(++pb) != 0xffbcbbb0 || dpbuff[i * SCN_HEIGHT])
+			if (!isproj[i] || dpbuff[i])
 				continue ;
-
 			divergent_lens_ratio = (j - cub->scn_midy) / (float)(pframe[3] - pframe[1]);
 			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH]//(*pms) - pd->odist;
 				* cosf(divergent_lens_ratio * LENS_EFFECT_RAD) - pd->odist;
@@ -190,7 +192,8 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 			t[0] = p[0] - (c[0] * CELL_WIDTH);
 			t[1] = p[1] - (c[1] * CELL_WIDTH);
 
-			*pb = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
+			pbuff[i + j * SCN_WIDTH] = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
+//			*pb = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
 				t[1] * tex->height * cub->inv_cw) & 0xafffffff;
 			
 //			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,// flr_ratios[0],
@@ -201,6 +204,110 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 //		params += SCN_WIDTH;
 //		++(rays[0]);
 //		++(rays[1]);
+	}
+}
+
+
+static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pframe)
+{
+//	const float	*rays[2];// = {pd[pframe[0]].rdata->rx, pd[pframe[0]].rdata->ry};
+	float			*params = cub->renderer.floor_factors;// + pframe[0] - 1;
+//	int				mids[2] = {(pframe[2] - pframe[0]) >> 1, (pframe[3] - pframe[1]) >> 1};
+	int				i;
+	int				j;
+	float			p[2];
+	int				c[2];
+	float			t[2];
+//	float		*pms;
+	uint32_t		*pf;
+	uint32_t		*pc;
+	float			*dpbuff_flr;
+	float			*dpbuff_cil;
+	t_matrx			*pset;
+	mlx_texture_t	*tex_flr;
+	mlx_texture_t	*tex_cil;
+	t_pdata			*pd;
+	char			*isproj;
+	float			divergent_lens_ratio;
+
+	float			ray_scalar;
+
+//	printf("INIT pdata idx : %d\n", pdata->rdata->idx);
+//	pdata += pframe[0] - 1;
+	printf("pframe mid color : %p\n", (void *)(size_t)pbuff[pframe[0] + ((pframe[2] - pframe[0]) >> 1) + (pframe[1] + 50) * SCN_WIDTH]);
+	j = cub->scn_midy;
+	while (++j < pframe[3])
+	{
+//		pms = params + (j - cub->scn_midy) * SCN_WIDTH;
+//		printf("pms[(j (%d) - midy (%d)) (%d)] : %f\n", j, cub->scn_midy, (j - cub->scn_midy), *pms);
+		dpbuff_flr = cub->renderer.dpbuff + j;
+		dpbuff_cil = cub->renderer.dpbuff + (SCN_HEIGHT - j);
+		isproj = cub->renderer.isproj + j;
+	//	printf("pframe[0] : %d, cil y %d, flr y %d\n", pframe[0], (SCN_HEIGHT - j), j);
+		pf = pbuff + pframe[0] + j * SCN_WIDTH - 1;
+		pc = pbuff + pframe[0] + (SCN_HEIGHT - j) * SCN_WIDTH - 1;
+		i = pframe[0] - 1;
+//		divergent_lens_ratio = 
+		pd = pdata + i;//pframe[0] - 1;
+		while (++i < pframe[2])
+		{
+//			++pms;
+			++pd;
+			++pc;
+			if (!isproj[i * SCN_HEIGHT] || dpbuff_flr[i * SCN_HEIGHT])
+				continue ;
+//			printf("wow");
+			divergent_lens_ratio = (j - cub->scn_midy) / (float)(pframe[3] - pframe[1]);
+			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH]//(*pms) - pd->odist;
+				* cosf(divergent_lens_ratio * LENS_EFFECT_RAD) - pd->odist;
+
+
+//			ray_scalar = get_floorcaster_param(cub, i, j) - pd->odist;//(*pms) - pd->odist;
+//			rays_scalar = (*pms) - pd->odist;
+//			printf("i %d, pd id : %d, ray_scalar %f, odist %f, pd->px %f, pd->py %f\n",
+//				i, pd->rdata->idx, ray_scalar, pd->odist, pd->px, pd->py);
+			p[0] = pd->rx * ray_scalar + pd->px;
+			p[1] = pd->ry * ray_scalar + pd->py;
+			printf("floor pos : (%f, %f)\n", p[0], p[1]);
+//			p[0] = (*rays[0] * (*pms) + cub->hero.px);
+//			p[1] = (*rays[1] * (*pms) + cub->hero.py);
+//			printf("width_px : %d, height_px : %d\n", cub->map.width_px, cub->map.height_px);
+			if (p[0] < 0.0f || cub->map.width_px <= p[0]
+				|| p[1] < 0.0f || cub->map.height_px <= p[1])
+				continue ;
+//			printf("p in bound\n");
+			c[0] = (int)(p[0] * cub->inv_cw);
+			c[1] = (int)(p[1] * cub->inv_cw);
+
+//			printf("getting tex at cell (%d, %d)\n", c[0], c[1]);//, cub->map.mx[c[1]][c[0]]);
+			pset = cub->map.mx[c[1]][c[0]];
+			
+			if (!pset)
+				continue ;
+			tex_flr = pset->xwalls[0];
+			tex_cil = pset->xwalls[1];
+
+			t[0] = p[0] - (c[0] * CELL_WIDTH);
+			t[1] = p[1] - (c[1] * CELL_WIDTH);
+
+//			printf("x : %d, *pf : %p, *pc : %p, pc raw offset : %ld\n", i, (void *)(size_t)*pf, (void *)(size_t)*pc, pc - pbuff);
+			*pf = get_tex_pixel(tex_flr, t[0] * tex_flr->width * cub->inv_cw,
+				t[1] * tex_flr->height * cub->inv_cw) & 0xafffffff;
+			printf("*pf : %p, ", (void*)(size_t)*pf);
+
+//			pc = pf - (2 * (j - cub->scn_midy) * SCN_WIDTH);
+			pc = pbuff + i + (SCN_WIDTH * (SCN_HEIGHT - j));
+//			if ((SCN_HEIGHT - j) > 200 && i < pframe[2] - 100)
+//				printf("pc x : %ld\n", (size_t)pc % SCN_WIDTH);
+//				printf("x, y : (%d, %d). *pc (%p) vs PROJ_COLOR (%p), !dpbuff_cil[i * SCN_HEIGHT] ? %d\n", i, j,
+//					(void *)(size_t)*pc, (void *)(size_t)0xffbcbbb0, !dpbuff_cil[i * SCN_HEIGHT]);
+//			if (*pc == 0xffbcbbb0 && !dpbuff_cil[i * SCN_HEIGHT])
+//			{
+//				printf("drawing ");
+			*pc = get_tex_pixel(tex_cil, t[0] * tex_cil->width * cub->inv_cw,
+				t[1] * tex_cil->height * cub->inv_cw) & 0xafffffff;
+//			}
+		}
 	}
 }
 /*
@@ -329,6 +436,6 @@ void	render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pframe
 	if (cub->tex.open_sky)
 //		__render_proj_sky(cub, pbuff, pframe);//, pframe[2] - pframe[0]);
 		__render_proj_floor_sky(cub, pd, pbuff, pframe);
-//	else
-//		__render_floor_ceiling(cub, pd, pframe);
+	else
+		__render_proj_floor_ceiling(cub, pd, pbuff, pframe);
 }

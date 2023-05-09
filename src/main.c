@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/08 12:47:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/09 00:02:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int	main(int argc, char **argv)
 //		printf("Portal activation FAILURE\n");
 //	else
 //		printf("Portal activation SUCCESS\n");
+//	cub.tex.open_sky = 0;
 	printf("portal ptr : %p\n", cub.objs.instances);
 /////// END OF DEBUG SECTION
 

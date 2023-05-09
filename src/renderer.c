@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/06 20:13:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/09 01:17:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	renderer_clear(t_cub *cub)
 		ft_free_p((void **)&cub->renderer.dbuff);
 	if (cub->renderer.dpbuff)
 		ft_free_p((void **)&cub->renderer.dpbuff);
+	if (cub->renderer.isproj)
+		ft_free_p((void **)&cub->renderer.isproj);
 	printf("renderer clear mmap DONE : SUCCESS \n");
 	return (0);
 }
@@ -63,7 +65,10 @@ int	init_renderer(t_cub *cub)
 	if (!ft_calloc_p(sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
 			(void **)&cub->renderer.dbuff)
 		|| !ft_calloc_p(sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
-			(void **)&cub->renderer.dpbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
+			(void **)&cub->renderer.dpbuff)
+		|| !ft_calloc_p(sizeof(char) * SCN_WIDTH * SCN_HEIGHT,
+			(void **)&cub->renderer.isproj))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
+			
 		return (-1);
 //	cub->renderer.dpbuff = cub->renderer.dbuff + sizeof(float) * SCN_WIDTH * SCN_HEIGHT;//	ref to projection 
 											//	depth buff

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/08 12:46:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:23:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	on_update(t_cub *cub)
 		return ;
 	if (cub->renderer.requires_update)
 	{
-		ft_deltatime_usec_note(NULL);
+//		ft_deltatime_usec_note(NULL);
 		ft_memclear(cub->renderer.dbuff, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
 		ft_memclear(cub->renderer.dpbuff, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
 //		order_draw_call(cub, cub->draw_threads);
@@ -143,7 +143,7 @@ void	on_update(t_cub *cub)
 //		printf("drawing sky\n");
 //		render_sky(cub, cub->hero.rcast.rdata);
 //		printf("ALL DONE \n");
-		ft_deltatime_usec_note("this == bananas");
+//		ft_deltatime_usec_note("this == bananas");
 		cub->renderer.requires_update = 0;
 	}
 }

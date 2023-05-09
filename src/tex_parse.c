@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/26 18:29:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 16:06:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 			(const char *)MAP_NCHR) > -1))
 	{
 		cub->pset[len].xwalls[0] = cub->box.xform[queue];
-		cub->pset[len].xwalls[1] = NULL;
+		cub->pset[len].xwalls[1] = cub->pset[len].xwalls[0];
+		cub->pset[len].xwalls[2] = NULL;
 	}
 	return (cub->pset);
 }

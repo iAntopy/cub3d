@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/07 04:45:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/08 21:45:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@
 
 # define NB_DRAW_THREADS 2
 
+# define PROJ_COLOR 0xffbcbbb0
 # define LENS_EFFECT_RAD FOV90//(M_PI * 0.5)
 
 enum	e_sides
@@ -377,11 +378,12 @@ typedef struct s_renderer
 {
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
-	mlx_image_t	*proj_layer;
+//	mlx_image_t	*proj_layer;
 	mlx_image_t	*objs_layer;
 	mlx_image_t	*mmap_layer;
 	float		*dbuff;//	 depth buffer for drawable world entities. 
-	float		*dpbuff;//	 depth buffer for portal projection entities. 
+	float		*dpbuff;//	 depth buffer for portal projection entities.
+	char		*isproj;//	 bool buffer SCN_WIDTH x SCN_HEIGHT indicating if pxl is portal projection
 	float		*near_z_dists;// Array of distances to every column of the projected
 				// plane (near_z). See floorcaster. 
 	float		*floor_factors;// Pre-calc parametric multipliers for all pixels
