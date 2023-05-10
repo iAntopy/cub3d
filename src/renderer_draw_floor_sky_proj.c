@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   renderer_draw_floor.c                              :+:      :+:    :+:   */
+/*   renderer_draw_floor_sky_proj.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:50:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/05 23:48:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+/*
 static uint32_t	get_tex_pixel(mlx_texture_t *tex, int x, int y)
 {
 //	if (x < 0 || y < 0)
@@ -58,37 +58,51 @@ static void	__render_flr_cil_incr(float **ps, const float **rays, uint32_t **bs)
 	++(bs[2]);
 	++(bs[3]);
 }
-
-void	__render_sky(t_cub *cub, t_rdata *rd)
+*/
+void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe, int width)
 {
 	int			texture_xoffsets[SCN_WIDTH];
-	uint32_t	*pxls;
+	int			*tofs_p = texture_xoffsets + pframe[0] - 1;
+//	uint32_t	*pxls;
 	int			*tofs[2];
 	int			x;
 	int			y;
+	float		*dbuff;
+//	uint32_t	tex_col;
+	uint32_t	*prtl_col_p;
 
-	(void)rd;
-	tofs[0] = texture_xoffsets - 1;
-	x = -1;
-	while (++x < SCN_WIDTH)
+	printf("__render_proj_sky : start pframe [%d, %d, %d, %d], width : %d\n", pframe[0], pframe[1], pframe[2], pframe[3], width);
+	tofs[0] = tofs_p;
+	x = pframe[0] - 1;//-1;
+	while (++x < width)//SCN_WIDTH)
 		*(++tofs[0]) = (int)((x - cub->scn_midx) * cub->inv_sw
 				* cub->renderer.sky_fov_to_tex
 				+ cub->renderer.sky_ori_offset) % cub->tex.skymap->width;
-	pxls = (uint32_t *)cub->renderer.bg_layer->pixels;
-	tofs[1] = cub->renderer.sky_yoffsets - 1;
-	y = -1;
+//	pxls = (uint32_t *)cub->renderer.objs_layer->pixels;
+	tofs[1] = cub->renderer.sky_yoffsets + pframe[1] - 1;
+	
+	dbuff = cub->renderer.dpbuff;
+	y = pframe[1] - 1;
 	while (++y < cub->scn_midy)
 	{
-		tofs[0] = texture_xoffsets - 1;
+//		printf("y : %d\n", y);
+		tofs[0] = tofs_p;
 		++tofs[1];
-		x = -1;
-		while (++x < SCN_WIDTH)
-			*(++pxls) = ((uint32_t *)cub->tex.skymap->pixels)[*(++tofs[0])
-				+ (*tofs[1]) * cub->tex.skymap->width];
+		x = pframe[0] - 1;
+		while (++x < width)//SCN_WIDTH)
+		{
+			prtl_col_p = pbuff + (x + y * SCN_WIDTH);
+			if (*prtl_col_p == 0xffbcbbb0 && !dbuff[x * SCN_HEIGHT + y])
+			{
+				*prtl_col_p = ((uint32_t *)cub->tex.skymap->pixels)[*(++tofs[0])
+					+ (*tofs[1]) * cub->tex.skymap->width];
+			}
+//			++pxls;
+		}
 	}
 }
-
-static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
+/*
+static void	__render_floor_sky(t_cub *cub, t_pdata *pd, int *pframe)
 {
 //	const float		flr_ratios[2] = {};//{cub->renderer.flrw_to_cw, cub->renderer.flrh_to_cw};
 	const float		*rays[2] = {rd[0].rx, rd[0].ry};
@@ -103,8 +117,9 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
 	float			y;
 	mlx_texture_t	**tex_arr;
 
-	__render_sky(cub, rd);
-	__render_floor_init(cub, buffs, &params);
+	__render_proj_sky(cub, pframe, pframe[2] - pframe[0]);
+	buffs[0];
+//	__render_floor_init(cub, buffs, &params);
 	incr[1] = 0;
 	while (++incr[1] < cub->scn_midy)
 	{
@@ -132,7 +147,7 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
 			if (!tex_arr)// || tex_arr[1] != NULL)
 				continue ;
 	//		printf("drawing on mx %f, my %f\n", mx, my);
-			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,//* flr_ratios[0],
+			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,// flr_ratios[0],
 				my * tex_arr[0]->height * cub->inv_cw);//flr_ratios[1]);
 //			*buffs[0] = floor_get_pixel(cub->floor_tex,
 //					(int)(fmodf(*rays[0] * (*params) + cub->hero.px, CELL_WIDTH)
@@ -144,8 +159,9 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
 		rays[1] = rd[0].ry;
 	}
 }
-
-static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
+*/
+/*
+static void	__render_floor_ceiling(t_cub *cub, t_pdata *pd, int *pframe)
 {
 	const float		*rays[2] = {rd[0].rx, rd[0].ry};
 	float			*params;
@@ -160,7 +176,7 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 	mlx_texture_t	**tex_arr;
 
 //	__render_floor_init(cub, buffs, &params);
-	printf("renderering floor and ceiling \n");
+//	printf("renderering floor and ceiling \n");
 	__render_ceiling_init(cub, buffs, &params);
 	incr[1] = 0;
 	while (++incr[1] < cub->scn_midy)
@@ -188,10 +204,10 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 				continue ;
 		//	printf("drawing on mx %f, my %f\n", mx, my);
 			*buffs[0] = get_tex_pixel(tex_arr[0],
-				mx * tex_arr[0]->width * cub->inv_cw,//* flr_ratios[0],
+				mx * tex_arr[0]->width * cub->inv_cw,// flr_ratios[0],
 				my * tex_arr[0]->height * cub->inv_cw);//flr_ratios[1]);
 			*buffs[2] = get_tex_pixel(tex_arr[1],
-				mx * tex_arr[1]->width * cub->inv_cw,//* flr_ratios[0],
+				mx * tex_arr[1]->width * cub->inv_cw,// flr_ratios[0],
 				my * tex_arr[1]->height * cub->inv_cw);//flr_ratios[1]);
 //			*buffs[0] = floor_get_pixel(cub->floor_tex,
 //					(int)(fmodf(*rays[0] * (*params) + cub->hero.px, CELL_WIDTH)
@@ -204,11 +220,14 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 		buffs[2] -= 2 * SCN_WIDTH;
 	}
 }
-
-void	render_floor_sky(t_cub *cub, t_rdata *rd)
+*/
+void	render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pframe)
 {
+	(void)pd;
+	printf("render_floor_sky_proj : start. Open sky ? %d\n", cub->tex.open_sky);
 	if (cub->tex.open_sky)
-		__render_floor_sky(cub, rd);
-	else
-		__render_floor_ceiling(cub, rd);
+		__render_proj_sky(cub, pbuff, pframe, pframe[2] - pframe[0]);
+//		__render_floor_sky(cub, pd, pframe);
+//	else
+//		__render_floor_ceiling(cub, pd, pframe);
 }

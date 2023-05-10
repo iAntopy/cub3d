@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 07:25:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/05 23:22:51 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -476,6 +476,7 @@ int				init_renderer(t_cub *cub);
 int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub, t_rdata *rd);
 void			render_floor_sky(t_cub *cub, t_rdata *rd);
+void			render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pframe);
 void			render_objects(t_cub *cub);//, t_rdata *rd);
 //void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
