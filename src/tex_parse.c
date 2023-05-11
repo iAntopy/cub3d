@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tex_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/26 18:29:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 15:07:26 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 				id);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
+			 printf(" ptr<<%p>> ::\n", cub->box.xform[id]); 
 		}
 	}
 	else if ((ft_in_set((const char)raw[queue][0],
@@ -41,7 +42,6 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	return (cub->pset);
 }
 		/* printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);*/
-		/* printf(" ptr<<%p>> ::\n", cub->box.xform[id]); */
 
 t_box	*xwalls_builder(t_cub *cub, char **raw)
 {
