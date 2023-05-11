@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:22:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 16:56:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@
 # define PLAYER_HEIGHT 32
 
 # define NB_DRAW_THREADS 2
+
+# define PROJ_COLOR 0xffbcbbb0
 
 enum	e_sides
 {
@@ -203,10 +205,12 @@ typedef struct s_portal_projection_data
 	int		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
 	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
 	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
-	int		tgt_px;//	x coord ray collision with object
-	int		tgt_py;//	y coord ray collision with object
-	int		tgt_cx;//	cell x of collision with object
-	int		tgt_cy;//	cell y of collision with object
+
+//	int		tgt_px;//	x coord ray collision with object
+//	int		tgt_py;//	y coord ray collision with object
+//	int		tgt_cx;//	cell x of collision with object
+//	int		tgt_cy;//	cell y of collision with object
+	float	b;//	ray y offset
 	
 //	Resulting data
 	int		side;// collision side. Can be compared to side enums.
@@ -364,6 +368,7 @@ typedef struct s_renderer
 	mlx_image_t	*mmap_layer;
 	float		*dbuff;//	 depth buffer for drawable world entities. 
 	float		*dpbuff;//	 depth buffer for portal projection entities. 
+	char		*isproj;//	 bool buffer SCN_WIDTH x SCN_HEIGHT indicating if pxl is portal projection
 	float		*near_z_dists;// Array of distances to every column of the projected
 				// plane (near_z). See floorcaster. 
 	float		*floor_factors;// Pre-calc parametric multipliers for all pixels

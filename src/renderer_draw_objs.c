@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:26:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 17:22:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	prtl_init_single_vect(t_pdata *pd, const t_rdata *rd, t_oinst *obj)//
 	return (1);
 }
 */
-
+/*
 static int	prtl_proj_init_single_vect(t_pdata *pd, t_rdata *rd, t_oinst *obj, t_oinst *link)
 {
 	float	ray_scalar_to_obj;
@@ -73,7 +73,7 @@ static int	prtl_proj_init_single_vect(t_pdata *pd, t_rdata *rd, t_oinst *obj, t_
 	return (1);
 }
 
-
+*/
 static int	prtl_proj_probe(t_pdata *pd, float *axs, float *isct, float *dists)
 {
 	const t_rdata	*rd = pd->rdata;
@@ -100,6 +100,7 @@ static int	prtl_proj_probe(t_pdata *pd, float *axs, float *isct, float *dists)
 	}
 	if ((pd->side == W_SIDE) || (pd->side == S_SIDE))
 		ratio = -ratio;
+//	printf("probe :: ratio : %f, rd->inv_cw: %f\n", ratio, rd->inv_cw);
 	pd->tex_ratio = correction + (ratio * rd->inv_cw);
 	pd->tex_height = (*rd->near_proj_factor) / pd->dist;
 //	printf("probe pd %d : dist %f, side %d, hit (%f, %f), ratio %f\n",
@@ -116,9 +117,9 @@ static int	proj_is_wall(t_map *map, int cx, int cy, int *bailout)
 	return (*bailout);
 }
 */
-
+/**/
 //////// prtl_proj_vector
-
+/*
 // Pass the t_pdata * offset in array to the starting ray to cast from 0 <= i < SCN_WIDTH.
 // n is th nb of rays to cast from start (end - start).
 static int	prtl_proj_vector(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)//, int n)///int start, int end)
@@ -158,7 +159,7 @@ static int	prtl_proj_vector(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)/
 	return (0);
 }
 
-/*
+
 static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 {
 	mlx_texture_t	*tex;
@@ -202,8 +203,8 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	cub->renderer.requires_update = 0;
 }
 */
-/*
-static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int *tw, int max_h)//, int *start_x)
+
+static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int *tshape, int max_h)//, int *start_x)
 {
 	mlx_texture_t	*tex;
 	int				tex_start_x;
@@ -211,13 +212,16 @@ static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int 
 	//if (rd->cx < 0 || rd->cy < 0 || rd->cx >= cub->map.width || rd->cy >= cub->map.height)
 //	printf("ABÉRATION ! cx, cy : %d, %d\n", rd->cx, rd->cy);
 //	printf("pd dist : %f, cx %d, cy %d\n", pd->dist, pd->cx, pd->cy);
-	if ((int)pd->dist == 0)
-		return (NULL);
+
+//	else if (pd->dist < 0.0f)
+//		printf("proj raycasting has negative dist ?! %f\n", pd->dist);
 	tex = cub->map.mx[pd->cy][pd->cx]->xwalls[pd->side];
 //	tex = cub->tex.walls[rd->side];
-	*tw = tex->width;
+	tshape[0] = tex->width;
+	tshape[1] = tex->height;
 	rc->half_texh = (tex->height >> 1);
 	tex_start_x = (int)(pd->tex_ratio * tex->width);
+//	printf("tex_start_x : %d, tex ratio : %f\n", tex_start_x, pd->tex_ratio);
 	if (max_h > SCN_HEIGHT)
 		max_h = SCN_HEIGHT;
 	rc->scn_height = ft_clamp(pd->tex_height, 0, max_h);
@@ -228,9 +232,10 @@ static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int 
 //		(void *)(size_t)cub->objs.portal.proj_clr, tex_start_x, *tw, rc->scn_height, rc->ratio, rc->scn_start_y);
 //	*start_x = tex_start_x;
 //	printf("tex_start_x : %d\n", tex_start_x);
+//	printf("tex ptr : %p, tex_start_x %d, tex->pixels %p\n", tex, tex_start_x, tex->pixels);
 	return ((uint32_t *)tex->pixels + tex_start_x);// + ((int)(rc->scn_start_y * rc->ratio) * tex->width));
 }
-*/
+
 /*
 static void	__render_portal_projection(t_cub *cub, t_pdata *pd, int *start, int *end)
 {
@@ -319,115 +324,173 @@ void	__render_sky_proj(t_cub *cub, int *plims, int *pdims)//, t_pdata *pd)
 	}
 }
 */
-/*
-static void	__render_portal_with_projection(t_cub *cub, int dist, t_oinst *obj, mlx_texture_t *tex,
-		t_pdata *pd, int *dims, int *loffs, int *toffs, float *tincrs)
+static int	prtl_proj_init_single_vect(t_pdata *pd, t_rdata *rd, t_oinst *obj, t_oinst *link)
 {
-	float		*dbuff;
-//	float		*dpbuff;
-	int			i;
-	int			j;
-	t_rcol		rc;
-//	uint32_t	*lpxs;// layer pixel array
-	uint32_t	*tpxs;// obj tex pixel array
-	uint32_t	*ppxs;// projection wall pixel array
-	int			ptex_width;
-	int			ttex_width;
-	uint32_t	tex_col;
-	int			scn_y;
+	float	ray_scalar_to_obj;
 
-	(void)obj;
-	(void)prtl_proj_vector;
-//	printf("tincrs : %f, %f, toffs : %d, %d, tex px : (%d, %d)\n", tincrs[0], tincrs[1], toffs[0], toffs[1], (int)(toffs[0] * tincrs[0]), (int)(toffs[1] * tincrs[1]));
-	rc.layer = cub->renderer.objs_layer;
-	pd += loffs[0];
-	tpxs = (uint32_t *)tex->pixels;
-	ttex_width = tex->width;
-	i = -1;
-	while (++i < dims[0])
+//	printf("pd id %d\n", pd->rdata->idx);
+	ray_scalar_to_obj = obj->dist * (*pd->fwd_len);
+//	printf("prtl_proj_init_single_vect, link %p\n", link);
+	pd->dist = obj->dist;
+
+/// EXTRAS
+	pd->px = *rd->px + (int)(ray_scalar_to_obj * (*rd->rx)) + (link->px - obj->px);
+	pd->py = *rd->py + (int)(ray_scalar_to_obj * (*rd->ry)) + (link->py - obj->py);
+	pd->cx = (int)(pd->px * rd->inv_cw);
+	pd->cy = (int)(pd->py * rd->inv_cw);
+
+	pd->b = pd->py - (rd->a * pd->px);
+	return (1);
+}
+
+//////// prtl_proj_vector
+
+// Pass the t_pdata * offset in array to the starting ray to cast from 0 <= i < SCN_WIDTH.
+// n is th nb of rays to cast from start (end - start).
+static int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)//, int n)///int start, int end)
+{
+	t_rdata	*rd;
+	float	*axs;
+	float	isct[2];
+	float	dists[2];
+	int		width;
+	
+//	printf("Portal Projecting \n");
+	pd += pframe[0];
+	rd = pd->rdata;// - 1;
+	width = pframe[2] - pframe[0];
+//	printf("pframe [%d, %d] [%d, %d], width %d\n", pframe[0], pframe[1], pframe[2], pframe[3], width);
+	while (width--)
 	{
-		if (pd[i].rdata->dist < dist)
-			continue ;
-		prtl_proj_vector(pd + i, &cub->map, obj);
-		dbuff = cub->renderer.dbuff + i * SCN_HEIGHT;
-//		tpxs = (uint32_t *)tex->pixels; + (int)((i + toffs[0]) * tincrs[0]);
-
-	//	int tex_start_x;
-		ppxs = init_proj_wcol(cub, pd + i, &rc, &ptex_width, dims[1]);//, &tex_start_x);// init projected wall data.
-		j = -1;
-		while (++j < dims[1])//rc.scn_height)
+	//	printf("init single proj vect\n");
+		prtl_proj_init_single_vect(pd, pd->rdata, obj, obj->link);
+		while (!(is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0))
 		{
-			tex_col = tpxs[(int)((i + toffs[0]) * tincrs[0])
-				+ ((int)((j + toffs[1]) * tincrs[1])) * ttex_width];
-			if (!tex_col)
-				continue ;
-			scn_y = (loffs[1] + j);
-			if (tex_col == 0xffbcbbb0 && rc.scn_start_y < scn_y && scn_y < (SCN_HEIGHT - rc.scn_start_y))
-			{
-				tex_col = ppxs[((int)((scn_y - cub->scn_midy) * rc.ratio) + rc.half_texh) * ptex_width]
-					& 0x9fffffff;
-			}
-			cub_put_pixel(rc.layer, loffs[0] + i, loffs[1] + j, tex_col);
-			dbuff[j] = dist;
+			axs = map->grid_coords[pd->cy + rd->dy] + ((pd->cx + rd->dx) << 1);
+			isct[1] = rd->a * axs[0] + pd->b;
+			isct[0] = (axs[1] - pd->b) * rd->inv_a;
+			dists[0] = (isct[0] - pd->px) * (*rd->p_dirx)
+				+ (axs[1] - pd->py) * (*rd->p_diry);
+			dists[1] = (axs[0] - pd->px) * (*rd->p_dirx)
+				+ (isct[1] - pd->py) * (*rd->p_diry);
+			if (dists[0] < dists[1])
+				pd->cy += rd->cincr_y;
+			else
+				pd->cx += rd->cincr_x;
 		}
-//		pd++;
+		++pd;
+		++rd;
 	}
-}*/
-/*
-static void	__render_portal_with_projection(t_cub *cub, int dist, t_oinst *obj, mlx_texture_t *tex,
-		t_pdata *pd, int *dims, int *loffs, int *toffs, float *tincrs)
+	return (0);
+}
+
+void	__render_proj_walls(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pframe)
 {
-	float		*dbuff;
-//	float		*dpbuff;
+//	const float		pheight_inv = 1.0f / ((float)(pframe[3] - pframe[1]));
+//	const float		pwidth_inv = 1.0f / ((float)(pframe[2] - pframe[0]));
+//	const int		pframe_mids[2] = {(pframe[2] - pframe[0]) >> 1, (pframe[3] - pframe[1]) >> 1};
+	const int		proj_height = pframe[3] - pframe[1];
 	int			i;
+//	int			ref_i;
 	int			j;
+	t_pdata		*pd;// pdata ptr
+//	uint32_t	*dbuff;// world depth
+	float		*dpbuff;
+//	uint32_t	*pb;// projection buffer ptr;
 	t_rcol		rc;
-//	uint32_t	*lpxs;// layer pixel array
-	uint32_t	*tpxs;// obj tex pixel array
-	uint32_t	*ppxs;// projection wall pixel array
-	int			ptex_width;
-	int			ttex_width;
-	uint32_t	tex_col;
-	int			scn_y;
 
-	(void)obj;
-	(void)prtl_proj_vector;
-//	printf("tincrs : %f, %f, toffs : %d, %d, tex px : (%d, %d)\n", tincrs[0], tincrs[1], toffs[0], toffs[1], (int)(toffs[0] * tincrs[0]), (int)(toffs[1] * tincrs[1]));
-	rc.layer = cub->renderer.objs_layer;
-	pd += loffs[0];
-	tpxs = (uint32_t *)tex->pixels;
-	ttex_width = tex->width;
-	i = -1;
-	while (++i < dims[0])
+	int			tex_shape[2];
+//	int			tex_width;
+
+//	mlx_texture_t	*tex;
+	uint32_t		tex_col;
+	int			tex_y;
+	uint32_t	*tex_buff;
+//	uint32_t	*tb;
+
+	char			*isproj;
+
+//	ft_eprintf("wow");
+//	float		divergent_lens_ratio[SCN_HEIGHT];
+//	int			j_to_midy[SCN_HEIGHT];
+/*
+	j = pframe[1] - 1;
+	while (++j < pframe[3])
 	{
-		if (pd[i].rdata->dist < dist)
-			continue ;
-		prtl_proj_vector(pd + i, &cub->map, obj);
-		dbuff = cub->renderer.dbuff + i * SCN_HEIGHT;
-//		tpxs = (uint32_t *)tex->pixels; + (int)((i + toffs[0]) * tincrs[0]);
+		j_to_midy[j] = j - cub->scn_midy;
+		divergent_lens_ratio[j] = cosf(j_to_midy[j] * pheight_inv * LENS_EFFECT_RAD);
+	}
+*/
 
-	//	int tex_start_x;
-		ppxs = init_proj_wcol(cub, pd + i, &rc, &ptex_width, dims[1]);//, &tex_start_x);// init projected wall data.
-		j = -1;
-		while (++j < dims[1])//rc.scn_height)
+	i = pframe[0] - 1;
+	while (++i < pframe[2])
+	{
+//		dpbuff = cub->renderer.dpbuff + i * SCN_HEIGHT;
+//		dbuff = cub->renderer.dbuff + scn_offx * SCN_HEIGHT;
+//		ref_i = i + (int)((i - pframe_mids[0]) * cosf((i - pframe_mids[0]) * pwidth_inv * LENS_EFFECT_RAD));
+//		printf("ref_i start = %d\n", ref_i);
+//		if (ref_i < 0)
+//			ref_i = 0;
+//		else if (ref_i >= SCN_WIDTH)
+//			ref_i = SCN_WIDTH - 1;
+//		printf("ref_i after = %d\n", ref_i);
+		pd = pdata + i;
+//		pb = pbuff + i;
+//		isproj = cub->renderer.isproj + (i - 1) - SCN_WIDTH;// + i * SCN_HEIGHT - 1;
+//		dpbuff = cub->renderer.dpbuff + (i - 1) - SCN_WIDTH;// + i * SCN_HEIGHT - 1;
+		
+//		dbuff = cub->renderer.dbuff + scn_offx + (loffs[1] - 1) * SCN_WIDTH;// * SCN_HEIGHT - 1;
+//		isproj = cub->renderer.isproj + scn_offx + (loffs[1] - 1) * SCN_WIDTH;// - 1;
+		
+//		tex_buff = init_proj_wcol(cub, pd, &rc, tex_shape);//, pframe[2] - pframe[0]);
+	//	tex = cub->map.mx[pd->cy][pd->cx]->xwalls[pd->side];
+		tex_buff = init_proj_wcol(cub, pd, &rc, tex_shape, proj_height);// + ((pframe[1] - 1) * SCN_WIDTH);
+		if (!tex_buff)
+			printf("tex_buff == NULL\n");
+		j = pframe[1] - 1;
+		while (++j < pframe[3])
 		{
-			tex_col = tpxs[(int)((i + toffs[0]) * tincrs[0])
-				+ ((int)((j + toffs[1]) * tincrs[1])) * ttex_width];
-			if (!tex_col)
+//			tb = tex_buff + ();
+			isproj = cub->renderer.isproj + i + j * SCN_WIDTH;
+			dpbuff = cub->renderer.dpbuff + i + j * SCN_WIDTH;
+
+
+//			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH]//(*pms) - pd->odist;
+//				* cosf(divergent_lens_ratio * LENS_EFFECT_RAD) - pd->odist;
+
+//			dpbuff += SCN_WIDTH;
+//			isproj += SCN_WIDTH;
+//			printf("is_proj ? %d\n", *isproj);
+//			if (*isproj)
+//				printf("(%d, %d), isproj : %d, dpbuff dist : %f vs %f\n", i, j, *isproj, *dpbuff, pd->dist);
+			if (!*isproj || (*dpbuff && *dpbuff < pd->dist))
 				continue ;
-			scn_y = (loffs[1] + j);
-			if (tex_col == 0xffbcbbb0 && rc.scn_start_y < scn_y && scn_y < (SCN_HEIGHT - rc.scn_start_y))
-			{
-				tex_col = ppxs[((int)((scn_y - cub->scn_midy) * rc.ratio) + rc.half_texh) * ptex_width]
-					& 0x9fffffff;
-			}
-			cub_put_pixel(rc.layer, loffs[0] + i, loffs[1] + j, tex_col);
-			dbuff[j] = dist;
+//			printf("gogo");
+			tex_y = (int)((j - cub->scn_midy) * rc.ratio) + rc.half_texh;//(int)(j_to_midy[j] * divergent_lens_ratio[j] * rc.ratio) + rc.half_texh;
+//			
+			if (tex_y < 0 || tex_shape[1] <= tex_y)
+				continue ;
+//			printf("j_to_midy %d, diverge lens ratio : %f, rc,ratio : %f, tex_y : %d\n", 
+//				j_to_midy[j], divergent_lens_ratio[j], rc.ratio, tex_y);
+//			if (tex_y < 0 || tex_shape[1] <= tex_y)
+//				continue ;
+//			printf("tex_y : %d\n", tex_y);
+//			printf("tex_buff[i (%d) + tex_y (%d) * tex_width (%d)] = %d\n", i, tex_y, tex_shape[0],
+//				i + tex_y * tex_shape[0]);
+//			printf("i, j : (%d, %d), tex_buff : %p,  tex_y (%d) * tex_width (%d)\n", i, j, tex_buff, tex_y, tex_shape[0]);
+			tex_col = tex_buff[tex_y * tex_shape[0]];//tex_shape[0]];
+//			tex_col = tex_buff[((int)(j_to_midy[j] * divergent_lens_ratio[j]
+//				* rc.ratio) + rc.half_texh) * tex_width] & 0xafffffff;
+			//tex_col = //ppxs[((int)((scn_y - cub->scn_midy) * rc.ratio) + rc.half_texh) * ptex_width]
+//			pb[j * SCN_WIDTH] = tex_col;
+			pbuff[i + j * SCN_WIDTH] = tex_col;
+//			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j],
+//				tex_col);
+			*dpbuff = pd->dist;
 		}
-//		pd++;
 	}
 }
-*/
+
 
 int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs, int *pframe)//, int *end)
@@ -452,6 +515,7 @@ int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd,
 			continue ;
 		dbuff = cub->renderer.dbuff + i * SCN_HEIGHT;
 		j = -1;
+		
 		while (++j < dims[1])
 		{
 			tex_col = pxls[(int)((i + toffs[0]) * tex_incrs[0])
@@ -468,6 +532,7 @@ int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd,
 					pframe[2] = i;
 				if (j > pframe[3])
 					pframe[3] = j;
+				cub->renderer.isproj[(i + loffs[0]) + (j + loffs[1]) * SCN_WIDTH] = 1;
 			}
 			cub_put_pixel(cub->renderer.objs_layer, i + loffs[0], j + loffs[1],
 				tex_col);
@@ -495,29 +560,47 @@ static inline void	obj_put_pixel(mlx_image_t *img, int x, int y, uint32_t col)
 void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs)//, int *end)
 {
-	float		*dbuff = cub->renderer.dbuff;
+	int		toffs_y[SCN_HEIGHT];
+	int		loffs_y[SCN_HEIGHT];
+	float		*dbuff;
 	int			i;
 	int			j;
+	int			scn_offx;
+	int			tex_offx;
 	uint32_t	*pxls;
 	uint32_t	tex_col;
 
+//	printf("dpbuff - dbuff : %ld\n", (cub->renderer.dpbuff - cub->renderer.dbuff) / (SCN_WIDTH * sizeof(float)));
+	j = -1;
+	while (++j < dims[1])
+	{
+		toffs_y[j] = (int)((j + toffs[1]) * tex_incrs[1]) * tex->width;
+		loffs_y[j] = j + loffs[1];
+	}
+
+//	dbuff = cub->renderer.dbuff;
 	pxls = (uint32_t *)tex->pixels;
 	i = -1;
 	while (++i < dims[0])
 	{
 		if (rd[i + loffs[0]].dist < dist)
 			continue ;
-		dbuff = cub->renderer.dbuff + i * SCN_HEIGHT;
+		scn_offx = i + loffs[0];
+		dbuff = cub->renderer.dbuff + scn_offx + (loffs[1] - 1) * SCN_WIDTH;
+		tex_offx = (int)((i + toffs[0]) * tex_incrs[0]);
+
 		j = -1;
 		while (++j < dims[1])
 		{
-			tex_col = pxls[(int)((i + toffs[0]) * tex_incrs[0])
-				+ (int)((j + toffs[1]) * tex_incrs[1]) * tex->width];
-			if (!tex_col || (dbuff[j] && dist > dbuff[j]))
+			dbuff += SCN_WIDTH;
+//			scn_offs[1] = j + loffs[1];
+			tex_col = pxls[tex_offx + toffs_y[j]];//(int)(toffs_y[j] * tex_incrs[1]) * tex->width];
+//			++dbuff;
+			if (!tex_col || (*dbuff && dist > *dbuff))
 				continue ;
-			cub_put_pixel(cub->renderer.objs_layer, i + loffs[0], j + loffs[1],
-				tex_col);
-			dbuff[j] = dist;
+			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j], tex_col);
+			*dbuff = dist;
+	//		dbuff[i + j * SCN_WIDTH] = dist;
 		}
 	}
 }
@@ -552,7 +635,9 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 
 
 	clear_image_buffer(cub->renderer.objs_layer);
-	memset(cub->renderer.dbuff, 0, 2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
+	memset(cub->renderer.dbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
+	memset(cub->renderer.dpbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
+	memset(cub->renderer.isproj, 0, sizeof(char) * SCN_WIDTH * SCN_HEIGHT);
 
 	obj = cub->objs.instances;
 	while (obj)
@@ -659,9 +744,10 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 				continue ;
 			}
 //			printf("proj vectors\n");
-			prtl_proj_vector(cub->hero.rcast.prtl_proj, &cub->map, obj, pframe);
+			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, pframe);
+			__render_proj_walls(cub, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
 //			printf("render_floor_sky\n");
-			render_floor_sky_proj(cub, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
+//			render_floor_sky_proj(cub, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
 //			else
 //			{
 //				printf("prtl_proj continue \n");

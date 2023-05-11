@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 07:32:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 14:31:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ int	renderer_clear(t_cub *cub)
 		mlx_delete_image(cub->mlx, cub->renderer.mmap_layer);
 	if (cub->renderer.dbuff)
 		ft_free_p((void **)&cub->renderer.dbuff);
+	if (cub->renderer.dpbuff)
+		ft_free_p((void **)&cub->renderer.dpbuff);
+	if (cub->renderer.isproj)
+		ft_free_p((void **)&cub->renderer.isproj);
 	printf("renderer clear mmap DONE : SUCCESS \n");
 	return (0);
 }
@@ -50,12 +54,18 @@ int	init_renderer(t_cub *cub)
 		|| !cub->renderer.mmap_layer)
 		return (-1);
 
-	if (!ft_malloc_p(2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
-			(void **)&cub->renderer.dbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
-		return (-1);
-	cub->renderer.dpbuff = cub->renderer.dbuff + sizeof(float) * SCN_WIDTH * SCN_HEIGHT;//	ref to projection 
+//	if (!ft_malloc_p(2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
+//			(void **)&cub->renderer.dbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
+//		return (-1);
+//	cub->renderer.dpbuff = cub->renderer.dbuff + sizeof(float) * SCN_WIDTH * SCN_HEIGHT;//	ref to projection 
 											//	depth buff
-
+	if (!ft_calloc_p(sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
+			(void **)&cub->renderer.dbuff)
+		|| !ft_calloc_p(sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
+			(void **)&cub->renderer.dpbuff)
+		|| !ft_calloc_p(sizeof(char) * SCN_WIDTH * SCN_HEIGHT,
+			(void **)&cub->renderer.isproj))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
+		return (-1);
 //	mlx_set_color_in_rows(cub->renderer.bg_layer,
 //		0, SCN_HEIGHT >> 1, cub->tex.color[0]);
 //	mlx_set_color_in_rows(cub->renderer.bg_layer,
