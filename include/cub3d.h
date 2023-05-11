@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:22:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 17:58:56 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@
 # define TEX_SKY			4
 # define TEX_FLOOR			5
 
-# define CUBMAP_BUFMAX 100000
 # define MAP_CHARS "0AB@"
 # define MAP_LCHR "abcdefghijz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
+# define MAP_MCHR "#%$&!+=;*()><?"
+
+# define CUBMAP_BUFMAX 100000
 
 # define PLAYER_HEIGHT 32
 
@@ -81,11 +83,12 @@ enum	e_sides
 	S_SIDE = 3
 };
 
+typedef struct s_object_model		t_omdl;
 typedef struct s_raycaster_data		t_rcast;
 typedef struct s_cub3d_core_data	t_cub;
 typedef struct s_ray_collision_data	t_rdata;
 typedef struct s_objects_list_elem	t_oinst;
-typedef void				(*t_draw_func)(t_cub *, t_rdata *);
+typedef void	(*t_draw_func)(t_cub *, t_rdata *);
 
 
 /// PARSING ///////////////////
@@ -94,17 +97,54 @@ typedef struct s_matrx
 	mlx_texture_t	*xwalls[4];
 }		t_matrx;
 
-typedef struct s_box
+typedef struct s_objx
+{
+	char 			name;		// '#' 
+	int				obj_id;		 // enrg. id	
+	int				o_type;		// model_type
+	int 			alleg;		// allegence _txtr
+	int 			opos[2];	// relativ pos (reltv. obj_id)
+	char			relativ;	// char obj_id
+}			t_objx;
+
+// typedef struct s_box
+// {	
+// 	char 			*chrs;
+// 	int				chrs_len;
+// 	int 			xnum;	
+// 	int				pnum;
+// 	int				pset;
+// 	mlx_texture_t	**xform;
+// 	mlx_texture_t	*sky;	
+// }	t_box;
+
+typedef struct s_box 
 {	
+
+	mlx_texture_t	**xform;
+	mlx_texture_t	*sky_tex;	
+	// // //  splited
+		mlx_texture_t	*sky;	
+	int				pnum;
+	// // // // 
 	char 			*chrs;
 	int				chrs_len;
-	int 			xnum;	
-	int				pnum;
-	int				pset;
-	mlx_texture_t	**xform;
-	mlx_texture_t	*sky;	
-}	t_box;
+	int				meta;	// ++chr
+	int 			xnum;	// ++total '.png'
+	int				tot;	// header file len...
+	int				n_dual;	// double tex_set floor/ ceil
+	int				pset;	// recette poor walls
 
+	int 			open_sky; // 1 = skymap
+	int				n_prts;
+	int				n_lvls;
+	int				n_fbll;
+	int				n_objs;
+
+	t_objx			*objx;
+	t_matrx			*gset; /// rely to model
+	t_matrx			*dual; /// rely to model
+}	t_box;
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
 // file : map filename *.cub
@@ -143,9 +183,14 @@ typedef struct s_map_data
 typedef struct s_texture_data
 {
 	int				color[2];
-//	mlx_texture_t	*walls[4];
-	mlx_texture_t	*skymap;	// yessss
-	mlx_texture_t	*floor;		// yessss
+	
+	//	mlx_texture_t	*walls[4];
+	// mlx_texture_t	*sky_tex;	// yessss
+	// t_matrx			*gset;		// model_txtr
+	// t_matrx			*dual;		// floor & ceiling
+	// // // //
+	mlx_texture_t	*skymap;	
+	mlx_texture_t	*floor;		
 	char			**rgbx;
 	int				open_sky;
 }	t_tex;
@@ -276,7 +321,9 @@ typedef struct s_object_model
 	int				nb_texs;// Max nb of textures for this particular model.
 						// Multi textures used for animation or to simulate object orientation.
 	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
-
+	// // // 	
+	t_matrx			*gset; /// rely to model
+	// // //
 	/// OPTIONAL FIELDS //////
 	int				dmg;
 }	t_omdl;
@@ -286,7 +333,9 @@ enum	e_object_types
 	OBJ_NULL,
 	OBJ_ACTIVATE,
 	OBJ_DEACTIVATE,
-	OBJ_PORTAL
+	OBJ_PORTAL,
+	OBJ_LEVER,
+	OBJ_FIREBALL
 };
 
 typedef struct s_objects_list_elem
@@ -334,7 +383,8 @@ typedef struct s_drawable_objects
 {
 	/// OBJECT MODELS (constant) /////////////////////////
 	t_omdl	portal;//	Portal object model;
-	
+	t_omdl	lever;		//	Switch object model;
+	t_omdl	fball;	//	Attack object model;
 	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
 	//t_oclct	*collectibles;
 	//t_oenmi	*ennemies;
@@ -527,13 +577,36 @@ int				report_mlx_init_error(void);
 void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
+/// MODEL ////////////////////
+// t_omdl			*init_lever_model(t_objs *objs);
+// t_omdl			*init_portal_model(t_objs *objs);
+// t_omdl			*init_fireball_model(t_objs *objs);
+
 /// TESTING TXTR_DICT
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
 t_box 			*xwalls_builder(t_cub *cub, char **raw);
+//
+// t_matrx			*gset_builder(const char *path, int txtr_nb);
+// t_cub			*dual_builder(t_cub *cub, int i, char *t_name);
+// t_cub			*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs);
+// t_cub			*mapx_builder(t_map *m, t_cub *cub);
+//
 t_cub			*chsr_feed(t_cub *cub);
 t_box	 		*e_mtrx_link(t_box *box, char **raw);
 t_cub			*e_mtrx_count(t_cub *cub);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
+
+// char			*chrs_builder(t_cub *cub);
+// t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
+// t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
+// t_cub			*e_mtrx_count(t_cub *cub);
+
+// void		 	p_list_objx(t_objx *objx, int id, int num);
+// t_objx			*objx_init(t_objx *objx);
+// t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
+// t_objx			*get_pos(t_cub *cub, t_map *m, int ft_if, int id);
+
+
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
 

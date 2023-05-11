@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/28 21:09:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 18:12:21 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,16 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
 	box->xnum = 0;
 	cub = e_mtrx_count(cub);
-	printf("\nXNUM = %d ", cub->box.xnum);
-	printf("___CHRS_LEN = <%d>\n", cub->box.chrs_len);
+
+	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
+	// printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
+	
 	cub->box = *e_mtrx_link(box, map->raw);
+	// // if (cub->box.open_sky != 0)
+	// cub->tex.sky_tex = cub->box.sky_tex;
+	// cub->box.chrs = chrs_builder(cub);
 	cub = chsr_feed(cub);
+
+	// cub = e_mtrx_link(cub, box, map->raw);
 	return (cub);
 }

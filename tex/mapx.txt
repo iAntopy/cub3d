@@ -94,6 +94,7 @@ $  : portal
 
 -	map_checker						-- file type check
 	-	read_whole_file				-- map->raw ++ map_len
+	//
 	-	tex_parse					-- parse header file
 		-	e_list_txtr					-- list all txtr input
 				-	e_mtrx_count			-- detail meta,pset,dual + open_sky
