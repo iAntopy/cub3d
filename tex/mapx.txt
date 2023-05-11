@@ -10,10 +10,14 @@ tex/ext/s_side.png
 ///                                 sky
 tex/ext/sky_star.png
 tex/ext/skymap3.png
+///									ceiling
+tex/ext/grunge-rock_.png
+tex/ext/starry-night-sky_.png
+tex/ext/red-mountain-rock_.png
+///                                 floor
 tex/ext/floortile4.png
 tex/ext/floor.png
 tex/ext/grass-floor.png
-///                                 floor
 
 ///                                 object
 tex/ext/Portal1.png
@@ -72,3 +76,43 @@ tex/ext/white-marble.png
 tex/ext/purple-cloth.png
 tex/ext/comida_pan.png
 tex/ext/comida_queso.png
+
+//////////
+//// Meta 
+
+@ : player
+#  : portal
+%  : portal
+$  : portal
+!  : lever(adjescent_wall)
+*  : fire_ball
+.... .... ....
+
+///////////
+/// debug slot 
+////////
+
+-	map_checker						-- file type check
+	-	read_whole_file				-- map->raw ++ map_len
+	-	tex_parse					-- parse header file
+		-	e_list_txtr					-- list all txtr input
+				-	e_mtrx_count			-- detail meta,pset,dual + open_sky
+			@	-	e_mtrx_link				-- sub_name + redir to buider
+					-	meta_builder		-- model loader
+						-	init_fireball_model	-- gset_builder
+						-	init_lever_model	-- gset_builder
+						-	init_portal_model	-- gset_builder
+					-	gset_builder		-- folder txtr attrib struct 
+					-	dual_builder		-- floor/ceiling txtr split ++ alt. sky
+				-	chrs_builder			-- set CHRS ref.
+		- 	xwalls_builder				-- prep pset
+			-	pset_maker	++				-- wall txtr assign
+	-	transcibe					-- map width + map_offset
+	-	map_frame			++		-- focus map part raw ->> m
+		-	wall_chk					-- goto each pos + set objx 
+			-	hero_chk					-- hero coord.
+			-	get_pos						-- feed objx data
+			- p_list_objx					-- diplay objx part /all 
+	-	mapx_builder		++		-- build *** (x, y, matrx)
+	-	build_grid ++ build_collis (Ian)
+
