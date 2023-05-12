@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 22:03:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 02:40:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,16 +329,18 @@ void	__render_sky_proj(t_cub *cub, int *plims, int *pdims)//, t_pdata *pd)
 */
 static int	prtl_proj_init_single_vect(t_pdata *pd, t_rdata *rd, t_oinst *obj, t_oinst *link)
 {
-	float	ray_scalar_to_obj;
+//	float	ray_scalar_to_obj;
 
 //	printf("pd id %d\n", pd->rdata->idx);
-	ray_scalar_to_obj = obj->dist * (*pd->fwd_len);
+//	ray_scalar_to_obj = obj->dist * (*pd->fwd_len);
 //	printf("prtl_proj_init_single_vect, link %p\n", link);
 	pd->dist = obj->dist;
 
+	pd->px = *rd->px + pd->dist * (*rd->rx) + (link->px - obj->px);
+	pd->py = *rd->py + pd->dist * (*rd->ry) + (link->py - obj->py);
 /// EXTRAS
-	pd->px = *rd->px + (int)(ray_scalar_to_obj * (*rd->rx)) + (link->px - obj->px);
-	pd->py = *rd->py + (int)(ray_scalar_to_obj * (*rd->ry)) + (link->py - obj->py);
+//	pd->px = *rd->px + (int)(ray_scalar_to_obj * (*rd->rx)) + (link->px - obj->px);
+//	pd->py = *rd->py + (int)(ray_scalar_to_obj * (*rd->ry)) + (link->py - obj->py);
 	pd->cx = (int)(pd->px * rd->inv_cw);
 	pd->cy = (int)(pd->py * rd->inv_cw);
 
@@ -580,7 +582,7 @@ int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd,
 					pframe[2] = i;
 				if (j > pframe[3])
 					pframe[3] = j;
-					*isproj = 1;
+				*isproj = 1;
 				//isproj[buff_offys[j]] = 1;
 //				cub->renderer.isproj[scn_offx + buff_offy] = 1;
 			}

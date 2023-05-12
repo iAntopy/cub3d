@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 22:02:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 02:30:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 {
 //	const float	*rays[2];// = {pd[pframe[0]].rdata->rx, pd[pframe[0]].rdata->ry};
 //	const int		pheight_inv = (float)(pframe[3] - pframe[1]);
-//	float			*params = cub->renderer.floor_factors;// + pframe[0] - 1;
+	float			*params = cub->renderer.floor_factors;// + pframe[0] - 1;
 //	int				mids[2] = {(pframe[2] - pframe[0]) >> 1, (pframe[3] - pframe[1]) >> 1};
 	int				i;
 	int				j;
@@ -173,7 +173,7 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 	int				c[2];
 	float			t[2];
 //	float		*pms;
-//	uint32_t		*pb;
+	uint32_t		*pb;
 	float			*dpbuff;
 	t_matrx			*pset;
 	mlx_texture_t	*tex;
@@ -195,7 +195,7 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 //		printf("pms[(j (%d) - midy (%d)) (%d)] : %f\n", j, cub->scn_midy, (j - cub->scn_midy), *pms);
 		dpbuff = cub->renderer.dpbuff + cub->buff_offys[j];//j * SCN_WIDTH;
 		isproj = cub->renderer.isproj + cub->buff_offys[j];//j * SCN_WIDTH;
-//		pb = pbuff + pframe[0] + j * SCN_WIDTH - 1;
+		pb = pbuff + pframe[0] + j * SCN_WIDTH - 1;
 		i = pframe[0] - 1;
 //		divergent_lens_ratio = 
 		pd = pdata + i;//pframe[0] - 1;
@@ -203,13 +203,14 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 		{
 //			++pms;
 			++pd;
+			++pb;
 			if (!isproj[i] || dpbuff[i])
 				continue ;
 //			printf("is proj and not depth buff\n");
 //			divergent_lens_ratio = (j - cub->scn_midy) * pheight_inv;
-//			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH] - pd->dist;//(*pms) - pd->odist;
+			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH];// - pd->dist;//(*pms) - pd->odist;
 //				* cosf(divergent_lens_ratio * LENS_EFFECT_RAD) - pd->odist;
-			ray_scalar = get_floorcaster_param(cub, i, j);// - pd->dist;
+//			ray_scalar = get_floorcaster_param(cub, i, j);// - pd->dist;
 
 //			printf("ray_scalar : %f\n", ray_scalar);
 //			ray_scalar = get_floorcaster_param(cub, i, j) - pd->odist;//(*pms) - pd->odist;
@@ -244,8 +245,8 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 			t[0] = p[0] - (c[0] * CELL_WIDTH);
 			t[1] = p[1] - (c[1] * CELL_WIDTH);
 
-			pbuff[i + j * SCN_WIDTH] = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
-//			*pb = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
+//			pbuff[i + j * SCN_WIDTH] = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
+			*pb = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
 				t[1] * tex->height * cub->inv_cw) & TRANSPARENCY;
 			
 //			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,// flr_ratios[0],
