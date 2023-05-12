@@ -123,35 +123,32 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					box->n_objs++;
 				}
 			}
-			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
+			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
 			{
-				if (raw[i][0] == 'z')
+				if (tex_name[0] == 'z')
 				{
 					cub->box.open_sky = 1;
-					box->xform[j] = mlx_load_png(tex_path);
-					cub->box.sky = box->xform[j];
-					cub->tex.skymap = cub->box.sky;
+					cub->box.sky = mlx_load_png(tex_path);
 					if (!cub->box.sky)
 						return (report_mlx_tex_load_failed(tex_path));
-					printf("\nZZZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
-					j++;
+					printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
+					cub->tex.skymap = cub->box.sky;
+					cub->tex.sky_tex = cub->box.sky;
 				}
 				else
 				{
-					d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
-					printf("DUAL[%d]  path{{%s}} \n", i, tex_path);
-					if(d_id != -1)
-						cub = dual_builder(cub, d_id, tex_path);
+					box->xform[j] = mlx_load_png(tex_path);
+					if (!box->xform[j])
+						return (report_mlx_tex_load_failed(tex_path));
+					printf("XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
+					j++;
 				}
 			}
-			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
+			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
 			{
-				
-				box->xform[j] = mlx_load_png(tex_path);
-				if (!box->xform[j])
-					return (report_mlx_tex_load_failed(tex_path));
-				printf("XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
-				j++;
+				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
+				if(d_id != -1)
+					cub = dual_builder(cub, d_id, tex_path);				
 			}
 				
 		}
@@ -195,6 +192,7 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	cub = e_mtrx_count(cub);
 
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
+	printf("_dual[%d]", cub->box.n_dual);
 	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
