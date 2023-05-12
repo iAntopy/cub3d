@@ -106,6 +106,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	if (!box->xform)
 		return (NULL);
 	box->n_objs = 0;
+	printf("LINK\n");
 	while (++i < box->xnum + box->meta )
 	{
 		if (raw[i][0] > 32)
@@ -122,25 +123,26 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					box->n_objs++;
 				}
 			}
-			else if (box->open_sky == 0)
+			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
 			{
-				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
-				
-				if(d_id != -1)
-					cub = dual_builder(cub, d_id, tex_path);
-				
-				// box->pnum++;
-			}				
-			else if (raw[i][0] == 'z')
-			{
-				cub->box.open_sky = 1;
-				box->xform[j] = mlx_load_png(tex_path);
-				cub->box.sky = box->xform[j];
-				cub->tex.skymap = cub->box.sky;
-				if (!cub->box.sky)
-					return (report_mlx_tex_load_failed(tex_path));
-							printf("\nZZZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
-				j++;
+				if (raw[i][0] == 'z')
+				{
+					cub->box.open_sky = 1;
+					box->xform[j] = mlx_load_png(tex_path);
+					cub->box.sky = box->xform[j];
+					cub->tex.skymap = cub->box.sky;
+					if (!cub->box.sky)
+						return (report_mlx_tex_load_failed(tex_path));
+					printf("\nZZZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
+					j++;
+				}
+				else
+				{
+					d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
+					printf("DUAL[%d]  path{{%s}} \n", i, tex_path);
+					if(d_id != -1)
+						cub = dual_builder(cub, d_id, tex_path);
+				}
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
 			{
@@ -148,7 +150,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				box->xform[j] = mlx_load_png(tex_path);
 				if (!box->xform[j])
 					return (report_mlx_tex_load_failed(tex_path));
-				printf("\nXFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
+				printf("XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
 				j++;
 			}
 				
