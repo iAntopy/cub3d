@@ -218,14 +218,14 @@ void	clear_obj_framework(t_cub *cub)
 
 // If more drawable models should exist, initiaize their models here.
 // Add more init model func calls as needed.
-int	init_obj_framework(t_cub *cub)
-{
-	if (!init_portal_model(&cub->objs))
-		return (-1);
-	// ADD more models for extra fun.
-	// ...
-	return (0);
-}
+// int	init_obj_framework(t_cub *cub)
+// {
+// 	if (!init_portal_model(&cub->objs))
+// 		return (-1);
+// 	// ADD more models for extra fun.
+// 	// ...
+// 	return (0);
+// }
 
 // Add new obj to front of list. 
 // param is an instance creation type specific argument. 
