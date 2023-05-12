@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 20:13:06 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:33:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,25 @@
 
 // t_cub	*chsr_feed(t_cub *cub)
 // {
-// 		int	i;
-// 		int	j;
+	// 		int	i;
+	// 		int	j;
 
-// 		j = 0;
-// 		i = -1;
-// 		cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
-// 		while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)
-// 		{
-// 			if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97 &&
-// 				cub->map.raw[i][1] == 32)
-// 			{
-// 				cub->box.chrs[j] = cub->map.raw[i][0];
-// 				++j;
-// 			}
-// 		}
-// 		cub->box.chrs[j++] = '@';
-// 		cub->box.chrs[j] = '\0';
-// 		printf("NEW CHRS {%s} len[%d]\n\n", cub->box.chrs, j);
-// 		return (cub);
+	// 		j = 0;
+	// 		i = -1;
+	// 		cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
+	// 		while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)
+	// 		{
+	// 			if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97 &&
+	// 				cub->map.raw[i][1] == 32)
+	// 			{
+	// 				cub->box.chrs[j] = cub->map.raw[i][0];
+	// 				++j;
+	// 			}
+	// 		}
+	// 		cub->box.chrs[j++] = '@';
+	// 		cub->box.chrs[j] = '\0';
+	// 		printf("NEW CHRS {%s} len[%d]\n\n", cub->box.chrs, j);
+	// 		return (cub);
 // }
 
 char	*chrs_builder(t_cub *cub)
@@ -72,6 +72,7 @@ char	*chrs_builder(t_cub *cub)
 
 	j = 0;
 	i = 0;
+	printf("raw vision raw[0][0] = %c \n", *cub->map.raw[0] );
 	rawz = cub->map.raw;
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[i] && j < cub->box.chrs_len)
@@ -103,7 +104,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	if (!box->xform)
 		return (NULL);
 	box->n_objs = 0;
-	while (++i < box->xnum + box->meta )
+	while (++i < box->xnum + box->n_dual )
 	{
 		if (raw[i][0] > 32)
 		{
@@ -121,11 +122,14 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					box->n_objs++;
 				}
 			}
-			else if(ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
+			else if (box->open_sky == 0)
 			{
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
-				cub = dual_builder(cub, d_id, tex_path);
-				box->pnum++;
+				
+				if(d_id != -1)
+					cub = dual_builder(cub, d_id, tex_path);
+				
+				// box->pnum++;
 			}				
 			else if (raw[i][0] == 'z')
 			{
@@ -135,10 +139,10 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					return (report_mlx_tex_load_failed(tex_path));
 				box->sky = box->xform[i];
 			}
-			box->xform[i] = mlx_load_png(tex_path);
-			if (!box->xform[i])
-				return (report_mlx_tex_load_failed(tex_path));
-			printf("\nSky_tex:[%d]  <{%c}> {{%s}}\n", i, raw[i][0], tex_path);
+			// box->xform[i] = mlx_load_png(tex_path);
+			// if (!box->xform[i])
+			// 	return (report_mlx_tex_load_failed(tex_path));
+			// printf("\nSky_tex:[%d]  <{%c}> {{%s}}\n", i, raw[i][0], tex_path);
 				
 		}
 	}
