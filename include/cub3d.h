@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 20:46:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 22:04:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@
 
 # define PLAYER_HEIGHT 32
 
-# define NB_DRAW_THREADS 2
+# define NB_DRAW_THREADS 3
 
 # define PROJ_COLOR 0xffbcbbb0
+# define TRANSPARENCY 0xcfffffff
 
 enum	e_sides
 {
@@ -486,7 +487,7 @@ int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub, t_rdata *rd);
 void			render_floor_sky(t_cub *cub, t_rdata *rd);
 void			render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pframe);
-void			render_objects(t_cub *cub);//, t_rdata *rd);
+void			render_objects(t_cub *cub, t_rdata *rd);
 //void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);

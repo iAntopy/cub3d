@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 21:34:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 22:02:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 
 			pbuff[i + j * SCN_WIDTH] = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
 //			*pb = get_tex_pixel(tex, t[0] * tex->width * cub->inv_cw,
-				t[1] * tex->height * cub->inv_cw) & 0xafffffff;
+				t[1] * tex->height * cub->inv_cw) & TRANSPARENCY;
 			
 //			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,// flr_ratios[0],
 //				my * tex_arr[0]->height * cub->inv_cw);//flr_ratios[1]);
@@ -349,7 +349,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 
 //			printf("x : %d, *pf : %p, *pc : %p, pc raw offset : %ld\n", i, (void *)(size_t)*pf, (void *)(size_t)*pc, pc - pbuff);
 			*pf = get_tex_pixel(tex_flr, t[0] * tex_flr->width * cub->inv_cw,
-				t[1] * tex_flr->height * cub->inv_cw) & 0xafffffff;
+				t[1] * tex_flr->height * cub->inv_cw) & TRANSPARENCY;
 			printf("*pf : %p, ", (void*)(size_t)*pf);
 
 //			pc = pf - (2 * (j - cub->scn_midy) * SCN_WIDTH);
@@ -362,7 +362,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 //			{
 //				printf("drawing ");
 			*pc = get_tex_pixel(tex_cil, t[0] * tex_cil->width * cub->inv_cw,
-				t[1] * tex_cil->height * cub->inv_cw) & 0xafffffff;
+				t[1] * tex_cil->height * cub->inv_cw) & TRANSPARENCY;
 //			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 21:35:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 22:03:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -514,7 +514,7 @@ void	__render_proj_walls(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pfram
 //			pb[cub->buff_offys[j]] = tex_col;
 //			*pb = tex_col;
 //			pbuff[i + j * SCN_WIDTH] = tex_col;
-			pb[cub->buff_offys[j]] = tex_buff[(int)tex_y * tex_shape[0]] & 0x9fffffff;//tex_col;
+			pb[cub->buff_offys[j]] = tex_buff[(int)tex_y * tex_shape[0]] & TRANSPARENCY;//tex_col;
 //			*pb = tex_buff[(int)tex_y * tex_shape[0]];//tex_col;
 //			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j],
 //				tex_col);
@@ -656,7 +656,7 @@ void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *di
 	}
 }
 
-void	render_objects(t_cub *cub)//, t_rdata *rd)
+void	render_objects(t_cub *cub, t_rdata *rd)
 {
 	t_oinst		*obj;
 	int			drawx;
@@ -684,7 +684,7 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 	int		dims[2];
 	int		pframe[4];
 
-
+	(void)rd;
 	clear_image_buffer(cub->renderer.objs_layer);
 	memset(cub->renderer.dbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
 	memset(cub->renderer.dpbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
@@ -797,7 +797,7 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 //			printf("proj vectors\n");
 			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, pframe);
 			render_floor_sky_proj(cub, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
-//			__render_proj_walls(cub, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
+			__render_proj_walls(cub, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
 //			printf("render_floor_sky\n");
 //			else
 //			{
