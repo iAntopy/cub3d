@@ -56,9 +56,9 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 	{
 		ref = raw[queue];
 		
-		printf("INDEX[%d]:: PRESET CHAR>>(%c)", queue, ref[0]);
+		printf("PSET:: CHAR>>(%c)", ref[0]);
 		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		
 		cub->pset = pset_maker(cub, raw, queue, len);
 		len++;

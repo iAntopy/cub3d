@@ -140,7 +140,7 @@ typedef struct s_box
 	int				n_fbll;
 	int				n_objs;
 
-	t_objx			*objx;
+	t_objx			**objx;
 	t_matrx			*gset; /// rely to model
 	t_matrx			*dual; /// rely to model
 }	t_box;
@@ -601,10 +601,10 @@ char			*chrs_builder(t_cub *cub);
 // t_cub			*e_mtrx_count(t_cub *cub);
 // t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 
-void		 	p_list_objx(t_objx *objx, int id, int num);
+void		 	p_list_objx(t_objx **objx, int id, int num);
 t_objx			*objx_init(t_objx *objx);
 t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
-t_objx			*get_pos(t_cub *cub, t_map *m, int ft_if, int id);
+t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
 
 
 t_cub			*mx_struct(t_map *m, t_cub *cub);

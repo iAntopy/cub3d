@@ -110,7 +110,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 			objs->fball =  *init_fireball_model(objs);
 		box->n_fbll++;
 	}
-	else  if ((t_name[0] == '!' || t_name[0] == '+') && box->n_lvls == 0)       		  		//// lever
+	else  if (t_name[0] == '!' || t_name[0] == '+')       		  		//// lever
 	{
 		printf(">>>>	MODEL : LVLR [%d] >>>\n", box->n_lvls);
 		if (box->n_lvls == 0)
@@ -152,7 +152,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
 			if (p_box != -1 || p_box == (int)ft_strlen(chrs) - 1)
 			{
-				// printf("pset ptr (%d, %d): %p\n", m->pos_y, m->pos_x, &cub->pset[p_box]);
+				// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
 				// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
 				

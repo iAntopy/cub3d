@@ -70,42 +70,45 @@ t_omdl	*init_fireball_model(t_objs *objs)
     return (&objs->fball);
 }
 
-void 	p_list_objx(t_objx *objx, int id, int num)
+void 	p_list_objx(t_objx **objx, int id, int num)
 {
-    if (num == 0)
+    
+    while( id < num)
     {
-        num = id;
-        id = 0;
-    }
-    while( num--)
-    {
-        printf("META[%d] :: IDX_[%c] >>>", id, objx[id].o_type);
-        printf(" RLTV_[%c] <<< {A:%c}_", objx[id].relativ, objx[id].alleg );    
-        printf("__( x[%d], y[%d] )::\n", objx[id].opos[0], objx[id].opos[1]);
+        		printf("LIST_META_obj_id[%d]::NAME:{%c} :: type_[%d] >>>",  objx[id]->obj_id, objx[id]->name, objx[id]->o_type);
+    			printf(" RLTV_[%c] <<< {A:%d}_", objx[id]->relativ, objx[id]->alleg );    
+    			printf("__( x[%d], y[%d] )::\n", objx[id]->opos[0], objx[id]->opos[1]);
         id++;
     }
 }	
 
-t_objx	*get_pos(t_cub *cub, t_map *m, int ft_id, int id)
+t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 {
+    t_objx *objx;
 	char idx;
-    /// add new id_member
 
-    idx = *ft_substr(cub->box.chrs, ft_id, 1);
-    cub->box.objx->name = cub->box.chrs[ft_id];		 	// '#' char name 
-    cub->box.objx->obj_id = id;		                	// enrg. id
-	cub->box.objx->o_type = idx;	            	    // OBJ_
-    cub->box.objx->alleg = m->raw[ft_id][2];		    // txtr_ref
-    cub->box.objx->opos[0] = m->pos_x;
-	cub->box.objx->opos[1] = m->pos_y;
-	cub->box.objx->relativ =  m->raw[ft_id][4];
+    /// add new id_member
+    objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
+    idx = *ft_substr(cub->box.chrs, o_cells, 1);
+    
+    objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
+    objx->obj_id = id;		                	// enrg. id
+	objx->o_type = o_cells;	            	    // OBJ_
+    // printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
+    objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
+	objx->relativ =  m->raw[o_cells][4];
+    // printf("[%d]::{%c}",  objx->alleg, objx->relativ);
+    objx->opos[0] = m->pos_x;
+	objx->opos[1] = m->pos_y;
+    // printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");
 		m->flg_chk = 1;
-		return (cub->box.objx);
+		return (objx);
 	}
-	return (cub->box.objx);
+    
+	return (objx);
 }
 
 // t_objx *objx_init(t_objx *objx)

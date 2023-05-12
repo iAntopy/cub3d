@@ -35,21 +35,20 @@ t_map	*check_hero_found(t_map *m)
 	m->hero_x = m->pos_x;
 	m->hero_y = m->pos_y;
 	m->m[m->pos_y][m->pos_x] = '0';
-	printf("player x[%d]", m->pos_x);
-	printf("player y[%d]\n\n", m->pos_y);
+	// printf("player x[%d]", m->pos_x);
+	// printf("player y[%d]\n\n", m->pos_y);
 	return (m);
 }
 
 t_cub	*wall_check(t_cub *cub, t_map *m)
 {
 	int		o_cells;
-	t_objx 	*objx;
+	t_objx 	**objx;
 	int 	id;
 
 	
 	printf("Wall_chk META  %d::: \n", cub->box.meta);
-	objx = (t_objx *)malloc(sizeof(t_objx) * cub->box.meta + 1);
-	cub->box.objx = objx;
+	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
 	
 	id = 0;
 	o_cells = -1;
@@ -67,14 +66,17 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 				m = check_hero_found(m);
 			else if (o_cells < cub->box.meta && o_cells != -1)
 			{
-				cub->box.objx = get_pos(cub, m, o_cells, id); 	
+				
+				objx[id] = get_pos(cub, m, o_cells, id);
 				id++;
-				cub->box.objx++;
 			}
 			m->pos_x++;
 		}
 		m->pos_y++;
 	}
+	cub->box.objx = objx;
+	// int ox = 0;
+	// p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
 	return (cub);
 }
 
