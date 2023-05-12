@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 20:16:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:46:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -491,6 +491,7 @@ void			render_objects(t_cub *cub);//, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
+uint32_t		get_tex_pixel(mlx_texture_t *tex, int x, int y);
 //void			render_scene(t_cub *cub);
 
 /// FLOORCASTING ///////////////

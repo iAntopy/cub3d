@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 20:30:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 21:35:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -796,9 +796,9 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 			}
 //			printf("proj vectors\n");
 			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, pframe);
-			__render_proj_walls(cub, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
+			render_floor_sky_proj(cub, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
+//			__render_proj_walls(cub, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
 //			printf("render_floor_sky\n");
-//			render_floor_sky_proj(cub, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
 //			else
 //			{
 //				printf("prtl_proj continue \n");

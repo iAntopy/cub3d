@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 19:35:40 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 21:24:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
 	cub->renderer.requires_update = 1;
+	cub->map.width_px = cub->map.width * CELL_WIDTH;
+	cub->map.height_px = cub->map.height * CELL_WIDTH;
 	return (0);
 }
 
