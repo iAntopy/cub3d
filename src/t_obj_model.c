@@ -76,9 +76,9 @@ void 	p_list_objx(t_objx **objx, int id, int num)
         num = id + 1;
     while( id < num)
     {
-        		printf("LIST_META_obj_id[%d]::NAME:{%c} :: type_[%d] >>>",  objx[id]->obj_id, objx[id]->name, objx[id]->o_type);
-    			printf(" RLTV_[%c] <<< {A:%d}_", objx[id]->relativ, objx[id]->alleg );    
-    			printf("__( x[%d], y[%d] )::\n", objx[id]->opos[0], objx[id]->opos[1]);
+        printf("LIST_META_obj_id[%d]::NAME:{%c} :: type_[%d] >>>",  objx[id]->obj_id, objx[id]->name, objx[id]->o_type);
+        printf(" RLTV_[%c] <<< {A:%d}_", objx[id]->relativ, objx[id]->alleg );    
+        printf("__( x[%d], y[%d] )::\n", objx[id]->opos[0], objx[id]->opos[1]);
         id++;
     }
 }	
@@ -93,8 +93,13 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
     idx = *ft_substr(cub->box.chrs, o_cells, 1);
     
     objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
-    objx->obj_id = id;		                	// enrg. id
-	objx->o_type = o_cells;	            	    // OBJ_
+    objx->obj_id = id;		          
+    if (o_cells < cub->box.n_lvls)
+    	objx->o_type = 1;
+    else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
+        objx->o_type = 2;
+    else
+        objx->o_type = 3;
     // printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
     objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
 	objx->relativ =  m->raw[o_cells][4];
@@ -111,16 +116,3 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
     
 	return (objx);
 }
-
-// t_objx *objx_init(t_objx *objx)
-    // {
-
-    // 	// printf("\n OBJX_INIT ::META = %d\n\n", box->meta);
-    // 	// mdl = (t_omdl *)malloc(sizeof(t_omdl) * box->meta);
-    // 	objx->obj_id = 0;
-
-    // 	objx->opos[0] = 0;
-    // 	objx->opos[1] = 0;
-
-    // 	return(objx);
-// }
