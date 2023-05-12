@@ -26,11 +26,11 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 		while (fill++ < 3)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-			printf("MAKER: MULTI: recett{%c} :: index[%d]\n", ref[fill + 2],
+			printf("MAKER: recett{%c} index[%d]\n", ref[fill + 2],
 				id);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			//  printf(" ptr<<%p>> ::\n", cub->box.xform[id]); 
+			 printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
 		}
 	}
 	else if ((ft_in_set((const char)raw[queue][0],
@@ -77,7 +77,7 @@ static int	error_clr(char *err, t_map *map)
 
 int	tex_parse(t_cub *cub, t_map *map)
 {
-	// int	id;
+	int	id;
 	
 	printf("Tex_parse...\n\n");
 	cub->box.dual = 0;
@@ -85,29 +85,26 @@ int	tex_parse(t_cub *cub, t_map *map)
 	
 	cub = e_list_txtr(cub, &cub->box, map);
 		
-	// int	nb;
-	// nb = cub->box.xnum;
+	int	nb;
+	nb = cub->box.xnum;
 	
-	cub->box.pset = cub->box.pnum;
+	////		///		///
+	while (map->raw[nb] && map->raw[nb][0] != ' ')
+	{
+		id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
+		if (id < 0 || map->raw[nb][1] != ' ')
+			break;
+		printf("PSET[%d]:: PNUM[%d]  REF = %c \n", cub->box.pset, cub->box.pnum, map->raw[nb][0]);
+		cub->box.pset++;
+		nb++;
+	}
+	////		///		///	
+	// cub->box.pset = cub->box.pnum;
 	cub->box.tot = cub->box.xnum + cub->box.meta + cub->box.pset;
 	
 		printf("\n<<META[%d]::XNUM[%d]", cub->box.meta, cub->box.xnum);
 		printf("::PSET[%d]::TOT[%d]>> \n\n", cub->box.pset, cub->box.tot);
 
-	
-	////		///		///
-	// while (map->raw[nb] && map->raw[nb][0] != ' ')
-	// {
-	// 	id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
-	// 	if (id < 0 || map->raw[nb][1] != ' ')
-	// 		break;
-	// 	printf("PSET[%d]:: PNUM[%d]  REF = %c \n", cub->box.pset, cub->box.pnum, map->raw[nb][0]);
-	// 	cub->box.pset++;
-	// 	nb++;
-	// }
-	////		///		///
-
-	
 	cub->pset = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.pset);
 	if (!cub->pset)
 		return (-1);

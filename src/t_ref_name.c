@@ -96,20 +96,20 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	char	*tex_path;
 	char	*tex_name;
 	int		i;
+	int		j;
 		int		d_id;
 
-	i = -1;
+	i = - 1;
+	j = 0;
 	box->pnum = 0;
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *), box->xnum + 1);
 	if (!box->xform)
 		return (NULL);
 	box->n_objs = 0;
-	while (++i < box->xnum + box->n_dual )
+	while (++i < box->xnum + box->meta )
 	{
 		if (raw[i][0] > 32)
 		{
-
-
 			raw_len = ft_strlen(raw[i]);
 			tex_name = ft_substr(raw[i], 0, 1);
 			tex_path = ft_substr(raw[i], 2, raw_len - 2);
@@ -134,15 +134,23 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			else if (raw[i][0] == 'z')
 			{
 				cub->box.open_sky = 1;
-				box->xform[i] = mlx_load_png(tex_path);
-				cub->box.sky = box->xform[i];
+				box->xform[j] = mlx_load_png(tex_path);
+				cub->box.sky = box->xform[j];
+				cub->tex.skymap = cub->box.sky;
 				if (!cub->box.sky)
 					return (report_mlx_tex_load_failed(tex_path));
+							printf("\nZZZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
+				j++;
 			}
-			// box->xform[i] = mlx_load_png(tex_path);
-			// if (!box->xform[i])
-			// 	return (report_mlx_tex_load_failed(tex_path));
-			// printf("\nSky_tex:[%d]  <{%c}> {{%s}}\n", i, raw[i][0], tex_path);
+			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
+			{
+				
+				box->xform[j] = mlx_load_png(tex_path);
+				if (!box->xform[j])
+					return (report_mlx_tex_load_failed(tex_path));
+				printf("\nXFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
+				j++;
+			}
 				
 		}
 	}

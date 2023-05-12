@@ -116,9 +116,9 @@ void	on_update(t_cub *cub)
 {
 	// static const float	incr = 0.1f;
 	// static int			counter;
-	static ssize_t	delta_time;
+	// static ssize_t	delta_time;
 
-	delta_time = ft_deltatime_usec();
+	// delta_time = ft_deltatime_usec();
 	// if (delta_time < 30000)
 	// {
 	// 	// cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);

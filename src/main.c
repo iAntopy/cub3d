@@ -101,8 +101,8 @@ int	main(int argc, char **argv)
 
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
-		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
-		|| init_obj_framework(&cub))
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
+		// || init_obj_framework(&cub))
 //		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 

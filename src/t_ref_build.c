@@ -35,8 +35,8 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 		gset->xwalls[i] = mlx_load_png(arr_name);
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(arr_name));
+ 		printf("A GSET >> ptr : %p i: %d\n", gset->xwalls[i] ,i);
 		i++;
- 		// printf("A ptr : %p  %d\n", gset->xwalls[i] ,d);
 		// free(name);
 		// free(arr_name);
 	}
@@ -75,6 +75,8 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 			cub->box.sky = 	cub->box.dual[i].xwalls[0];
 		}			
 
+		printf("A DUAL (xwall[0]) >> ptr : %p i: %d\n", cub->box.dual[i].xwalls[0] ,i);
+
     }
 	// free(tex_set[0]);
 	// free(tex_set[1]);
@@ -101,24 +103,26 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	
 	if (t_name[0] == '*')              		   	///// fireball
 	{
+		printf(">>>>MODEL : FB [%d] >>>\n", box->n_fbll);
 		if (box->n_fbll == 0)
 			objs->fball =  *init_fireball_model(objs);
 		box->n_fbll++;
-		printf(">>>>RUN >>>\n");
 	}
 	else  if ((t_name[0] == '!' || t_name[0] == '+') && box->n_lvls == 0)       		  		//// lever
 	{
+		printf(">>>>MODEL : LVLR [%d] >>>\n", box->n_lvls);
 		if (box->n_lvls == 0)
 			objs->lever =  *init_lever_model(objs);
 		box->n_lvls++;
 	}
 	else if (t_name[0] != '?' && t_name[0] != '@') //// portal
 	{
+		printf(">>>>MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		if (box->n_prts == 0)
 			objs->lever =  *init_portal_model(objs);
 		box->n_prts++;
 	}
-	printf(">>>> TEST >>> [%c]\n", t_name[0]);   			
+	// printf(">>>> TEST >>> [%c]\n", t_name[0]);   			
     return (cub);
 }
 
