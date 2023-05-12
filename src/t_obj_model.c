@@ -72,7 +72,8 @@ t_omdl	*init_fireball_model(t_objs *objs)
 
 void 	p_list_objx(t_objx **objx, int id, int num)
 {
-    
+    if (num == 0)
+        num = id + 1;
     while( id < num)
     {
         		printf("LIST_META_obj_id[%d]::NAME:{%c} :: type_[%d] >>>",  objx[id]->obj_id, objx[id]->name, objx[id]->o_type);

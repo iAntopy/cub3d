@@ -154,7 +154,12 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 			{
 				// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
-				printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
+				if (p_box < cub->box.meta)
+				{
+					printf("FOUND IT ");
+					p_list_objx(cub->box.objx , p_box, 0); 
+				}
+				// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
 				
 			}
 			m->pos_x++;
