@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 16:09:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:51:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,6 +295,9 @@ enum	e_object_types
 	OBJ_PORTAL
 };
 
+// returns 0 if possible and successful, otherwise -1.
+typedef int (* t_obj_act)(t_oinst *, t_cub *);
+
 typedef struct s_objects_list_elem
 {
 	t_omdl	*type;
@@ -304,6 +307,10 @@ typedef struct s_objects_list_elem
 	
 	float		px;//	Position X
 	float		py;//	Position Y
+	float		dx;//	obj direction X
+	float		dy;//	obj direction Y
+
+	t_obj_act	action;
 
 	/// VARS SET AT RENDER TIME ////////////
 	float		ox;//	obj delta x from player
@@ -317,7 +324,7 @@ typedef struct s_objects_list_elem
 	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
 	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
-	int		isactive;
+	int			isactive;
 	// PORTAL SPECIFIC
 	t_oinst		*link;
 
@@ -526,7 +533,11 @@ int				destroy_oinst_by_type(t_cub *cub, int type_enum);
 void			destroy_all_obj_instances(t_cub *cub);
 
 /// OBJECT ACTIVATION FUNCS /////////
-int				activate_portal(t_oinst *obj, int deactivate);
+void		    commit_all_obj_actions(t_cub *cub);
+int				activate_portal(t_oinst *obj, int new_status);
+
+/// OBJECT ACTIONS CALLBACKS
+int				__obj_action_portal(t_oinst *obj, t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);

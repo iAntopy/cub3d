@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/03 22:57:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:55:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ static int	create_portal_instance(t_cub *cub, int *pos, int *obj_id, t_oinst *li
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
 	new_obj->link = link;
+	
+	new_obj->action = __obj_action_portal;
+//	new_obj->action = NULL;
 	if (link)
 	{
 		printf("linking portal %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);

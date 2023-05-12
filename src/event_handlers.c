@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 16:18:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:49:51 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	on_update(t_cub *cub)
 	{
 		cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
 		cub->renderer.requires_update = 1;
+		commit_all_obj_actions(cub);
 	}
 	else
 		delta_time = 0;
