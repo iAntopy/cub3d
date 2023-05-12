@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sky_caster.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 02:30:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:51:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:42:07 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	init_skycaster(t_cub *cub)
 	if (!cub->box.sky)
 		return (report_err("No sky texture provided.\n"));
 	printf("sky textures LOADED\n");
-	cub->tex.skymap = cub->box.sky;
+	// cub->tex.skymap = cub->box.sky;
 	printf("sky ptr : %p\n", cub->tex.skymap);
 
-	cub->tex.open_sky = 1;
+	// cub->tex.open_sky = 1;
 	// MOVE THESE SOMEWHERE !
 //	cub->renderer.flrw_to_cw = cub->inv_cw * cub->floor_tex->width;
 //	cub->renderer.flrh_to_cw = cub->inv_cw * cub->floor_tex->height;

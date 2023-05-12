@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 20:13:13 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:36:25 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 				id);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			 printf(" ptr<<%p>> ::\n", cub->box.xform[id]); 
+			//  printf(" ptr<<%p>> ::\n", cub->box.xform[id]); 
 		}
 	}
 	else if ((ft_in_set((const char)raw[queue][0],

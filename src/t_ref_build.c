@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 19:54:11 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:46:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 			cub->box.dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 			if (!cub->box.dual[i].xwalls[0])
 				return (report_mlx_tex_load_failed(tex_set[0]));			
+			cub->box.sky = 	cub->box.dual[i].xwalls[0];
 		}			
 
     }
-	cub->box.sky = 	cub->box.dual[i].xwalls[0];
 	// free(tex_set[0]);
 	// free(tex_set[1]);
 	// free(tex_set);
@@ -85,7 +85,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
-	// t_objx *objx;
+		// t_objx *objx;
 
 			// objx = malloc(sizeof(t_objx *) * 1);
 			// if(!objx)
@@ -146,7 +146,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
 			if (p_box != -1 || p_box == (int)ft_strlen(chrs) - 1)
 			{
-				printf("pset ptr (%d, %d): %p\n", m->pos_y, m->pos_x, &cub->pset[p_box]);
+				// printf("pset ptr (%d, %d): %p\n", m->pos_y, m->pos_x, &cub->pset[p_box]);
 				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
 				// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
 				
