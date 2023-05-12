@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 19:49:48 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:13:06 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		int		d_id;
 
 	i = -1;
-	// box->pnum = 0;
+	box->pnum = 0;
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *), box->xnum + 1);
 	if (!box->xform)
 		return (NULL);
@@ -125,7 +125,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			{
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				cub = dual_builder(cub, d_id, tex_path);
-				// box->pnum++;
+				box->pnum++;
 			}				
 			else if (raw[i][0] == 'z')
 			{
