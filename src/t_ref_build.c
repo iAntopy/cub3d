@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/12 18:23:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 19:17:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,9 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
 			if (p_box != -1 || p_box == (int)ft_strlen(chrs) - 1)
 			{
-//				printf("p_box : %d, p_box_char : %c\n", p_box, chrs[p_box]);
+				printf("p_box : %d, p_box_char : %c\n", p_box, chrs[p_box]);
 				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
-//				printf("m->mx[m->pos_y][m->pos_x].xwalls : %p\n", m->mx[m->pos_y][m->pos_x]);
+				printf("m->mx[m->pos_y][m->pos_x]->walls[0] : %p\n", m->mx[m->pos_y][m->pos_x]->xwalls[0]);
 				if (p_box < cub->box.meta)
 				{
 					// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);

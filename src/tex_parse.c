@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tex_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 20:36:25 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/12 19:41:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	ref = raw[queue];
 	if (ft_in_set((const char)raw[queue][0], (const char *)MAP_UCHR) > -1)
 	{
+		printf("PSET MAKER !!\n");
 		while (fill++ < 3)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
@@ -30,15 +31,15 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 				// id);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			//  printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
+			  printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
 		}
 	}
-	else if ((ft_in_set((const char)raw[queue][0],
-			(const char *)MAP_NCHR) > -1))
-	{
-		cub->pset[len].xwalls[0] = cub->box.xform[queue];
-		cub->pset[len].xwalls[1] = NULL;
-	}
+//	else if ((ft_in_set((const char)raw[queue][0],
+//			(const char *)MAP_NCHR) > -1))
+//	{
+//		cub->pset[len].xwalls[0] = cub->box.xform[queue];
+///		cub->pset[len].xwalls[1] = NULL;
+//	}
 	/* printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);*/
 	return (cub->pset);
 }
@@ -105,7 +106,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		printf("\n<<META[%d]::XNUM[%d]", cub->box.meta, cub->box.xnum);
 		printf("::PSET[%d]::TOT[%d]>> \n\n", cub->box.pset, cub->box.tot);
 
-	cub->pset = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.pset);
+	cub->pset = (t_matrx *)calloc(sizeof(t_matrx), cub->box.pset);
 	if (!cub->pset)
 		return (-1);
 	if (!xwalls_builder(cub, map->raw))
