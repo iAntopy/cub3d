@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 22:58:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:30:20 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,14 @@ int	main(int argc, char **argv)
 
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
-		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
-		|| init_obj_framework(&cub) < 0
-		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
+//		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+//		|| init_obj_framework(&cub))
 		return (cub_clear(&cub, EXIT_FAILURE));
 
 
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
+/*
 	int	pos[2];
 	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
 	pos[1] = CELL_WIDTH * 2;
@@ -130,6 +131,7 @@ int	main(int argc, char **argv)
 	pos[0] = 125;
 	pos[1] = 100;
 	mlx_draw_square(cub.renderer.mmap_layer, pos, 50, 0xffffffff);
+*/
 /////// END OF DEBUG SECTION
 
 

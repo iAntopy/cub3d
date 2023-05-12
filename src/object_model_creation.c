@@ -6,20 +6,20 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/03 22:57:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:18:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Pass either OBJ_ACTIVATE or OBJ_DEACTIVATE as mode.
-int	activate_portal(t_oinst *obj, int mode)
+int	activate_portal(t_oinst *obj, int new_status)
 {
 	mlx_texture_t	*tex;
 
 	if (obj->type->type_enum != OBJ_PORTAL)
 		return (ft_eprintf("ACTIVATION FAILED : obj id %d (%p) is not a portal obj !\n", obj->_id, obj));
-	if (obj->isactive && mode == OBJ_DEACTIVATE)
+	if (obj->isactive && new_status == 0)
 	{
 		printf("DEACTIVATING PORTAL id %d\n", obj->_id);
 		obj->isactive = 0;
@@ -27,7 +27,7 @@ int	activate_portal(t_oinst *obj, int mode)
 		tex = obj->type->texs[0];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
 	}
-	else if (!obj->isactive && mode == OBJ_ACTIVATE)
+	else if (!obj->isactive && new_status == 1)
 	{
 		if (!obj->link)
 			return (ft_eprintf("Cannot activate portal without a link\n"), -1);
@@ -42,33 +42,33 @@ int	activate_portal(t_oinst *obj, int mode)
 	return (0);
 }
 
-static t_omdl	*init_portal_model(t_objs *objs)
-{
-	const char	*tex_path1 = "tex/ext/Portal1.png";
-	const char	*tex_path2 = "tex/ext/Portal_void_whitealpha.png";
-	mlx_texture_t	*tex;
+// static t_omdl	*init_portal_model(t_objs *objs)
+// {
+// 	const char	*tex_path1 = "tex/ext/Portal1.png";
+// 	const char	*tex_path2 = "tex/ext/Portal_void_whitealpha.png";
+// 	mlx_texture_t	*tex;
 
-	objs->portal.model_name = "Portal";
-	objs->portal.type_enum = OBJ_PORTAL;
-	objs->portal.nb_texs = 1;
-	printf("Init Portal model ; Try load  png\n");
-	tex = mlx_load_png(tex_path1);
-	objs->portal.texs[0] = tex;
-	if (!objs->portal.texs[0])
-		return (report_mlx_tex_load_failed((char *)tex_path1));
-//	objs->portal.texs[1] = tex;//mlx_load_png(tex_path2);
-	objs->portal.texs[1] = mlx_load_png(tex_path2);
-	if (!objs->portal.texs[1])
-		return (report_mlx_tex_load_failed((char *)tex_path2));
-	printf("Init Portal model ; png load SUCCESSFUL !\n");
-	objs->portal.width = CELL_WIDTH;
-	objs->portal.half_w = objs->portal.width >> 1;
-	objs->portal.height = objs->portal.width * (tex->height / tex->width);
-	objs->portal.half_h = objs->portal.height >> 1;
-//	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
-	printf("Portal object model initialized !\n");
-	return (&objs->portal);
-}
+// 	objs->portal.model_name = "Portal";
+// 	objs->portal.type_enum = OBJ_PORTAL;
+// 	objs->portal.nb_texs = 1;
+// 	printf("Init Portal model ; Try load  png\n");
+// 	tex = mlx_load_png(tex_path1);
+// 	objs->portal.texs[0] = tex;
+// 	if (!objs->portal.texs[0])
+// 		return (report_mlx_tex_load_failed((char *)tex_path1));
+// //	objs->portal.texs[1] = tex;//mlx_load_png(tex_path2);
+// 	objs->portal.texs[1] = mlx_load_png(tex_path2);
+// 	if (!objs->portal.texs[1])
+// 		return (report_mlx_tex_load_failed((char *)tex_path2));
+// 	printf("Init Portal model ; png load SUCCESSFUL !\n");
+// 	objs->portal.width = CELL_WIDTH;
+// 	objs->portal.half_w = objs->portal.width >> 1;
+// 	objs->portal.height = objs->portal.width * (tex->height / tex->width);
+// 	objs->portal.half_h = objs->portal.height >> 1;
+// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
+// 	printf("Portal object model initialized !\n");
+// 	return (&objs->portal);
+// }
 
 static void	clear_obj_model(t_omdl *mdl)
 {
@@ -218,14 +218,14 @@ void	clear_obj_framework(t_cub *cub)
 
 // If more drawable models should exist, initiaize their models here.
 // Add more init model func calls as needed.
-int	init_obj_framework(t_cub *cub)
-{
-	if (!init_portal_model(&cub->objs))
-		return (-1);
-	// ADD more models for extra fun.
-	// ...
-	return (0);
-}
+// int	init_obj_framework(t_cub *cub)
+// {
+// 	if (!init_portal_model(&cub->objs))
+// 		return (-1);
+// 	// ADD more models for extra fun.
+// 	// ...
+// 	return (0);
+// }
 
 // Add new obj to front of list. 
 // param is an instance creation type specific argument. 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_map_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/01 01:19:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:19:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static	int	transcribe(t_map *map, int map_offset)
 }
 
 /// map-part of file  >> wall_check
-static t_cub	*map_frame(t_map *map, t_cub *cub)
+t_cub	*map_frame(t_map *map, t_cub *cub)
 {
 	char	**m;
 	int		i;
@@ -74,8 +74,8 @@ static t_cub	*map_frame(t_map *map, t_cub *cub)
 	return (cub);
 }
 
-//// map_len
-static int	read_whole_file(t_map *map, char *filepath)
+////  map->raw ++ map_len
+int	read_whole_file(t_map *map, char *filepath)
 {
 	char	buffer[CUBMAP_BUFMAX + 1];
 	int		fd;
@@ -96,31 +96,34 @@ static int	read_whole_file(t_map *map, char *filepath)
 		return (report_malloc_error());
 	flush_empty_lines(map->raw);
 	close(fd);
-	// if (strtab_len(map->raw) < 6)
-	// 	return (error("Missing info in config file.", map));
-	// else
-		return (strtab_len(map->raw));
-	return (0);
+	return (strtab_len(map->raw));	//return (0);
 }
 
+/// parsing autopsy
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int	map_len;
 	int	map_offset;
 
+	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
+		
 	map_len = read_whole_file(map, file);
 	if (tex_parse(cub, map) < 0)
 		return (-1);
-	map_offset = (cub->box.xnum - cub->box.pnum) + cub->box.pset;
+		
+	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
+	
 	printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, map_offset);
 	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
-	if (!map_frame(map, cub) || !mx_struct(map, cub))
+	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
-	// printf("A ptr : %p =? %p\n", map->mx[0][0], &cub->pset[2]);
+	// int ox = 0;
+	// p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
+	printf("A ptr : %p =? %p\n", map->mx[0][0], &cub->pset[2]);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
 	print_collision_map(map);
