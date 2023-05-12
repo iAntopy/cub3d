@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 14:31:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 18:34:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	renderer_clear(t_cub *cub)
 // Called only once at start to initialize mlx image buffers by layer.
 int	init_renderer(t_cub *cub)
 {
+	int j;
+	
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 //	cub->renderer.proj_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
@@ -79,5 +81,10 @@ int	init_renderer(t_cub *cub)
 	mlx_image_to_window(cub->mlx, cub->renderer.mmap_layer,
 		(int)(SCN_WIDTH * 0.03f),
 		SCN_HEIGHT - MMP_HEIGHT - (int)(SCN_HEIGHT * 0.03f));
+
+	j = -1;
+	while (++j < SCN_HEIGHT)
+		cub->buff_offys[j] = j * SCN_WIDTH;
+
 	return (0);
 }

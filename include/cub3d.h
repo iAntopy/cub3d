@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 16:56:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:16:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,6 +355,7 @@ typedef struct s_renderer_column_params
 	int				scn_height;
 	int				half_height;// strat 1
 	int				scn_start_y;
+	int				scn_end_y;
 	float			ratio;
 //	int			px_incry;
 }	t_rcol;
@@ -405,6 +406,9 @@ typedef struct s_cub3d_core_data
 	float			inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
 	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float			inv_two_pi;	// 1 / 2pi;
+	int				buff_offys[SCN_HEIGHT];//	indexable array of all j * SCN_WIDTH 
+										//	offsets in y directions to optimize rendering.
+
 
 	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float			fov;// = fov;// field of view
