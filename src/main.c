@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 21:58:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 22:58:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,11 @@ int	main(int argc, char **argv)
 //	else
 //		printf("Portal activation SUCCESS\n");
 	printf("portal ptr : %p\n", cub.objs.instances);
+
+//	mlx_set_color_in_rows(cub.renderer.mmap_layer, 0, 15, 0xffffffff);
+	pos[0] = 125;
+	pos[1] = 100;
+	mlx_draw_square(cub.renderer.mmap_layer, pos, 50, 0xffffffff);
 /////// END OF DEBUG SECTION
 
 

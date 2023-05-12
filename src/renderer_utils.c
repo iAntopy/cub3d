@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:11:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 16:01:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 22:59:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,17 @@ void	mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col)
 {
 	__mlx_fill_pixels(img->pixels + (sizeof(uint32_t) * start * img->width),
 		sizeof(int) * (end - start) * img->width, col);
+}
+
+void	mlx_draw_square(mlx_image_t *img, int pos[2], int side, uint32_t col)
+{
+	int			i;
+	uint32_t	*pxls;
+
+	pxls = (uint32_t *)img->pixels + pos[0] + pos[1] * img->width;
+	i = -1;
+	while (++i < side)
+		__mlx_fill_pixels((uint8_t *)(pxls + (i * img->width)), side * sizeof(uint32_t), col);
 }
 
 void	cub_put_pixel(mlx_image_t *img, int x, int y, int col)

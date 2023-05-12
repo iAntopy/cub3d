@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 02:30:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:11:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)//, int *pdims)
 //	uint32_t	tex_col;
 //	uint32_t	*prtl_col_p;
 
-	printf("__render_proj_sky : start pframe [%d, %d, %d, %d]\n", pframe[0], pframe[1], pframe[2], pframe[3]);
+//	printf("__render_proj_sky : start pframe [%d, %d, %d, %d]\n", pframe[0], pframe[1], pframe[2], pframe[3]);
 //	tofs[0] = tofs_p;
 	i = pframe[0] - 1;
 //	tp = toffx_x + i;
@@ -182,7 +182,7 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 //	float			divergent_lens_ratio;
 	float			ray_scalar;
 	
-	printf("FLOOR SKY \n");
+//	printf("FLOOR SKY \n");
 
 	__render_proj_sky(cub, pbuff, pframe);
 
@@ -208,9 +208,10 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 				continue ;
 //			printf("is proj and not depth buff\n");
 //			divergent_lens_ratio = (j - cub->scn_midy) * pheight_inv;
-			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH];// - pd->dist;//(*pms) - pd->odist;
+//			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH];// - pd->dist;//(*pms) - pd->odist;
 //				* cosf(divergent_lens_ratio * LENS_EFFECT_RAD) - pd->odist;
 //			ray_scalar = get_floorcaster_param(cub, i, j);// - pd->dist;
+			ray_scalar = params[i + (j - cub->scn_midy) * SCN_WIDTH] - pd->odist;//(*pms) - pd->odist;
 
 //			printf("ray_scalar : %f\n", ray_scalar);
 //			ray_scalar = get_floorcaster_param(cub, i, j) - pd->odist;//(*pms) - pd->odist;
@@ -326,7 +327,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 //				i, pd->rdata->idx, ray_scalar, pd->odist, pd->px, pd->py);
 			p[0] = *pd->rdata->rx * ray_scalar + pd->px;
 			p[1] = *pd->rdata->ry * ray_scalar + pd->py;
-			printf("floor pos : (%f, %f)\n", p[0], p[1]);
+//			printf("floor pos : (%f, %f)\n", p[0], p[1]);
 //			p[0] = (*rays[0] * (*pms) + cub->hero.px);
 //			p[1] = (*rays[1] * (*pms) + cub->hero.py);
 //			printf("width_px : %d, height_px : %d\n", cub->map.width_px, cub->map.height_px);

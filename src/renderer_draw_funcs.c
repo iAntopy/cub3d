@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 21:56:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:12:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	render_walls(t_cub *cub, t_rdata *rd)
 	uint32_t	*pxls;
 	int			tex_width;
 
-	ft_eprintf("DRAW WALLS !!\n");
+//	ft_eprintf("DRAW WALLS !!\n");
 	rc.layer = cub->renderer.walls_layer;
 	clear_image_buffer(rc.layer);
 	i = -1;

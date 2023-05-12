@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 22:04:25 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 16:09:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ typedef struct s_portal_projection_data
 	float	hitx;// collision world coord x;
 	float	hity;// collision world coord y;
 	float	dist;// collision distance to projection plane.
+	float	odist;// ray distance to portal.
 	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
 	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
 }	t_pdata;
@@ -490,6 +491,7 @@ void			render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pfra
 void			render_objects(t_cub *cub, t_rdata *rd);
 //void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
+void			mlx_draw_square(mlx_image_t *img, int pos[2], int side, uint32_t col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
 uint32_t		get_tex_pixel(mlx_texture_t *tex, int x, int y);
