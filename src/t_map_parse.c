@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 17:32:29 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:19:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static	int	transcribe(t_map *map, int map_offset)
 }
 
 /// map-part of file  >> wall_check
-static t_cub	*map_frame(t_map *map, t_cub *cub)
+t_cub	*map_frame(t_map *map, t_cub *cub)
 {
 	char	**m;
 	int		i;
@@ -75,7 +75,7 @@ static t_cub	*map_frame(t_map *map, t_cub *cub)
 }
 
 ////  map->raw ++ map_len
-static int	read_whole_file(t_map *map, char *filepath)
+int	read_whole_file(t_map *map, char *filepath)
 {
 	char	buffer[CUBMAP_BUFMAX + 1];
 	int		fd;
@@ -113,13 +113,13 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	if (tex_parse(cub, map) < 0)
 		return (-1);
 		
-	map_offset = (cub->box.xnum - cub->box.pnum) + cub->box.pset;
+	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
 	
 	printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, map_offset);
 	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
-	if (!map_frame(map, cub) || !mx_struct(map, cub))
+	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
 		
 	printf("A ptr : %p =? %p\n", map->mx[0][0], &cub->pset[2]);

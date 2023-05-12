@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
+#    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/05 22:28:22 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/11 18:45:37 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,8 @@ SRC_FLS	:=		main.c 			\
 			t_color_creat.c 	\
 			t_map_parse.c 		\
 			t_map_tool.c 		\
+			t_ref_build.c 		\
+			t_obj_model.c 		\
 			t_wall_chk.c		\
 			t_empty_line.c		\
 			tex_parse.c			\

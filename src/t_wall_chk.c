@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 18:23:20 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:00:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,16 @@ t_map	*check_hero_found(t_map *m)
 t_cub	*wall_check(t_cub *cub, t_map *m)
 {
 	int		o_cells;
-	// t_objx 	*objx;
-	// int 	id;
+	t_objx 	*objx;
+	int 	id;
 
 	
-	// printf("Wall_chk META  %d::: \n", cub->box.meta);
-	// objx = (t_objx *)malloc(sizeof(t_objx) * cub->box.meta + 1);
-	// cub->box.objx = objx;
+	printf("Wall_chk META  %d::: \n", cub->box.meta);
+	objx = (t_objx *)malloc(sizeof(t_objx) * cub->box.meta + 1);
+	cub->box.objx = objx;
 	
-	// id = 0;
-	// o_cells = -1;
+	id = 0;
+	o_cells = -1;
 	m->pos_y = 0;
 	while (m->pos_y < m->height)
 	{
@@ -65,12 +65,12 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 				m->m[m->pos_y][m->pos_x] = 'A';
 			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
 				m = check_hero_found(m);
-			// else if (o_cells < cub->box.meta && o_cells != -1)
-			// {
-			// 	cub->box.objx = get_pos(cub, m, o_cells, id); 	
-			// 	id++;
-			// 	cub->box.objx++;
-			// }
+			else if (o_cells < cub->box.meta && o_cells != -1)
+			{
+				cub->box.objx = get_pos(cub, m, o_cells, id); 	
+				id++;
+				cub->box.objx++;
+			}
 			m->pos_x++;
 		}
 		m->pos_y++;

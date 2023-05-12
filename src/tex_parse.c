@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 18:15:46 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:58:22 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 	int		len;
 	char	*ref;
 
-	queue = cub->box.xnum - cub->box.pnum;
-	////		///		///	queue = (cub->box.xnum  + cub->box.meta);
+	// queue = cub->box.xnum - cub->box.pnum;
+	queue = (cub->box.xnum  + cub->box.meta);
 	len = 0;
 	while (len < cub->box.pset)
 	{
@@ -77,16 +77,16 @@ static int	error_clr(char *err, t_map *map)
 
 int	tex_parse(t_cub *cub, t_map *map)
 {
-	int	id;
+	// int	id;
 	
 	printf("Tex_parse...\n\n");
-	// cub->box.dual = 0;
-	// cub->box.pset = 0;
+	cub->box.dual = 0;
+	cub->box.pset = 0;
 	
 	cub = e_list_txtr(cub, &cub->box, map);
 		
-	int	nb;
-	nb = cub->box.xnum;
+	// int	nb;
+	// nb = cub->box.xnum;
 	
 	cub->box.pset = cub->box.pnum;
 	cub->box.tot = cub->box.xnum + cub->box.meta + cub->box.pset;
@@ -96,15 +96,15 @@ int	tex_parse(t_cub *cub, t_map *map)
 
 	
 	////		///		///
-	while (map->raw[nb] && map->raw[nb][0] != ' ')
-	{
-		id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
-		if (id < 0 || map->raw[nb][1] != ' ')
-			break;
-		printf("PSET[%d]:: PNUM[%d]  REF = %c \n", cub->box.pset, cub->box.pnum, map->raw[nb][0]);
-		cub->box.pset++;
-		nb++;
-	}
+	// while (map->raw[nb] && map->raw[nb][0] != ' ')
+	// {
+	// 	id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
+	// 	if (id < 0 || map->raw[nb][1] != ' ')
+	// 		break;
+	// 	printf("PSET[%d]:: PNUM[%d]  REF = %c \n", cub->box.pset, cub->box.pnum, map->raw[nb][0]);
+	// 	cub->box.pset++;
+	// 	nb++;
+	// }
 	////		///		///
 
 	

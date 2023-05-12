@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 17:58:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:46:03 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,7 @@ typedef struct s_box
 
 	mlx_texture_t	**xform;
 	mlx_texture_t	*sky_tex;	
-	// // //  splited
-		mlx_texture_t	*sky;	
+	mlx_texture_t	*sky;	
 	int				pnum;
 	// // // // 
 	char 			*chrs;
@@ -185,7 +184,7 @@ typedef struct s_texture_data
 	int				color[2];
 	
 	//	mlx_texture_t	*walls[4];
-	// mlx_texture_t	*sky_tex;	// yessss
+	mlx_texture_t	*sky_tex;	// yessss
 	// t_matrx			*gset;		// model_txtr
 	// t_matrx			*dual;		// floor & ceiling
 	// // // //
@@ -578,33 +577,34 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// MODEL ////////////////////
-// t_omdl			*init_lever_model(t_objs *objs);
-// t_omdl			*init_portal_model(t_objs *objs);
-// t_omdl			*init_fireball_model(t_objs *objs);
+t_omdl			*init_lever_model(t_objs *objs);
+t_omdl			*init_portal_model(t_objs *objs);
+t_omdl			*init_fireball_model(t_objs *objs);
 
 /// TESTING TXTR_DICT
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
 t_box 			*xwalls_builder(t_cub *cub, char **raw);
 //
-// t_matrx			*gset_builder(const char *path, int txtr_nb);
-// t_cub			*dual_builder(t_cub *cub, int i, char *t_name);
-// t_cub			*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs);
-// t_cub			*mapx_builder(t_map *m, t_cub *cub);
+t_matrx			*gset_builder(const char *path, int txtr_nb);
+t_cub			*dual_builder(t_cub *cub, int i, char *t_name);
+t_cub			*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs);
+t_cub			*mapx_builder(t_map *m, t_cub *cub);
 //
-t_cub			*chsr_feed(t_cub *cub);
-t_box	 		*e_mtrx_link(t_box *box, char **raw);
-t_cub			*e_mtrx_count(t_cub *cub);
+
+t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
+t_cub			*e_mtrx_count(t_cub *cub);
 
-// char			*chrs_builder(t_cub *cub);
-// t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
-// t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
+char			*chrs_builder(t_cub *cub);
+// t_cub			*chsr_feed(t_cub *cub);
+// t_box	 		*e_mtrx_link(t_box *box, char **raw);
 // t_cub			*e_mtrx_count(t_cub *cub);
+// t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 
-// void		 	p_list_objx(t_objx *objx, int id, int num);
-// t_objx			*objx_init(t_objx *objx);
-// t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
-// t_objx			*get_pos(t_cub *cub, t_map *m, int ft_if, int id);
+void		 	p_list_objx(t_objx *objx, int id, int num);
+t_objx			*objx_init(t_objx *objx);
+t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
+t_objx			*get_pos(t_cub *cub, t_map *m, int ft_if, int id);
 
 
 t_cub			*mx_struct(t_map *m, t_cub *cub);
