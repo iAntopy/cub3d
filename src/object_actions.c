@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 23:38:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 01:54:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,24 +73,23 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 
 int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 {
-	static ssize_t	delta_time;
+	static int	counter;
 	int		pos[4];
 	
 	if (!obj->isactive)
 		return (-1);
 	if (obj->relative)
 	{
-		delta_time += ft_deltatime_usec();
-		printf("delta_time : %zd\n", delta_time);
-		if (delta_time > FIREPIT_SPAWN_TICKS)
+//		printf("delta_time : %zd\n", delta_time);
+		if (++counter > FIREPIT_SPAWN_TICKS)
 		{
 			pos[0] = obj->px;
 			pos[1] = obj->py;
 			pos[2] = 0;
 			pos[3] = 0;
-			printf("SPAWNING FIREBALL\n");
+//			printf("SPAWNING FIREBALL\n");
 			create_obj_instance(cub, pos, OBJ_FIREBALL, obj->relative);
-			delta_time = 0;
+			counter = 0;
 		}
 	}
 

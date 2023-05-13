@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 21:39:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 01:51:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,29 +120,31 @@ void	on_update(t_cub *cub)
 {
 	static const float	incr = 0.1f;
 	static int			counter;
-	static ssize_t	delta_time;
+//	static ssize_t	delta_time;
 
-	delta_time = ft_deltatime_usec();
-	if (delta_time < 30000)
-	{
-		cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
-		commit_all_obj_actions(cub);
-		cub->renderer.requires_update = 1;
-	}
-	else
-		delta_time = 0;
+//	delta_time = ft_deltatime_usec();
+//	ft_printf("delta_time : %d\n", (int)delta_time);
+//	if (delta_time < 50000)
+//	{
+	
+	cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
+	commit_all_obj_actions(cub);
+	cub->renderer.requires_update = 1;
+//	}
+//	else
+//		delta_time = 0;
 
 
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
-//		order_draw_call(cub, cub->draw_threads);
+		order_draw_call(cub, cub->draw_threads);
 //		printf("drawing walls\n");
-		render_walls(cub, cub->hero.rcast.rdata);
+//		render_walls(cub, cub->hero.rcast.rdata);
 //		printf("drawing floor\n");
-		render_floor_sky(cub, cub->hero.rcast.rdata);
-		render_objects(cub, cub->hero.rcast.rdata);//, cub->hero.rcast.rdata);
+//		render_floor_sky(cub, cub->hero.rcast.rdata);
+//		render_objects(cub, cub->hero.rcast.rdata);//, cub->hero.rcast.rdata);
 //		printf("drawing sky\n");
 //		render_sky(cub, cub->hero.rcast.rdata);
 //		printf("ALL DONE \n");

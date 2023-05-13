@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 23:36:36 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 02:21:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,15 @@ int	main(int argc, char **argv)
 
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 	int	pos[2];
-	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
-	pos[1] = CELL_WIDTH * 2;
-	
-	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
+//	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
+//	pos[1] = CELL_WIDTH * 2;
 	
 	pos[0] = 7 * CELL_WIDTH;
-	pos[1] = 10 * CELL_WIDTH;
+	pos[1] = 7 * CELL_WIDTH;
+	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
+	
+	pos[0] = 34 * CELL_WIDTH;
+	pos[1] = 15 * CELL_WIDTH;
 
 	create_obj_instance(&cub, pos, OBJ_PORTAL, get_obj(&cub, portal1_id));
 //	if (activate_portal(cub.objs.instances, OBJ_ACTIVATE) < 0)

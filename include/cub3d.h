@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 23:40:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 02:01:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@
 # define PROJ_COLOR 0xffbcbbb0
 # define TRANSPARENCY 0xcfffffff
 
-#define FIREPIT_SPAWN_TICKS 200
+#define FIREPIT_SPAWN_TICKS 50
 
 enum	e_sides
 {

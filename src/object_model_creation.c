@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 23:39:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 01:56:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.half_h = objs->fireball.height >> 1;
 	printf("fireball w h : (%d, %d), half w h (%d, %d)\n", 
 		objs->fireball.width, objs->fireball.height, objs->fireball.half_w, objs->fireball.half_h);
-	objs->fireball.speed = 1.0f;
+	objs->fireball.speed = 4.0f;
 	objs->fireball.dmg = 5;
 //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
 	printf("fireball object model initialized !\n");
