@@ -7,7 +7,7 @@ f tex/ext/rock2.png
 z tex/ext/sky_star.png
 0 tex/ext/floor.png
 
-A ffff
+A abab
 B aaaa
 C cccc
 D bbbb
@@ -34,4 +34,3 @@ C0000000000C         D000D A00000000000A
 C0000CCCCCCC        D00000D A000000000A
 CCCCCC               D000D   AA00000AA
                       DDD      AAAAA
-git status

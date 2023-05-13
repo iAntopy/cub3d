@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 19:35:40 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 02:21:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
 	cub->renderer.requires_update = 1;
+	cub->map.width_px = cub->map.width * CELL_WIDTH;
+	cub->map.height_px = cub->map.height * CELL_WIDTH;
 	return (0);
 }
 
@@ -102,27 +104,38 @@ int	main(int argc, char **argv)
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
 		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
-		|| init_obj_framework(&cub))
-//		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+		|| init_obj_framework(&cub) < 0
+		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
 
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 	int	pos[2];
-	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
-	pos[1] = CELL_WIDTH * 2;
-	
-	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
+//	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
+//	pos[1] = CELL_WIDTH * 2;
 	
 	pos[0] = 7 * CELL_WIDTH;
-	pos[1] = 10 * CELL_WIDTH;
+	pos[1] = 7 * CELL_WIDTH;
+	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, NULL);
+	
+	pos[0] = 34 * CELL_WIDTH;
+	pos[1] = 15 * CELL_WIDTH;
 
-	create_obj_instance(&cub, pos, OBJ_PORTAL, get_oinst_by_id(&cub, portal1_id));
+	create_obj_instance(&cub, pos, OBJ_PORTAL, get_obj(&cub, portal1_id));
 //	if (activate_portal(cub.objs.instances, OBJ_ACTIVATE) < 0)
 //		printf("Portal activation FAILURE\n");
 //	else
 //		printf("Portal activation SUCCESS\n");
 	printf("portal ptr : %p\n", cub.objs.instances);
+
+	pos[0] = 3 * CELL_WIDTH;
+	pos[1] = 7 * CELL_WIDTH;
+	create_obj_instance(&cub, pos, OBJ_FIREPIT, &cub.hero);
+
+//	mlx_set_color_in_rows(cub.renderer.mmap_layer, 0, 15, 0xffffffff);
+	pos[0] = 125;
+	pos[1] = 100;
+	mlx_draw_square(cub.renderer.mmap_layer, pos, 50, 0xffffffff);
 /////// END OF DEBUG SECTION
 
 

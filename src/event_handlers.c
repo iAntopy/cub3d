@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 19:25:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 01:51:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	on_close(void *param)
 void	on_keypress(mlx_key_data_t event, void *param)
 {
 	t_cub	*cub;
+	t_oinst	*obj;
 
 	cub = (t_cub *)param;
 	if (event.action != MLX_PRESS)
@@ -31,10 +32,13 @@ void	on_keypress(mlx_key_data_t event, void *param)
 
 	if (event.key == MLX_KEY_SPACE)
 	{
-		activate_portal(cub->objs.instances, (cub->objs.instances->isactive)
-			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
-		activate_portal(cub->objs.instances->next, (cub->objs.instances->isactive)
-			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
+		obj = cub->objs.instances;
+		while (obj->type->type_enum != OBJ_PORTAL)
+			obj = obj->next;
+		activate_portal(obj, (obj->isactive)
+			? (0): (1));
+		activate_portal(obj->next, (obj->isactive)
+			? (0): (1));
 	}
 	cub->renderer.requires_update = 1;
 
@@ -116,28 +120,31 @@ void	on_update(t_cub *cub)
 {
 	static const float	incr = 0.1f;
 	static int			counter;
-	static ssize_t	delta_time;
+//	static ssize_t	delta_time;
 
-	delta_time = ft_deltatime_usec();
-	if (delta_time < 30000)
-	{
-		cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
-		cub->renderer.requires_update = 1;
-	}
-	else
-		delta_time = 0;
+//	delta_time = ft_deltatime_usec();
+//	ft_printf("delta_time : %d\n", (int)delta_time);
+//	if (delta_time < 50000)
+//	{
+	
+	cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
+	commit_all_obj_actions(cub);
+	cub->renderer.requires_update = 1;
+//	}
+//	else
+//		delta_time = 0;
 
 
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
-//		order_draw_call(cub, cub->draw_threads);
+		order_draw_call(cub, cub->draw_threads);
 //		printf("drawing walls\n");
-		render_walls(cub, cub->hero.rcast.rdata);
+//		render_walls(cub, cub->hero.rcast.rdata);
 //		printf("drawing floor\n");
-		render_floor_sky(cub, cub->hero.rcast.rdata);
-		render_objects(cub);//, cub->hero.rcast.rdata);
+//		render_floor_sky(cub, cub->hero.rcast.rdata);
+//		render_objects(cub, cub->hero.rcast.rdata);//, cub->hero.rcast.rdata);
 //		printf("drawing sky\n");
 //		render_sky(cub, cub->hero.rcast.rdata);
 //		printf("ALL DONE \n");

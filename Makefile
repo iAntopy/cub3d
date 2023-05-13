@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/05 22:28:22 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/12 18:50:56 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ SRC_FLS	:=		main.c 			\
 			tex_parse.c			\
 			t_ref_name.c		\
 			draw_threads.c		\
-			object_model_creation.c
+			object_model_creation.c \
+			object_actions.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
