@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 22:58:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:36:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,16 @@ int	main(int argc, char **argv)
 	pos[0] = 7 * CELL_WIDTH;
 	pos[1] = 10 * CELL_WIDTH;
 
-	create_obj_instance(&cub, pos, OBJ_PORTAL, get_oinst_by_id(&cub, portal1_id));
+	create_obj_instance(&cub, pos, OBJ_PORTAL, get_obj(&cub, portal1_id));
 //	if (activate_portal(cub.objs.instances, OBJ_ACTIVATE) < 0)
 //		printf("Portal activation FAILURE\n");
 //	else
 //		printf("Portal activation SUCCESS\n");
 	printf("portal ptr : %p\n", cub.objs.instances);
+
+	pos[0] = 3 * CELL_WIDTH;
+	pos[1] = 7 * CELL_WIDTH;
+	create_obj_instance(&cub, pos, OBJ_FIREPIT, &cub.hero);
 
 //	mlx_set_color_in_rows(cub.renderer.mmap_layer, 0, 15, 0xffffffff);
 	pos[0] = 125;

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 17:04:36 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:36:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,7 +372,7 @@ static int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)
 	while (width--)
 	{
 	//	printf("init single proj vect\n");
-		prtl_proj_init_single_vect(pd, pd->rdata, obj, obj->link);
+		prtl_proj_init_single_vect(pd, pd->rdata, obj, obj->relative);
 		while (!(is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0))
 		{
 			axs = map->grid_coords[pd->cy + rd->dy] + ((pd->cx + rd->dx) << 1);
@@ -774,7 +774,8 @@ void	render_objects(t_cub *cub, t_rdata *rd)
 		toffs[1] = 0;
 		
 		loffs[0] = drawx - (dims[0] >> 1);
-		loffs[1] = cub->scn_midy - (dims[1] >> 1);
+//		printf("y offset / dist : %d\n", (int)(obj->type->draw_offy * ratio));
+		loffs[1] = cub->scn_midy - (dims[1] >> 1) + (int)(obj->type->draw_offy * ratio);
 		loffs[2] = loffs[0] + dims[0];
 		loffs[3] = loffs[1] + dims[1];
 //		start[0] = drawx - (scn_width >> 1);//scn_halfw;

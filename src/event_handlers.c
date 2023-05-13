@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 19:11:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:39:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	on_close(void *param)
 void	on_keypress(mlx_key_data_t event, void *param)
 {
 	t_cub	*cub;
+	t_oinst	*obj;
 
 	cub = (t_cub *)param;
 	if (event.action != MLX_PRESS)
@@ -31,10 +32,13 @@ void	on_keypress(mlx_key_data_t event, void *param)
 
 	if (event.key == MLX_KEY_SPACE)
 	{
-		activate_portal(cub->objs.instances, (cub->objs.instances->isactive)
-			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
-		activate_portal(cub->objs.instances->next, (cub->objs.instances->isactive)
-			? (OBJ_DEACTIVATE): (OBJ_ACTIVATE));
+		obj = cub->objs.instances;
+		while (obj->type->type_enum != OBJ_PORTAL)
+			obj = obj->next;
+		activate_portal(obj, (obj->isactive)
+			? (0): (1));
+		activate_portal(obj->next, (obj->isactive)
+			? (0): (1));
 	}
 	cub->renderer.requires_update = 1;
 

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 18:51:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/12 23:40:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@
 
 # define PROJ_COLOR 0xffbcbbb0
 # define TRANSPARENCY 0xcfffffff
+
+#define FIREPIT_SPAWN_TICKS 200
 
 enum	e_sides
 {
@@ -277,6 +279,7 @@ typedef struct s_object_model
 	int				half_w;
 	int				height;// Height of object in world coords (set auto).
 	int				half_h;
+	int				draw_offy;// to draw obj higher or lower
 //	uint32_t		bypass_clr;// exterior color around the portal that should nor be drawn.
 
 	int				nb_texs;// Max nb of textures for this particular model.
@@ -284,15 +287,19 @@ typedef struct s_object_model
 	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
 
 	/// OPTIONAL FIELDS //////
+	float			speed;//	moveing speed when applicable.
 	int				dmg;
 }	t_omdl;
 
 enum	e_object_types
 {
 	OBJ_NULL,
-	OBJ_ACTIVATE,
-	OBJ_DEACTIVATE,
-	OBJ_PORTAL
+//	OBJ_ACTIVATE,
+//	OBJ_DEACTIVATE,
+	OBJ_PORTAL,
+	OBJ_LEVER,
+	OBJ_FIREBALL,
+	OBJ_FIREPIT
 };
 
 // returns 0 if possible and successful, otherwise -1.
@@ -309,6 +316,7 @@ typedef struct s_objects_list_elem
 	float		py;//	Position Y
 	float		dx;//	obj direction X
 	float		dy;//	obj direction Y
+	float		speed;//	moveing speed when applicable.
 
 	t_obj_act	action;
 
@@ -326,7 +334,7 @@ typedef struct s_objects_list_elem
 	
 	int			isactive;
 	// PORTAL SPECIFIC
-	t_oinst		*link;
+	void		*relative;
 
 	struct s_objects_list_elem	*next;
 }	t_oinst;
@@ -347,6 +355,8 @@ typedef struct s_drawable_objects
 {
 	/// OBJECT MODELS (constant) /////////////////////////
 	t_omdl	portal;//	Portal object model;
+	t_omdl	fireball;//	Fireball object model;
+	t_omdl	firepit;//	Fireball generator obj;
 	
 	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
 	//t_oclct	*collectibles;
@@ -527,17 +537,19 @@ void			stop_draw_threads(t_thdraw *threads);
 int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
 int				create_obj_instance(t_cub *cub, int *pos, int type_enum, void *param);
-int				destroy_oinst_by_id(t_cub *cub, int id);
-t_oinst			*get_oinst_by_id(t_cub *cub, int id);
-int				destroy_oinst_by_type(t_cub *cub, int type_enum);
-void			destroy_all_obj_instances(t_cub *cub);
+int				delete_oinst_by_id(t_cub *cub, int id);
+t_oinst			*get_obj(t_cub *cub, int id);
+int				delete_oinst_by_type(t_cub *cub, int type_enum);
+void			delete_all_obj_instances(t_cub *cub);
 
 /// OBJECT ACTIVATION FUNCS /////////
 void		    commit_all_obj_actions(t_cub *cub);
-int				activate_portal(t_oinst *obj, int new_status);
+int				activate_portal(t_oinst *obj, unsigned int new_status);
 
 /// OBJECT ACTIONS CALLBACKS
 int				__obj_action_portal(t_oinst *obj, t_cub *cub);
+int				__obj_action_fireball(t_oinst *obj, t_cub *cub);
+int				__obj_action_firepit(t_oinst *obj, t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);
