@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/30 21:39:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 17:08:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ static void	init_raydata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *p
 		rd[i].ry = _mtx_index_fptr(rc->rays[1], i, 0);
 		pd[i].rdata = rd + i;
 		pd[i].fwd_len = _mtx_index_fptr(rc->fwd_rayspan, i, 0);
+		if (!pd[i].fwd_len)
+		while (1)
+			printf("pd[i].fwd_len ptr : %p\n", pd[i].fwd_len);
 	}
 	printf("\n\n\nhero cell_x/y : %d, %d\n", cub->hero.cell_x, cub->hero.cell_y);
 	printf("*rd->pcx/y : %d, %d\n", *rc->rdata->pcx, *rc->rdata->pcy);
@@ -63,7 +66,8 @@ int	init_raycaster(t_cub *cub)
 	rcast->rdata = malloc(sizeof(t_rdata) * SCN_WIDTH);
 	rcast->prtl_proj = malloc(sizeof(t_pdata) * SCN_WIDTH);
 	if (!rcast->theta_offs || !rcast->ray_thetas || !rcast->ray_thetas
-		|| !rcast->rays[0] || !rcast->rays[1] || !rcast->rdata)
+		|| !rcast->rays[0] || !rcast->rays[1] || !rcast->rdata
+		|| !rcast->prtl_proj)
 		return (raycaster_clear(rcast, EXIT_FAILURE));
 	cub->hero.fov_lx = _mtx_index_fptr(rcast->rays[0], 0, 0);
 	cub->hero.fov_ly = _mtx_index_fptr(rcast->rays[1], 0, 0);

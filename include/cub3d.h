@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 21:25:00 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/13 02:01:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,12 @@
 
 # define PLAYER_HEIGHT 32
 
-# define NB_DRAW_THREADS 2
+# define NB_DRAW_THREADS 3
+
+# define PROJ_COLOR 0xffbcbbb0
+# define TRANSPARENCY 0xcfffffff
+
+#define FIREPIT_SPAWN_TICKS 50
 
 enum	e_sides
 {
@@ -247,16 +252,19 @@ typedef struct s_portal_projection_data
 	int		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
 	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
 	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
-	int		tgt_px;//	x coord ray collision with object
-	int		tgt_py;//	y coord ray collision with object
-	int		tgt_cx;//	cell x of collision with object
-	int		tgt_cy;//	cell y of collision with object
+
+//	int		tgt_px;//	x coord ray collision with object
+//	int		tgt_py;//	y coord ray collision with object
+//	int		tgt_cx;//	cell x of collision with object
+//	int		tgt_cy;//	cell y of collision with object
+	float	b;//	ray y offset
 	
 //	Resulting data
 	int		side;// collision side. Can be compared to side enums.
 	float	hitx;// collision world coord x;
 	float	hity;// collision world coord y;
 	float	dist;// collision distance to projection plane.
+	float	odist;// ray distance to portal.
 	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
 	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
 }	t_pdata;
@@ -315,6 +323,7 @@ typedef struct s_object_model
 	int				half_w;
 	int				height;// Height of object in world coords (set auto).
 	int				half_h;
+	int				draw_offy;// to draw obj higher or lower
 //	uint32_t		bypass_clr;// exterior color around the portal that should nor be drawn.
 
 	int				nb_texs;// Max nb of textures for this particular model.
@@ -324,6 +333,7 @@ typedef struct s_object_model
 	t_matrx			*gset; /// rely to model
 	// // //
 	/// OPTIONAL FIELDS //////
+	float			speed;//	moveing speed when applicable.
 	int				dmg;
 }	t_omdl;
 
@@ -337,6 +347,9 @@ enum	e_object_types
 	OBJ_DEACTIVATE
 };
 
+// returns 0 if possible and successful, otherwise -1.
+typedef int (* t_obj_act)(t_oinst *, t_cub *);
+
 typedef struct s_objects_list_elem
 {
 	t_omdl	*type;
@@ -346,6 +359,11 @@ typedef struct s_objects_list_elem
 	
 	float		px;//	Position X
 	float		py;//	Position Y
+	float		dx;//	obj direction X
+	float		dy;//	obj direction Y
+	float		speed;//	moveing speed when applicable.
+
+	t_obj_act	action;
 
 	/// VARS SET AT RENDER TIME ////////////
 	float		ox;//	obj delta x from player
@@ -359,9 +377,9 @@ typedef struct s_objects_list_elem
 	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
 	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
-	int		isactive;
+	int			isactive;
 	// PORTAL SPECIFIC
-	t_oinst		*link;
+	void		*relative;
 
 	struct s_objects_list_elem	*next;
 }	t_oinst;
@@ -382,6 +400,8 @@ typedef struct s_drawable_objects
 {
 	/// OBJECT MODELS (constant) /////////////////////////
 	t_omdl	portal;//	Portal object model;
+	t_omdl	fireball;//	Fireball object model;
+	t_omdl	firepit;//	Fireball generator obj;
 	t_omdl	lever;		//	Switch object model;
 	t_omdl	fball;	//	Attack object model;
 	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
@@ -400,6 +420,7 @@ typedef struct s_renderer_column_params
 	int				scn_height;
 	int				half_height;// strat 1
 	int				scn_start_y;
+	int				scn_end_y;
 	float			ratio;
 //	int			px_incry;
 }	t_rcol;
@@ -413,6 +434,7 @@ typedef struct s_renderer
 	mlx_image_t	*mmap_layer;
 	float		*dbuff;//	 depth buffer for drawable world entities. 
 	float		*dpbuff;//	 depth buffer for portal projection entities. 
+	char		*isproj;//	 bool buffer SCN_WIDTH x SCN_HEIGHT indicating if pxl is portal projection
 	float		*near_z_dists;// Array of distances to every column of the projected
 				// plane (near_z). See floorcaster. 
 	float		*floor_factors;// Pre-calc parametric multipliers for all pixels
@@ -449,6 +471,9 @@ typedef struct s_cub3d_core_data
 	float			inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
 	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float			inv_two_pi;	// 1 / 2pi;
+	int				buff_offys[SCN_HEIGHT];//	indexable array of all j * SCN_WIDTH 
+										//	offsets in y directions to optimize rendering.
+
 
 	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float			fov;// = fov;// field of view
@@ -527,11 +552,13 @@ int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub, t_rdata *rd);
 void			render_floor_sky(t_cub *cub, t_rdata *rd);
 void			render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pframe);
-void			render_objects(t_cub *cub);//, t_rdata *rd);
+void			render_objects(t_cub *cub, t_rdata *rd);
 //void			render_sky(t_cub *cub, t_rdata *rd);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
+void			mlx_draw_square(mlx_image_t *img, int pos[2], int side, uint32_t col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
+uint32_t		get_tex_pixel(mlx_texture_t *tex, int x, int y);
 //void			render_scene(t_cub *cub);
 
 /// FLOORCASTING ///////////////
@@ -557,13 +584,19 @@ void			stop_draw_threads(t_thdraw *threads);
 int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
 int				create_obj_instance(t_cub *cub, int *pos, int type_enum, void *param);
-int				destroy_oinst_by_id(t_cub *cub, int id);
-t_oinst			*get_oinst_by_id(t_cub *cub, int id);
-int				destroy_oinst_by_type(t_cub *cub, int type_enum);
-void			destroy_all_obj_instances(t_cub *cub);
+int				delete_oinst_by_id(t_cub *cub, int id);
+t_oinst			*get_obj(t_cub *cub, int id);
+int				delete_oinst_by_type(t_cub *cub, int type_enum);
+void			delete_all_obj_instances(t_cub *cub);
 
 /// OBJECT ACTIVATION FUNCS /////////
-int				activate_portal(t_oinst *obj, int deactivate);
+void		    commit_all_obj_actions(t_cub *cub);
+int				activate_portal(t_oinst *obj, unsigned int new_status);
+
+/// OBJECT ACTIONS CALLBACKS
+int				__obj_action_portal(t_oinst *obj, t_cub *cub);
+int				__obj_action_fireball(t_oinst *obj, t_cub *cub);
+int				__obj_action_firepit(t_oinst *obj, t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);

@@ -6,12 +6,12 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/05 23:50:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:54:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+/*
 static uint32_t	get_tex_pixel(mlx_texture_t *tex, int x, int y)
 {
 //	if (x < 0 || y < 0)
@@ -19,7 +19,7 @@ static uint32_t	get_tex_pixel(mlx_texture_t *tex, int x, int y)
 //	printf("px: x %d, y %d", x, y);
 	return (((uint32_t *)tex->pixels)[x + y * tex->width]);
 }
-
+*/
 static void	__render_floor_init(t_cub *cub, uint32_t **b, float **p)
 {
 	*p = cub->renderer.floor_factors - 1;

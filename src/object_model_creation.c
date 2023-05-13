@@ -12,14 +12,23 @@
 
 #include "cub3d.h"
 
+int	report_obj_err(t_oinst *obj, char *msg)
+{
+	ft_eprintf("ERROR with obj %s <id %d, ptr %p> : %s\n", 
+		obj->type->model_name, obj->_id, obj, msg);
+	return (-1);
+}
+
 // Pass either OBJ_ACTIVATE or OBJ_DEACTIVATE as mode.
-int	activate_portal(t_oinst *obj, int mode)
+int	activate_portal(t_oinst *obj, unsigned int new_state)
 {
 	mlx_texture_t	*tex;
 
 	if (obj->type->type_enum != OBJ_PORTAL)
-		return (ft_eprintf("ACTIVATION FAILED : obj id %d (%p) is not a portal obj !\n", obj->_id, obj));
-	if (obj->isactive && mode == OBJ_DEACTIVATE)
+		return (report_obj_err(obj, "ACTIVATION FAILED : not a portal obj.\n"));
+	else if (new_state >= 2)
+		return (report_obj_err(obj, "ACTIVATION FAILED : invalid state.\n"));
+	if (obj->isactive && new_state == 0)
 	{
 		printf("DEACTIVATING PORTAL id %d\n", obj->_id);
 		obj->isactive = 0;
@@ -27,9 +36,9 @@ int	activate_portal(t_oinst *obj, int mode)
 		tex = obj->type->texs[0];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
 	}
-	else if (!obj->isactive && mode == OBJ_ACTIVATE)
+	else if (!obj->isactive && new_state == 1)
 	{
-		if (!obj->link)
+		if (!obj->relative)
 			return (ft_eprintf("Cannot activate portal without a link\n"), -1);
 		printf("ACTIVATING PORTAL id %d\n", obj->_id);
 		obj->isactive = 1;
@@ -101,11 +110,13 @@ static int	create_portal_instance(t_cub *cub, int *pos, int *obj_id, t_oinst *li
 	new_obj->tex_idx = 0;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
-	new_obj->link = link;
+	new_obj->relative = link;
+	new_obj->action = __obj_action_portal;
+//	new_obj->action = NULL;
 	if (link)
 	{
 		printf("linking portal %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
-		link->link = new_obj;
+		link->relative = new_obj;
 	}
 	new_obj->isactive = 0;
 	new_obj->next = cub->objs.instances;
@@ -114,7 +125,83 @@ static int	create_portal_instance(t_cub *cub, int *pos, int *obj_id, t_oinst *li
 	return (new_obj->_id);	
 }
 
-t_oinst	*get_oinst_by_id(t_cub *cub, int id)
+// pos is in world coord, NOT cell coord.
+// static int	create_fireball_instance(t_cub *cub, int *pos, int *obj_id, t_hero *link)
+// {
+// 	t_oinst	*new_obj;
+
+// //	if (link && link->type->type_enum != OBJ_PORTAL)
+// //		return (report_err("Creating a fireball instance trying to link to non portal obj.\n"));
+
+// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
+// 		return (report_malloc_error());
+
+// 	new_obj->type = &cub->objs.fireball;
+// 	new_obj->_id = ++(*obj_id);
+// 	new_obj->tex_idx = 0;
+// 	new_obj->px = pos[0];
+// 	new_obj->py = pos[1];
+// 	new_obj->dx = pos[2];
+// 	new_obj->dy = pos[3];
+// 	new_obj->relative = NULL;
+// //	new_obj->link = link;
+	
+// 	new_obj->action = __obj_action_fireball;
+// //	new_obj->action = NULL;
+// 	if (link)
+// 	{
+// //		printf("linking fireball %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
+// 		new_obj->relative = link;
+// 		new_obj->isactive = 1;
+// //		link->link = new_obj;
+// 	}
+// 	else
+// 		new_obj->isactive = 0;
+// 	new_obj->next = cub->objs.instances;
+// 	cub->objs.instances = new_obj;
+// 	printf("Single Portal instance created at pos (%d, %d)\n", pos[0], pos[1]);
+// 	return (new_obj->_id);	
+// }
+
+
+// pos is in world coord, NOT cell coord.
+// static int	create_firepit_instance(t_cub *cub, int *pos, int *obj_id, t_hero *link)
+// {
+// 	t_oinst	*new_obj;
+
+// //	if (link && link->type->type_enum != OBJ_PORTAL)
+// //		return (report_err("Creating a fireball instance trying to link to non portal obj.\n"));
+
+// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
+// 		return (report_malloc_error());
+
+// 	new_obj->type = &cub->objs.firepit;
+// 	new_obj->_id = ++(*obj_id);
+// 	new_obj->tex_idx = 0;
+// 	new_obj->px = pos[0];
+// 	new_obj->py = pos[1];
+// //	new_obj->dx = pos[2];
+// //	new_obj->dy = pos[3];
+// 	new_obj->relative = NULL;
+// 	new_obj->isactive = 0;
+// //	new_obj->link = link;
+	
+// 	new_obj->action = __obj_action_firepit;
+// //	new_obj->action = NULL;
+// 	if (link)
+// 	{
+// //		printf("linking fireball %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
+// 		new_obj->relative = link;
+// 		new_obj->isactive = 1;
+// //		link->link = new_obj;
+// 	}
+// 	new_obj->next = cub->objs.instances;
+// 	cub->objs.instances = new_obj;
+// 	printf("Single Portal instance created at pos (%d, %d)\n", pos[0], pos[1]);
+// 	return (new_obj->_id);	
+// }
+
+t_oinst	*get_obj(t_cub *cub, int id)
 {
 	t_oinst	*elem;
 
@@ -189,7 +276,7 @@ int	delete_all_oinst_by_type(t_cub *cub, int type_enum)
 }
 
 // Destroys all object instances in world.
-void	destroy_all_obj_instances(t_cub *cub)
+void	delete_all_obj_instances(t_cub *cub)
 {
 	t_oinst	*elem;
 	t_oinst	*tmp;
@@ -210,8 +297,9 @@ void	destroy_all_obj_instances(t_cub *cub)
 void	clear_obj_framework(t_cub *cub)
 {
 	printf("Clearing objects framework\n");
-	destroy_all_obj_instances(cub);
+	delete_all_obj_instances(cub);
 	clear_obj_model(&cub->objs.portal);
+	clear_obj_model(&cub->objs.fireball);
 	// ADD clear_obj_model() calls as nb of init object models grow.
 	printf("Clearing objects framework SUCCESS\n");
 }
@@ -238,7 +326,9 @@ void	clear_obj_framework(t_cub *cub)
 //	one is without param and 2nd links to the 1st it will create pairs of 
 //	linking portals (1 <-> 2, 3 <-> 4, ...). A portal without link always 
 //	show the empty portal texture.
-int	create_obj_instance(t_cub *cub, int pos[2], int type_enum, void *param)
+//	The pos variable index 0-1 are x, y position coords. It can also be a larger
+//	array in case of fireballs with indexes 2-3 being direction information.
+int	create_obj_instance(t_cub *cub, int *pos, int type_enum, void *param)
 {
 	static int	obj_id;
 	int			cellx;
@@ -250,5 +340,9 @@ int	create_obj_instance(t_cub *cub, int pos[2], int type_enum, void *param)
 		return (report_err("ERROR : Trying to create object in wall.\n"));
 	if (type_enum == OBJ_PORTAL)
 		obj_id = create_portal_instance(cub, pos, &obj_id, param);
+	// else if (type_enum == OBJ_FIREBALL)
+	// 	obj_id = create_fireball_instance(cub, pos, &obj_id, param);
+	// else if (type_enum == OBJ_FIREPIT)
+	// 	obj_id = create_firepit_instance(cub, pos, &obj_id, param);
 	return (obj_id);
 }
