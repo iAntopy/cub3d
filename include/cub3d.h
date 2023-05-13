@@ -338,14 +338,6 @@ enum	e_object_types
 	OBJ_ACTIVATE,
 	OBJ_DEACTIVATE
 };
-<<<<<<< HEAD
-=======
-	// OBJ_NULL,
-	// OBJ_DEACTIVATE,
-	// OBJ_PORTAL,
-	// OBJ_LEVER,
-	// OBJ_FIREBALL
->>>>>>> b7bb78abb1366ec9925eff2ba5cac1294b11043e
 
 typedef struct s_objects_list_elem
 {
