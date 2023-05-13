@@ -330,8 +330,6 @@ typedef struct s_object_model
 enum	e_object_types
 {
 	OBJ_NULL,
-	OBJ_ACTIVATE,
-	OBJ_DEACTIVATE,
 	OBJ_PORTAL,
 	OBJ_LEVER,
 	OBJ_FIREBALL,

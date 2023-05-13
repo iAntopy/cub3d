@@ -95,17 +95,11 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
     objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
     objx->obj_id = id;		          
     if (o_cells < cub->box.n_lvls)
-<<<<<<< HEAD
-    	objx->o_type = 3;
-    else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
-        objx->o_type = 4;
-=======
     	objx->o_type = 2;
     else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
         objx->o_type = 1;
->>>>>>> b7bb78abb1366ec9925eff2ba5cac1294b11043e
     else
-        objx->o_type = 5;
+        objx->o_type = 3;
     // printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
     objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
 	objx->relativ =  m->raw[o_cells][4];
