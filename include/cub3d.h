@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 19:46:03 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:25:00 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ typedef struct s_box
 
 	t_objx			**objx;
 	t_matrx			*gset; /// rely to model
-	t_matrx			*dual; /// rely to model
+	// t_matrx			*dual; /// rely to model
 }	t_box;
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
@@ -332,10 +332,11 @@ enum	e_object_types
 	OBJ_NULL,
 	OBJ_PORTAL,
 	OBJ_LEVER,
-	OBJ_FIREBALL
+	OBJ_FIREBALL,
+	OBJ_ACTIVATE,
+	OBJ_DEACTIVATE
 };
 	// OBJ_NULL,
-	// OBJ_ACTIVATE,
 	// OBJ_DEACTIVATE,
 	// OBJ_PORTAL,
 	// OBJ_LEVER,
@@ -466,6 +467,7 @@ typedef struct s_cub3d_core_data
 	t_rdr			renderer;
 	t_objs			objs;
 	t_thdraw		draw_threads[NB_DRAW_THREADS];
+	t_matrx			*dual;
 	t_matrx			*pset;
 	t_box			box;
 }	t_cub;
