@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 20:46:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/12 22:42:37 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,26 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 {
 	char	**tex_set;
-
-	cub->box.dual = (t_matrx *)malloc(sizeof(mlx_texture_t *) * cub->box.n_dual);
-	if (!cub->box.dual)
+	printf("DUAL TEST i:[%d] t_name{{%s}} >>\n", i, t_name);
+	cub->dual = (t_matrx *)malloc(sizeof(mlx_texture_t *) * cub->box.n_dual);
+	if (!cub->dual)
 		return (NULL);
     if (cub->box.n_dual > i)
     {	
 		tex_set = ft_split_space(t_name);
 	
-		cub->box.dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
-		if (!cub->box.dual[i].xwalls[0])
+		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
+		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
-		printf("DUAL[%d] (xwall[0]) >> ptr : %p \n", i, cub->box.dual[i].xwalls[0]);
+		printf("DUAL[%d] (xwall[0]) >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
         if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
         {	
-			cub->box.dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
-			if (!cub->box.dual[i].xwalls[1])
+			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
+			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
-			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i,cub->box.dual[i].xwalls[1]);
+			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
         }   
-		
-
     }
-	// free(tex_set[0]);
-	// free(tex_set[1]);
-	// free(tex_set);
     return (cub);
 }
 
@@ -122,9 +117,12 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	int			k;
 	int			p_box;
 	const char	*chrs;
-	
+	int 		grim;
+	int 		max;
 	chrs = cub->box.chrs;
 	printf("MAPX:start ..., chrs : %s\n", chrs);
+	grim = cub->box.meta + cub->box.n_dual;
+	max = (int)ft_strlen(chrs) - 1;
 	k = -1;
 	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
 	while (++k < m->height)
@@ -135,19 +133,30 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		m->pos_x = 0;
 		while (m->pos_x < m->width)
 		{
-//			printf("m pos x, y : (%d, %d)\n", m->pos_x, m->pos_y);
-//			printf("m pos char : (%c)\n", m->m[m->pos_y][m->pos_x]);
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-			if (p_box != -1 || p_box == (int)ft_strlen(chrs) - 1)
+			if (p_box != -1)
 			{
-				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
+				if ((p_box < max - (cub->box.pset - 1)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))
+				{
+					// printf("MapX FACTOR >>  p_box:%d: grim:%d:\n", p_box, grim);
+					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
+					// printf("MapX >> (%d, %d)>> p_box[%d]: txtr_ptr:%p\n", m->pos_y, m->pos_x, p_box - grim, cub->pset[p_box - grim ].xwalls[0]);
+				}
+				if ((p_box < max - (cub->box.pset + 1)) && (p_box > cub->box.meta))
+				{
+					printf("MapX DUAL FACTOR >>  start:%c : MAX--:%c:\n", chrs[p_box] ,  chrs[max - (cub->box.pset + 1 )]);
+					printf("dual[0]->xwalls[0] : %p\n", cub->dual[1].xwalls[0]);
+					m->mx[m->pos_y][m->pos_x] = &cub->dual[0];//p_box - cub->box.meta];
+					printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
+	
+					
+				}
 				if (p_box < cub->box.meta)
 				{
 					// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 					printf("FOUND IT ");
 					p_list_objx(cub->box.objx , p_box, 0); 
 				}
-				// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
 				
 			}
 			m->pos_x++;

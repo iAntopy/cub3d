@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 20:36:25 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/12 21:26:35 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 				// id);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			//  printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
+			 printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
 		}
 	}
 	else if ((ft_in_set((const char)raw[queue][0],
@@ -80,7 +80,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 	int	id;
 	
 	printf("Tex_parse...\n\n");
-	cub->box.dual = 0;
+	cub->box.n_dual = 0;
 	cub->box.pset = 0;
 	
 	cub = e_list_txtr(cub, &cub->box, map);

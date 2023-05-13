@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_ref_gset.c                                       :+:      :+:    :+:   */
+/*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/05 09:30:22 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/12 20:17:47 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,15 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
     objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
     objx->obj_id = id;		          
     if (o_cells < cub->box.n_lvls)
+<<<<<<< HEAD
     	objx->o_type = 3;
     else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
         objx->o_type = 4;
+=======
+    	objx->o_type = 2;
+    else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
+        objx->o_type = 1;
+>>>>>>> b7bb78abb1366ec9925eff2ba5cac1294b11043e
     else
         objx->o_type = 5;
     // printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
