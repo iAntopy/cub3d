@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 05:48:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 19:38:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1083,7 +1083,7 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 			ft_deltatime_usec_note(NULL);
 			
 			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
-			ft_deltatime_usec_note("empty portal draw time");
+//			ft_deltatime_usec_note("empty portal draw time");
 			int	*pframe = cub->renderer.pframe;
 			int	pdims[2] = {(int)(obj->type->proj_width * ratio), (int)(obj->type->proj_height * ratio)};
 
@@ -1111,24 +1111,24 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 			memset(cub->renderer.isproj, 0, sizeof(char) * SCN_WIDTH * SCN_HEIGHT);
 			
 			cub->renderer.portal = obj;
-			ft_deltatime_usec_note("mem clear + pframe time");
+//			ft_deltatime_usec_note("mem clear + pframe time");
 			__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels, cub->renderer.isproj, pframe, pdims);
-			ft_deltatime_usec_note("label isproj time");
+//			ft_deltatime_usec_note("label isproj time");
 //			printf("proj vectors\n");
 //			printf("portal link : %p, (%.2f, %.2f)\n", obj->relative, ((t_oinst *)(obj->relative))->px,
 //				((t_oinst *)(obj->relative))->py);
 //			printf("portal : %p\n", cub->renderer.portal);
 			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, cub->renderer.pframe);
-			ft_deltatime_usec_note("projection vectors time");
+//			ft_deltatime_usec_note("projection vectors time");
 //			printf("portal : %p\n", cub->renderer.portal);
-//			order_draw_call(cub, cub->draw_threads, 3, 6);
+			order_draw_call(cub, cub->draw_threads, 3, 6);
 //			ft_deltatime_usec_note("multithreaded projection time");
 //			__render_proj_objects(cub);//, obj, cub->hero.rcast.prtl_proj, pframe);
 //			ft_deltatime_usec_note("Object proj render time");
-			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
-			ft_deltatime_usec_note("Walls proj render time");
-			__render_proj_floor(cub);//, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
-			ft_deltatime_usec_note("floor sky proj render time");
+//			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
+//			ft_deltatime_usec_note("Walls proj render time");
+//			__render_proj_floor(cub);//, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
+//			ft_deltatime_usec_note("floor sky proj render time");
 //			printf("render_floor_sky\n");
 		}
 		else
