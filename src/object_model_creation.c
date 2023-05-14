@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 01:56:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 17:21:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.half_h = objs->fireball.height >> 1;
 	printf("fireball w h : (%d, %d), half w h (%d, %d)\n", 
 		objs->fireball.width, objs->fireball.height, objs->fireball.half_w, objs->fireball.half_h);
-	objs->fireball.speed = 4.0f;
+	objs->fireball.speed = 1.0f;
 	objs->fireball.dmg = 5;
 //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
 	printf("fireball object model initialized !\n");
@@ -227,7 +227,7 @@ static int	create_fireball_instance(t_cub *cub, int *pos, int *obj_id, t_hero *l
 		new_obj->isactive = 0;
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
-	printf("Single Portal instance created at pos (%d, %d)\n", pos[0], pos[1]);
+	printf("Single fireball instance created at pos (%d, %d)\n", pos[0], pos[1]);
 	return (new_obj->_id);	
 }
 
@@ -265,7 +265,7 @@ static int	create_firepit_instance(t_cub *cub, int *pos, int *obj_id, t_hero *li
 	}
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
-	printf("Single Portal instance created at pos (%d, %d)\n", pos[0], pos[1]);
+	printf("Single firepit instance created at pos (%d, %d)\n", pos[0], pos[1]);
 	return (new_obj->_id);	
 }
 
