@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 21:59:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 21:14:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*__draw_thread_routine(t_thdraw *th)
 		th->isidle = 0;
 		if (th->stop_request)
 			break ;
-		th->draw_func(th->cub, th->cub->hero.rcast.rdata);
+		th->draw_func(th->cub);//, th->cub->hero.rcast.rdata);
 //		printf("thread unlocking start_lock\n");
 		pthread_mutex_unlock(&th->start_lock);
 //		printf("thread unlocking start_lock DONE\n");
@@ -100,25 +100,27 @@ int	report_threads_err(t_thdraw *threads, char *err, int print_strerr)
 	return (-1);
 }
 
-int	order_draw_call(t_cub *cub, t_thdraw *threads)
+// from - to, are ints of the range of threads to order draw with.
+// Used to split world draw threads call and portal projection draw threads.
+int	order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to)
 {
 	int			i;
 	int			nb_spins;
 	const int	max_spins = 10;
 
 	(void)cub;
-	i = -1;
-	while (++i < NB_DRAW_THREADS)
+	i = from - 1;
+	while (++i < to)
 	{
 		pthread_mutex_lock(&threads[i].end_lock);
 		pthread_mutex_unlock(&threads[i].start_lock);
 	}
 //	printf("WOWOW :: start_lock unlocked ! Drawing begins !\n");
 //	render_sky(cub, NULL);
-	i = -1;
+	i = from - 1;
 	nb_spins = 0;
 //	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);
-	while (++i < NB_DRAW_THREADS && nb_spins < max_spins)
+	while (++i < to && nb_spins < max_spins)
 	{
 		if (threads[i].isidle)
 		{
@@ -131,8 +133,8 @@ int	order_draw_call(t_cub *cub, t_thdraw *threads)
 //		printf("BREAKING NEWS : SPIN OUT EVENT\n");
 //	printf("Stop spinnin'\n");
 //	printf("WOWOW :: try lock start_lock\n");
-	i = -1;
-	while (++i < NB_DRAW_THREADS)
+	i = from - 1;
+	while (++i < to)
 	{
 		pthread_mutex_lock(&threads[i].start_lock);
 		pthread_mutex_unlock(&threads[i].end_lock);
@@ -179,6 +181,9 @@ int	init_draw_threads(t_cub *cub, t_thdraw *threads)
 	threads[0].draw_func = render_walls;
 	threads[1].draw_func = render_floor_sky;
 	threads[2].draw_func = render_objects;
+	threads[3].draw_func = __render_proj_objects;
+	threads[4].draw_func = __render_proj_floor;
+	threads[5].draw_func = __render_proj_walls;
 	/// ...
 	start_draw_threads(threads);
 	return (0);

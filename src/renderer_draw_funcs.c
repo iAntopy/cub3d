@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 17:12:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 20:37:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,26 @@ static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 }
 
 // rd is ptr to array of raycasting results data (array len = SCN_WIDTH).
-void	render_walls(t_cub *cub, t_rdata *rd)
+void	render_walls(t_cub *cub)//, t_rdata *rd)
 {
 	int			i;
 	int			j;
 	t_rcol		rc;
 	uint32_t	*pxls;
 	int			tex_width;
+	t_rdata		*rd;
 
 //	ft_eprintf("DRAW WALLS !!\n");
-	rc.layer = cub->renderer.walls_layer;
-	clear_image_buffer(rc.layer);
+//	rc.layer = cub->renderer.walls_layer;
+	rd = cub->hero.rcast.rdata;
+	clear_image_buffer(cub->renderer.walls_layer);
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
 		pxls = init_wcol(cub, rd + i, &rc, &tex_width);
 		j = -1;
 		while (++j < rc.scn_height)
-			cub_put_pixel(rc.layer, i, rc.scn_start_y + j,
+			cub_put_pixel(cub->renderer.walls_layer, i, rc.scn_start_y + j,
 				pxls[(int)(((j - rc.half_height) * rc.ratio)
 					+ rc.half_texh) *tex_width]);
 	}

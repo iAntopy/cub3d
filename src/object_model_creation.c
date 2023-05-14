@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 17:21:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 22:54:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ static t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.half_w = objs->portal.width >> 1;
 	objs->portal.height = objs->portal.width * (tex->height / (float)tex->width);
 	objs->portal.half_h = objs->portal.height >> 1;
+	objs->portal.proj_width = (int)(objs->portal.width * 0.5f);
+	objs->portal.proj_height = (int)(objs->portal.height * 0.5f);
 //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
 	printf("Portal object model initialized !\n");
 	return (&objs->portal);
