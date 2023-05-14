@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 01:51:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 19:56:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	cub = (t_cub *)param;
 	if (event.action != MLX_PRESS)
 		return ;
-
-	if (event.key == MLX_KEY_SPACE)
+	
+	obj = cub->objs.instances;
+	if (event.key == MLX_KEY_SPACE && obj && obj->next)
 	{
 		obj = cub->objs.instances;
 		while (obj->type->type_enum != OBJ_PORTAL)
@@ -118,8 +119,8 @@ static void	on_update_keypressed(t_cub *cub)
 
 void	on_update(t_cub *cub)
 {
-	static const float	incr = 0.1f;
-	static int			counter;
+//	static const float	incr = 0.1f;
+//	static int			counter;
 //	static ssize_t	delta_time;
 
 //	delta_time = ft_deltatime_usec();
@@ -127,9 +128,9 @@ void	on_update(t_cub *cub)
 //	if (delta_time < 50000)
 //	{
 	
-	cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
+//	cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
 	commit_all_obj_actions(cub);
-	cub->renderer.requires_update = 1;
+//	cub->renderer.requires_update = 1;
 //	}
 //	else
 //		delta_time = 0;

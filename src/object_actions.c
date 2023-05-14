@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 01:54:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 19:33:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 {
 	float	dist;
 	t_hero	*player;
+	t_oinst	*objs;
+	float	delta_prtl[2];
 	
 	if (!obj->isactive)
 		return (-1);
@@ -52,20 +54,39 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		obj->dx = player->px - obj->px;
 		obj->dy = player->py - obj->py;
 		dist = sqrtf(obj->dx * obj->dx + obj->dy * obj->dy);
+		if (dist < 10)
+		{
+			ft_printf("OUCH MAUDIT CA FAIT MAL!\n");
+			delete_oinst_by_id(cub, obj->_id);
+			return (0);
+		}
 		obj->dx /= dist;
 		obj->dy /= dist;
 		obj->px += obj->dx * obj->type->speed;
 		obj->py += obj->dy * obj->type->speed;
 		if (is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw))
-		{
 			delete_oinst_by_id(cub, obj->_id);
-			return (-1);
-		}		
 	}
 	else
 	{
 		obj->px += obj->dx * obj->type->speed;
 		obj->py += obj->dy * obj->type->speed;
+	}
+	objs = cub->objs.instances;
+	while (objs)
+	{
+		if (objs->type->type_enum == OBJ_PORTAL && objs->isactive)
+		{
+			delta_prtl[0] = objs->px - obj->px;
+			delta_prtl[1] = objs->py - obj->py;
+			if (sqrtf(delta_prtl[0] * delta_prtl[0] + delta_prtl[1] * delta_prtl[1]) < PORTAL_TRIGGER_DIST)
+			{
+				obj->px = ((t_oinst *)objs->relative)->px + delta_prtl[0] * 1.5f;
+				obj->py = ((t_oinst *)objs->relative)->py + delta_prtl[1] * 1.5f;
+				break ;
+			}
+		}
+		objs = objs->next;
 	}
 	return (0);
 }
