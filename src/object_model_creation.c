@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   object_model_creation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
 /*   Updated: 2023/05/13 17:21:47 by iamongeo         ###   ########.fr       */
