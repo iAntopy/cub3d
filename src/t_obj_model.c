@@ -100,13 +100,12 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
         objx->o_type = 1;
     else
         objx->o_type = 3;
-    // printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
+    
     objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
 	objx->relativ =  m->raw[o_cells][4];
-    // printf("[%d]::{%c}",  objx->alleg, objx->relativ);
+    
     objx->opos[0] = m->pos_x;
 	objx->opos[1] = m->pos_y;
-    // printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");
