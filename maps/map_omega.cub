@@ -7,8 +7,8 @@ c tex/ext/white-marble.png
 d tex/ext/travertine-stone.png
 z tex/ext/sky_star.png
 0 tex/ext/floor.png tex/ext/grunge-rock_.png
-1 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
-2 tex/ext/grass-floor.png tex/ext/red-mountain-rock_.png
+1 tex/ext/grass-floor.png tex/ext/starry-night-sky_.png
+2 tex/ext/floortile4.png tex/ext/red-mountain-rock_.png
 
 A abab
 B cdcd

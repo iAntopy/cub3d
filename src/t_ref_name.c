@@ -105,6 +105,9 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *), box->xnum + 1);
 	if (!box->xform)
 		return (NULL);
+	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
+	if (!cub->dual)
+		return (NULL);
 	box->n_objs = 0;
 	printf("LINK\n");
 	while (++i < box->xnum + box->meta )
@@ -146,9 +149,14 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
 			{
+
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
-					cub = dual_builder(cub, d_id, tex_path);				
+					cub = dual_builder(cub, d_id, tex_path);								
+				printf("\nDUALLINK [i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[0]);
+				printf("DUALLINK [i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[1]);
+				printf("DUALLINK &&[i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[0]);
+				printf("DUALLINK &&[i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[1]);
 			}
 				
 		}
@@ -199,7 +207,5 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	// if (cub->box.open_sky != 0)
 	// 	cub->tex.skymap = cub->box.sky;
 	cub->box.chrs = chrs_builder(cub);
-		// cub = chsr_feed(cub);
-
 	return (cub);
 }

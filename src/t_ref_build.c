@@ -46,10 +46,12 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 {
 	char	**tex_set;
-	printf("DUAL TEST i:[%d] t_name{{%s}} >>\n", i, t_name);
-	cub->dual = (t_matrx *)malloc(sizeof(mlx_texture_t *) * cub->box.n_dual);
-	if (!cub->dual)
-		return (NULL);
+
+	// cub->dual = (t_matrx *)malloc(sizeof(mlx_texture_t *) * 1);
+	// if (!cub->dual)
+	// 	return (NULL);
+	// printf("DUAL TEST i:[%d] t_name{{%s}} >>\n", i, t_name);
+	// printf("DUAL ptr{%p}} >>\n",  &cub->dual[i]);
     if (cub->box.n_dual > i)
     {	
 		tex_set = ft_split_space(t_name);
@@ -57,14 +59,18 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
-		printf("DUAL[%d] (xwall[0]) >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
+		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
+		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[]);
         if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
         {	
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
-			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
         }   
+		else
+			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
+
     }
     return (cub);
 }
@@ -72,19 +78,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
-		// t_objx *objx;
 
-			// objx = malloc(sizeof(t_objx *) * 1);
-			// if(!objx)
-			// 	printf(">>>> { } NO OBJX { } >>> [%s]\n", t_name);	
-			// cub->box.objx = objx;
-			// if(!cub->box.objx)
-			// 	printf(">>>> { }no box. OBJX { } >>> [%s]\n", t_name);	
-			// printf(">>>> TEST >>> [%s]\n", t_name);
-			// rawz = cub->map.raw;
-			// cub->objs = objs;
-			// if(box.meta > i)
-			// {	
 	
 	if (t_name[0] == '*')              		   	///// fireball
 	{
@@ -142,16 +136,16 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 					// printf("MapX >> (%d, %d)>> p_box[%d]: txtr_ptr:%p\n", m->pos_y, m->pos_x, p_box - grim, cub->pset[p_box - grim ].xwalls[0]);
 				}
-				if ((p_box < max - (cub->box.pset + 1)) && (p_box > cub->box.meta))
+				if ((p_box < max - (cub->box.pset + 1)) && (p_box > cub->box.meta -1))
 				{
-					printf("MapX DUAL FACTOR >>  start:%c : MAX--:%c:\n", chrs[p_box] ,  chrs[max - (cub->box.pset + 1 )]);
-					printf("dual[0]->xwalls[0] : %p\n", cub->dual[1].xwalls[0]);
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0];//p_box - cub->box.meta];
-					printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
+					// printf("MapX DUAL FACTOR >>  start:%c : MAX--:%c:\n", chrs[p_box] ,  chrs[max - (cub->box.pset + 1 )]);
+					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
+					// printf("MAPX>> dual[%d]->xwalls[0] : %p\n", p_box - cub->box.meta, &cub->dual[p_box - cub->box.meta].xwalls[0]);
+					// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
 	
 					
 				}
-				if (p_box < cub->box.meta)
+				if (p_box < cub->box.meta )
 				{
 					// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 					printf("FOUND IT ");

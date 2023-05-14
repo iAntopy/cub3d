@@ -33,12 +33,12 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 			 printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
 		}
 	}
-	else if ((ft_in_set((const char)raw[queue][0],
-			(const char *)MAP_NCHR) > -1))
-	{
-		cub->pset[len].xwalls[0] = cub->box.xform[queue];
-		cub->pset[len].xwalls[1] = NULL;
-	}
+	// else if ((ft_in_set((const char)raw[queue][0],
+	// 		(const char *)MAP_NCHR) > -1))
+	// {
+	// 	cub->pset[len].xwalls[0] = cub->box.xform[queue];
+	// 	cub->pset[len].xwalls[1] = NULL;
+	// }
 	/* printf("MAKER: UNIQ:: ptr<<%p>> ::\n", cub->box.xform[queue]);*/
 	return (cub->pset);
 }
