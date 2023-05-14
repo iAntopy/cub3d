@@ -135,7 +135,7 @@ int	main(int argc, char **argv)
 
 /*
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
-/*
+
 	int	pos[2];
 //	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
 //	pos[1] = CELL_WIDTH * 2;
