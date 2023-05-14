@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 00:14:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 07:42:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@
 # define PROJ_COLOR 0xffbcbbb0
 # define TRANSPARENCY 0xcfffffff
 
-#define FIREPIT_SPAWN_TICKS 100
+
+# define NB_OBJ_TYPES 4
+# define FIREPIT_SPAWN_TICKS 100
 
 enum	e_sides
 {
@@ -110,6 +112,7 @@ typedef struct s_objx
 	int 			alleg;		// allegence _txtr
 	int 			opos[2];	// relativ pos (reltv. obj_id)
 	char			relativ;	// char obj_id
+	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
 // typedef struct s_box
@@ -346,6 +349,7 @@ enum	e_object_types
 	OBJ_PORTAL,
 	OBJ_LEVER,
 	OBJ_FIREBALL,
+	OBJ_FIREPIT,
 	OBJ_ACTIVATE,
 	OBJ_DEACTIVATE
 };
@@ -534,6 +538,7 @@ char			*ft_strncpy_i(char *dst, const char *src, \
 size_t len, unsigned int idx);
 
 t_cub			path_from_line(t_cub cub);
+int				instanciate_map_objects(t_cub *cub);
 
 /// COLOR PARSE ////////////
 int				str_to_color(int r, int g, int b, int t);

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 23:18:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 08:18:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	main(int argc, char **argv)
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
-
+/*
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 
 	int	pos[2];
@@ -116,16 +116,16 @@ int	main(int argc, char **argv)
 //	pos[1] = CELL_WIDTH * 2;
 	
 	pos[0] = 20 * CELL_WIDTH;
-	pos[1] = 7 * CELL_WIDTH;
+	pos[1] = 2 * CELL_WIDTH;
 	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, NULL);
 	
 	pos[0] = 20 * CELL_WIDTH;
-	pos[1] = 2 * CELL_WIDTH;
+	pos[1] = 7 * CELL_WIDTH;
 
 	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, get_obj(&cub, portal1_id));
 
 	pos[0] = 5 * CELL_WIDTH + 1;
-	pos[1] = 7 * CELL_WIDTH + 1;
+	pos[1] = 2 * CELL_WIDTH + 1;
 
 	create_obj_instance(&cub, pos, OBJ_LEVER, ALI_NEUTRAL, get_obj(&cub, portal1_id));
 
@@ -148,10 +148,18 @@ int	main(int argc, char **argv)
 //	pos[1] = 100;
 //	mlx_draw_square(cub.renderer.mmap_layer, pos, 50, 0xffffffff);
 /////// END OF DEBUG SECTION
-
+*/
 
 //	p_list_objx(cub.box.objx, 3, 0);
 
+	if (!cub.objs.portal.gset)
+		init_portal_model(&cub.objs);
+	if (!cub.objs.lever.gset)
+		init_lever_model(&cub.objs);
+	if (!cub.objs.fireball.gset)
+		init_fireball_model(&cub.objs);
+
+	instanciate_map_objects(&cub);
 
 
 	cub_setup_mlx_hooks_and_settings(&cub);

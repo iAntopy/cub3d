@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 22:52:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 06:49:54 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	char idx;
 
 	/// add new id_member
-	objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
+	objx = (t_objx *)calloc(sizeof(t_objx), 1);    
 	idx = *ft_substr(cub->box.chrs, o_cells, 1);
 	
 	objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
