@@ -137,6 +137,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
 					cub->tex.skymap = cub->box.sky;
 					cub->tex.sky_tex = cub->box.sky;
+					// cub->tex.sky = cub->box.sky;
 				}
 				else
 				{
@@ -204,8 +205,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
-	// if (cub->box.open_sky != 0)
-	// 	cub->tex.skymap = cub->box.sky;
+	if (cub->box.open_sky != 0)
+		cub->tex.skymap = cub->box.sky;
 	cub->box.chrs = chrs_builder(cub);
 	return (cub);
 }

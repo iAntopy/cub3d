@@ -66,7 +66,11 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
-			// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			cub->tex.skymap = cub->dual[i].xwalls[1];
+			cub->tex.sky_tex = cub->dual[i].xwalls[1];
+			cub->box.sky = cub->dual[i].xwalls[1];
+			cub->box.sky_tex = cub->dual[i].xwalls[1];
         }   
 		else
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
