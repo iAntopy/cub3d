@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 20:54:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 23:20:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
 	float			y;
 	mlx_texture_t	**tex_arr;
 
-	__render_sky(cub, rd);
 	__render_floor_init(cub, buffs, &params);
 	incr[1] = 0;
 	while (++incr[1] < cub->scn_midy)
@@ -205,10 +204,11 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 	}
 }
 
-void	render_floor_sky(t_cub *cub, t_rdata *rd)
+void	render_floor_sky(t_cub *cub)//, t_rdata *rd)
 {
+	__render_sky(cub, cub->hero.rcast.rdata);
 	if (cub->tex.open_sky)
-		__render_floor_sky(cub, rd);
+		__render_floor_sky(cub, cub->hero.rcast.rdata);// rd);
 	else
-		__render_floor_ceiling(cub, rd);
+		__render_floor_ceiling(cub, cub->hero.rcast.rdata);//;rd);
 }

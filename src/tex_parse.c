@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 21:25:23 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/14 23:27:50 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	tex_parse(t_cub *cub, t_map *map)
 		
 	int	nb;
 	nb = cub->box.xnum;
-	
 	////		///		///
 	while (map->raw[nb] && map->raw[nb][0] != ' ')
 	{

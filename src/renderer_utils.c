@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:11:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 22:59:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 23:26:10 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 void	clear_image_buffer(mlx_image_t *img)
 {

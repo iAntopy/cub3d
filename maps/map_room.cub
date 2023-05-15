@@ -4,9 +4,11 @@ c tex/ext/tree-bark.png
 d tex/ext/tree-branch.png
 e tex/ext/tree-dark.png
 z tex/ext/sky_star.png
-0 tex/ext/grass-floor.png
+0 tex/ext/floor.png tex/ext/grunge-rock_.png
+1 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
+2 tex/ext/grass-floor.png tex/ext/red-mountain-rock_.png
 
-A abcd   
+A abcd
 B eded
 C cade
 

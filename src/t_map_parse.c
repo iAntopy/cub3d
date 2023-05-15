@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_map_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 19:19:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/14 20:17:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
-	// int ox = 0;
-	// p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
+	int ox = 0;
+	p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
 	printf("A ptr : %p =? %p\n", map->mx[0][0], &cub->pset[2]);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
