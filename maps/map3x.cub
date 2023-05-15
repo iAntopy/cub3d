@@ -1,7 +1,7 @@
-# 1/2
-% 1/1
-$ 2/4
-& 2/3
+# 1/%
+% 1/#
+$ 2/&
+& 2/$
 a tex/ext/mountain_crack.png
 b tex/ext/mountain_rock.png
 c tex/ext/mountain-rock.png
@@ -9,7 +9,7 @@ d tex/ext/mountain-stone-rock.png
 e tex/ext/red-mountain-rock.png
 f tex/ext/gray-mountain-rock.png
 z tex/ext/skymap3.png
-0 tex/ext/floortile4.png
+0 tex/ext/grass-floor.png tex/ext/starry-night-sky_.png
 
 A aedb                 
 B ccfe                   

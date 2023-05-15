@@ -1,5 +1,5 @@
 ! 1/#
-+ 2/$
++ 2/%
 # 1/%
 % 1/#
 $ 2/&
@@ -8,9 +8,8 @@ a tex/ext/rusty-metal.png
 b tex/ext/dark-metal.png
 c tex/ext/white-marble.png
 d tex/ext/travertine-stone.png
-
-0 tex/ext/floortile4.png 
-1 tex/ext/floor.png tex/ext/grunge-rock_.png
+0 tex/ext/floor.png tex/ext/grunge-rock_.png
+1 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
 2 tex/ext/grass-floor.png tex/ext/red-mountain-rock_.png
 
 A abab
@@ -18,7 +17,7 @@ B cdcd
 
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 A00000000000000000!0000000000000000A
-A0000000@000000000000000000000&0000A
+A0000000@00000000&00000000000000000A
 A00%0000000000000000000000000000000A
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB

@@ -52,8 +52,8 @@ tex/ext/rock-wall.png
 tex/ext/ivy-caper-leaves.png
 tex/ext/hay-straw.png
 tex/ext/grass-clover.png
-tex/ext/hedge-wall_a.png
 tex/ext/hedge-wall.png
+tex/ext/hedge-wall_a.png
 tex/ext/purple-flowers.png
 tex/ext/pink-flowers.png
 
