@@ -1,12 +1,12 @@
 a tex/ext/rusty-metal.png
-b tex/ext/dark-metal.png
+b tex/ext/rock-wall.png
 c tex/ext/grunge-rock.png
 d tex/ext/travertine-stone.png
 e tex/ext/white-marble.png
 f tex/ext/comida_pan.png
 z tex/ext/sky_star.png
-0 tex/ext/floor.png
-1 tex/ext/floortile4.png
+0 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
+1 tex/ext/floor.png tex/ext/grunge-rock_.png
 
 A baaa
 B ccaa

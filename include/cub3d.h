@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 02:01:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 19:19:11 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,6 @@ typedef struct s_objx
 	char			relativ;	// char obj_id
 }			t_objx;
 
-// typedef struct s_box
-// {	
-// 	char 			*chrs;
-// 	int				chrs_len;
-// 	int 			xnum;	
-// 	int				pnum;
-// 	int				pset;
-// 	mlx_texture_t	**xform;
-// 	mlx_texture_t	*sky;	
-// }	t_box;
 
 typedef struct s_box 
 {	
@@ -149,6 +139,7 @@ typedef struct s_box
 	t_matrx			*gset; /// rely to model
 	// t_matrx			*dual; /// rely to model
 }	t_box;
+
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
 // file : map filename *.cub
@@ -473,8 +464,6 @@ typedef struct s_cub3d_core_data
 	float			inv_two_pi;	// 1 / 2pi;
 	int				buff_offys[SCN_HEIGHT];//	indexable array of all j * SCN_WIDTH 
 										//	offsets in y directions to optimize rendering.
-
-
 	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float			fov;// = fov;// field of view
 	float			hfov;// = fov * 0.5f;// half fov
