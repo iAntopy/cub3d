@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 23:01:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:40:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,20 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 			return (report_mlx_tex_load_failed(tex_set[0]));
 		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
 		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[]);
-        if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
+    //    if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
+        if (tex_set[1])/// not open_sky
         {	
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
 			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
-			cub->tex.skymap = cub->dual[i].xwalls[1];
-			cub->tex.sky_tex = cub->dual[i].xwalls[1];
-			cub->box.sky = cub->dual[i].xwalls[1];
-			cub->box.sky_tex = cub->dual[i].xwalls[1];
+//			cub->tex.skymap = cub->dual[i].xwalls[1];
+//			cub->tex.sky_tex = cub->dual[i].xwalls[1];
+//			cub->box.sky = cub->dual[i].xwalls[1];
+//			cub->box.sky_tex = cub->dual[i].xwalls[1];
         }   
-		else
-			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
+//		else
+//			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
 
     }
     return (cub);

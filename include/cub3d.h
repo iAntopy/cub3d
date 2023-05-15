@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 22:36:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:14:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,6 +440,7 @@ typedef struct s_renderer_column_params
 
 typedef struct s_renderer
 {
+	mlx_image_t	*sky_layer;
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
 	mlx_image_t	*proj_layer;
