@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 12:35:33 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 15:10:19 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,12 @@ int	main(int argc, char **argv)
 	
 	pos[0] = 10 * CELL_WIDTH +32;
 	pos[1] = 7 * CELL_WIDTH +32;
-	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, NULL);
+	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_TORRENT, NULL);
 	
 	pos[0] = 5 * CELL_WIDTH;
 	pos[1] = 2 * CELL_WIDTH;
 
-	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, get_obj(&cub, portal1_id));
+	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_TORRENT, get_obj(&cub, portal1_id));
 
 	pos[0] = 5 * CELL_WIDTH ;
 	pos[1] = 7 * CELL_WIDTH ;
