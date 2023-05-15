@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 22:58:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 08:30:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,13 @@ static int	create_lever_instance(t_cub *cub, int *pos, int allegiance, t_oinst *
 	new_obj->action = __obj_action_lever;
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
-	new_obj->special_gset.xwalls[1] = cub->map.mx[pos[1]][pos[0]]->xwalls[1];
+	printf("Create lever inst : mx %p\n", cub->map.mx);
+	printf("Create lever inst : mx[%d] %p\n", pos[1], cub->map.mx[pos[1]]);
+	printf("Create lever inst : mx[%d][%d] %p\n", pos[1], pos[0], cub->map.mx[pos[1]][pos[0]]);
+	if (cub->map.mx[pos[1]][pos[0]])
+		new_obj->special_gset.xwalls[1] = cub->map.mx[pos[1]][pos[0]]->xwalls[1];
+	else
+		new_obj->special_gset.xwalls[1] = cub->dual[0].xwalls[1];
 	new_obj->special_gset.xwalls[0] = new_obj->type->gset->xwalls[0];
 	cub->map.mx[pos[1]][pos[0]] = &new_obj->special_gset;
 //	dual = cub->map.mx[pos[1]][pos[0]];

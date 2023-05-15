@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 23:28:09 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 08:50:23 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,28 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 	char	**tex_set;
 
     if (cub->box.n_dual > i)
-    {	
+    {		
 		tex_set = ft_split_space(t_name);
 	
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
-		printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
-		printf("DUAL[%d].xwall[1] >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
-        if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
+		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
+		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[]);
+ 	   //    if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
+        if (tex_set[1])/// not open_sky
         {	
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
 			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
-			cub->tex.skymap = cub->dual[i].xwalls[1];
-			cub->tex.sky_tex = cub->dual[i].xwalls[1];
-			cub->box.sky = cub->dual[i].xwalls[1];
-			cub->box.sky_tex = cub->dual[i].xwalls[1];
+			//			cub->tex.skymap = cub->dual[i].xwalls[1];
+			//			cub->tex.sky_tex = cub->dual[i].xwalls[1];
+			//			cub->box.sky = cub->dual[i].xwalls[1];
+			//			cub->box.sky_tex = cub->dual[i].xwalls[1];
         }   
-		else
-			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
+	//		else
+	//			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
 
     }
     return (cub);
