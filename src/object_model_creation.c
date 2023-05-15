@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 19:21:06 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:32:38 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 static int	get_new_obj_id(void)
 {
