@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 00:00:00 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:18:00 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,31 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	return (0);
 }
 
+static void	print_tex_ptr_mx_matrix(t_cub *cub)
+{
+	t_matrx	***mx = cub->map.mx;
+	int		i;
+	int		j;
+
+	printf("[");
+	i = -1;
+	while (++i < cub->map.height)
+	{
+		printf("[");
+		j = -1;
+		while (++j < cub->map.width)
+		{
+			printf("%p, ", mx[i][j]->xwalls[0]);
+		}
+		if (i < (cub->map.height - 1))
+			printf("]\n");
+		else
+			printf("]");
+	}
+	printf("]\n");
+	
+}
+
 void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 {
 	printf("Setting up hooks and focus\n");
@@ -98,18 +123,19 @@ int	main(int argc, char **argv)
 	printf("MLX42 context initialized successfully !\n");
 
 	/// FOR DEBUG PURPOSES ONLY ! DELETE ME !
-	cub.pset[0].xwalls[1] = cub.pset[1].xwalls[0];
+//	cub.pset[0].xwalls[1] = cub.pset[1].xwalls[0];
 
 
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
-		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
-		// || init_obj_framework(&cub) < 0
-		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
+//		|| init_draw_threads(&cub, cub.draw_threads) < 0)
+//		|| init_obj_framework(&cub))
 		return (cub_clear(&cub, EXIT_FAILURE));
 
 
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
+
 
 	int	pos[2];
 //	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
@@ -150,6 +176,7 @@ int	main(int argc, char **argv)
 
 
 
+	print_tex_ptr_mx_matrix(&cub);
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
 	mlx_loop(cub.mlx);

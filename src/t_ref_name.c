@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 21:02:26 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:17:42 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
 					cub->tex.skymap = cub->box.sky;
 					cub->tex.sky_tex = cub->box.sky;
-					// cub->tex.sky = cub->box.sky;
 				}
 				else
 				{
@@ -150,7 +149,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
 			{
-
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
 					cub = dual_builder(cub, d_id, tex_path);								

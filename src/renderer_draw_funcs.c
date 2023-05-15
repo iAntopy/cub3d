@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_draw_funcs.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 20:37:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:18:15 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 	//if (rd->cx < 0 || rd->cy < 0 || rd->cx >= cub->map.width || rd->cy >= cub->map.height)
 //	printf("ABÉRATION ! cx, cy : %d, %d\n", rd->cx, rd->cy);
 	tex = cub->map.mx[rd->cy][rd->cx]->xwalls[rd->side];
+	if (!tex)
+		printf("tex NULL in mx[%d][%d]->xwalls[side: %d]\n", rd->cy, rd->cx, rd->side);
+	else
+		printf("tex %p\n", tex);
 //	tex = cub->tex.walls[rd->side];
 	*tw = tex->width;
 	rc->half_texh = (tex->height >> 1);
