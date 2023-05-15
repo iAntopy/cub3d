@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tex_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/12 21:26:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/14 20:13:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	tex_parse(t_cub *cub, t_map *map)
 		
 	int	nb;
 	nb = cub->box.xnum;
-	
 	////		///		///
 	while (map->raw[nb] && map->raw[nb][0] != ' ')
 	{

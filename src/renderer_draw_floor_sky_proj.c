@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/12 17:11:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/13 21:21:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -489,15 +489,17 @@ static void	__render_floor_ceiling(t_cub *cub, t_pdata *pd, int *pframe)
 	}
 }
 */
-void	render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pframe)
+void	__render_proj_floor(t_cub *cub)//, uint32_t *pbuff, t_pdata *pd, int *pframe)
 {
 //	(void)pd;
 //	printf("render_floor_sky_proj : start. Open sky ? %d\n", cub->tex.open_sky);
 	if (cub->tex.open_sky)
 //		__render_proj_sky(cub, pbuff, pframe);//, pframe[2] - pframe[0]);
-		__render_proj_floor_sky(cub, pd, pbuff, pframe);
+		__render_proj_floor_sky(cub, cub->hero.rcast.prtl_proj, 
+			(uint32_t *)cub->renderer.objs_layer->pixels, cub->renderer.pframe);//pbuff, pframe);
 	else
-		__render_proj_floor_ceiling(cub, pd, pbuff, pframe);
+		__render_proj_floor_ceiling(cub, cub->hero.rcast.prtl_proj, 
+			(uint32_t *)cub->renderer.objs_layer->pixels, cub->renderer.pframe);// pd, pbuff, pframe);
 }
 /*
 void	render_floor_sky_proj(t_cub *cub, uint32_t *pbuff, t_pdata *pd, int *pframe)

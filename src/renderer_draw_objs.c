@@ -6,12 +6,12 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 19:11:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 19:38:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+/*
 //static int	is_obj_in_fov(t_hero *hero, t_oinst *obj)
 static int	is_point_in_fov(t_hero *hero, int x, int y)
 {
@@ -21,7 +21,6 @@ static int	is_point_in_fov(t_hero *hero, int x, int y)
 		!= (((*hero->fov_rx) * y + (*hero->fov_ry) * -x) > 0));
 }
 
-/*
 static int	prtl_init_single_vect(t_pdata *pd, const t_rdata *rd, t_oinst *obj)//, t_oinst *link)
 {
 	float	ray_scalar_to_obj;
@@ -368,6 +367,11 @@ static int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)
 	pd += pframe[0];
 	rd = pd->rdata;// - 1;
 	width = pframe[2] - pframe[0];
+	dists[0] = 0;
+	dists[1] = 0;
+	isct[0] = 0;
+	isct[1] = 0;
+	axs = NULL;
 //	printf("pframe [%d, %d] [%d, %d], width %d\n", pframe[0], pframe[1], pframe[2], pframe[3], width);
 	while (width--)
 	{
@@ -393,12 +397,14 @@ static int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)
 	return (0);
 }
 
-void	__render_proj_walls(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pframe)
+void	__render_proj_walls(t_cub *cub)//, t_pdata *pdata, uint32_t *pbuff, int *pframe)
 {
 //	const float		pheight_inv = 1.0f / ((float)(pframe[3] - pframe[1]));
 //	const float		pwidth_inv = 1.0f / ((float)(pframe[2] - pframe[0]));
 //	const int		pframe_mids[2] = {(pframe[2] - pframe[0]) >> 1, (pframe[3] - pframe[1]) >> 1};
+	const int		*pframe = cub->renderer.pframe;
 	const int		proj_height = pframe[3] - pframe[1];
+
 	
 //	int			j_times_sw[SCN_HEIGHT];
 	
@@ -407,6 +413,8 @@ void	__render_proj_walls(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pfram
 	int			j;
 	t_pdata		*pd;// pdata ptr
 //	uint32_t	*dbuff;// world depth
+
+	uint32_t	*pbuff;
 
 	float		*dpbuff;
 //	float		*dp;
@@ -442,7 +450,7 @@ void	__render_proj_walls(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pfram
 //	{
 //		j_times_sw[j] = j * SCN_WIDTH;
 //	}
-
+	pbuff = (uint32_t *)cub->renderer.objs_layer->pixels;
 //	pbuff += pframe[0] - 1;
 	i = pframe[0] - 1;
 	while (++i < pframe[2])
@@ -456,7 +464,7 @@ void	__render_proj_walls(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pfram
 //		else if (ref_i >= SCN_WIDTH)
 //			ref_i = SCN_WIDTH - 1;
 //		printf("ref_i after = %d\n", ref_i);
-		pd = pdata + i;
+		pd = cub->hero.rcast.prtl_proj + i;
 //		++pbuff;
 		pb = pbuff + i;// - SCN_WIDTH;
 		
@@ -548,7 +556,7 @@ void	__render_proj_walls(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pfram
 	}
 }
 
-
+/*
 int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs, int *pframe)//, int *end)
 {
@@ -625,7 +633,7 @@ int	__render_portal_empty(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd,
 //		pframe[2], pframe[3]);
 	return (0);
 }
-
+*/
 void	__render_proj_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_pdata *pd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs)//, int *end)
 {
@@ -679,9 +687,11 @@ void	__render_proj_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_pdata *pd, in
 	}
 }
 
-void	__render_proj_objects(t_cub *cub, t_oinst *prtl, t_pdata *pdata, int *pframe)
+void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pframe)
 {
+	const int	*pframe = cub->renderer.pframe;
 	t_oinst		*obj;
+	t_oinst		*prtl;
 	t_oinst		*link;
 	float		ppos[2];
 	float		ov[2];
@@ -699,7 +709,8 @@ void	__render_proj_objects(t_cub *cub, t_oinst *prtl, t_pdata *pdata, int *pfram
 //	int		pframe[4];
 
 	obj = cub->objs.instances;
-	link = prtl->relative;
+	prtl = (t_oinst *)cub->renderer.portal;
+	link = (t_oinst *)cub->renderer.portal->relative;
 	ppos[0] = cub->hero.px + (link->px - prtl->px);
 	ppos[1] = cub->hero.py + (link->py - prtl->py);
 //	printf("\nlink id %d %p, (%.2f, %.2f)\n", link->_id, link, link->px, link->py);
@@ -781,7 +792,7 @@ void	__render_proj_objects(t_cub *cub, t_oinst *prtl, t_pdata *pdata, int *pfram
 			loffs[3] = pframe[3];//SCN_HEIGHT;
 		}
 
-		__render_proj_obj(cub, odist, tex, pdata, dims, loffs, toffs, tincrs);
+		__render_proj_obj(cub, odist, tex, cub->hero.rcast.prtl_proj, dims, loffs, toffs, tincrs);
 /*
 		if (obj->type->type_enum == OBJ_PORTAL && obj->isactive)
 		{
@@ -822,6 +833,7 @@ static inline void	obj_put_pixel(mlx_image_t *img, int x, int y, uint32_t col)
 		((uint32_t *)img->pixels)[x + y * img->width] = col;
 }
 */
+/*
 void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs)//, int *end)
 {
@@ -869,28 +881,131 @@ void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rd, int *di
 		}
 	}
 }
+*/
+void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rdata, int *dims,
+		int *loffs, int *toffs, float *tex_incrs)//, int *end)
+{
+	int		toffs_x[SCN_WIDTH];
+	int		pbuff_start_off;
+	int		pbuff_jump;// = SCN_WIDTH - dims[0];
+	uint32_t	*tbuff;
+	uint32_t	*tb;
+	uint32_t	*pbuff;
+	float		*dbuff;
+	int			i;
+	int			j;
+	uint32_t	tex_col;
 
-void	render_objects(t_cub *cub, t_rdata *rd)
+	rdata += loffs[0];
+	i = 0;
+	while (i < dims[0] && rdata[i].dist < dist)
+		++i;
+	toffs[0] += i;
+	dims[0] -= i;
+	rdata += i;
+	j = -1;
+	while (++j < dims[0] && dist <= rdata[j].dist)
+//	{
+		toffs_x[j] = (int)(j * tex_incrs[0]);
+	if (j == 0)
+		return ;
+	dims[0] = j;
+	loffs[0] += i;
+	loffs[2] = loffs[0] + j;//i + j;//(dims[0] - loffs[2]);
+	pbuff_start_off = loffs[0] + loffs[1] * SCN_WIDTH - 1;
+	pbuff_jump = SCN_WIDTH - dims[0];
+
+//	printf("dpbuff - dbuff : %ld\n", (cub->renderer.dpbuff - cub->renderer.dbuff) / (SCN_WIDTH * sizeof(float)));
+	tbuff = ((uint32_t *)tex->pixels) + (int)(toffs[0] * tex_incrs[0])
+				+ ((int)(toffs[1] * tex_incrs[1]) * tex->width);
+	dbuff = ((float *)cub->renderer.dbuff) + pbuff_start_off;// + (loffs[0]) + (loffs[1]) * SCN_WIDTH - 1;
+	pbuff = ((uint32_t *)cub->renderer.objs_layer->pixels) + pbuff_start_off;// + (loffs[0]) + (loffs[1]) * SCN_WIDTH - 1;
+
+	j = -1;
+	while (++j < dims[1])
+	{
+		tb = tbuff + (int)(j * tex_incrs[1]) * tex->width;
+		i = -1;
+		while (++i < dims[0])
+		{
+			++dbuff;
+			++pbuff;
+			tex_col = tb[toffs_x[i]];
+			if (!tex_col || (*dbuff && (*dbuff < dist)))
+				continue ;
+			*pbuff = tex_col;
+		}
+
+		dbuff += pbuff_jump;		
+		pbuff += pbuff_jump;
+	}
+}
+
+void	__label_isproj(uint32_t *pbuff, char *isproj, int *pframe, int *pdims)
+{
+	const int		start_offset = pframe[0] + (pframe[1] * SCN_WIDTH);
+	const int		buff_jump = SCN_WIDTH - pdims[1];
+	int		w;
+	int		h;
+//	uint32_t	*pb;
+
+	pbuff += start_offset - 1;
+	isproj += start_offset - 1;
+//	printf("start_offset %d, buff_jump : %d\n", start_offset, buff_jump);
+	h = pdims[1];
+	while (h--)
+	{
+		w = pdims[0];
+		while (w--)
+		{
+			++isproj;
+			if (*(++pbuff) == PROJ_COLOR)
+				*isproj = 1;
+		}
+		pbuff += buff_jump;
+		isproj += buff_jump;			
+	}
+}
+/*
+void	__label_isproj(uint32_t *pbuff, char *isproj, int *pframe, int *pdims)
+{
+	int	i;
+	int	j;
+
+	(void)pdims;
+	j = pframe[1] - 1;
+	while (++j < pframe[3])
+	{
+		i = pframe[0] - 1;
+		while (++i < pframe[2])
+		{
+			if (pbuff[i + j * SCN_WIDTH] == PROJ_COLOR)
+				isproj[i + j * SCN_WIDTH] = 1;
+		}
+	}
+}
+*/
+
+
+void	render_objects(t_cub *cub)//, t_rdata *rd)
 {
 	t_oinst		*obj;
 	int			drawx;
 	float		ratio;
 //	int	i;
-	float		rightwardx_halfw;
-	float		rightwardy_halfw;
+//	float		rightwardx_halfw;
+//	float		rightwardy_halfw;
 	mlx_texture_t	*tex;
 
 	int		loffs[4];
 	int		toffs[2];
 	float		tincrs[2];
 	int		dims[2];
-	int		pframe[4];
+//	int		pframe[4];
 
-	(void)rd;
-	clear_image_buffer(cub->renderer.objs_layer);
-	ft_memclear(cub->renderer.dbuff, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
-	ft_memclear(cub->renderer.dpbuff, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
-	ft_memclear(cub->renderer.isproj, sizeof(char) * SCN_WIDTH * SCN_HEIGHT);
+	
+	memset(cub->renderer.objs_layer->pixels, 0, sizeof(uint32_t) * SCN_WIDTH * SCN_HEIGHT);
+	memset(cub->renderer.dbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
 
 	obj = cub->objs.instances;
 	while (obj)
@@ -900,30 +1015,30 @@ void	render_objects(t_cub *cub, t_rdata *rd)
 		obj->oy = obj->py - cub->hero.py;
 		
 		obj->dist = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
-		rightwardx_halfw = (*cub->hero.diry) * obj->type->half_w;
-		rightwardy_halfw = (*cub->hero.dirx) * obj->type->half_w;
-		obj->ox_left = obj->ox - rightwardx_halfw;//(*cub->hero.diry) * obj->type->half_w;//obj->px - obj->uy;
-		obj->oy_left = obj->oy + rightwardy_halfw;//(*cub->hero.dirx) * obj->type->half_w;//obj->py + obj->ux;
-		obj->ox_right = obj->ox + rightwardx_halfw;//*cub->hero.diry) * obj->type->half_w;
-		obj->oy_right = obj->oy - rightwardy_halfw;//(*cub->hero.dirx) * obj->type->half_w;
+//		rightwardx_halfw = (*cub->hero.diry) * obj->type->half_w;
+//		rightwardy_halfw = (*cub->hero.dirx) * obj->type->half_w;
+//		obj->ox_left = obj->ox - rightwardx_halfw;//(*cub->hero.diry) * obj->type->half_w;//obj->px - obj->uy;
+//		obj->oy_left = obj->oy + rightwardy_halfw;//(*cub->hero.dirx) * obj->type->half_w;//obj->py + obj->ux;
+//		obj->ox_right = obj->ox + rightwardx_halfw;//*cub->hero.diry) * obj->type->half_w;
+//		obj->oy_right = obj->oy - rightwardy_halfw;//(*cub->hero.dirx) * obj->type->half_w;
+		tex = obj->type->texs[obj->tex_idx];
+		ratio = cub->near_z / obj->dist;
+		dims[0] = (int)(ratio * obj->type->width);
+		dims[1] = (int)(ratio * obj->type->height);
+		drawx = (int)(((*cub->hero.dirx) * obj->oy - (*cub->hero.diry) * obj->ox)
+			* ratio) + cub->scn_midx;
 
-		if ((obj->dist <= 0)
-			|| !(is_point_in_fov(&cub->hero, obj->ox, obj->oy)
-			|| is_point_in_fov(&cub->hero, obj->ox_left, obj->oy_left)
-			|| is_point_in_fov(&cub->hero, obj->ox_right, obj->oy_right)))
+		if ((obj->dist <= 0) || (drawx + dims[0]) < 0 || SCN_WIDTH <= drawx)
+//			|| !(is_point_in_fov(&cub->hero, obj->ox, obj->oy)
+//			|| is_point_in_fov(&cub->hero, obj->ox_left, obj->oy_left)
+//			|| is_point_in_fov(&cub->hero, obj->ox_right, obj->oy_right)))
 		{
 //			printf("BAILOUT\n");
 			obj = obj->next;
 			continue ;
 		}
-		ratio = cub->near_z / obj->dist;
-		drawx = (int)(((*cub->hero.dirx) * obj->oy - (*cub->hero.diry) * obj->ox)
-			* ratio) + cub->scn_midx;
 
 //		printf("mid 1\n");	
-		dims[0] = (int)(ratio * obj->type->width);
-		dims[1] = (int)(ratio * obj->type->height);
-		tex = obj->type->texs[obj->tex_idx];
 		tincrs[0] = (float)tex->width / (float)dims[0];
 		tincrs[1] = (float)tex->height / (float)dims[1];
 		toffs[0] = 0;
@@ -965,26 +1080,56 @@ void	render_objects(t_cub *cub, t_rdata *rd)
 			//	__render_portal_projection(cub, cub->hero.rcast.prtl_proj, start, end);
 	//		prtl_proj_vectors(cub->hero.rcast.prtl_proj + loffs[0], &cub->map, obj);
 		//	__render_portal_with_projection(cub, obj->dist, obj, tex, cub->hero.rcast.prtl_proj, dims, loffs, toffs, tincrs);
-			if (__render_portal_empty(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs, pframe) < 0)
+			ft_deltatime_usec_note(NULL);
+			
+			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
+//			ft_deltatime_usec_note("empty portal draw time");
+			int	*pframe = cub->renderer.pframe;
+			int	pdims[2] = {(int)(obj->type->proj_width * ratio), (int)(obj->type->proj_height * ratio)};
+
+			pframe[0] = drawx - (pdims[0] >> 1);
+			pframe[2] = ft_clamp(pframe[0] + pdims[0], 0, SCN_WIDTH);
+			pframe[0] = ft_clamp(pframe[0], 0, SCN_WIDTH);
+
+
+//			__render_portal_empty(cub, obj->dist, tex, cub->hero.rcast.rdata,
+//				dims, loffs, toffs, tincrs);
+//			printf("pframe x [%d, %d]\n", 
+//				pframe[0], pframe[2]);
+			if (pframe[0] == pframe[2])// || pframe[1] == pframe[3])
 			{
+				printf("BAILOUT ON PROJECTION !!\n");
 				obj = obj->next;
 				continue ;
 			}
+			pframe[1] = cub->scn_midy - (pdims[1] >> 1)
+				+ (ratio * obj->type->draw_offy);
+			pframe[3] = ft_clamp(pframe[1] + pdims[1], 0, SCN_HEIGHT);
+			pframe[1] = ft_clamp(pframe[1], 0, SCN_HEIGHT);
+
+			memset(cub->renderer.dpbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
+			memset(cub->renderer.isproj, 0, sizeof(char) * SCN_WIDTH * SCN_HEIGHT);
+			
+			cub->renderer.portal = obj;
+//			ft_deltatime_usec_note("mem clear + pframe time");
+			__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels, cub->renderer.isproj, pframe, pdims);
+//			ft_deltatime_usec_note("label isproj time");
 //			printf("proj vectors\n");
-			printf("portal link : %p, (%.2f, %.2f)\n", obj->relative, ((t_oinst *)(obj->relative))->px,
-			((t_oinst *)(obj->relative))->py);
-			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, pframe);
-			render_floor_sky_proj(cub, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
-			__render_proj_walls(cub, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
-			__render_proj_objects(cub, obj, cub->hero.rcast.prtl_proj, pframe);
-//void	__render_proj_objects(t_cub *cub, t_oinst *prtl, t_pdata *pdata, int *pframe)
+//			printf("portal link : %p, (%.2f, %.2f)\n", obj->relative, ((t_oinst *)(obj->relative))->px,
+//				((t_oinst *)(obj->relative))->py);
+//			printf("portal : %p\n", cub->renderer.portal);
+			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, cub->renderer.pframe);
+//			ft_deltatime_usec_note("projection vectors time");
+//			printf("portal : %p\n", cub->renderer.portal);
+			order_draw_call(cub, cub->draw_threads, 3, 6);
+//			ft_deltatime_usec_note("multithreaded projection time");
+//			__render_proj_objects(cub);//, obj, cub->hero.rcast.prtl_proj, pframe);
+//			ft_deltatime_usec_note("Object proj render time");
+//			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
+//			ft_deltatime_usec_note("Walls proj render time");
+//			__render_proj_floor(cub);//, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
+//			ft_deltatime_usec_note("floor sky proj render time");
 //			printf("render_floor_sky\n");
-//			else
-//			{
-//				printf("prtl_proj continue \n");
-//				obj = obj->next;
-//				continue ;
-//			}
 		}
 		else
 			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
