@@ -6,11 +6,18 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 20:12:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 22:58:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static int	get_new_obj_id(void)
+{
+	static int	counter;
+	
+	return (++counter);
+}
 
 int	report_obj_err(t_oinst *obj, char *msg)
 {
@@ -33,7 +40,7 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 		printf("DEACTIVATING PORTAL id %d\n", obj->_id);
 		obj->isactive = 0;
 		obj->tex_idx = 0;
-		tex = obj->type->texs[0];
+		tex = obj->type->gset->xwalls[0];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
 	}
 	else if (!obj->isactive && new_state == 1)
@@ -43,7 +50,7 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 		printf("ACTIVATING PORTAL id %d\n", obj->_id);
 		obj->isactive = 1;
 		obj->tex_idx = 1;
-		tex = obj->type->texs[1];
+		tex = obj->type->gset->xwalls[obj->allegiance];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
 	}
 	else
@@ -149,21 +156,26 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 
 static void	clear_obj_model(t_omdl *mdl)
 {
+	t_matrx	*gset;
 	int	i;
 
+	if (!mdl || !mdl->gset)
+		return ;
+	gset = mdl->gset;
 	i = -1;
 	while (++i < mdl->nb_texs)
 	{
-		if (mdl->texs[i])
+		if (gset->xwalls[i])
 		{
-			mlx_delete_texture(mdl->texs[i]);
-			mdl->texs[i] = NULL;
+			mlx_delete_texture(gset->xwalls[i]);
+			gset->xwalls[i] = NULL;
 		}
 	}
 }
 
 // pos is in world coord, NOT cell coord.
-static int	create_portal_instance(t_cub *cub, int *pos, int *obj_id, t_oinst *link)
+static int	create_portal_instance(t_cub *cub, int *pos, int allegiance,\
+ t_oinst *link)
 {
 	t_oinst	*new_obj;
 
@@ -174,19 +186,21 @@ static int	create_portal_instance(t_cub *cub, int *pos, int *obj_id, t_oinst *li
 		return (report_malloc_error());
 
 	new_obj->type = &cub->objs.portal;
-	new_obj->_id = ++(*obj_id);
+	new_obj->_id = get_new_obj_id();
+	new_obj->allegiance = allegiance;
 	new_obj->tex_idx = 0;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
-	new_obj->relative = link;
 	new_obj->action = __obj_action_portal;
+	new_obj->relative = NULL;
+	new_obj->isactive = 0;
 //	new_obj->action = NULL;
 	if (link)
 	{
 		printf("linking portal %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
+		new_obj->relative = link;
 		link->relative = new_obj;
 	}
-	new_obj->isactive = 0;
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	printf("Single Portal instance created at pos (%d, %d)\n", pos[0], pos[1]);
@@ -194,46 +208,66 @@ static int	create_portal_instance(t_cub *cub, int *pos, int *obj_id, t_oinst *li
 }
 
 // pos is in world coord, NOT cell coord.
-// static int	create_fireball_instance(t_cub *cub, int *pos, int *obj_id, t_hero *link)
-// {
-// 	t_oinst	*new_obj;
+static int	create_fireball_instance(t_cub *cub, int *pos, int allegiance, t_hero *link)
+{
+	t_oinst	*new_obj;
 
-// //	if (link && link->type->type_enum != OBJ_PORTAL)
-// //		return (report_err("Creating a fireball instance trying to link to non portal obj.\n"));
+	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
+		return (report_malloc_error());
 
-// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
-// 		return (report_malloc_error());
-
-// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
-// 		return (report_malloc_error());
-
-// 	new_obj->type = &cub->objs.fireball;
-// 	new_obj->_id = ++(*obj_id);
-// 	new_obj->tex_idx = 0;
-// 	new_obj->px = pos[0];
-// 	new_obj->py = pos[1];
-// 	new_obj->dx = pos[2];
-// 	new_obj->dy = pos[3];
-// 	new_obj->relative = NULL;
-// //	new_obj->link = link;
+	new_obj->type = &cub->objs.fireball;
+	new_obj->_id = get_new_obj_id();
+	new_obj->allegiance = allegiance;
+	new_obj->tex_idx = 0;
+	new_obj->px = pos[0];
+	new_obj->py = pos[1];
+	new_obj->dx = pos[2];
+	new_obj->dy = pos[3];
+	new_obj->relative = NULL;
+//	new_obj->link = link;
 	
-// 	new_obj->action = __obj_action_fireball;
-// //	new_obj->action = NULL;
-// 	if (link)
-// 	{
-// //		printf("linking fireball %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
-// 		new_obj->relative = link;
-// 		new_obj->isactive = 1;
-// //		link->link = new_obj;
-// 	}
-// 	else
-// 		new_obj->isactive = 0;
-// 	new_obj->next = cub->objs.instances;
-// 	cub->objs.instances = new_obj;
-// 	printf("Single fireball instance created at pos (%d, %d)\n", pos[0], pos[1]);
-// 	return (new_obj->_id);	
-// }
+	new_obj->action = __obj_action_fireball;
+//	new_obj->action = NULL;
+	if (link)
+	{
+//		printf("linking fireball %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
+		new_obj->relative = link;
+		new_obj->isactive = 1;
+//		link->link = new_obj;
+	}
+	else
+		new_obj->isactive = 0;
+	new_obj->next = cub->objs.instances;
+	cub->objs.instances = new_obj;
+	printf("Single fireball instance created at pos (%d, %d)\n", pos[0], pos[1]);
+	return (new_obj->_id);	
+}
 
+static int	create_lever_instance(t_cub *cub, int *pos, int allegiance, t_oinst *link)
+{
+	t_oinst	*new_obj;
+
+	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
+		return (report_malloc_error());
+
+	new_obj->type = &cub->objs.lever;
+	new_obj->_id = get_new_obj_id();
+	new_obj->tex_idx = 0;
+	new_obj->allegiance = allegiance;
+	new_obj->px = (float)pos[0];
+	new_obj->py = (float)pos[1];
+	new_obj->relative = link;
+	new_obj->isactive = 0;	
+	new_obj->action = __obj_action_lever;
+	new_obj->next = cub->objs.instances;
+	cub->objs.instances = new_obj;
+	new_obj->special_gset.xwalls[1] = cub->map.mx[pos[1]][pos[0]]->xwalls[1];
+	new_obj->special_gset.xwalls[0] = new_obj->type->gset->xwalls[0];
+	cub->map.mx[pos[1]][pos[0]] = &new_obj->special_gset;
+//	dual = cub->map.mx[pos[1]][pos[0]];
+//	dual->xwalls[0] = new_obj->type->gset->xwalls[new_obj->tex_idx];
+	return (new_obj->_id);
+}
 
 // pos is in world coord, NOT cell coord.
 // static int	create_firepit_instance(t_cub *cub, int *pos, int *obj_id, t_hero *link)
@@ -402,20 +436,26 @@ void	clear_obj_framework(t_cub *cub)
 //	show the empty portal texture.
 //	The pos variable index 0-1 are x, y position coords. It can also be a larger
 //	array in case of fireballs with indexes 2-3 being direction information.
-int	create_obj_instance(t_cub *cub, int *pos, int type_enum, void *param)
+// Allegiance is an e_object_allegiance enum,
+// either ALI_NEUTRAL, ALI_TORRENT, ALI_LEGION, ALI_ARMADA.
+int	create_obj_instance(t_cub *cub, int *pos, int type_enum, int allegiance,\
+ void *param)
 {
-	static int	obj_id;
-	int			cellx;
-	int			celly;
+	int	obj_id;
+	int	cell[2];
 	
-	cellx = pos[0] / CELL_WIDTH;
-	celly = pos[1] / CELL_WIDTH;
-	if (is_wall(&cub->map, cellx, celly))
+	cell[0] = pos[0] / CELL_WIDTH;
+	cell[1] = pos[1] / CELL_WIDTH;
+	if (is_wall(&cub->map, cell[0], cell[1]))
 		return (report_err("ERROR : Trying to create object in wall.\n"));
 	if (type_enum == OBJ_PORTAL)
-		obj_id = create_portal_instance(cub, pos, &obj_id, param);
-	// else if (type_enum == OBJ_FIREBALL)
-	// 	obj_id = create_fireball_instance(cub, pos, &obj_id, param);
+		obj_id = create_portal_instance(cub, pos, allegiance, param);
+	else if (type_enum == OBJ_LEVER)
+		obj_id = create_lever_instance(cub, cell, allegiance, param);
+	else if (type_enum == OBJ_FIREBALL)
+		obj_id = create_fireball_instance(cub, pos, allegiance, param);
+	else
+		return (ft_eprintf("Error : Invalid obj type\n"));
 	// else if (type_enum == OBJ_FIREPIT)
 	// 	obj_id = create_firepit_instance(cub, pos, &obj_id, param);
 	return (obj_id);

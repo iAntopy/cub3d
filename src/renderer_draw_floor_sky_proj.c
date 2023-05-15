@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 21:21:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 23:24:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,6 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 	
 //	printf("FLOOR SKY \n");
 
-	__render_proj_sky(cub, pbuff, pframe);
 
 //	printf("INIT pdata idx : %d\n", pdata->rdata->idx);
 //	pdata += pframe[0] - 1;
@@ -493,6 +492,8 @@ void	__render_proj_floor(t_cub *cub)//, uint32_t *pbuff, t_pdata *pd, int *pfram
 {
 //	(void)pd;
 //	printf("render_floor_sky_proj : start. Open sky ? %d\n", cub->tex.open_sky);
+	__render_proj_sky(cub, (uint32_t *)cub->renderer.objs_layer->pixels,
+		cub->renderer.pframe);
 	if (cub->tex.open_sky)
 //		__render_proj_sky(cub, pbuff, pframe);//, pframe[2] - pframe[0]);
 		__render_proj_floor_sky(cub, cub->hero.rcast.prtl_proj, 

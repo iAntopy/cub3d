@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 19:33:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 22:59:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,10 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 	return (0);
 }
 
-
 int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 {
 	static int	counter;
-	int		pos[4];
+	int			pos[4];
 	
 	if (!obj->isactive)
 		return (-1);
@@ -109,11 +108,36 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 			pos[2] = 0;
 			pos[3] = 0;
 //			printf("SPAWNING FIREBALL\n");
-			create_obj_instance(cub, pos, OBJ_FIREBALL, obj->relative);
+			create_obj_instance(cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, obj->relative);
 			counter = 0;
 		}
 	}
 
+	return (0);
+}
+
+int	__obj_action_lever(t_oinst *obj, t_cub *cub)
+{
+	t_oinst *link;
+	int		cx;
+	int		cy;
+
+	if (obj->isactive)
+		return (-1);
+	if (obj->relative)
+	{
+		cx = (int)obj->px;
+		cy = (int)obj->py;
+		if (!(cub->hero.cell_x == cx
+			&& cub->hero.cell_y == cy))
+			return (-1);
+		link = (t_oinst *)obj->relative;
+		activate_portal(link, 1);
+		obj->isactive = 1;
+		obj->special_gset.xwalls[0] = obj->type->gset->xwalls[1];
+//		dual = cub->map.mx[cy][cx];
+//		dual->xwalls[0] = obj->type->gset->xwalls[1];
+	}
 	return (0);
 }
 

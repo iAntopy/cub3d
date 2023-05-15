@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 20:11:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 22:36:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ typedef struct s_objx
 	int 			alleg;		// allegence _txtr
 	int 			opos[2];	// relativ pos (reltv. obj_id)
 	char			relativ;	// char obj_id
-}			t_objx;
+}	t_objx;
 
 // typedef struct s_box
 // {	
@@ -319,6 +319,7 @@ typedef struct s_object_model
 {
 	char			*model_name;//	For debug info and logging purposes.
 	int				type_enum;
+	int				is_drawable;
 	int				width;// Width of object in world coords.
 	int				half_w;
 	int				height;// Height of object in world coords (set auto).
@@ -330,7 +331,7 @@ typedef struct s_object_model
 
 	int				nb_texs;// Max nb of textures for this particular model.
 						// Multi textures used for animation or to simulate object orientation.
-	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
+//	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
 	// // // 	
 	t_matrx			*gset; /// rely to model
 	// // //
@@ -349,15 +350,24 @@ enum	e_object_types
 	OBJ_DEACTIVATE
 };
 
+enum	e_object_allegiance
+{
+	ALI_NEUTRAL,
+	ALI_TORRENT,
+	ALI_LEGION,
+	ALI_ARMADA
+};
+
 // returns 0 if possible and successful, otherwise -1.
 typedef int (* t_obj_act)(t_oinst *, t_cub *);
 
 typedef struct s_objects_list_elem
 {
-	t_omdl	*type;
-	int		_id;//	unique obj id. Objects are deletable by id.
-	
-	int		tex_idx;
+	t_omdl		*type;
+	int			_id;//	unique obj id. Objects are deletable by id.
+
+	int			tex_idx;
+	int			allegiance;
 	
 	float		px;//	Position X
 	float		py;//	Position Y
@@ -382,6 +392,7 @@ typedef struct s_objects_list_elem
 	int			isactive;
 	// PORTAL SPECIFIC
 	void		*relative;
+	t_matrx		special_gset;// currently used for lever/pressure plate to have unique pset for floortile
 
 	struct s_objects_list_elem	*next;
 }	t_oinst;
@@ -591,7 +602,7 @@ void			stop_draw_threads(t_thdraw *threads);
 /// OBJECT MANAGEMENT SYSTEM ////////
 int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
-int				create_obj_instance(t_cub *cub, int *pos, int type_enum, void *param);
+int				create_obj_instance(t_cub *cub, int *pos, int type_enum, int allegiance, void *param);
 int				delete_oinst_by_id(t_cub *cub, int id);
 t_oinst			*get_obj(t_cub *cub, int id);
 int				delete_oinst_by_type(t_cub *cub, int type_enum);
@@ -605,6 +616,7 @@ int				activate_portal(t_oinst *obj, unsigned int new_status);
 int				__obj_action_portal(t_oinst *obj, t_cub *cub);
 int				__obj_action_fireball(t_oinst *obj, t_cub *cub);
 int				__obj_action_firepit(t_oinst *obj, t_cub *cub);
+int				__obj_action_lever(t_oinst *obj, t_cub *cub);
 
 /// CHARACTER CONTROLS ////////
 void			cub_player_rotate(t_cub *cub, float rot);

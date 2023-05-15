@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 19:38:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 22:50:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -716,6 +716,11 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 //	printf("\nlink id %d %p, (%.2f, %.2f)\n", link->_id, link, link->px, link->py);
 	while (obj)
 	{
+		if (!obj->type->is_drawable || !obj->type->gset)
+		{
+			obj = obj->next;
+			continue ;
+		}
 //		printf("\n\n Rendering obj %p\n", obj);
 //		ov[0] = obj->px - link->px;
 //		ov[1] = obj->py - link->py;
@@ -758,7 +763,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 		}
 
 //		printf("mid 1\n");	
-		tex = obj->type->texs[obj->tex_idx];
+		tex = obj->type->gset->xwalls[obj->tex_idx];
 		tincrs[0] = (float)tex->width / (float)dims[0];
 		tincrs[1] = (float)tex->height / (float)dims[1];
 		toffs[0] = 0;
@@ -1010,6 +1015,13 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 	obj = cub->objs.instances;
 	while (obj)
 	{
+		if (!obj->type->is_drawable || !obj->type->gset)
+		{
+			printf("BYPASS OBJ DRAW : id %d, drawable : %d, gset ptr : %p\n",
+				obj->_id, obj->type->is_drawable, obj->type->gset);
+			obj = obj->next;
+			continue ;
+		}
 //		printf("\n\n Rendering obj %p\n", obj);
 		obj->ox = obj->px - cub->hero.px;
 		obj->oy = obj->py - cub->hero.py;
@@ -1021,7 +1033,7 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 //		obj->oy_left = obj->oy + rightwardy_halfw;//(*cub->hero.dirx) * obj->type->half_w;//obj->py + obj->ux;
 //		obj->ox_right = obj->ox + rightwardx_halfw;//*cub->hero.diry) * obj->type->half_w;
 //		obj->oy_right = obj->oy - rightwardy_halfw;//(*cub->hero.dirx) * obj->type->half_w;
-		tex = obj->type->texs[obj->tex_idx];
+		tex = obj->type->gset->xwalls[obj->tex_idx];
 		ratio = cub->near_z / obj->dist;
 		dims[0] = (int)(ratio * obj->type->width);
 		dims[1] = (int)(ratio * obj->type->height);
