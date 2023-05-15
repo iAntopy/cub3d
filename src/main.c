@@ -64,30 +64,30 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	return (0);
 }
 
-static void	print_tex_ptr_mx_matrix(t_cub *cub)
-{
-	t_matrx	***mx = cub->map.mx;
-	int		i;
-	int		j;
+// static void	print_tex_ptr_mx_matrix(t_cub *cub)
+// {
+// 	t_matrx	***mx = cub->map.mx;
+// 	int		i;
+// 	int		j;
 
-	printf("[");
-	i = -1;
-	while (++i < cub->map.height)
-	{
-		printf("[");
-		j = -1;
-		while (++j < cub->map.width)
-		{
-			printf("%p, ", mx[i][j]->xwalls[0]);
-		}
-		if (i < (cub->map.height - 1))
-			printf("]\n");
-		else
-			printf("]");
-	}
-	printf("]\n");
+// 	printf("[");
+// 	i = -1;
+// 	while (++i < cub->map.height)
+// 	{
+// 		printf("[");
+// 		j = -1;
+// 		while (++j < cub->map.width)
+// 		{
+// 			printf("%p, ", mx[i][j]->xwalls[0]);
+// 		}
+// 		if (i < (cub->map.height - 1))
+// 			printf("]\n");
+// 		else
+// 			printf("]");
+// 	}
+// 	printf("]\n");
 	
-}
+// }
 
 void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 {
@@ -176,7 +176,7 @@ int	main(int argc, char **argv)
 
 
 
-	print_tex_ptr_mx_matrix(&cub);
+	// print_tex_ptr_mx_matrix(&cub);
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
 	mlx_loop(cub.mlx);
