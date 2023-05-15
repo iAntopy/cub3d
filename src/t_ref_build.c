@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 13:33:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:24:28 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 	
 	cmp = "tex/ext/void_.png";
     if (cub->box.n_dual > i)
-    {	
+    {		
 		tex_set = ft_split_space(t_name);
 	
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
@@ -82,6 +82,11 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 			cub->box.sky = cub->dual[i].xwalls[1];
 			cub->box.sky_tex = cub->dual[i].xwalls[1];
 				// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			//			cub->tex.skymap = cub->dual[i].xwalls[1];
+			//			cub->tex.sky_tex = cub->dual[i].xwalls[1];
+			//			cub->box.sky = cub->dual[i].xwalls[1];
+			//			cub->box.sky_tex = cub->dual[i].xwalls[1];
         }   
 		printf("DUAL tex_set[0] value _%s_ >>  \n", tex_set[0]);
 		printf("DUAL[%d] (xwall[0]) >> ptr : %p \n", i, cub->dual[i].xwalls[0]);

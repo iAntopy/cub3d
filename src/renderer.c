@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 20:45:40 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:14:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	renderer_clear(t_cub *cub)
 {
 	printf("renderer clear entered \n");
 	if (cub->renderer.bg_layer)
+		mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
+	if (cub->renderer.sky_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
 	printf("renderer clear bg DONE \n");
 	if (cub->renderer.walls_layer)
@@ -52,6 +54,7 @@ int	init_renderer(t_cub *cub)
 {
 	int j;
 	
+	cub->renderer.sky_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT >> 1);
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 //	cub->renderer.proj_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
@@ -82,6 +85,7 @@ int	init_renderer(t_cub *cub)
 //		SCN_HEIGHT >> 1, SCN_HEIGHT, cub->tex.color[1]);
 	mlx_set_color_in_rows(cub->renderer.mmap_layer,
 		0, MMP_HEIGHT, 0x7f7a4e3b);
+	mlx_image_to_window(cub->mlx, cub->renderer.sky_layer, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->renderer.bg_layer, 0, 0);
 	mlx_image_to_window(cub->mlx, cub->renderer.walls_layer, 0, 0);
 //	mlx_image_to_window(cub->mlx, cub->renderer.proj_layer, 0, 0);

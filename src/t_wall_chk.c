@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 13:32:23 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:21:13 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	clr_legend_strct(t_box box)
 {
 	while (box.xform[box.xnum])
 	{
-		free(box.xform[box.xnum]);
+		if (box.xform[box.xnum])
+			free(box.xform[box.xnum]);
 		box.xnum--;
 	}
 	free(*box.xform);

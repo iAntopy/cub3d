@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 22:59:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/14 06:17:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,21 +118,29 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 
 int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 {
-	t_oinst *link;
+	static int	counter;
 	int		cx;
 	int		cy;
 
 	if (obj->isactive)
-		return (-1);
-	if (obj->relative)
+	{
+		if (counter > 100)
+		{
+			activate_portal((t_oinst *)obj->relative, 0);
+			obj->isactive = 0;
+			obj->special_gset.xwalls[0] = obj->type->gset->xwalls[0];
+			counter = 0;
+		}
+		++counter;
+	}
+	else if (obj->relative)
 	{
 		cx = (int)obj->px;
 		cy = (int)obj->py;
 		if (!(cub->hero.cell_x == cx
 			&& cub->hero.cell_y == cy))
 			return (-1);
-		link = (t_oinst *)obj->relative;
-		activate_portal(link, 1);
+		activate_portal((t_oinst *)obj->relative, 1);
 		obj->isactive = 1;
 		obj->special_gset.xwalls[0] = obj->type->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
