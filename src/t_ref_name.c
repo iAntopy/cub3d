@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 10:27:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 12:05:02 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
-	// if (cub->box.open_sky != 0)
-	// 	cub->tex.skymap = cub->box.sky_tex;
+	if (cub->box.open_sky != 0)
+		cub->tex.skymap = cub->box.sky_tex;
 	cub->box.chrs = chrs_builder(cub);
 	return (cub);
 }

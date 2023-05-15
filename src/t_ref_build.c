@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 10:48:19 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 13:33:56 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,9 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	int 		grim;
 	int 		max;
 	chrs = cub->box.chrs;
-	printf("MAPX:start ..., chrs : %s\n", chrs);
-	grim = cub->box.meta + cub->box.n_dual;
 	max = (int)ft_strlen(chrs) - 1;
+	printf("MAPX:start ..., chrs : {:%s:} ::Max[%d]\n", chrs, max);
+	grim = cub->box.meta + cub->box.n_dual;
 	k = -1;
 	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
 	while (++k < m->height)
@@ -152,19 +152,22 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
+			// printf("MapX_ALL [[%d, %d]] P_BOX[%d]==>> {%c}\n", m->pos_y, m->pos_x, p_box, chrs[p_box]);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1))) // decor
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
+					// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 						// printf("MapX {%c} brut,  WALLS {%c} :\n", chrs[p_box], chrs[p_box - grim]);
 						// printf("floor pset (%d, %d), p_box (%d)>>> {%p} :: \n", m->pos_y,m->pos_x, p_box, cub->dual[p_box - grim].xwalls[0]);
 						// printf("ceil pset (%d, %d), p_box (%d)>>> {%p} :: \n", m->pos_y,m->pos_x, p_box, cub->dual[p_box - grim].xwalls[1]);
 				}
-				if ((p_box <= max - (cub->box.pset + 1)) && (p_box - cub->box.meta >= 0)) /// floor + ceil
+				else if ((p_box <= max - (cub->box.pset + 1)) && (p_box - cub->box.meta >= 0)) /// floor + ceil
 				{
 					// printf("MapX <<<%c>>>[[%d]] DUAL FACTOR >>  MIN:%c :  MAX:%c :\n", chrs[p_box], p_box, chrs[ max - (cub->box.pset + 1)] ,  chrs[cub->box.meta - 1]);
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
+					// printf("MapX_Decor >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 						
 						// printf("MAPX>> dual[%d]->xwalls[0] : %p\n", p_box - cub->box.meta, &cub->dual[p_box - cub->box.meta].xwalls[0]);
 						// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
@@ -172,17 +175,29 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	
 					
 				}
-				if (p_box < cub->box.meta)//&& p_box > cub->box.meta  )		/// meta
+				else if (p_box < cub->box.meta)//&& p_box > cub->box.meta  )		/// meta
 				{
+					// m->mx[m->pos_y][m->pos_x] = &cub->dual[0];
+					m->mx[m->pos_y][m->pos_x] = m->mx[m->pos_y][m->pos_x - 1];
 					// printf("MapX <<<%c>>> META DUAL  <<%c>> ::\n", chrs[p_box], chrs[p_box ]);
+					
 						// m->mx[m->pos_y][m->pos_x] = &cub->dual[0];
-						// printf("new pset (%d, %d), p_box 0  (%d)>>> {%p} :: [[%p]]<<\n", m->pos_y,m->pos_x, p_box, cub->dual[0].xwalls[0] , cub->dual[7].xwalls[0] );
-						// printf("new pset (%d, %d), p_box (%d)>>> {%p} :: [[%p]]<<\n", m->pos_y,m->pos_x, p_box, cub->dual[p_box].xwalls[1] , cub->dual[7].xwalls[1] );
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0];
-						// printf("new pset (%d, %d), xwalls[0] : %p\n", m->pos_y,m->pos_x, m->mx[m->pos_y][m->pos_x]->xwalls[0]);
-						// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
-						// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+							// printf("new pset (%d, %d), p_box 0  (%d)>>> {%p} :: [[%p]]<<\n", m->pos_y,m->pos_x, p_box, cub->dual[0].xwalls[0] , cub->dual[7].xwalls[0] );
+							// printf("new pset (%d, %d), p_box (%d)>>> {%p} :: [[%p]]<<\n", m->pos_y,m->pos_x, p_box, cub->dual[p_box].xwalls[1] , cub->dual[7].xwalls[1] );
+							// printf("new pset (%d, %d), xwalls[0] : %p\n", m->pos_y,m->pos_x, m->mx[m->pos_y][m->pos_x]->xwalls[0]);
+							// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
+						// printf("MapX_Meta *** >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 				}
+				else if (p_box > 6)
+				{
+					printf("COORD >> (%d, %d)>> \n", m->pos_y, m->pos_x);
+					printf("MAXMAX>> >> p_box[%c] \n", chrs[p_box]);
+					m->mx[m->pos_y][m->pos_x] = m->mx[m->pos_y][m->pos_x - 1];
+					// m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
+					// printf("MAXMAX>> >> p_box[%d] max[%d]\n", p_box, max);
+					
+				}
+				
 				
 			}
 			m->pos_x++;
@@ -192,7 +207,6 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	printf(" ... MAPX:exit\n\n");
 	return (cub);
 }
-
 
 
 
