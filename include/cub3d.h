@@ -134,13 +134,13 @@ typedef struct s_objx
 	char 			name;		// '#' 
 	int				obj_id;		 // enrg. id	
 	int 			opos[2];	// relativ pos (reltv. obj_id)
-	t_oinst			*wobj;		// world object instance
+	int				o_type;		// model_type
 	///							/// get_pos has split job...
 	
-	int				o_type;		// model_type
 	int 			alleg;		// allegence _txtr
 	char			relativ;	// char obj_id
 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
+	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
 

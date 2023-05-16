@@ -88,7 +88,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
 					cub->tex.skymap = cub->box.sky;
 					cub->tex.sky_tex = cub->box.sky;
-					printf("sky tex after load : %p %p %p\n", cub->box.sky, cub->tex.skymap , cub->tex.sky_tex);
+					// printf("sky tex after load : %p %p %p\n", cub->box.sky, cub->tex.skymap , cub->tex.sky_tex);
 					// cub->tex.sky = cub->box.sky;
 				}
 				else
@@ -106,10 +106,10 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
 					cub = dual_builder(cub, d_id, tex_path);								
-				printf("\nDUALLINK [i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[0]);
-				printf("DUALLINK [i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[1]);
-				printf("DUALLINK &&[i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[0]);
-				printf("DUALLINK &&[i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[1]);
+				// printf("\nDUALLINK [i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[0]);
+				// printf("DUALLINK [i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[1]);
+				// printf("DUALLINK &&[i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[0]);
+				// printf("DUALLINK &&[i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[1]);
 			}
 				
 		}

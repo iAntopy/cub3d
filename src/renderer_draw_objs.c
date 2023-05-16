@@ -563,6 +563,7 @@ void	__render_proj_walls(t_cub *cub)//, t_pdata *pdata, uint32_t *pbuff, int *pf
 			*dpbuff = pd->dist;
 		}
 	}
+	(void)pb;
 }
 
 /*
