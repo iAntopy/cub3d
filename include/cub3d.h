@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 20:15:41 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 23:47:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -659,5 +659,6 @@ t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
 void			minimap_set_pos(t_cub *cub);
+void			minimap_surround(t_cub *cub, int pos[2]);
 
 #endif

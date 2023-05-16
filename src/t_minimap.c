@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:58:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 21:06:01 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/16 00:08:35 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,70 @@
 
 /// set map_char to map_pixel
 
+void    minimap_surround(t_cub *cub, int pos[2])
+{
+	// int	pos[2];
+	int mm[2];
+	int mmax[2];
+	char **mraz;
+	mraz = cub->map.raw;
+	mmax[0] =  pos[0] - 5;
+	mmax[1] =  pos[1] - 5;
+	// pos[0] = cub->hero.cell_x - 5;
+	// pos[1] = cub->hero.cell_y - 5; 
+	
+	
+			printf("<<<<>>>minim(x[%d], y[%d] \n",mmax[0], mmax[1]);//, mraz[mmax[0]][mmax[1]]);
+			printf("<<<  char( x[%d], y[%d],  \n", pos[0],pos[1]);
+			printf("<<<  char {%c}\n",  mraz[pos[0]][pos[1]]);
+	while (mm[1] < 10 && mmax[1] > -5)
+	{       
+		mm[0] = 0;
+		while (mm[0] < 10 && mmax[0] > -5)
+		{
+			if (mmax[0] < 0 || mmax[1] < 0) // uppercase // mmax pos. rel. -10/+10 map/minimap
+				mlx_draw_square(cub->renderer.mmap_layer, mmax, 10, 0xff66aaff);
+			else if (mraz[mmax[0]][mmax[1]] >= 65 ) //uppercase
+				mlx_draw_square(cub->renderer.mmap_layer, mmax, 10, 0xff11aaff);
+			else if (mraz[mmax[0]][mmax[1]] >= 48 ) //uppercase
+				mlx_draw_square(cub->renderer.mmap_layer, mmax, 10, 0x99ffaaff);
+			else
+				mlx_draw_square(cub->renderer.mmap_layer, mmax, 10, 0xffffffff);
+			mmax[0]++;
+			mm[0]++;
+		}
+		mmax[1]++;
+		mm[1]++;
+	}
+
+	// mmax_x = cub->map.height + 5;
+	// mmax_y = cub->map.width - 5;      
+	// mlx_draw_player(cub , cub->map.m);
+        // mlx_set_color_in_rows(cub->renderer.mmap_layer, 0, 10, 0xffffffff);
+	// pos[0] = cub->hero.cell_x * 10;
+	// pos[1] = cub->hero.cell_y * 10;
+	// mlx_draw_square(cub->renderer.mmap_layer, pos, 10, 0xff66aaff);
+        
+}
+
+
 ////    set map_min_max 
-
-
 void    minimap_set_pos(t_cub *cub)
 {
         int	pos[2];
-        int mm_x;
-        int mm_y;
-        int mmaxx;
-        int mmaxy;
+        // int mm_x;
+        // int mm_y;
+        int mmax_x;
+        int mmax_y;
 
-        mm_x = cub->hero.cell_x; //m->pos_x + 5;
-        mm_y = cub->hero.cell_y; 
-        mmaxx = mm_x;
-        mmaxy = mm_y;
-        if  (mm_x < 5)
-                mmax_x++;
-        if  (mm_y < 5)
-                mmax_y++;
-        // if  (mm_x > 5) // map_height
-        //         mmax_x++;
-        // if  (mm_y < 5)       // map->wicht
-        //         mmax_y++;
+        mmax_x = cub->map.height + 5;
+        mmax_y = cub->map.width - 5;      
         // mlx_draw_player(cub , cub->map.m);
-        
-        mlx_set_color_in_rows(cub->renderer.mmap_layer, 0, 15, 0xffffffff);
-	pos[0] = 50;
-	pos[1] = 50;
-	mlx_draw_square(cub->renderer.mmap_layer, pos, 10, 0xffffffff);
+        mlx_set_color_in_rows(cub->renderer.mmap_layer, 0, 10, 0xffffffff);
+	pos[0] = cub->hero.cell_x * 10;
+	pos[1] = cub->hero.cell_x * 10;
+	minimap_surround(cub, pos);
+	// mlx_draw_square(cub->renderer.mmap_layer, pos, 10, 0xff66aaff);
     
 }
 
