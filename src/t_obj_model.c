@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 06:49:54 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 20:48:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,28 @@
 /// now morph to objx data manager ...
 /// set array data ++ frame access
 /// order by id ...
+
+t_omdl	*init_player_model(t_objs *objs)
+{
+//	mlx_texture_t	*tex;
+	
+	objs->player.model_name = "player";
+	objs->player.type_enum = OBJ_PLAYER;
+	objs->player.is_drawable = 0;
+	objs->player.nb_texs = 0;
+	objs->player.draw_offy = 0;
+//	objs->player.gset =  gset_builder("tex/gset_p/", 4);
+//	tex = objs->portal.gset->xwalls[0];
+	// printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
+//	objs->player.texs[0] = objs->portal.gset->xwalls[0];
+	objs->player.width = 32;
+	objs->player.half_w = objs->player.width >> 1;
+	objs->player.height = CELL_WIDTH;
+//	objs->player.height = objs->portal.width * (tex->height / tex->width);
+	objs->player.half_h = objs->portal.height >> 1;
+	// printf("Portal object model initialized !\n");
+	return (&objs->player);
+}
 
 t_omdl	*init_portal_model(t_objs *objs)
 {
@@ -33,6 +55,8 @@ t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.half_w = objs->portal.width >> 1;
 	objs->portal.height = objs->portal.width * (tex->height / tex->width);
 	objs->portal.half_h = objs->portal.height >> 1;
+	objs->portal.proj_width = objs->portal.width >> 1;
+	objs->portal.proj_height = objs->portal.height >> 1;
 	// printf("Portal object model initialized !\n");
 	return (&objs->portal);
 }
@@ -75,40 +99,49 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fball.half_w = objs->fball.width >> 1;
 	objs->fball.height = objs->fball.width * (tex->height / tex->width);
 	objs->fball.half_h = objs->fball.height >> 1;
+	objs->fball.speed = 2.0f;
 	// printf("FireBall object model initialized !\n");
 	return (&objs->fball);
 }
 
-// static t_omdl	*init_firepit_model(t_objs *objs)
-// {
-// 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
-// 	const char	*tex_path1 = "tex/fireball/alpha_firepit.png";
-// //	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
-// 	mlx_texture_t	*tex;
+t_omdl	*init_firepit_model(t_objs *objs)
+{
+	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
+	const char	*tex_path1 = "tex/fireball/alpha_firepit.png";
+//	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
+	mlx_texture_t	*tex;
+	t_matrx			*gset;
 
-// 	objs->firepit.model_name = "Fireball";
-// 	objs->firepit.type_enum = OBJ_FIREPIT;
-// 	objs->firepit.nb_texs = 1;
-// 	objs->firepit.draw_offy = 20;
-// 	printf("Init Fireball model ; Try load  png\n");
-// 	tex = mlx_load_png(tex_path1);
-// 	objs->firepit.texs[0] = tex;
-// 	if (!objs->firepit.texs[0])
-// 		return (report_mlx_tex_load_failed((char *)tex_path1));
-// 	printf("Init firepit model ; png load SUCCESSFUL !\n");
-// //	printf("tex w h (%d, %d)\n", tex->width, tex->height);
-// 	objs->firepit.width = CELL_WIDTH;
-// 	objs->firepit.half_w = objs->firepit.width >> 1;
-// 	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
-// 	objs->firepit.half_h = objs->firepit.height >> 1;
-// //	printf("firepit w h : (%d, %d), half w h (%d, %d)\n", 
-// //		objs->firepit.width, objs->firepit.height, objs->firepit.half_w, objs->firepit.half_h);
-// //	objs->firepit.speed = 1.0f;
-// //	objs->firepit.dmg = 5;
-// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
-// 	printf("firepit object model initialized !\n");
-// 	return (&objs->firepit);
-// }
+	objs->firepit.model_name = "Firepit";
+	objs->firepit.type_enum = OBJ_FIREPIT;
+	objs->firepit.nb_texs = 1;
+	objs->firepit.draw_offy = 20;
+
+	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
+	{
+		report_malloc_error();
+		return (NULL);
+	}
+	tex = mlx_load_png(tex_path1);
+	gset->xwalls[0] = tex;
+	objs->firepit.gset = gset;
+//	objs->firepit.texs[0] = tex;
+//	if (!objs->firepit.texs[0])
+//		return (report_mlx_tex_load_failed((char *)tex_path1));
+	printf("Init firepit model ; png load SUCCESSFUL !\n");
+//	printf("tex w h (%d, %d)\n", tex->width, tex->height);
+	objs->firepit.width = CELL_WIDTH;
+	objs->firepit.half_w = objs->firepit.width >> 1;
+	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
+	objs->firepit.half_h = objs->firepit.height >> 1;
+//	printf("firepit w h : (%d, %d), half w h (%d, %d)\n", 
+//		objs->firepit.width, objs->firepit.height, objs->firepit.half_w, objs->firepit.half_h);
+//	objs->firepit.speed = 1.0f;
+//	objs->firepit.dmg = 5;
+//	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
+	printf("firepit object model initialized !\n");
+	return (&objs->firepit);
+}
 
 void 	p_list_objx(t_objx **objx, int id, int num)
 {

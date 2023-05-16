@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 22:50:08 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:01:09 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ static int	prtl_proj_probe(t_pdata *pd, float *axs, float *isct, float *dists)
 	float	ratio;
 	int		correction;
 
+//	printf("pd cx cy : (%d, %d)\n", pd->cx, pd->cy);
 	if (dists[0] < dists[1])//pd->dist == dists[0])
 	{
 		pd->dist += dists[0];
@@ -114,6 +115,7 @@ static int	prtl_proj_probe(t_pdata *pd, float *axs, float *isct, float *dists)
 	else
 	{
 		pd->dist += dists[1];
+//		printf("axs ptr : %p, pd ptr : %p\n", axs, pd);
 		pd->hitx = axs[0];
 		pd->hity = isct[1];
 		pd->side = rd->dx << 1;
@@ -372,14 +374,17 @@ static int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)
 	isct[0] = 0;
 	isct[1] = 0;
 	axs = NULL;
+//	printf("portal link ptr : %p, link pos [%f, %f]\n", obj->relative,
+//		((t_oinst *)obj->relative)->px, ((t_oinst *)obj->relative)->py);
 //	printf("pframe [%d, %d] [%d, %d], width %d\n", pframe[0], pframe[1], pframe[2], pframe[3], width);
 	while (width--)
 	{
 	//	printf("init single proj vect\n");
 		prtl_proj_init_single_vect(pd, pd->rdata, obj, obj->relative);
-		while (!(is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0))
+		while (1)//!(is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0))
 		{
 			axs = map->grid_coords[pd->cy + rd->dy] + ((pd->cx + rd->dx) << 1);
+//			printf("axs : %p\n", axs);
 			isct[1] = rd->a * axs[0] + pd->b;
 			isct[0] = (axs[1] - pd->b) * rd->inv_a;
 			dists[0] = (isct[0] - pd->px) * (*rd->p_dirx)
@@ -390,7 +395,10 @@ static int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)
 				pd->cy += rd->cincr_y;
 			else
 				pd->cx += rd->cincr_x;
-		}
+			
+			if (is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0)
+				break ;
+			}
 		++pd;
 		++rd;
 	}
@@ -957,6 +965,7 @@ void	__label_isproj(uint32_t *pbuff, char *isproj, int *pframe, int *pdims)
 	pbuff += start_offset - 1;
 	isproj += start_offset - 1;
 //	printf("start_offset %d, buff_jump : %d\n", start_offset, buff_jump);
+//	printf("label proj : pdims : [%d, %d]\n", pdims[0], pdims[1]);
 	h = pdims[1];
 	while (h--)
 	{
@@ -964,6 +973,8 @@ void	__label_isproj(uint32_t *pbuff, char *isproj, int *pframe, int *pdims)
 		while (w--)
 		{
 			++isproj;
+//			printf("is col %p == PROJ_COLOR %p ? %d\n", (void *)(size_t)(*(pbuff + 1)),
+//				(void *)(size_t)PROJ_COLOR, *(pbuff + 1) == PROJ_COLOR);
 			if (*(++pbuff) == PROJ_COLOR)
 				*isproj = 1;
 		}
@@ -1040,7 +1051,8 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 		drawx = (int)(((*cub->hero.dirx) * obj->oy - (*cub->hero.diry) * obj->ox)
 			* ratio) + cub->scn_midx;
 
-		if ((obj->dist <= 0) || (drawx + dims[0]) < 0 || SCN_WIDTH <= drawx)
+		if ((obj->dist <= 1) || (drawx + (dims[0] >> 1)) < 0
+			|| SCN_WIDTH <= (drawx - (dims[0] >> 1)))
 //			|| !(is_point_in_fov(&cub->hero, obj->ox, obj->oy)
 //			|| is_point_in_fov(&cub->hero, obj->ox_left, obj->oy_left)
 //			|| is_point_in_fov(&cub->hero, obj->ox_right, obj->oy_right)))
@@ -1086,7 +1098,7 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 
 		if (obj->type->type_enum == OBJ_PORTAL && obj->isactive)
 		{
-//			printf("RENDERING PORTAL OBJECT WITH PROJ! from start %d to end %d\n", loffs[0], loffs[2]);
+			printf("RENDERING PORTAL OBJECT WITH PROJ! from start %d to end %d\n", loffs[0], loffs[2]);
 		//	if (prtl_proj_vectors(cub->hero.rcast.prtl_proj + loffs[0],
 		//		&cub->map, obj);//, dims[0]))
 			//	__render_portal_projection(cub, cub->hero.rcast.prtl_proj, start, end);
@@ -1130,6 +1142,7 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 //			printf("portal link : %p, (%.2f, %.2f)\n", obj->relative, ((t_oinst *)(obj->relative))->px,
 //				((t_oinst *)(obj->relative))->py);
 //			printf("portal : %p\n", cub->renderer.portal);
+//			(void)prtl_proj_vectors;
 			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, cub->renderer.pframe);
 //			ft_deltatime_usec_note("projection vectors time");
 //			printf("portal : %p\n", cub->renderer.portal);
@@ -1139,8 +1152,8 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 //			ft_deltatime_usec_note("Object proj render time");
 //			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
 //			ft_deltatime_usec_note("Walls proj render time");
-//			__render_proj_floor(cub);//, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
-//			ft_deltatime_usec_note("floor sky proj render time");
+			__render_proj_floor(cub);//, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
+			ft_deltatime_usec_note("floor sky proj render time");
 //			printf("render_floor_sky\n");
 		}
 		else

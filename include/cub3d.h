@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 07:42:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:02:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,26 @@ enum	e_sides
 	S_SIDE = 3
 };
 
+enum	e_object_allegiance
+{
+	ALI_NEUTRAL,
+	ALI_TORRENT,
+	ALI_LEGION,
+	ALI_ARMADA
+};
+
+enum	e_object_types
+{
+	OBJ_NULL,
+	OBJ_PLAYER,
+	OBJ_PORTAL,
+	OBJ_LEVER,
+	OBJ_FIREBALL,
+	OBJ_FIREPIT,
+	OBJ_ACTIVATE,
+	OBJ_DEACTIVATE
+};
+
 typedef struct s_object_model		t_omdl;
 typedef struct s_raycaster_data		t_rcast;
 typedef struct s_cub3d_core_data	t_cub;
@@ -112,6 +132,7 @@ typedef struct s_objx
 	int 			alleg;		// allegence _txtr
 	int 			opos[2];	// relativ pos (reltv. obj_id)
 	char			relativ;	// char obj_id
+	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
 	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
@@ -297,7 +318,8 @@ typedef struct s_main_character_data
 	float	*fov_lx;// left most fov ray x
 	float	*fov_ly;// left most fov ray y 
 	float	*fov_rx;// right most fov ray x 
-	float	*fov_ry;// right most fov ray y 
+	float	*fov_ry;// right most fov ray y
+	int		allegiance;
 	t_rcast	rcast;
 }	t_hero;
 
@@ -343,25 +365,6 @@ typedef struct s_object_model
 	int				dmg;
 }	t_omdl;
 
-enum	e_object_types
-{
-	OBJ_NULL,
-	OBJ_PORTAL,
-	OBJ_LEVER,
-	OBJ_FIREBALL,
-	OBJ_FIREPIT,
-	OBJ_ACTIVATE,
-	OBJ_DEACTIVATE
-};
-
-enum	e_object_allegiance
-{
-	ALI_NEUTRAL,
-	ALI_TORRENT,
-	ALI_LEGION,
-	ALI_ARMADA
-};
-
 // returns 0 if possible and successful, otherwise -1.
 typedef int (* t_obj_act)(t_oinst *, t_cub *);
 
@@ -394,8 +397,12 @@ typedef struct s_objects_list_elem
 	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
 	int			isactive;
+	
 	// PORTAL SPECIFIC
+	int			rel_type_enum;
 	void		*relative;
+
+	
 	t_matrx		special_gset;// currently used for lever/pressure plate to have unique pset for floortile
 
 	struct s_objects_list_elem	*next;
@@ -416,6 +423,7 @@ typedef struct s_objects_list_elem
 typedef struct s_drawable_objects
 {
 	/// OBJECT MODELS (constant) /////////////////////////
+	t_omdl	player;//	Player object model;
 	t_omdl	portal;//	Portal object model;
 	t_omdl	fireball;//	Fireball object model;
 	t_omdl	firepit;//	Fireball generator obj;
@@ -463,7 +471,7 @@ typedef struct s_renderer
 //	int			*sky_toffs;
 
 	t_oinst		*portal;// pointer to portal currently being rendered
-	int		pframe[4];// min and max coords of projection frame for current portal.
+	int			pframe[4];// min and max coords of projection frame for current portal.
 
 	float		flrw_to_cw;
 	float		flrh_to_cw;
@@ -608,17 +616,24 @@ void			stop_draw_threads(t_thdraw *threads);
 /// OBJECT MANAGEMENT SYSTEM ////////
 int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
-int				create_obj_instance(t_cub *cub, int *pos, int type_enum, int allegiance, void *param);
+int				create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance, void *param);
 int				delete_oinst_by_id(t_cub *cub, int id);
 t_oinst			*get_obj(t_cub *cub, int id);
 int				delete_oinst_by_type(t_cub *cub, int type_enum);
 void			delete_all_obj_instances(t_cub *cub);
+int				link_portal_instances(t_oinst *prtl1, t_oinst *prtl2);
+int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);
+int				link_fireball_to_player(t_oinst *fball, t_hero *player);
+int				link_firepit_to_player(t_oinst *fpit, t_hero *player);
+
+
 
 /// OBJECT ACTIVATION FUNCS /////////
 void		    commit_all_obj_actions(t_cub *cub);
 int				activate_portal(t_oinst *obj, unsigned int new_status);
 
 /// OBJECT ACTIONS CALLBACKS
+int				__obj_action_player(t_oinst *obj, t_cub *cub);
 int				__obj_action_portal(t_oinst *obj, t_cub *cub);
 int				__obj_action_fireball(t_oinst *obj, t_cub *cub);
 int				__obj_action_firepit(t_oinst *obj, t_cub *cub);
@@ -637,9 +652,11 @@ void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
 /// MODEL ////////////////////
-t_omdl			*init_lever_model(t_objs *objs);
+t_omdl			*init_player_model(t_objs *objs);
 t_omdl			*init_portal_model(t_objs *objs);
+t_omdl			*init_lever_model(t_objs *objs);
 t_omdl			*init_fireball_model(t_objs *objs);
+t_omdl			*init_firepit_model(t_objs *objs);
 
 /// TESTING TXTR_DICT
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);

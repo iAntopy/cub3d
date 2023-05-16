@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 08:18:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 20:48:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
+	cub->hero.allegiance = ALI_NEUTRAL;
 	cub->renderer.requires_update = 1;
 	cub->map.width_px = cub->map.width * CELL_WIDTH;
 	cub->map.height_px = cub->map.height * CELL_WIDTH;
@@ -151,15 +152,37 @@ int	main(int argc, char **argv)
 */
 
 //	p_list_objx(cub.box.objx, 3, 0);
-
+/*
 	if (!cub.objs.portal.gset)
 		init_portal_model(&cub.objs);
 	if (!cub.objs.lever.gset)
 		init_lever_model(&cub.objs);
 	if (!cub.objs.fireball.gset)
 		init_fireball_model(&cub.objs);
-
+	if (!cub.objs.firepit.gset)
+		init_firepit_model(&cub.objs);
+*/
+	init_player_model(&cub.objs);
+	float pos[2];
+	pos[0] = cub.hero.px;
+	pos[1] = cub.hero.py;
+	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
 	instanciate_map_objects(&cub);
+
+////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
+	int	i;
+	int	j;
+	i = -1;
+	while (++i < cub.map.height)
+	{
+		j = -1;
+		while (++j < cub.map.width)	
+		{
+			if (!cub.map.mx[i][j] || !cub.map.mx[i][j]->xwalls[0])
+				cub.map.mx[i][j] = &cub.dual[0];
+		}
+	}
+////////
 
 
 	cub_setup_mlx_hooks_and_settings(&cub);
