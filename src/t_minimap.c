@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:58:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 19:27:10 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:51:28 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@
 
 
 /// set player pos to center map 
+void mlx_draw_player(t_cub * Cub, t_map *m)
+{
+        mlx_draw_square(mlx_image_t *img, int pos[2], int side, uint32_t col)
+}
 
 /// set map_char to map_pixel
 
@@ -44,6 +48,13 @@
 
 void    minimap_set_pos(t_cub *cub, t_map *m)
 {
+        int mminx;
+        int mminy;
+        int mmaxx;
+        int mmaxy;
+
+        mminx = m->pos_x + 5;
+        mminy = m->pos_y + 5;
     
 }
 
