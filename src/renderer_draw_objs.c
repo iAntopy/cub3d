@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 18:01:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 23:28:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -555,7 +555,8 @@ void	__render_proj_walls(t_cub *cub)//, t_pdata *pdata, uint32_t *pbuff, int *pf
 //			pb[cub->buff_offys[j]] = tex_col;
 //			*pb = tex_col;
 //			pbuff[i + j * SCN_WIDTH] = tex_col;
-			pb[cub->buff_offys[j]] = tex_buff[(int)tex_y * tex_shape[0]] & TRANSPARENCY;//tex_col;
+//			pb[cub->buff_offys[j]] = tex_buff[(int)tex_y * tex_shape[0]] & TRANSPARENCY;//tex_col;
+			pbuff[i + j * SCN_WIDTH] = tex_buff[(int)tex_y * tex_shape[0]] & TRANSPARENCY;
 //			*pb = tex_buff[(int)tex_y * tex_shape[0]];//tex_col;
 //			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j],
 //				tex_col);
@@ -1146,13 +1147,13 @@ void	render_objects(t_cub *cub)//, t_rdata *rd)
 			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, cub->renderer.pframe);
 //			ft_deltatime_usec_note("projection vectors time");
 //			printf("portal : %p\n", cub->renderer.portal);
-			order_draw_call(cub, cub->draw_threads, 3, 6);
+//			order_draw_call(cub, cub->draw_threads, 3, 6);
 //			ft_deltatime_usec_note("multithreaded projection time");
 //			__render_proj_objects(cub);//, obj, cub->hero.rcast.prtl_proj, pframe);
 //			ft_deltatime_usec_note("Object proj render time");
-//			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
+			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
 //			ft_deltatime_usec_note("Walls proj render time");
-			__render_proj_floor(cub);//, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
+//			__render_proj_floor(cub);//, (uint32_t *)cub->renderer.objs_layer->pixels, cub->hero.rcast.prtl_proj, pframe);
 			ft_deltatime_usec_note("floor sky proj render time");
 //			printf("render_floor_sky\n");
 		}

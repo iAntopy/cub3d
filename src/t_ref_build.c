@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 21:41:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 22:25:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,17 +152,18 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 				}
 				if (p_box == max)
 				{
-					printf("HERO__MapX >> (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
-					printf("FOUND IT ");
+	//				printf("HERO__MapX >> (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
+	//				printf("FOUND IT ");
+					cub->box.meta++;
 					// p_list_objx(cub->box.objx , p_box, 0); 
 					
 				}
-				if (p_box < cub->box.meta )
-				{
-					printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
-					printf("FOUND IT ");
-					p_list_objx(cub->box.objx , p_box, 0); 
-				}
+	//			if (p_box < cub->box.meta )
+	//			{
+	//				printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+	//				printf("FOUND IT ");
+	//				p_list_objx(cub->box.objx , p_box, 0); 
+	//			}
 				
 			}
 			m->pos_x++;

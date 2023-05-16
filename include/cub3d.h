@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 21:02:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 22:54:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@
 # define MAP_LCHR "abcdefghijz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "#%$&!+=;*()><?"
+# define MAP_MCHR "#%$&!+=;*()><?@"
 
 # define CUBMAP_BUFMAX 100000
 
@@ -79,7 +79,7 @@
 # define TRANSPARENCY 0xcfffffff
 
 
-# define NB_OBJ_TYPES 4
+# define NB_OBJ_TYPES 5
 # define FIREPIT_SPAWN_TICKS 100
 
 enum	e_sides
@@ -101,11 +101,11 @@ enum	e_object_allegiance
 enum	e_object_types
 {
 	OBJ_NULL,
-	OBJ_PLAYER,
-	OBJ_PORTAL,
 	OBJ_LEVER,
+	OBJ_PORTAL,
 	OBJ_FIREBALL,
 	OBJ_FIREPIT,
+	OBJ_PLAYER,
 	OBJ_ACTIVATE,
 	OBJ_DEACTIVATE
 };
@@ -621,6 +621,7 @@ int				delete_oinst_by_id(t_cub *cub, int id);
 t_oinst			*get_obj(t_cub *cub, int id);
 int				delete_oinst_by_type(t_cub *cub, int type_enum);
 void			delete_all_obj_instances(t_cub *cub);
+
 int				link_portal_instances(t_oinst *prtl1, t_oinst *prtl2);
 int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);
 int				link_fireball_to_player(t_oinst *fball, t_hero *player);

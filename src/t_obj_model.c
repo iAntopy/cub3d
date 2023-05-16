@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 21:53:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 23:17:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.half_w = objs->portal.width >> 1;
 	objs->portal.height = objs->portal.width * (tex->height / tex->width);
 	objs->portal.half_h = objs->portal.height >> 1;
-	objs->portal.proj_width = objs->portal.width >> 1;
-	objs->portal.proj_height = objs->portal.height >> 1;
+	objs->portal.proj_width = (int)(objs->portal.width * 0.7);//objs->portal.width >> 1;
+	objs->portal.proj_height = (int)(objs->portal.height * 0.7);//objs->portal.height >> 1;
 	// printf("Portal object model initialized !\n");
 	return (&objs->portal);
 }
@@ -112,7 +112,7 @@ t_omdl	*init_firepit_model(t_objs *objs)
 	mlx_texture_t	*tex;
 	t_matrx			*gset;
 
-	objs->firepit.model_name = "Firepit";
+	objs->firepit.model_name = "firepit";
 	objs->firepit.type_enum = OBJ_FIREPIT;
 	objs->firepit.nb_texs = 1;
 	objs->firepit.draw_offy = 20;

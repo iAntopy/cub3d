@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 21:10:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 23:13:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 {
 	static int	counter;
-	int			pos[4];
+	float		pos[4];
 	
 	if (!obj->isactive)
 		return (-1);
@@ -160,11 +160,15 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	}
 	else if (obj->relative)
 	{
+	//	ft_eprintf("lever relative exists\n");
 		cx = (int)obj->px;
 		cy = (int)obj->py;
+	//	ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
+	//		cub->hero.cell_x, cub->hero.cell_y);
 		if (!(cub->hero.cell_x == cx
 			&& cub->hero.cell_y == cy))
 			return (-1);
+	//	ft_eprintf("PRESSED !\n");
 		activate_portal((t_oinst *)obj->relative, 1);
 		obj->isactive = 1;
 		obj->special_gset.xwalls[0] = obj->type->gset->xwalls[1];
