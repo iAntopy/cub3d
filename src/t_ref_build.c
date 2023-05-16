@@ -46,9 +46,9 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 {
 	char	**tex_set;
-	const char 	*cmp;
+	// const char 	*cmp;
 	
-	cmp = "tex/ext/void_.png";
+	// cmp = "tex/ext/void_.png";
     if (cub->box.n_dual > i)
     {		
 		tex_set = ft_split_space(t_name);
