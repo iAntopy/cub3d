@@ -121,8 +121,8 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
-	int ox = 0;
-	p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
+	// int ox = 0;
+	// p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
 	printf("A ptr : %p =? %p\n", map->mx[0][0], &cub->pset[2]);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
