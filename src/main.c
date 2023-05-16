@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 19:22:13 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 20:14:03 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,9 @@ int	main(int argc, char **argv)
 		init_fireball_model(&cub.objs);
 
 	instanciate_map_objects(&cub);
-
+	
+	/// sitting here
+	 minimap_set_pos(&cub);
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");

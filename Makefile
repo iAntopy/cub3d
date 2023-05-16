@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/14 07:40:15 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/15 20:18:14 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ SRC_FLS	:=		main.c 			\
 			map_instanciator.c	\
 			draw_threads.c		\
 			object_model_creation.c \
-			object_actions.c
+			object_actions.c	\
+			t_minimap.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
