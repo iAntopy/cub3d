@@ -120,12 +120,12 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 		objx->o_type = 5;
 	else if (head > 16)
 		objx->o_type = 6;
-	else if (head > 13)
+	else if (head > 13 &&  head < 17)
 		objx->o_type = 2;
 	else if (head < 10)
-		objx->o_type = 1;
-	else if (head < 13)
 		objx->o_type = 2;
+	else if (head < 14)
+		objx->o_type = 1;
 	
 	objx->opos[0] = m->pos_x;		/// main event! 
 	objx->opos[1] = m->pos_y;
