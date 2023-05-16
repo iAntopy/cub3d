@@ -40,18 +40,14 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 		// free(name);
 		// free(arr_name);
 	}
-	return (gset);}
+	return (gset);
+}
 
 
 t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 {
 	char	**tex_set;
 
-	// cub->dual = (t_matrx *)malloc(sizeof(mlx_texture_t *) * 1);
-	// if (!cub->dual)
-	// 	return (NULL);
-	// printf("DUAL TEST i:[%d] t_name{{%s}} >>\n", i, t_name);
-	// printf("DUAL ptr{%p}} >>\n",  &cub->dual[i]);
     if (cub->box.n_dual > i)
     {	
 		tex_set = ft_split_space(t_name);
@@ -59,27 +55,31 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
-		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
-		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[]);
-    //    if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
         if (tex_set[1])/// not open_sky
         {	
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
 			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
-//			cub->tex.skymap = cub->dual[i].xwalls[1];
-//			cub->tex.sky_tex = cub->dual[i].xwalls[1];
-//			cub->box.sky = cub->dual[i].xwalls[1];
-//			cub->box.sky_tex = cub->dual[i].xwalls[1];
         }   
-//		else
-//			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
 
     }
     return (cub);
 }
-
+		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
+			// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[]);
+				//    if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
+			//			cub->tex.skymap = cub->dual[i].xwalls[1];
+			//			cub->tex.sky_tex = cub->dual[i].xwalls[1];
+			//			cub->box.sky = cub->dual[i].xwalls[1];
+			//			cub->box.sky_tex = cub->dual[i].xwalls[1];
+			//		else
+			//			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
+			// cub->dual = (t_matrx *)malloc(sizeof(mlx_texture_t *) * 1);
+			// if (!cub->dual)
+			// 	return (NULL);
+			// printf("DUAL TEST i:[%d] t_name{{%s}} >>\n", i, t_name);
+		// printf("DUAL ptr{%p}} >>\n",  &cub->dual[i]);
 
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {

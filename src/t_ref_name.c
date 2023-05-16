@@ -69,13 +69,11 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			tex_name = ft_substr(raw[i], 0, 1);
 			tex_path = ft_substr(raw[i], 2, raw_len - 2);
 			
-			if (ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1)
+			/// meta << number 				// if (raw[i][0] < 48) /// meta << number 
+			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1) && (raw[i][0] < 48) )
 			{
-				if (raw[i][0] < 48) /// meta << number 
-				{
-					cub = meta_builder(cub, box, tex_name, &cub->objs);			
-					box->n_objs++;
-				}
+				cub = meta_builder(cub, box, tex_name, &cub->objs);			
+				box->n_objs++;
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
 			{
@@ -88,8 +86,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
 					cub->tex.skymap = cub->box.sky;
 					cub->tex.sky_tex = cub->box.sky;
-					// printf("sky tex after load : %p %p %p\n", cub->box.sky, cub->tex.skymap , cub->tex.sky_tex);
-					// cub->tex.sky = cub->box.sky;
 				}
 				else
 				{
@@ -111,11 +107,13 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				// printf("DUALLINK &&[i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[0]);
 				// printf("DUALLINK &&[i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[1]);
 			}
-				
 		}
 	}
 	return (cub);
 }
+					// printf("sky tex after load : %p %p %p\n", cub->box.sky, cub->tex.skymap , cub->tex.sky_tex);
+					// cub->tex.sky = cub->box.sky;
+				
 
 t_cub	*e_mtrx_count(t_cub *cub)
 {

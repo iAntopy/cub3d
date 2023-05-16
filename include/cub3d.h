@@ -687,4 +687,5 @@ t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
 
+
 #endif
