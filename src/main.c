@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 19:39:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 09:32:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	main(int argc, char **argv)
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
-/*
+
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 
 	int	pos[2];
@@ -138,7 +138,7 @@ int	main(int argc, char **argv)
 //	pos[1] = 100;
 //	mlx_draw_square(cub.renderer.mmap_layer, pos, 50, 0xffffffff);
 /////// END OF DEBUG SECTION
-*/
+
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
