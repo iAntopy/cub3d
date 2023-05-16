@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 22:15:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 01:51:32 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*chrs_builder(t_cub *cub)
 	return (cub->box.chrs);
 }
 
+
+/// link' too too wide ++ doing too many thing!
 t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 {
 	int 	raw_len;

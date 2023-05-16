@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 23:50:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 01:23:02 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,24 @@
 
 t_omdl	*init_player_model(t_objs *objs)
 {
-//	mlx_texture_t	*tex;
-	
-	objs->player.model_name = "player";
-	objs->player.type_enum = OBJ_PLAYER;
-	objs->player.is_drawable = 0;
-	objs->player.nb_texs = 0;
-	objs->player.draw_offy = 0;
-//	objs->player.gset =  gset_builder("tex/gset_p/", 4);
-//	tex = objs->portal.gset->xwalls[0];
-	// printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
-//	objs->player.texs[0] = objs->portal.gset->xwalls[0];
-	objs->player.width = 32;
-	objs->player.half_w = objs->player.width >> 1;
-	objs->player.height = CELL_WIDTH;
-//	objs->player.height = objs->portal.width * (tex->height / tex->width);
-	objs->player.half_h = objs->portal.height >> 1;
-	// printf("Portal object model initialized !\n");
-	return (&objs->player);
+	//	mlx_texture_t	*tex;
+		
+		objs->player.model_name = "player";
+		objs->player.type_enum = OBJ_PLAYER;
+		objs->player.is_drawable = 0;
+		objs->player.nb_texs = 0;
+		objs->player.draw_offy = 0;
+	//	objs->player.gset =  gset_builder("tex/gset_p/", 4);
+	//	tex = objs->portal.gset->xwalls[0];
+		// printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
+	//	objs->player.texs[0] = objs->portal.gset->xwalls[0];
+		objs->player.width = 32;
+		objs->player.half_w = objs->player.width >> 1;
+		objs->player.height = CELL_WIDTH;
+	//	objs->player.height = objs->portal.width * (tex->height / tex->width);
+		objs->player.half_h = objs->portal.height >> 1;
+		// printf("Portal object model initialized !\n");
+		return (&objs->player);
 }
 
 t_omdl	*init_portal_model(t_objs *objs)
@@ -50,7 +50,7 @@ t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.gset =  gset_builder("tex/gset_p/", 4);
 	tex = objs->portal.gset->xwalls[0];
 	// printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
-//	objs->portal.texs[0] = objs->portal.gset->xwalls[0];
+	//		objs->portal.texs[0] = objs->portal.gset->xwalls[0];
 	objs->portal.width = CELL_WIDTH;
 	objs->portal.half_w = objs->portal.width >> 1;
 	objs->portal.height = objs->portal.width * (tex->height / tex->width);
@@ -108,7 +108,7 @@ t_omdl	*init_firepit_model(t_objs *objs)
 {
 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
 	const char	*tex_path1 = "tex/fireball/alpha_firepit.png";
-//	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
+	//	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
 	mlx_texture_t	*tex;
 	t_matrx			*gset;
 
@@ -125,11 +125,11 @@ t_omdl	*init_firepit_model(t_objs *objs)
 	tex = mlx_load_png(tex_path1);
 	gset->xwalls[0] = tex;
 	objs->firepit.gset = gset;
-//	objs->firepit.texs[0] = tex;
-//	if (!objs->firepit.texs[0])
-//		return (report_mlx_tex_load_failed((char *)tex_path1));
+	//	objs->firepit.texs[0] = tex;
+	//	if (!objs->firepit.texs[0])
+	//		return (report_mlx_tex_load_failed((char *)tex_path1));
 	printf("Init firepit model ; png load SUCCESSFUL !\n");
-//	printf("tex w h (%d, %d)\n", tex->width, tex->height);
+	//		printf("tex w h (%d, %d)\n", tex->width, tex->height);
 	objs->firepit.width = CELL_WIDTH;
 	objs->firepit.half_w = objs->firepit.width >> 1;
 	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
@@ -156,49 +156,3 @@ void 	p_list_objx(t_objx **objx, int id, int num)
 	}
 }	
 
-t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
-{
-	t_objx *objx;
-	char idx;
-
-	/// add new id_member
-	objx = (t_objx *)calloc(sizeof(t_objx), 1);    
-	idx = *ft_substr(cub->box.chrs, o_cells, 1);
-	
-	objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
-	objx->obj_id = id;		          
-	if (o_cells < cub->box.n_lvls)
-		objx->o_type = 2;
-	else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
-		objx->o_type = 1;
-	else if (cub->box.chrs[o_cells] == '@')
-	{
-		objx->name = '@';//cub->box.chrs[o_ce
-		objx->o_type = 0;
-		objx->relativ =  '@'; 
-		objx->alleg = ALI_TORRENT;
-		objx->rel_ref = NULL;
-		objx->opos[0] = m->pos_x;
-		objx->opos[1] = m->pos_y;
-		printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
-		printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
-		return (objx);
-	}
-	else
-		objx->o_type = 3;
-	// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
-	objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
-	objx->relativ =  m->raw[o_cells][4];
-	printf("[%d]::{%c}",  objx->alleg, objx->relativ);
-	objx->opos[0] = m->pos_x;
-	objx->opos[1] = m->pos_y;
-	// printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
-	if (m->pos_x <= 0 || m->pos_y <= 0)
-	{
-		report_err("No META char found in map.");
-		m->flg_chk = 1;
-		return (objx);
-	}
-	
-	return (objx);
-}

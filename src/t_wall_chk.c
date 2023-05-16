@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 21:54:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/16 04:07:51 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,119 @@ void	clr_legend_strct(t_box box)
 		box.xnum--;
 	}
 	free(*box.xform);
+}
+
+// typedef struct s_objx
+	// {
+	// 	char 			name;		// '#' 
+	// 	int				obj_id;		 // enrg. id	
+	// 	int 			opos[2];	// relativ pos (reltv. obj_id)
+	// 	t_oinst			*wobj;		// world object instance
+	// 	///							/// get_pos has split job...
+		
+	// 	int				o_type;		// model_type
+	// 	int 			alleg;		// allegence _txtr
+	// 	char			relativ;	// char obj_id
+	// 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
+// }	t_objx;
+
+
+t_objx	*get_ref(t_cub *cub, t_objx *objx, int id)
+{
+		
+
+			
+
+		
+	// *ptr objx[id] // objx->[chrs[id]] ....  ref by header_file
+		objx->rel_ref = NULL; 	
+		
+	// 	enum type alleg (0-3)  
+		objx->alleg = ALI_TORRENT;			// 	objx->alleg = m->raw[o_cells][2] - 48;		
+	return (objx);	
+}
+
+/// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
+t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
+{
+	t_objx *objx;
+	
+	char idx;
+	int 	head;
+
+	/// add new id_member
+	objx = (t_objx *)calloc(sizeof(t_objx), 1);    
+	///// 
+	/*	
+		get pos : name 	  (char)
+				: id 	  (obj_id)
+				: o_type  (int) : enum_type
+				: alleg	  (int)	: enum
+				: relativ (char) :obj_name
+				: opos[2] (int) coord[2]() [0:x],[1:y])
+				: *rel_ref (objx) *ptr -> relativ
+				: *wobj	   (t_oinst) instcs.
+		*/
+		/*													
+			//		:: add define char type for model (spec)
+					::	--	--	--	
+			//		:: get_pos  ++ 	>> 	name ,id , pos[2]
+					:: get_refs ++ 	>> 	o_type, alleg, relativ,
+					:: 		*/
+	
+	    
+	/*	get_pos	*/	
+
+	head = (ft_in_set(tex_name[0], (const char *)MAP_MCHR));
+	idx = *ft_substr(cub->box.chrs, o_cells, 1);
+	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
+	objx->obj_id = id;		      	//	OR _Index_ (obj_int_id) 'i' ... "maybe both!"
+	objx->opos[0] = m->pos_x;		/// main event! 
+	objx->opos[1] = m->pos_y;
+	
+	//	direct impact => (Id / char / name / *ptr)	
+	objx->relativ =   m->raw[o_cells][4];			// objx->relativ =  *objx[0]->'#' 
+		
+			/*
+			// 			get_refs	*/					//	obj_char_name  OR  obj_id 
+			// objx->relativ =  m->raw[o_cells][4];		// objx->relativ =  '@'; 
+			// objx->alleg = ALI_TORRENT;		// 	enum type alleg (0-3)  
+			// 								// 	objx->alleg = m->raw[o_cells][2] - 48;		
+			// objx->o_type = 0;				// 	o_type : object_type_model		
+			// 			//		define : chrs_prts[#,%,&,$,<,>,(,),{,}] = 10 * def_prts
+			// objx->rel_ref = NULL; 	// *ptr objx[id] // objx->[chrs[id]] ....
+		
+	/*				
+			// if (o_cells < cub->box.n_lvls)
+			// 	objx->o_type = 2;	
+			// else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
+			// 	objx->o_type = 1;	
+			// else if (cub->box.chrs[o_cells] == '@')
+			// {
+			
+		return (objx);				*/
+		
+		// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
+		// printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);	
+		// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
+
+	
+		// printf("[%d]::{%c}",  objx->alleg, objx->relativ);
+		
+		// printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
+	if (m->pos_x <= 0 || m->pos_y <= 0)
+	{
+		report_err("No META char found in map.");
+		m->flg_chk = 1;
+		return (objx);
+	}
+		//	define : chrs_prts[#,%,&,$,<,>,(,),{,}] = 10 * def_prts
+			// 	type_model:  -NULL- LEVR,PORTL - FB,FP -PLYR- ACT,DES 			
+			objx->o_type = 0;// -0-    1,2  -    3,4    - 5 -   6,7 -
+	
+	if (objx->o_type > 0 && objx->o_type < 5)
+		objx = get_ref(cub, objx, id);		
+	return (objx);
 }
 
 
@@ -43,8 +156,9 @@ t_map	*check_hero_found(t_map *m)
 
 t_cub	*wall_check(t_cub *cub, t_map *m)
 {
-	int		o_cells;
 	t_objx 	**objx;
+	const char	*chr_name;
+	int		o_cells;
 	int 	id;
 
 	
@@ -52,6 +166,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
 	
 	id = 0;
+	chr_name = cub->box.chrs;
 	o_cells = -1;
 	m->pos_y = 0;
 	while (m->pos_y < m->height)
@@ -66,7 +181,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
 			{
 				m = check_hero_found(m);
-				objx[id] = get_pos(cub, m, o_cells, id);
+				objx[id] = get_pos(cub, m, chr_name[o_cells], id);
 				// p_list_objx(cub->box.objx , id, 0); 
 				id++;
 				

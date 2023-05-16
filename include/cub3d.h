@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 22:54:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 03:35:30 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,12 @@
 # define MAP_LCHR "abcdefghijz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "#%$&!+=;*()><?@"
+# define MAP_MCHR "#%&$<>(){}!+|-*=:@?;"
+
+# define MOD_PORT "#%&$<>(){}"
+# define MOD_LEV "!+|-"
+# define MOD_FIRE "*=:"
+# define MOD_SPEC "@?;"
 
 # define CUBMAP_BUFMAX 100000
 
@@ -128,24 +133,16 @@ typedef struct s_objx
 {
 	char 			name;		// '#' 
 	int				obj_id;		 // enrg. id	
+	int 			opos[2];	// relativ pos (reltv. obj_id)
+	t_oinst			*wobj;		// world object instance
+	///							/// get_pos has split job...
+	
 	int				o_type;		// model_type
 	int 			alleg;		// allegence _txtr
-	int 			opos[2];	// relativ pos (reltv. obj_id)
 	char			relativ;	// char obj_id
 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
-	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
-// typedef struct s_box
-// {	
-// 	char 			*chrs;
-// 	int				chrs_len;
-// 	int 			xnum;	
-// 	int				pnum;
-// 	int				pset;
-// 	mlx_texture_t	**xform;
-// 	mlx_texture_t	*sky;	
-// }	t_box;
 
 typedef struct s_box 
 {	
@@ -683,6 +680,7 @@ void		 	p_list_objx(t_objx **objx, int id, int num);
 t_objx			*objx_init(t_objx *objx);
 t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
 t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
+t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 
 
 t_cub			*mx_struct(t_map *m, t_cub *cub);
