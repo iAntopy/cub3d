@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 23:50:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 08:13:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 t_omdl	*init_player_model(t_objs *objs)
 {
 //	mlx_texture_t	*tex;
-	
+	if (objs->player.type_enum)
+		return (NULL);
 	objs->player.model_name = "player";
 	objs->player.type_enum = OBJ_PLAYER;
 	objs->player.is_drawable = 0;
@@ -27,7 +28,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.draw_offy = 0;
 //	objs->player.gset =  gset_builder("tex/gset_p/", 4);
 //	tex = objs->portal.gset->xwalls[0];
-	// printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
+// 	printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
 //	objs->player.texs[0] = objs->portal.gset->xwalls[0];
 	objs->player.width = 32;
 	objs->player.half_w = objs->player.width >> 1;
@@ -42,8 +43,11 @@ t_omdl	*init_portal_model(t_objs *objs)
 {
 	mlx_texture_t	*tex;
 	
+	if (objs->portal.type_enum)
+		return (NULL);
 	objs->portal.model_name = "portal";
 	objs->portal.type_enum = OBJ_PORTAL;
+	printf("INIT OBJ_PORTAL type struct with portal.type_enum = %d\n", objs->portal.type_enum);
 	objs->portal.is_drawable = 1;
 	objs->portal.nb_texs = 4;
 	objs->portal.draw_offy = 0;
@@ -65,8 +69,11 @@ t_omdl	*init_lever_model(t_objs *objs)
 {
 	mlx_texture_t	*tex;
 	
+	if (objs->lever.type_enum)
+		return (NULL);
 	objs->lever.model_name = "lever";
 	objs->lever.type_enum = OBJ_LEVER;
+	printf("INIT OBJ_LEVER type struct with lever.type_enum = %d\n", objs->lever.type_enum);
 	objs->lever.is_drawable = 0;
 	objs->lever.nb_texs = 2;
 //	objs->portal.draw_offy = 20;
@@ -79,6 +86,7 @@ t_omdl	*init_lever_model(t_objs *objs)
 	objs->lever.height = objs->lever.width * (tex->height / tex->width);
 	objs->lever.half_h = objs->lever.height >> 1;
 	// printf("Lever object model initialized !\n");
+	printf("INIT OBJ_LEVER  at exit type struct with lever.type_enum = %d\n", objs->lever.type_enum);
 	return (&objs->lever);
 }
 
@@ -86,13 +94,15 @@ t_omdl	*init_fireball_model(t_objs *objs)
 {
 	mlx_texture_t	*tex;
 
+	if (objs->fireball.type_enum)
+		return (NULL);
 	objs->fball.model_name = "fireball";
 	objs->fball.type_enum = OBJ_FIREBALL;
 	objs->fball.is_drawable = 1;
 	objs->fball.nb_texs = 6;
 	objs->fball.draw_offy = 0;
 	objs->fball.gset = gset_builder("tex/gset_fb/", 6);
-	tex = objs->lever.gset->xwalls[0];
+	tex = objs->fball.gset->xwalls[0];
 	// printf("A Fireball ptr : %p  \n", objs->fball.gset->xwalls[0]);
 //	objs->fball.texs[0] = objs->fball.gset->xwalls[0];
 	objs->fball.width = CELL_WIDTH;
@@ -112,6 +122,8 @@ t_omdl	*init_firepit_model(t_objs *objs)
 	mlx_texture_t	*tex;
 	t_matrx			*gset;
 
+	if (objs->firepit.type_enum)
+		return (NULL);
 	objs->firepit.model_name = "firepit";
 	objs->firepit.type_enum = OBJ_FIREPIT;
 	objs->firepit.nb_texs = 1;

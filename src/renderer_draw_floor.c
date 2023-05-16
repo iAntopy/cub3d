@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 00:24:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 06:23:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ void	__render_sky(t_cub *cub, t_rdata *rd)
 				+ cub->renderer.sky_ori_offset) % cub->tex.skymap->width;
 	pxls = (uint32_t *)cub->renderer.sky_layer->pixels;
 	tofs[1] = cub->renderer.sky_yoffsets - 1;
-	printf("skymap ptr : %p\n", cub->tex.skymap);
-	printf("sky w, h : (%d, %d), fov to tex : %f, sky ori off : %d\n", cub->tex.skymap->width, cub->tex.skymap->height, 
-		cub->renderer.sky_fov_to_tex, cub->renderer.sky_ori_offset);
+//	printf("skymap ptr : %p\n", cub->tex.skymap);
+//	printf("sky w, h : (%d, %d), fov to tex : %f, sky ori off : %d\n", cub->tex.skymap->width, cub->tex.skymap->height, 
+//		cub->renderer.sky_fov_to_tex, cub->renderer.sky_ori_offset);
 	y = -1;
 	while (++y < cub->scn_midy)
 	{
@@ -162,7 +162,7 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 	mlx_texture_t	**tex_arr;
 
 //	__render_floor_init(cub, buffs, &params);
-	printf("renderering floor and ceiling \n");
+//	printf("renderering floor and ceiling \n");
 	__render_ceiling_init(cub, buffs, &params);
 	incr[1] = 0;
 	while (++incr[1] < cub->scn_midy)
