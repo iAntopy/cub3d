@@ -140,6 +140,7 @@ typedef struct s_objx
 	int 			alleg;		// allegence _txtr
 	char			relativ;	// char obj_id
 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
+	struct s_objx	*self_ref;	 // self ptr to cmp with relative's objx ptr;
 	t_oinst			*wobj;		// world object instance
 }	t_objx;
 

@@ -41,41 +41,42 @@ void	clr_legend_strct(t_box box)
 t_objx	*get_ref(t_cub *cub, t_objx *objx, int id)
 {
 	char ext_ref;
-
-
-
-	// ext_ref = cub->box.meta;
-	// *ptr objx[id] // objx->[chrs[id]] ....  ref by header_file
+	// int ext_id;
 
 	ext_ref = cub->box.chrs[id];
-	// objx->rel_ref = cub->box.objx[ext_ref];
+
+	printf("_(ext_ref[%c] ::chrs{%s}::\n\n", ext_ref, cub->box.chrs);
+	// ext_ref = cub->box.objx[id]->relativ;
+	// ext_id = ft_in_set(ext_ref, (const char *)cub->box.chrs); 
+	// *ptr objx[id] // objx->[chrs[id]] ....  ref by header_file
+	// objx->rel_ref = cub->box.objx[ext_id];
 	
-	objx->relativ =   ext_ref;//cub->box.chrs[id];
+	// objx->relativ =   ext_ref;//cub->box.chrs[id];
 	//m->raw[o_cells][4];			// objx->relativ =  *objx[0]->'#' 	
 	// 	enum type alleg (0-3)  
-		objx->alleg = ALI_TORRENT;			// 	objx->alleg = m->raw[o_cells][2] - 48;		
+		// objx->alleg = ALI_TORRENT;			// 	objx->alleg = m->raw[o_cells][2] - 48;		
 	return (objx);	
 }
 
 // /// add new id_member
-// 	objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
-// 	idx = *ft_substr(cub->box.chrs, o_cells, 1);
-	
-// 	objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
-// 	objx->obj_id = id;		          
-// 	if (o_cells < cub->box.n_lvls)
-// 		objx->o_type = 2;
-// 	else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
-// 		objx->o_type = 1;
-// 	else
-// 		objx->o_type = 3;
-// 	// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
-// 	objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
-// 	objx->relativ =  m->raw[o_cells][4];
-// 	// printf("[%d]::{%c}",  objx->alleg, objx->relativ);
-// 	objx->opos[0] = m->pos_x;
-// 	objx->opos[1] = m->pos_y;
-// 	// printf("_(x[%d], y[%d])::\n\n", 
+		// 	objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
+		// 	idx = *ft_substr(cub->box.chrs, o_cells, 1);
+			
+		// 	objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
+		// 	objx->obj_id = id;		          
+		// 	if (o_cells < cub->box.n_lvls)
+		// 		objx->o_type = 2;
+		// 	else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
+		// 		objx->o_type = 1;
+		// 	else
+		// 		objx->o_type = 3;
+		// 	// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
+		// 	objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
+		// 	objx->relativ =  m->raw[o_cells][4];
+		// 	// printf("[%d]::{%c}",  objx->alleg, objx->relativ);
+		// 	objx->opos[0] = m->pos_x;
+		// 	objx->opos[1] = m->pos_y;
+		// 	// printf("_(x[%d], y[%d])::\n\n", 
 
 /// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
 t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
@@ -109,10 +110,9 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	objx->obj_id = id;		       	//	OR _Index_ (obj_int_id) 'i' ... "maybe both!"
 	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
 
-	// 		define : MOD_PORT[#,%,&,$,<,>,(,),{,}] = 10 * def_prts
-	// 		MOD_PORT : 10 // MOD_LEV : 4 // MOD_FIRE : 3  //  MOD_SPEC : 3  // playr = [16]
-		// set model_type _value 
-		// head = (ft_in_set(o_cells, (const char *)cub->box.chrs)); 
+		// 		MOD_PORT : 10 // MOD_LEV : 4 // MOD_FIRE : 3  //  MOD_SPEC : 3  // playr = [16]
+		// 		define : MOD_PORT[#,%,&,$,<,>,(,),{,}] = 10 * def_prts
+		
 	// 	type_model:  	//-NULL- PORTL/LVR - FBll/FPit -PLYR- ACT,DES 			
 						// -0-     1 / 2   -  3 / 4    - 5 -   6,7 -
 	head = (ft_in_set(cub->box.chrs[o_cells], (const char *)MAP_MCHR)); 
@@ -127,11 +127,24 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	else if (head < 13)
 		objx->o_type = 2;
 	
-	if (objx->o_type > 0 && objx->o_type < 7)
-		objx = get_ref(cub, objx, id);		
 	objx->opos[0] = m->pos_x;		/// main event! 
 	objx->opos[1] = m->pos_y;
+
 	objx->relativ =  m->raw[o_cells][4];	
+
+	if (objx->o_type > 0 && objx->o_type < 7)
+		objx = get_ref(cub, objx, id);		
+	printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
+	printf("[%d]::{%c}",  objx->alleg, objx->relativ);
+	printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);	
+
+
+	if (m->pos_x <= 0 || m->pos_y <= 0)
+	{
+		report_err("No META char found in map.");
+		m->flg_chk = 1;
+		return (objx);
+	}
 	//	direct impact => (Id / char / name / *ptr)	
 	
 		
@@ -157,17 +170,12 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 			
 			// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
 			// printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);	
-			// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
 			// printf("[%d]::{%c}",  objx->alleg, objx->relativ);
 			// printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
-		*/
-	if (m->pos_x <= 0 || m->pos_y <= 0)
-	{
-		report_err("No META char found in map.");
-		m->flg_chk = 1;
-		return (objx);
-	}
-		
+
+			// set model_type _value 
+			// head = (ft_in_set(o_cells, (const char *)cub->box.chrs)); 
+	*/		
 	return (objx);
 }
 
