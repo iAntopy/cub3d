@@ -660,6 +660,8 @@ t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
 void			minimap_set_pos(t_cub *cub);
 void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);
+void			mlx_draw_mmap(t_cub *cub);
+void			mlx_draw_player(t_cub * cub, t_map *map);
 
 
 #endif
