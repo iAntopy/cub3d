@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 07:43:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:54:59 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_map	*check_hero_found(t_map *m)
 	m->flg_chk = 2;
 	m->hero_x = m->pos_x;
 	m->hero_y = m->pos_y;
-	m->m[m->pos_y][m->pos_x] = '0';
+	// m->m[m->pos_y][m->pos_x] = '0';
 	// printf("player x[%d]", m->pos_x);
 	// printf("player y[%d]\n\n", m->pos_y);
 	return (m);
@@ -64,7 +64,13 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0')
 				m->m[m->pos_y][m->pos_x] = 'A';
 			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
+			{
 				m = check_hero_found(m);
+				objx[id] = get_pos(cub, m, o_cells, id);
+				// p_list_objx(cub->box.objx , id, 0); 
+				id++;
+				
+			}
 			else if (o_cells < cub->box.meta && o_cells != -1)
 			{
 				

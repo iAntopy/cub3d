@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 00:40:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:41:43 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,11 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
+			// printf("MapX FACTOR >>  (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))
 				{
-					// printf("MapX FACTOR >>  p_box:%d: grim:%d:\n", p_box, grim);
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 					// printf("MapX >> (%d, %d)>> p_box[%d]: txtr_ptr:%p\n", m->pos_y, m->pos_x, p_box - grim, cub->pset[p_box - grim ].xwalls[0]);
 				}
@@ -150,9 +150,16 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	
 					
 				}
+				if (p_box == max)
+				{
+					printf("HERO__MapX >> (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
+					printf("FOUND IT ");
+					// p_list_objx(cub->box.objx , p_box, 0); 
+					
+				}
 				if (p_box < cub->box.meta )
 				{
-					// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+					printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 					printf("FOUND IT ");
 					p_list_objx(cub->box.objx , p_box, 0); 
 				}
@@ -166,31 +173,3 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	return (cub);
 }
 
-
-
-///	frame for model to instance later
-	// t_objx 	*model_builder(t_objx *objx, char *mdl_name, int nb_txtr, char *rawz)
-	// {
-	// 	// t_omdl 	*mdl;
-	// 	char	*chr_name;
-
-	// 	chr_name = ft_substr(rawz, 0, 1);	
-	// 	// mdl = malloc(sizeof(t_omdl *) * 1);
-	// 	// cub->box.objx->mdl = mdl;
-	// 	printf(">> model_  mdl_name [%s] >>> chr{%c}\n", mdl_name, rawz[0]);
-	// 	// cub->box.objx->model_name = rawz[0];
-	// 	// cub->box.objx->
-	// 	objx->model_name = chr_name;
-	// 	if (nb_txtr == 4)
-	// 		objx->type_enum = OBJ_PORTAL;
-	// 	else if (nb_txtr == 2)
-	// 		objx->type_enum = OBJ_ACTIVATE;
-	// 	objx->nb_texs = nb_txtr;
-		
-	// 	// cub->box.objx->omdl->width = CELL_WIDTH; ; 
-	// 	// cub->box.objx->omdl->half_w = cub->objs->portal.width >> 1;;
-	// 	// cub->box.objx->omdl->height  = CELL_WIDTH;
-	// 	// cub->box.objx->omdl->half_h = cub->objs->portal.height >> 1 ;
-	// 	// cub->box.objx->mdl = mdl;
-	// 	return (objx);
-// }

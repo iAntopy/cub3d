@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 20:48:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:53:43 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 /// now morph to objx data manager ...
 /// set array data ++ frame access
@@ -171,12 +171,25 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 		objx->o_type = 2;
 	else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
 		objx->o_type = 1;
+	else if (cub->box.chrs[o_cells] == '@')
+	{
+		objx->name = '@';//cub->box.chrs[o_ce
+		objx->o_type = 0;
+		objx->relativ =  '@'; 
+		objx->alleg = ALI_TORRENT;
+		objx->rel_ref = NULL;
+		objx->opos[0] = m->pos_x;
+		objx->opos[1] = m->pos_y;
+		printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
+		printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
+		return (objx);
+	}
 	else
 		objx->o_type = 3;
 	// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
 	objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
 	objx->relativ =  m->raw[o_cells][4];
-	// printf("[%d]::{%c}",  objx->alleg, objx->relativ);
+	printf("[%d]::{%c}",  objx->alleg, objx->relativ);
 	objx->opos[0] = m->pos_x;
 	objx->opos[1] = m->pos_y;
 	// printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);
