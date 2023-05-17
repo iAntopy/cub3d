@@ -6,58 +6,26 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 21:14:34 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:17:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-/*
-typedef struct s_draw_threads
-{
-	pthread_mutex_t	start_locks[NB_DRAW_THREADS];
-	pthread_mutex_t	idle_locks[NB_DRAW_THREADS];
-	int			thread_ids[NB_DRAW_THREADS];
-	int			start_locks_isinit[NB_DRAW_THREADS];
-	int			idle_locks_isinit[NB_DRAW_THREADS];
-	int			isidle[NB_DRAW_THREADS];
-	int			stop_request[NB_DRAW_THREADS];
-	t_thprof		thread_profils[NB_DRAW_THREADS];
-}	t_thdraw;
-
-typedef int (t_draw_func *)(t_cub *cub);
-
-typedef struct s_draw_thread_profil
-{
-	t_cub		*cub;
-	pthread_mutex_t	start_lock;
-	pthread_mutex_t	end_lock;
-	t_draw_func	draw_func;
-	int			start_lock_isinit;
-	int			end_lock_isinit;
-	int			id;
-	int			isidle;
-	int			stop_request;
-}	t_thdraw;
-*/
 
 void	*__draw_thread_routine(t_thdraw *th)
 {
 	if (!th)
 		return ((void *)1);
-	printf("Draw routine started : thread id : %zd\n", (size_t)th->id);
 	th->isidle = 1;
-	while (!pthread_mutex_lock(&th->end_lock) && !pthread_mutex_unlock(&th->end_lock))
+	while (!pthread_mutex_lock(&th->end_lock)
+		&& !pthread_mutex_unlock(&th->end_lock))
 	{
-//		printf("thread : waiting for start_lock\n");
 		pthread_mutex_lock(&th->start_lock);
-//		printf("thread : start_lock acquired\n");
 		th->isidle = 0;
 		if (th->stop_request)
 			break ;
-		th->draw_func(th->cub);//, th->cub->hero.rcast.rdata);
-//		printf("thread unlocking start_lock\n");
+		th->draw_func(th->cub);
 		pthread_mutex_unlock(&th->start_lock);
-//		printf("thread unlocking start_lock DONE\n");
 		th->isidle = 1;
 	}
 	pthread_mutex_unlock(&th->start_lock);
@@ -68,7 +36,6 @@ void	stop_draw_threads(t_thdraw *threads)
 {
 	int	i;
 
-	printf("Stopping draw threads \n");
 	i = -1;
 	while (++i < NB_DRAW_THREADS && threads[i].start_lock_isinit
 		&& threads[i].end_lock_isinit)
@@ -87,17 +54,6 @@ void	stop_draw_threads(t_thdraw *threads)
 		if (threads[i].end_lock_isinit)
 			pthread_mutex_destroy(&threads[i].end_lock);
 	}
-	printf("Draw threads STOPPED\n");
-}
-
-int	report_threads_err(t_thdraw *threads, char *err, int print_strerr)
-{
-	stop_draw_threads(threads);
-	if (print_strerr)
-		fperror("Error\n\t - %s", err);
-	else
-		report_err(err);
-	return (-1);
 }
 
 // from - to, are ints of the range of threads to order draw with.
@@ -106,7 +62,7 @@ int	order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to)
 {
 	int			i;
 	int			nb_spins;
-	const int	max_spins = 10;
+//	const int	max_spins = 10;
 
 	(void)cub;
 	i = from - 1;
@@ -115,24 +71,18 @@ int	order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to)
 		pthread_mutex_lock(&threads[i].end_lock);
 		pthread_mutex_unlock(&threads[i].start_lock);
 	}
-//	printf("WOWOW :: start_lock unlocked ! Drawing begins !\n");
-//	render_sky(cub, NULL);
 	i = from - 1;
 	nb_spins = 0;
-//	printf("Start spinnin'. thread 0 is idle %d\n", threads[i].isidle);
-	while (++i < to && nb_spins < max_spins)
+	while (++i < to && nb_spins < 10)//max_spins)
 	{
 		if (threads[i].isidle)
-		{
-			i = -1;
-			nb_spins++;
-		}
-		usleep(10);
+			i = (nb_spins++) - nb_spins;
+//		{
+//			i = -1;
+//			nb_spins++;
+//		}
+		usleep(1);
 	}
-//	if (nb_spins == max_spins)
-//		printf("BREAKING NEWS : SPIN OUT EVENT\n");
-//	printf("Stop spinnin'\n");
-//	printf("WOWOW :: try lock start_lock\n");
 	i = from - 1;
 	while (++i < to)
 	{
@@ -157,14 +107,14 @@ static int	start_draw_threads(t_thdraw *threads)
 	return (0);
 }
 
+// Associate each thread to their draw_func. Add more as needed and 
+// raise NB_DRAW_THREADS to the amount necessary.
 int	init_draw_threads(t_cub *cub, t_thdraw *threads)
 {
 	int	i;
 
-	printf("init draw threads : threads ptr : %p \n", threads);
-	printf("threads ptr : %p\n", threads);
 	if (!cub || !threads || threads[0].id != 0)
-		return (report_err("missing threads struct info or already initialized."));
+		return (report_err("missing threads struct or already initialized."));
 	i = -1;
 	while (++i < NB_DRAW_THREADS)
 	{
@@ -176,15 +126,12 @@ int	init_draw_threads(t_cub *cub, t_thdraw *threads)
 		threads[i].end_lock_isinit = 1;
 		threads[i].cub = cub;
 	}
-	/// Associate each thread to their draw_func. Add more as needed and 
-	/// raise NB_DRAW_THREADS to the amount necessary.
 	threads[0].draw_func = render_walls;
 	threads[1].draw_func = render_floor_sky;
 	threads[2].draw_func = render_objects;
 	threads[3].draw_func = __render_proj_objects;
 	threads[4].draw_func = __render_proj_floor;
 	threads[5].draw_func = __render_proj_walls;
-	/// ...
 	start_draw_threads(threads);
 	return (0);
 }

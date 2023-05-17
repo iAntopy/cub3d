@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 22:54:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:09:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -651,6 +651,7 @@ int				report_err_strerror(char *msg);
 int				report_mlx_init_error(void);
 void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
+int				report_threads_err(t_thdraw *threads, char *err, int print_err);
 
 /// MODEL ////////////////////
 t_omdl			*init_player_model(t_objs *objs);
