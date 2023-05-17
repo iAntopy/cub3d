@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_model_creation.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 22:58:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 15:12:39 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ static int	create_portal_instance(t_cub *cub, int *pos, int allegiance,\
 	}
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
-	printf("Single Portal instance created at pos (%d, %d)\n", pos[0], pos[1]);
+	printf("Single Portal instance [%d]created at pos (%d, %d)\n", allegiance, pos[0], pos[1]);
 	return (new_obj->_id);	
 }
 

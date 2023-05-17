@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/11 19:00:08 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 13:32:23 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_map	*check_hero_found(t_map *m)
 	m->flg_chk = 2;
 	m->hero_x = m->pos_x;
 	m->hero_y = m->pos_y;
-	m->m[m->pos_y][m->pos_x] = '0';
+	// m->m[m->pos_y][m->pos_x] = '0';
 	// printf("player x[%d]", m->pos_x);
 	// printf("player y[%d]\n\n", m->pos_y);
 	return (m);

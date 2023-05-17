@@ -141,24 +141,24 @@ int	main(int argc, char **argv)
 //	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
 //	pos[1] = CELL_WIDTH * 2;
 	
-	pos[0] = 20 * CELL_WIDTH;
-	pos[1] = 7 * CELL_WIDTH;
-	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, NULL);
+	pos[0] = 10 * CELL_WIDTH +32;
+	pos[1] = 7 * CELL_WIDTH +32;
+	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_TORRENT, NULL);
 	
-	pos[0] = 20 * CELL_WIDTH;
+	pos[0] = 5 * CELL_WIDTH;
 	pos[1] = 2 * CELL_WIDTH;
 
-	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, get_obj(&cub, portal1_id));
+	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_TORRENT, get_obj(&cub, portal1_id));
 
-	pos[0] = 5 * CELL_WIDTH + 1;
-	pos[1] = 7 * CELL_WIDTH + 1;
+	pos[0] = 5 * CELL_WIDTH ;
+	pos[1] = 7 * CELL_WIDTH ;
 
 	create_obj_instance(&cub, pos, OBJ_LEVER, ALI_NEUTRAL, get_obj(&cub, portal1_id));
 
-	pos[0] = 10 * CELL_WIDTH + 32;
-	pos[1] = 7 * CELL_WIDTH + 32;
+	// pos[0] = 10 * CELL_WIDTH + 32;
+	// pos[1] = 7 * CELL_WIDTH + 32;
 
-	create_obj_instance(&cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, NULL);
+	// create_obj_instance(&cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, NULL);
 //	if (activate_portal(cub.objs.instances, OBJ_ACTIVATE) < 0)
 //		printf("Portal activation FAILURE\n");
 //	else

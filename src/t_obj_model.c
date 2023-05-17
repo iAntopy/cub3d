@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 /// now morph to objx data manager ...
 /// set array data ++ frame access
@@ -81,33 +81,33 @@ t_omdl	*init_fireball_model(t_objs *objs)
 
 // static t_omdl	*init_firepit_model(t_objs *objs)
 // {
-// 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
-// 	const char	*tex_path1 = "tex/fireball/alpha_firepit.png";
-// //	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
-// 	mlx_texture_t	*tex;
+	// 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
+	// 	const char	*tex_path1 = "tex/fireball/alpha_firepit.png";
+	// //	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
+	// 	mlx_texture_t	*tex;
 
-// 	objs->firepit.model_name = "Fireball";
-// 	objs->firepit.type_enum = OBJ_FIREPIT;
-// 	objs->firepit.nb_texs = 1;
-// 	objs->firepit.draw_offy = 20;
-// 	printf("Init Fireball model ; Try load  png\n");
-// 	tex = mlx_load_png(tex_path1);
-// 	objs->firepit.texs[0] = tex;
-// 	if (!objs->firepit.texs[0])
-// 		return (report_mlx_tex_load_failed((char *)tex_path1));
-// 	printf("Init firepit model ; png load SUCCESSFUL !\n");
-// //	printf("tex w h (%d, %d)\n", tex->width, tex->height);
-// 	objs->firepit.width = CELL_WIDTH;
-// 	objs->firepit.half_w = objs->firepit.width >> 1;
-// 	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
-// 	objs->firepit.half_h = objs->firepit.height >> 1;
-// //	printf("firepit w h : (%d, %d), half w h (%d, %d)\n", 
-// //		objs->firepit.width, objs->firepit.height, objs->firepit.half_w, objs->firepit.half_h);
-// //	objs->firepit.speed = 1.0f;
-// //	objs->firepit.dmg = 5;
-// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
-// 	printf("firepit object model initialized !\n");
-// 	return (&objs->firepit);
+	// 	objs->firepit.model_name = "Fireball";
+	// 	objs->firepit.type_enum = OBJ_FIREPIT;
+	// 	objs->firepit.nb_texs = 1;
+	// 	objs->firepit.draw_offy = 20;
+	// 	printf("Init Fireball model ; Try load  png\n");
+	// 	tex = mlx_load_png(tex_path1);
+	// 	objs->firepit.texs[0] = tex;
+	// 	if (!objs->firepit.texs[0])
+	// 		return (report_mlx_tex_load_failed((char *)tex_path1));
+	// 	printf("Init firepit model ; png load SUCCESSFUL !\n");
+	// //	printf("tex w h (%d, %d)\n", tex->width, tex->height);
+	// 	objs->firepit.width = CELL_WIDTH;
+	// 	objs->firepit.half_w = objs->firepit.width >> 1;
+	// 	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
+	// 	objs->firepit.half_h = objs->firepit.height >> 1;
+	// //	printf("firepit w h : (%d, %d), half w h (%d, %d)\n", 
+	// //		objs->firepit.width, objs->firepit.height, objs->firepit.half_w, objs->firepit.half_h);
+	// //	objs->firepit.speed = 1.0f;
+	// //	objs->firepit.dmg = 5;
+	// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
+	// 	printf("firepit object model initialized !\n");
+	// 	return (&objs->firepit);
 // }
 
 void 	p_list_objx(t_objx **objx, int id, int num)
