@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 22:25:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 09:01:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	{
 		printf(">>>>	MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		if (box->n_prts == 0)
-			objs->lever =  *init_portal_model(objs);
+			objs->portal =  *init_portal_model(objs);
 		box->n_prts++;
 	}
 	// printf(">>>> TEST >>> [%c]\n", t_name[0]);   			
