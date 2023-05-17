@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 15:17:35 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:40:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,11 @@ void	stop_draw_threads(t_thdraw *threads)
 
 // from - to, are ints of the range of threads to order draw with.
 // Used to split world draw threads call and portal projection draw threads.
-int	order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to)
+int	order_draw_call(t_thdraw *threads, int from, int to)
 {
 	int			i;
 	int			nb_spins;
-//	const int	max_spins = 10;
 
-	(void)cub;
 	i = from - 1;
 	while (++i < to)
 	{
@@ -72,15 +70,11 @@ int	order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to)
 		pthread_mutex_unlock(&threads[i].start_lock);
 	}
 	i = from - 1;
-	nb_spins = 0;
-	while (++i < to && nb_spins < 10)//max_spins)
+	nb_spins = 10;
+	while (++i < to && nb_spins)
 	{
-		if (threads[i].isidle)
-			i = (nb_spins++) - nb_spins;
-//		{
-//			i = -1;
-//			nb_spins++;
-//		}
+		if (threads[i].isidle && nb_spins--)
+			i = -1;
 		usleep(1);
 	}
 	i = from - 1;
@@ -130,8 +124,8 @@ int	init_draw_threads(t_cub *cub, t_thdraw *threads)
 	threads[1].draw_func = render_floor_sky;
 	threads[2].draw_func = render_objects;
 	threads[3].draw_func = __render_proj_objects;
-	threads[4].draw_func = __render_proj_floor;
-	threads[5].draw_func = __render_proj_walls;
+	threads[4].draw_func = __render_proj_walls;
+	threads[5].draw_func = __render_proj_floor;
 	start_draw_threads(threads);
 	return (0);
 }

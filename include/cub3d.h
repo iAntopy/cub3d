@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 15:18:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:31:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@
 
 # define FOV60 1.047197551196597746f
 # define FOV60_HF 0.52359877559829887f
+
+# define FOV45 0.785398163397448f
+# define FOV45_HF 0.39269908169872414f
 
 # define FOV20 0.349065850398865915f
 # define FOV20_HF 0.17453292519943295f
@@ -272,8 +275,8 @@ typedef struct s_portal_projection_data
 	float	*fwd_len;// sin(theta offset for this ray). used in portal projection to find ray collision on obj
 
 //	Init data;
-	int		px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
-	int		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
+	float	px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
+	float	py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
 	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
 	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
 
@@ -610,7 +613,7 @@ int				clear_skycaster(t_cub *cub);
 
 /// DRAW THREADS API
 int				init_draw_threads(t_cub *cub, t_thdraw *threads);
-int				order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to);
+int				order_draw_call(t_thdraw *threads, int from, int to);
 void			stop_draw_threads(t_thdraw *threads);
 
 /// OBJECT MANAGEMENT SYSTEM ////////

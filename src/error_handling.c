@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:29:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 15:12:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:05:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,15 @@ void	*report_mlx_tex_load_failed(char *tex)
 int	report_malloc_error(void)
 {
 	ft_eprintf("Error\n\t- malloc failed.\n");
+	return (-1);
+}
+
+int	report_threads_err(t_thdraw *threads, char *err, int print_strerr)
+{
+	stop_draw_threads(threads);
+	if (print_strerr)
+		fperror("Error\n\t - %s", err);
+	else
+		report_err(err);
 	return (-1);
 }
