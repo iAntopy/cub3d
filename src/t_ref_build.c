@@ -106,7 +106,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	{
 		printf(">>>>	MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		if (box->n_prts == 0)
-			objs->lever =  *init_portal_model(objs);
+			objs->portal =  *init_portal_model(objs);
 		box->n_prts++;
 	}
 	// printf(">>>> TEST >>> [%c]\n", t_name[0]);   			
