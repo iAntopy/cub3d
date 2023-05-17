@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 15:12:39 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:36:02 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 static int	get_new_obj_id(void)
 {
@@ -60,97 +60,97 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 
 // static t_omdl	*init_portal_model(t_objs *objs)
 // {
-// 	const char	*tex_path1 = "tex/ext/Portal1.png";
-// 	const char	*tex_path2 = "tex/ext/Portal_void_whitealpha.png";
-// 	mlx_texture_t	*tex;
+	// 	const char	*tex_path1 = "tex/ext/Portal1.png";
+	// 	const char	*tex_path2 = "tex/ext/Portal_void_whitealpha.png";
+	// 	mlx_texture_t	*tex;
 
-// 	objs->portal.model_name = "Portal";
-// 	objs->portal.type_enum = OBJ_PORTAL;
-// 	objs->portal.nb_texs = 2;
-// 	objs->portal.draw_offy = 0;
-// 	printf("Init Portal model ; Try load  png\n");
-// 	tex = mlx_load_png(tex_path1);
-// 	objs->portal.texs[0] = tex;
-// 	if (!objs->portal.texs[0])
-// 		return (report_mlx_tex_load_failed((char *)tex_path1));
-// //	objs->portal.texs[1] = tex;//mlx_load_png(tex_path2);
-// 	objs->portal.texs[1] = mlx_load_png(tex_path2);
-// 	if (!objs->portal.texs[1])
-// 		return (report_mlx_tex_load_failed((char *)tex_path2));
-// 	printf("Init Portal model ; png load SUCCESSFUL !\n");
-// 	objs->portal.width = CELL_WIDTH;
-// 	objs->portal.half_w = objs->portal.width >> 1;
-// 	objs->portal.height = objs->portal.width * (tex->height / (float)tex->width);
-// 	objs->portal.half_h = objs->portal.height >> 1;
-// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
-// 	printf("Portal object model initialized !\n");
-// 	return (&objs->portal);
+	// 	objs->portal.model_name = "Portal";
+	// 	objs->portal.type_enum = OBJ_PORTAL;
+	// 	objs->portal.nb_texs = 2;
+	// 	objs->portal.draw_offy = 0;
+	// 	printf("Init Portal model ; Try load  png\n");
+	// 	tex = mlx_load_png(tex_path1);
+	// 	objs->portal.texs[0] = tex;
+	// 	if (!objs->portal.texs[0])
+	// 		return (report_mlx_tex_load_failed((char *)tex_path1));
+	// //	objs->portal.texs[1] = tex;//mlx_load_png(tex_path2);
+	// 	objs->portal.texs[1] = mlx_load_png(tex_path2);
+	// 	if (!objs->portal.texs[1])
+	// 		return (report_mlx_tex_load_failed((char *)tex_path2));
+	// 	printf("Init Portal model ; png load SUCCESSFUL !\n");
+	// 	objs->portal.width = CELL_WIDTH;
+	// 	objs->portal.half_w = objs->portal.width >> 1;
+	// 	objs->portal.height = objs->portal.width * (tex->height / (float)tex->width);
+	// 	objs->portal.half_h = objs->portal.height >> 1;
+	// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
+	// 	printf("Portal object model initialized !\n");
+	// 	return (&objs->portal);
 // }
 
 // static t_omdl	*init_fireball_model(t_objs *objs)
 // {
-// 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
-// 	const char	*tex_path1 = "tex/fireball/alpha_fireball.png";
-// 	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
-// 	mlx_texture_t	*tex;
+	// 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
+	// 	const char	*tex_path1 = "tex/fireball/alpha_fireball.png";
+	// 	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
+	// 	mlx_texture_t	*tex;
 
-// 	objs->fireball.model_name = "Fireball";
-// 	objs->fireball.type_enum = OBJ_FIREBALL;
-// 	objs->fireball.nb_texs = 2;
-// 	objs->fireball.draw_offy = 0;
-// 	printf("Init Fireball model ; Try load  png\n");
-// 	tex = mlx_load_png(tex_path1);
-// 	objs->fireball.texs[0] = tex;
-// 	if (!objs->fireball.texs[0])
-// 		return (report_mlx_tex_load_failed((char *)tex_path1));
-// 	objs->fireball.texs[1] = mlx_load_png(tex_path2);
-// 	if (!objs->fireball.texs[1])
-// 		return (report_mlx_tex_load_failed((char *)tex_path2));
-// 	printf("Init fireball model ; png load SUCCESSFUL !\n");
-// 	printf("tex w h (%d, %d)\n", tex->width, tex->height);
-// 	objs->fireball.width = 48;
-// 	objs->fireball.half_w = objs->fireball.width >> 1;
-// 	objs->fireball.height = objs->fireball.width * (tex->height / (float)tex->width);
-// 	objs->fireball.half_h = objs->fireball.height >> 1;
-// 	printf("fireball w h : (%d, %d), half w h (%d, %d)\n", 
-// 		objs->fireball.width, objs->fireball.height, objs->fireball.half_w, objs->fireball.half_h);
-// 	objs->fireball.speed = 1.0f;
-// 	objs->fireball.dmg = 5;
-// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
-// 	printf("fireball object model initialized !\n");
+	// 	objs->fireball.model_name = "Fireball";
+	// 	objs->fireball.type_enum = OBJ_FIREBALL;
+	// 	objs->fireball.nb_texs = 2;
+	// 	objs->fireball.draw_offy = 0;
+	// 	printf("Init Fireball model ; Try load  png\n");
+	// 	tex = mlx_load_png(tex_path1);
+	// 	objs->fireball.texs[0] = tex;
+	// 	if (!objs->fireball.texs[0])
+	// 		return (report_mlx_tex_load_failed((char *)tex_path1));
+	// 	objs->fireball.texs[1] = mlx_load_png(tex_path2);
+	// 	if (!objs->fireball.texs[1])
+	// 		return (report_mlx_tex_load_failed((char *)tex_path2));
+	// 	printf("Init fireball model ; png load SUCCESSFUL !\n");
+	// 	printf("tex w h (%d, %d)\n", tex->width, tex->height);
+	// 	objs->fireball.width = 48;
+	// 	objs->fireball.half_w = objs->fireball.width >> 1;
+	// 	objs->fireball.height = objs->fireball.width * (tex->height / (float)tex->width);
+	// 	objs->fireball.half_h = objs->fireball.height >> 1;
+	// 	printf("fireball w h : (%d, %d), half w h (%d, %d)\n", 
+	// 		objs->fireball.width, objs->fireball.height, objs->fireball.half_w, objs->fireball.half_h);
+	// 	objs->fireball.speed = 1.0f;
+	// 	objs->fireball.dmg = 5;
+	// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
+	// 	printf("fireball object model initialized !\n");
 // 	return (&objs->fireball);
 // }
 
 
 // static t_omdl	*init_firepit_model(t_objs *objs)
 // {
-// 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
-// 	const char	*tex_path1 = "tex/fireball/alpha_firepit.png";
-// //	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
-// 	mlx_texture_t	*tex;
+	// 	//const char	*tex_path1 = "tex/fireball/tmp/1_0.png";
+	// 	const char	*tex_path1 = "tex/fireball/alpha_firepit.png";
+	// //	const char	*tex_path2 = "tex/fireball/tmp/1_1.png";
+	// 	mlx_texture_t	*tex;
 
-// 	objs->firepit.model_name = "Fireball";
-// 	objs->firepit.type_enum = OBJ_FIREPIT;
-// 	objs->firepit.nb_texs = 1;
-// 	objs->firepit.draw_offy = 20;
-// 	printf("Init Fireball model ; Try load  png\n");
-// 	tex = mlx_load_png(tex_path1);
-// 	objs->firepit.texs[0] = tex;
-// 	if (!objs->firepit.texs[0])
-// 		return (report_mlx_tex_load_failed((char *)tex_path1));
-// 	printf("Init firepit model ; png load SUCCESSFUL !\n");
-// //	printf("tex w h (%d, %d)\n", tex->width, tex->height);
-// 	objs->firepit.width = CELL_WIDTH;
-// 	objs->firepit.half_w = objs->firepit.width >> 1;
-// 	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
-// 	objs->firepit.half_h = objs->firepit.height >> 1;
-// //	printf("firepit w h : (%d, %d), half w h (%d, %d)\n", 
-// //		objs->firepit.width, objs->firepit.height, objs->firepit.half_w, objs->firepit.half_h);
-// //	objs->firepit.speed = 1.0f;
-// //	objs->firepit.dmg = 5;
-// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
-// 	printf("firepit object model initialized !\n");
-// 	return (&objs->firepit);
+	// 	objs->firepit.model_name = "Fireball";
+	// 	objs->firepit.type_enum = OBJ_FIREPIT;
+	// 	objs->firepit.nb_texs = 1;
+	// 	objs->firepit.draw_offy = 20;
+	// 	printf("Init Fireball model ; Try load  png\n");
+	// 	tex = mlx_load_png(tex_path1);
+	// 	objs->firepit.texs[0] = tex;
+	// 	if (!objs->firepit.texs[0])
+	// 		return (report_mlx_tex_load_failed((char *)tex_path1));
+	// 	printf("Init firepit model ; png load SUCCESSFUL !\n");
+	// //	printf("tex w h (%d, %d)\n", tex->width, tex->height);
+	// 	objs->firepit.width = CELL_WIDTH;
+	// 	objs->firepit.half_w = objs->firepit.width >> 1;
+	// 	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
+	// 	objs->firepit.half_h = objs->firepit.height >> 1;
+	// //	printf("firepit w h : (%d, %d), half w h (%d, %d)\n", 
+	// //		objs->firepit.width, objs->firepit.height, objs->firepit.half_w, objs->firepit.half_h);
+	// //	objs->firepit.speed = 1.0f;
+	// //	objs->firepit.dmg = 5;
+	// //	objs->portal.bypass_clr = *tex->pixels;//((uint32_t *)tex->pixels)[(tex->width >> 1) + (tex->height >> 1) * tex->width];
+	// 	printf("firepit object model initialized !\n");
+	// 	return (&objs->firepit);
 // }
 
 
@@ -261,7 +261,13 @@ static int	create_lever_instance(t_cub *cub, int *pos, int allegiance, t_oinst *
 	new_obj->action = __obj_action_lever;
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
-	new_obj->special_gset.xwalls[1] = cub->map.mx[pos[1]][pos[0]]->xwalls[1];
+	printf("Create lever inst : mx %p\n", cub->map.mx);
+	printf("Create lever inst : mx[%d] %p\n", pos[1], cub->map.mx[pos[1]]);
+	printf("Create lever inst : mx[%d][%d] %p\n", pos[1], pos[0], cub->map.mx[pos[1]][pos[0]]);
+	if (cub->map.mx[pos[1]][pos[0]])
+		new_obj->special_gset.xwalls[1] = cub->map.mx[pos[1]][pos[0]]->xwalls[1];
+	else
+		new_obj->special_gset.xwalls[1] = cub->dual[0].xwalls[1];
 	new_obj->special_gset.xwalls[0] = new_obj->type->gset->xwalls[0];
 	cub->map.mx[pos[1]][pos[0]] = &new_obj->special_gset;
 //	dual = cub->map.mx[pos[1]][pos[0]];
@@ -271,42 +277,42 @@ static int	create_lever_instance(t_cub *cub, int *pos, int allegiance, t_oinst *
 
 // pos is in world coord, NOT cell coord.
 // static int	create_firepit_instance(t_cub *cub, int *pos, int *obj_id, t_hero *link)
-// {
-// 	t_oinst	*new_obj;
+	// {
+	// 	t_oinst	*new_obj;
 
-// //	if (link && link->type->type_enum != OBJ_PORTAL)
-// //		return (report_err("Creating a fireball instance trying to link to non portal obj.\n"));
+	// //	if (link && link->type->type_enum != OBJ_PORTAL)
+	// //		return (report_err("Creating a fireball instance trying to link to non portal obj.\n"));
 
-// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
-// 		return (report_malloc_error());
+	// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
+	// 		return (report_malloc_error());
 
-// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
-// 		return (report_malloc_error());
+	// 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
+	// 		return (report_malloc_error());
 
-// 	new_obj->type = &cub->objs.firepit;
-// 	new_obj->_id = ++(*obj_id);
-// 	new_obj->tex_idx = 0;
-// 	new_obj->px = pos[0];
-// 	new_obj->py = pos[1];
-// //	new_obj->dx = pos[2];
-// //	new_obj->dy = pos[3];
-// 	new_obj->relative = NULL;
-// 	new_obj->isactive = 0;
-// //	new_obj->link = link;
-	
-// 	new_obj->action = __obj_action_firepit;
-// //	new_obj->action = NULL;
-// 	if (link)
-// 	{
-// //		printf("linking fireball %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
-// 		new_obj->relative = link;
-// 		new_obj->isactive = 1;
-// //		link->link = new_obj;
-// 	}
-// 	new_obj->next = cub->objs.instances;
-// 	cub->objs.instances = new_obj;
-// 	printf("Single firepit instance created at pos (%d, %d)\n", pos[0], pos[1]);
-// 	return (new_obj->_id);	
+	// 	new_obj->type = &cub->objs.firepit;
+	// 	new_obj->_id = ++(*obj_id);
+	// 	new_obj->tex_idx = 0;
+	// 	new_obj->px = pos[0];
+	// 	new_obj->py = pos[1];
+	// //	new_obj->dx = pos[2];
+	// //	new_obj->dy = pos[3];
+	// 	new_obj->relative = NULL;
+	// 	new_obj->isactive = 0;
+	// //	new_obj->link = link;
+		
+	// 	new_obj->action = __obj_action_firepit;
+	// //	new_obj->action = NULL;
+	// 	if (link)
+	// 	{
+	// //		printf("linking fireball %d (%p) to portal %d (%p)\n", new_obj->_id, new_obj, link->_id, link);
+	// 		new_obj->relative = link;
+	// 		new_obj->isactive = 1;
+	// //		link->link = new_obj;
+	// 	}
+	// 	new_obj->next = cub->objs.instances;
+	// 	cub->objs.instances = new_obj;
+	// 	printf("Single firepit instance created at pos (%d, %d)\n", pos[0], pos[1]);
+	// 	return (new_obj->_id);	
 // }
 
 t_oinst	*get_obj(t_cub *cub, int id)

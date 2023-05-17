@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 23:28:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 23:47:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,9 @@
 # define PROJ_COLOR 0xffbcbbb0
 # define TRANSPARENCY 0xcfffffff
 
-#define FIREPIT_SPAWN_TICKS 100
+
+# define NB_OBJ_TYPES 4
+# define FIREPIT_SPAWN_TICKS 100
 
 enum	e_sides
 {
@@ -110,6 +112,7 @@ typedef struct s_objx
 	int 			alleg;		// allegence _txtr
 	int 			opos[2];	// relativ pos (reltv. obj_id)
 	char			relativ;	// char obj_id
+	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
 
@@ -337,6 +340,7 @@ enum	e_object_types
 	OBJ_PORTAL,
 	OBJ_LEVER,
 	OBJ_FIREBALL,
+	OBJ_FIREPIT,
 	OBJ_ACTIVATE,
 	OBJ_DEACTIVATE
 };
@@ -431,6 +435,7 @@ typedef struct s_renderer_column_params
 
 typedef struct s_renderer
 {
+	mlx_image_t	*sky_layer;
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
 	mlx_image_t	*proj_layer;
@@ -522,6 +527,7 @@ char			*ft_strncpy_i(char *dst, const char *src, \
 size_t len, unsigned int idx);
 
 t_cub			path_from_line(t_cub cub);
+int				instanciate_map_objects(t_cub *cub);
 
 /// COLOR PARSE ////////////
 int				str_to_color(int r, int g, int b, int t);
@@ -652,5 +658,11 @@ t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
 
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
+void			minimap_set_pos(t_cub *cub);
+void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);
+void			mlx_draw_mmap(t_cub *cub);
+void			mlx_draw_player(t_cub * cub, t_map *map);
+void			mlx_update_mmap(t_cub *cub, t_map *m);
+
 
 #endif

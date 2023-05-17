@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 00:18:00 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 20:14:03 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	main(int argc, char **argv)
 //		|| init_obj_framework(&cub))
 		return (cub_clear(&cub, EXIT_FAILURE));
 
-
+/*
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 
 
@@ -141,17 +141,17 @@ int	main(int argc, char **argv)
 //	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
 //	pos[1] = CELL_WIDTH * 2;
 	
-	pos[0] = 10 * CELL_WIDTH +32;
-	pos[1] = 7 * CELL_WIDTH +32;
-	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_TORRENT, NULL);
-	
-	pos[0] = 5 * CELL_WIDTH;
+	pos[0] = 20 * CELL_WIDTH;
 	pos[1] = 2 * CELL_WIDTH;
+	int	portal1_id = create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, NULL);
+	
+	pos[0] = 20 * CELL_WIDTH;
+	pos[1] = 7 * CELL_WIDTH;
 
 	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_TORRENT, get_obj(&cub, portal1_id));
 
-	pos[0] = 5 * CELL_WIDTH ;
-	pos[1] = 7 * CELL_WIDTH ;
+	pos[0] = 5 * CELL_WIDTH + 1;
+	pos[1] = 2 * CELL_WIDTH + 1;
 
 	create_obj_instance(&cub, pos, OBJ_LEVER, ALI_NEUTRAL, get_obj(&cub, portal1_id));
 
@@ -170,11 +170,21 @@ int	main(int argc, char **argv)
 //	create_obj_instance(&cub, pos, OBJ_FIREPIT, &cub.hero);
 
 /////// END OF DEBUG SECTION
-
+*/
 
 //	p_list_objx(cub.box.objx, 3, 0);
 
+	if (!cub.objs.portal.gset)
+		init_portal_model(&cub.objs);
+	if (!cub.objs.lever.gset)
+		init_lever_model(&cub.objs);
+	if (!cub.objs.fireball.gset)
+		init_fireball_model(&cub.objs);
 
+	instanciate_map_objects(&cub);
+	
+	/// sitting here
+	 minimap_set_pos(&cub);
 
 	// print_tex_ptr_mx_matrix(&cub);
 	cub_setup_mlx_hooks_and_settings(&cub);

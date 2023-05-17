@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_draw_floor.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 23:20:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:32:44 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 /*
 static uint32_t	get_tex_pixel(mlx_texture_t *tex, int x, int y)
 {
@@ -74,8 +74,11 @@ void	__render_sky(t_cub *cub, t_rdata *rd)
 		*(++tofs[0]) = (int)((x - cub->scn_midx) * cub->inv_sw
 				* cub->renderer.sky_fov_to_tex
 				+ cub->renderer.sky_ori_offset) % cub->tex.skymap->width;
-	pxls = (uint32_t *)cub->renderer.bg_layer->pixels;
+	pxls = (uint32_t *)cub->renderer.sky_layer->pixels;
 	tofs[1] = cub->renderer.sky_yoffsets - 1;
+	printf("skymap ptr : %p\n", cub->tex.skymap);
+	printf("sky w, h : (%d, %d), fov to tex : %f, sky ori off : %d\n", cub->tex.skymap->width, cub->tex.skymap->height, 
+		cub->renderer.sky_fov_to_tex, cub->renderer.sky_ori_offset);
 	y = -1;
 	while (++y < cub->scn_midy)
 	{
@@ -207,7 +210,7 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 void	render_floor_sky(t_cub *cub)//, t_rdata *rd)
 {
 	__render_sky(cub, cub->hero.rcast.rdata);
-	if (cub->tex.open_sky)
+	if (0 || cub->tex.open_sky)
 		__render_floor_sky(cub, cub->hero.rcast.rdata);// rd);
 	else
 		__render_floor_ceiling(cub, cub->hero.rcast.rdata);//;rd);

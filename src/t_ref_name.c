@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 00:17:42 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:21:42 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				if(d_id != -1)
 					cub = dual_builder(cub, d_id, tex_path);								
 			}
-				
 		}
 	}
 	return (cub);
