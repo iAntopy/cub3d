@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:10:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/30 21:40:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:19:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,6 @@ void	update_rays(t_cub *cub)
 //	factor by the rays length to get draw height.
 void	update_fov(t_cub *cub, float fov)
 {
-//	int	i;
-//	float	*arr;
-
 	cub->fov = fov;
 	cub->hfov = 0.5f * fov;
 	cub->near_z = (float)cub->scn_midx / tanf(cub->hfov);
@@ -115,16 +112,6 @@ void	update_fov(t_cub *cub, float fov)
 	update_floorcaster_params(cub);
 	mtx_linspace_update(cub->hero.rcast.theta_offs, -cub->hfov, cub->hfov, 1);
 	mtx_cos(cub->hero.rcast.theta_offs, cub->hero.rcast.fwd_rayspan);
-//	mtx_print(cub->hero.rcast.fwd_rayspan);
 	_mtx_ridivf_pscalar(1.0f, cub->hero.rcast.fwd_rayspan);
-//	mtx_print(cub->hero.rcast.fwd_rayspan);
-//	i = -1;
-//	arr = cub->hero.rcast.fwd_rayspan->arr;
-//	while (++i < cub->scn_midx)
-//	{
-//		*arr = -(*arr);
-//		arr++;
-//	}
-//	mtx_print(cub->hero.rcast.fwd_rayspan);
 	update_rays(cub);
 }

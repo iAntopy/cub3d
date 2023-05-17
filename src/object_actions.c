@@ -6,14 +6,38 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 06:17:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:43:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-#define PORTAL_TRIGGER_DIST 10.0f
+#define PORTAL_TRIGGER_DIST_SQ 100.0f
 
+int	__obj_action_player(t_oinst *obj, t_cub *cub)
+{
+	static int	counter;
+	t_hero		*player;
+	float		pos[4];
+
+//	(void)obj;
+//	(void)cub;
+	if (obj->isactive)
+	{
+		if (counter > 1000)
+		{
+			player = (t_hero *)obj->relative;
+			pos[0] = obj->px;
+			pos[1] = obj->py;
+			pos[2] = (*player->dirx) * 10.0f ;
+			pos[3] = (*player->diry) * 10.0f ;
+			create_obj_instance(cub, pos, OBJ_FIREBALL, player->allegiance, NULL);
+			counter = 0;
+		}
+		++counter;
+	}
+	return (0);
+}
 
 int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 {
@@ -27,11 +51,11 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 	link = obj->relative;
 	dx = obj->px - cub->hero.px;
 	dy = obj->py - cub->hero.py;
-	dist = sqrtf(dx * dx + dy * dy);
-	if (dist < PORTAL_TRIGGER_DIST)
+	dist = dx * dx + dy * dy;
+	if (dist < PORTAL_TRIGGER_DIST_SQ)
 	{
-		cub->hero.px = link->px + dx * 1.5f;
-		cub->hero.py = link->py + dy * 1.5f;
+		cub->hero.px = link->px + dx * 1.0f;
+		cub->hero.py = link->py + dy * 1.0f;
 		return (0);
 	}
 	else
@@ -79,7 +103,8 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		{
 			delta_prtl[0] = objs->px - obj->px;
 			delta_prtl[1] = objs->py - obj->py;
-			if (sqrtf(delta_prtl[0] * delta_prtl[0] + delta_prtl[1] * delta_prtl[1]) < PORTAL_TRIGGER_DIST)
+			if (delta_prtl[0] * delta_prtl[0] + delta_prtl[1] * delta_prtl[1]
+				< PORTAL_TRIGGER_DIST_SQ)
 			{
 				obj->px = ((t_oinst *)objs->relative)->px + delta_prtl[0] * 1.5f;
 				obj->py = ((t_oinst *)objs->relative)->py + delta_prtl[1] * 1.5f;
@@ -94,7 +119,7 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 {
 	static int	counter;
-	int			pos[4];
+	float		pos[4];
 	
 	if (!obj->isactive)
 		return (-1);
@@ -124,7 +149,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 
 	if (obj->isactive)
 	{
-		if (counter > 100)
+		if (counter > 400)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;
@@ -135,17 +160,23 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	}
 	else if (obj->relative)
 	{
+//		ft_eprintf("lever relative exists\n");
 		cx = (int)obj->px;
 		cy = (int)obj->py;
+//		ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
+//			cub->hero.cell_x, cub->hero.cell_y);
 		if (!(cub->hero.cell_x == cx
 			&& cub->hero.cell_y == cy))
 			return (-1);
+		ft_eprintf("PRESSED !\n");
 		activate_portal((t_oinst *)obj->relative, 1);
 		obj->isactive = 1;
 		obj->special_gset.xwalls[0] = obj->type->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
 //		dual->xwalls[0] = obj->type->gset->xwalls[1];
 	}
+//	else
+//		printf("Lever has no relative\n");
 	return (0);
 }
 

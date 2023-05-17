@@ -6,63 +6,12 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 08:50:39 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 19:54:28 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-// t_cub	*mx_struct(t_map *m, t_cub *cub)
-	// {
-	// 	int			k;
-	// 	int			p_box;
-	// 	const char	*chrs;
-
-	// 	printf("mx_struct start \n");
-	// 	chrs = cub->box.chrs;
-	// 	k = -1;
-	// 	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
-	// 	while (++k < m->height)
-	// 		m->mx[k] = (t_matrx **)calloc(sizeof(t_matrx *), m->width);
-	// 	m->pos_y = 0;
-	// 	while (m->pos_y < m->height)
-	// 	{
-	// 		m->pos_x = 0;
-	// 		while (m->pos_x < m->width)
-	// 		{
-	// 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-	// 			if (p_box != -1 || p_box == (int)ft_strlen(chrs) - 1)
-	// 				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box];
-	// 			m->pos_x++;
-	// 		}
-	// 		m->pos_y++;
-	// 	}
-	// 	printf("mx_struct exit\n");
-	// 	return (cub);
-// }
-
-// t_cub	*chsr_feed(t_cub *cub)
-// {
-	// 		int	i;
-	// 		int	j;
-
-	// 		j = 0;
-	// 		i = -1;
-	// 		cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
-	// 		while (*cub->map.raw && cub->map.raw[++i] && j < cub->box.chrs_len)
-	// 		{
-	// 			if (cub->map.raw[i][0] > 32 && cub->map.raw[i][0] < 97 &&
-	// 				cub->map.raw[i][1] == 32)
-	// 			{
-	// 				cub->box.chrs[j] = cub->map.raw[i][0];
-	// 				++j;
-	// 			}
-	// 		}
-	// 		cub->box.chrs[j++] = '@';
-	// 		cub->box.chrs[j] = '\0';
-	// 		printf("NEW CHRS {%s} len[%d]\n\n", cub->box.chrs, j);
-	// 		return (cub);
-// }
 
 char	*chrs_builder(t_cub *cub)
 {

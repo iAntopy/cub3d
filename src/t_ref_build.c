@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 08:50:23 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 19:54:14 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	{
 		printf(">>>>	MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		if (box->n_prts == 0)
-			objs->lever =  *init_portal_model(objs);
+			objs->portal =  *init_portal_model(objs);
 		box->n_prts++;
 	}
 	// printf(">>>> TEST >>> [%c]\n", t_name[0]);   			
@@ -128,6 +128,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
+			// printf("MapX FACTOR >>  (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))
@@ -148,17 +149,20 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	
 					
 				}
-				if (p_box < cub->box.meta)//&& p_box > cub->box.meta  )		/// meta
+				if (p_box == max)
 				{
-					printf("MapX <<<%c>>> META DUAL  <<%c>> ::\n", chrs[p_box], chrs[p_box ]);
-					// m->mx[m->pos_y][m->pos_x] = &cub->dual[0];
-					// printf("new pset (%d, %d), p_box 0  (%d)>>> {%p} :: [[%p]]<<\n", m->pos_y,m->pos_x, p_box, cub->dual[0].xwalls[0] , cub->dual[7].xwalls[0] );
-					// printf("new pset (%d, %d), p_box (%d)>>> {%p} :: [[%p]]<<\n", m->pos_y,m->pos_x, p_box, cub->dual[p_box].xwalls[1] , cub->dual[7].xwalls[1] );
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0];
-					// printf("new pset (%d, %d), xwalls[0] : %p\n", m->pos_y,m->pos_x, m->mx[m->pos_y][m->pos_x]->xwalls[0]);
-					// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
-					// printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+	//				printf("HERO__MapX >> (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
+	//				printf("FOUND IT ");
+					cub->box.meta++;
+					// p_list_objx(cub->box.objx , p_box, 0); 
+					
 				}
+	//			if (p_box < cub->box.meta )
+	//			{
+	//				printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+	//				printf("FOUND IT ");
+	//				p_list_objx(cub->box.objx , p_box, 0); 
+	//			}
 				
 			}
 			m->pos_x++;
@@ -168,7 +172,4 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	printf(" ... MAPX:exit\n\n");
 	return (cub);
 }
-
-
-
 
