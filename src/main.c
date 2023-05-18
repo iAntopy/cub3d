@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 13:01:04 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:13:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,10 @@ int	main(int argc, char **argv)
 	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
 	instanciate_map_objects(&cub);
 
+////////
+	/// sitting here
+	 minimap_set_pos(&cub);
+
 ////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
 	int	i;
 	int	j;
@@ -181,9 +185,7 @@ int	main(int argc, char **argv)
 				cub.map.mx[i][j] = &cub.dual[0];
 		}
 	}
-////////
-	/// sitting here
-	 minimap_set_pos(&cub);
+
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
