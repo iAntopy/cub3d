@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/16 07:05:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 10:21:57 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta);
 
@@ -84,4 +84,4 @@ int	instanciate_map_objects(t_cub *cub)
 	printf("Map instanciation DONE. WOW !\n\n\n\n");
 	return (0);
 }
-*/
+

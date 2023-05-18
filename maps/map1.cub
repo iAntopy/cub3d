@@ -1,9 +1,10 @@
 ! 1/#
-+ 2/%
++ 2/$
 # 1/%
 % 1/#
 $ 2/&
 & 2/$
+* 1/*
 a tex/ext/red-brick-wall.png
 b tex/ext/rock-wall.png
 c tex/ext/wall_concret.png
@@ -22,12 +23,12 @@ E eeee
 
 AAAAAAAAAAAA
 D0000B00000A
-D0000B000@0A
-D0000B0!000A
-D000BBB0000A
+D00@0B00*00A
+D0000BB0000A
 D0000000000A
-DD00000000DA
-A000000#000A
+D0000000000A
+DDDD000000DA
+A0!0000#000A
 A0000000000A
 A000CCCC000A
 A00000B0000A          BBB      AAAAA
