@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 18:40:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:42:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ int	order_draw_call(t_thdraw *threads, int from, int to)
 	}
 	i = from - 1;
 	nb_spins = 10;
-	while (++i < to && nb_spins)
+	while (++i < to && --nb_spins)
 	{
-		if (threads[i].isidle && nb_spins--)
+		if (threads[i].isidle)
 			i = -1;
-		usleep(1);
+		usleep(10);
 	}
 	i = from - 1;
 	while (++i < to)
@@ -95,7 +95,7 @@ static int	start_draw_threads(t_thdraw *threads)
 	{
 		pthread_mutex_lock(&threads[i].start_lock);
 		if (pthread_create(&threads[i].id, NULL,
-			(void *(*)(void *))__draw_thread_routine, threads + i) < 0)
+				(void *(*)(void *))__draw_thread_routine, threads + i) < 0)
 			return (report_threads_err(threads, "Thread creation failed.", 1));
 	}
 	return (0);
