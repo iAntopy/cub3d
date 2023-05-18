@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 18:41:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:22:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -546,10 +546,10 @@ void	render_objects(t_cub *cub)
 			__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels, cub->renderer.isproj, pframe, pdims);
 //			ft_deltatime_usec_note("__label_isproj time");
 			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, cub->renderer.pframe);
-			order_draw_call(cub->draw_threads, 3, 5);
+			order_draw_call(cub->draw_threads, 3, 6);
 //			__render_proj_objects(cub);//, obj, cub->hero.rcast.prtl_proj, pframe);
 //			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
-			__render_proj_floor(cub);
+//			__render_proj_floor(cub);
 		}
 		else
 			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
