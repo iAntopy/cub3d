@@ -1,49 +1,109 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object_model_creation.c                            :+:      :+:    :+:   */
+/*   object_deleters_and_getter.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 20:50:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 00:13:37 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Pass either OBJ_ACTIVATE or OBJ_DEACTIVATE as mode.
-int	activate_portal(t_oinst *obj, unsigned int new_state)
+t_oinst	*get_obj(t_cub *cub, int id)
 {
-	mlx_texture_t	*tex;
+	t_oinst	*elem;
 
-	if (obj->type->type_enum != OBJ_PORTAL)
-		return (report_obj_err(obj, "ACTIVATION FAILED : not a portal obj.\n"));
-	else if (new_state >= 2)
-		return (report_obj_err(obj, "ACTIVATION FAILED : invalid state.\n"));
-	if (obj->isactive && new_state == 0)
+	printf("get oinst for id %d\n", id);
+	elem = cub->objs.instances;
+	while (elem)
 	{
-		printf("DEACTIVATING PORTAL id %d\n", obj->_id);
-		obj->isactive = 0;
-		obj->tex_idx = 0;
-		tex = obj->type->gset->xwalls[0];
-		obj->type->height = obj->type->width * (tex->height / tex->width);
+		if (elem->_id == id)
+		{
+			printf("OBJ with id %d FOUND : %p\n", id, elem);
+			return (elem);
+		}
+		elem = elem->next;
 	}
-	else if (!obj->isactive && new_state == 1)
-	{
-		if (!obj->relative)
-			return (ft_eprintf("Cannot activate portal without a link\n"), -1);
-		printf("ACTIVATING PORTAL id %d\n", obj->_id);
-		obj->isactive = 1;
-		obj->tex_idx = 1;
-		tex = obj->type->gset->xwalls[obj->allegiance];
-		obj->type->height = obj->type->width * (tex->height / tex->width);
-	}
-	else
+	printf("No object with id %d\n", id);
+	return (NULL);
+}
+
+// Delete one specific object with id.
+int	delete_oinst_by_id(t_cub *cub, int id)
+{
+	t_oinst	*elem;
+	t_oinst	*tmp;
+
+	elem = cub->objs.instances;
+	if (!elem)
 		return (-1);
+	if (elem->_id == id)
+	{
+		cub->objs.instances = elem->next;
+		return (ft_free_p((void **)&elem));
+	}
+	while (elem->next)
+	{
+		if (elem->next->_id == id)
+		{
+			tmp = elem->next;
+			elem->next = elem->next->next;
+			return (ft_free_p((void **)&tmp));
+		}
+		elem = elem->next;
+	}
+	return (-1);
+}
+
+// Delete all instances of a specific object type. eg.: delete all OBJ_PORTAL
+int	delete_all_oinst_by_type(t_cub *cub, int type_enum)
+{
+	t_oinst	*elem;
+	t_oinst	*tmp;
+
+	elem = cub->objs.instances;
+	if (!elem)
+		return (-1);
+	if (elem->type->type_enum == type_enum)
+	{
+		cub->objs.instances = elem->next;
+		return (ft_free_p((void **)&elem));
+	}
+	while (elem->next)
+	{
+		if (elem->next->type->type_enum == type_enum)
+		{
+			tmp = elem->next;
+			elem->next = elem->next->next;
+			ft_free_p((void **)&tmp);
+		}
+		else
+			elem = elem->next;
+	}
 	return (0);
 }
 
+// Destroys all object instances in world.
+void	delete_all_obj_instances(t_cub *cub)
+{
+	t_oinst	*elem;
+	t_oinst	*tmp;
+
+	if (!cub->objs.instances)
+		return ;
+	elem = cub->objs.instances;
+	while (elem)
+	{
+		tmp = elem->next;
+		ft_free_p((void **)&elem);
+		elem = tmp;
+	}
+	cub->objs.instances = NULL;
+}
+/*
 // static t_omdl	*init_portal_model(t_objs *objs)
 // {
 // 	const char	*tex_path1 = "tex/ext/Portal1.png";
@@ -138,97 +198,4 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 // 	printf("firepit object model initialized !\n");
 // 	return (&objs->firepit);
 // }
-
-
-
-t_oinst	*get_obj(t_cub *cub, int id)
-{
-	t_oinst	*elem;
-
-	printf("get oinst for id %d\n", id);
-	elem = cub->objs.instances;
-	while (elem)
-	{
-		if (elem->_id == id)
-		{
-			printf("OBJ with id %d FOUND : %p\n", id, elem);
-			return (elem);
-		}
-		elem = elem->next;
-	}
-	printf("No object with id %d\n", id);
-	return (NULL);
-}
-
-// Delete one specific object with id.
-int	delete_oinst_by_id(t_cub *cub, int id)
-{
-	t_oinst	*elem;
-	t_oinst	*tmp;
-	
-	elem = cub->objs.instances;
-	if (!elem)
-		return (-1);
-	if (elem->_id == id)
-	{
-		cub->objs.instances = elem->next;
-		return (ft_free_p((void **)&elem));
-	}
-	while (elem->next)
-	{
-		if (elem->next->_id == id)
-		{
-			tmp = elem->next;
-			elem->next = elem->next->next;
-			return (ft_free_p((void **)&tmp));
-		}
-		elem = elem->next;
-	}
-	return (-1);
-}
-
-// Delete all instances of a specific object type. eg.: delete all OBJ_PORTAL
-int	delete_all_oinst_by_type(t_cub *cub, int type_enum)
-{
-	t_oinst	*elem;
-	t_oinst	*tmp;
-	
-	elem = cub->objs.instances;
-	if (!elem)
-		return (-1);
-	if (elem->type->type_enum == type_enum)
-	{
-		cub->objs.instances = elem->next;
-		return (ft_free_p((void **)&elem));
-	}
-	while (elem->next)
-	{
-		if (elem->next->type->type_enum == type_enum)
-		{
-			tmp = elem->next;
-			elem->next = elem->next->next;
-			ft_free_p((void **)&tmp);
-		}
-		else
-			elem = elem->next;
-	}
-	return (0);
-}
-
-// Destroys all object instances in world.
-void	delete_all_obj_instances(t_cub *cub)
-{
-	t_oinst	*elem;
-	t_oinst	*tmp;
-
-	if (!cub->objs.instances)
-		return ;
-	elem = cub->objs.instances;
-	while (elem)
-	{
-		tmp = elem->next;
-		ft_free_p((void **)&elem);
-		elem = tmp;
-	}
-	cub->objs.instances = NULL;
-}
+*/

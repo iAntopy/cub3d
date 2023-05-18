@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:18:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:24:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,13 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 	new_obj->tex_idx = 0;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
+	new_obj->cx = (int)(pos[0] * cub->inv_cw);
+	new_obj->cy = (int)(pos[1] * cub->inv_cw);
 	new_obj->action = __obj_action_player;
 	new_obj->rel_type_enum = 0;
 	new_obj->relative = link;
 	new_obj->isactive = 1;
+	new_obj->gset = new_obj->type->gsets[new_obj->allegiance];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	printf("Single Player instance created at pos (%f, %f)\n", pos[0], pos[1]);
@@ -57,18 +60,21 @@ int	create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 	new_obj->_id = get_new_obj_id();
 	new_obj->tex_idx = 0;
 	new_obj->allegiance = allegiance;
-	new_obj->px = cell[0];
-	new_obj->py = cell[1];
+	new_obj->cx = cell[0];
+	new_obj->cy = cell[1];
+	new_obj->px = pos[0];
+	new_obj->py = pos[1];
 	new_obj->relative = link;
 	new_obj->isactive = 0;	
 	new_obj->action = __obj_action_lever;
+	new_obj->gset = NULL;
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	if (cub->map.mx[cell[1]][cell[0]])
 		new_obj->special_gset.xwalls[1] = cub->map.mx[cell[1]][cell[0]]->xwalls[1];
 	else
 		new_obj->special_gset.xwalls[1] = cub->dual[0].xwalls[1];
-	new_obj->special_gset.xwalls[0] = new_obj->type->gset->xwalls[0];
+	new_obj->special_gset.xwalls[0] = new_obj->type->gsets[0]->xwalls[0];
 	cub->map.mx[cell[1]][cell[0]] = &new_obj->special_gset;
 	return (new_obj->_id);
 }
@@ -103,6 +109,7 @@ int	create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link
 		new_obj->relative = link;
 		link->relative = new_obj;
 	}
+	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	printf("Single Portal instance created at pos (%f, %f)\n", pos[0], pos[1]);
@@ -135,6 +142,7 @@ int	create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_hero *lin
 	}
 	else
 		new_obj->isactive = 0;
+	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	printf("Single fireball instance created at pos (%f, %f)\n", pos[0], pos[1]);
@@ -163,6 +171,7 @@ int	create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_hero *link
 		new_obj->relative = link;
 		new_obj->isactive = 1;
 	}
+	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	printf("Single firepit instance created at pos (%f, %f)\n", pos[0], pos[1]);
