@@ -6,11 +6,12 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 19:21:42 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:59:10 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
 
 char	*chrs_builder(t_cub *cub)
 {
@@ -37,6 +38,8 @@ char	*chrs_builder(t_cub *cub)
 	return (cub->box.chrs);
 }
 
+
+/// link' too too wide ++ doing too many thing!
 t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 {
 	int 	raw_len;
@@ -65,13 +68,11 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			tex_name = ft_substr(raw[i], 0, 1);
 			tex_path = ft_substr(raw[i], 2, raw_len - 2);
 			
-			if (ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1)
+			/// meta << number 				// if (raw[i][0] < 48) /// meta << number 
+			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1) && (raw[i][0] < 48) )
 			{
-				if (raw[i][0] < 48) /// meta << number 
-				{
-					cub = meta_builder(cub, box, tex_name, &cub->objs);
-					box->n_objs++;
-				}
+				cub = meta_builder(cub, box, tex_name, &cub->objs);			
+				box->n_objs++;
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
 			{
@@ -104,6 +105,9 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	}
 	return (cub);
 }
+					// printf("sky tex after load : %p %p %p\n", cub->box.sky, cub->tex.skymap , cub->tex.sky_tex);
+					// cub->tex.sky = cub->box.sky;
+				
 
 t_cub	*e_mtrx_count(t_cub *cub)
 {

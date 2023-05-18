@@ -6,20 +6,12 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 19:32:44 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:43:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
-/*
-static uint32_t	get_tex_pixel(mlx_texture_t *tex, int x, int y)
-{
-//	if (x < 0 || y < 0)
-//		return (0);
-//	printf("px: x %d, y %d", x, y);
-	return (((uint32_t *)tex->pixels)[x + y * tex->width]);
-}
-*/
+#include "cub3d.h"
+
 static void	__render_floor_init(t_cub *cub, uint32_t **b, float **p)
 {
 	*p = cub->renderer.floor_factors - 1;
@@ -36,23 +28,23 @@ static void	__render_ceiling_init(t_cub *cub, uint32_t **b, float **p)
 		+ (SCN_WIDTH * (cub->scn_midy - 2)) - 1;
 }
 
-static void	__render_floor_incr(float **ps, const float **rays, uint32_t **bs)
+static void	__render_floor_incr(float **ps, uint32_t **bs)
 {
 //	static int	i;
 
 //	printf("i : %d ", i++);
 	++(*ps);
-	++rays[0];
-	++rays[1];
+//	++rays[0];
+//	++rays[1];
 	++(bs[0]);
 	++(bs[1]);
 }
 
-static void	__render_flr_cil_incr(float **ps, const float **rays, uint32_t **bs)
+static void	__render_flr_cil_incr(float **ps, uint32_t **bs)
 {
 	++(*ps);
-	++rays[0];
-	++rays[1];
+//	++rays[0];
+//	++rays[1];
 	++(bs[0]);
 	++(bs[1]);
 	++(bs[2]);
@@ -76,9 +68,9 @@ void	__render_sky(t_cub *cub, t_rdata *rd)
 				+ cub->renderer.sky_ori_offset) % cub->tex.skymap->width;
 	pxls = (uint32_t *)cub->renderer.sky_layer->pixels;
 	tofs[1] = cub->renderer.sky_yoffsets - 1;
-	printf("skymap ptr : %p\n", cub->tex.skymap);
-	printf("sky w, h : (%d, %d), fov to tex : %f, sky ori off : %d\n", cub->tex.skymap->width, cub->tex.skymap->height, 
-		cub->renderer.sky_fov_to_tex, cub->renderer.sky_ori_offset);
+//	printf("skymap ptr : %p\n", cub->tex.skymap);
+//	printf("sky w, h : (%d, %d), fov to tex : %f, sky ori off : %d\n", cub->tex.skymap->width, cub->tex.skymap->height, 
+//		cub->renderer.sky_fov_to_tex, cub->renderer.sky_ori_offset);
 	y = -1;
 	while (++y < cub->scn_midy)
 	{
@@ -91,11 +83,13 @@ void	__render_sky(t_cub *cub, t_rdata *rd)
 	}
 }
 
-static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
+static void	__render_floor_sky(t_cub *cub, t_rdata *rdata)
 {
 //	const float		flr_ratios[2] = {};//{cub->renderer.flrw_to_cw, cub->renderer.flrh_to_cw};
-	const float		*rays[2] = {rd[0].rx, rd[0].ry};
+//	const float		*rays[2] = {rd[0].rx, rd[0].ry};
+	t_rdata			*rd;
 	float			*params;
+	float			param_scalar;
 	uint32_t		*buffs[3];
 	int				incr[2];
 	int				cx;
@@ -107,17 +101,23 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
 	mlx_texture_t	**tex_arr;
 
 	__render_floor_init(cub, buffs, &params);
+//	params = cub->renderer.floor_factors - 1;
 	incr[1] = 0;
 	while (++incr[1] < cub->scn_midy)
 	{
+		rd = rdata - 1;
 		incr[0] = -1;
 		while (++incr[0] < SCN_WIDTH)
 		{
-			__render_floor_incr(&params, rays, buffs);
+			++rd;
+			__render_floor_incr(&params, buffs);
 //			printf("*rays[0] %f, ", *rays[0]);
 //			printf("*params %f\n", *params);
-			x = *rays[0] * (*params) + cub->hero.px;
-			y = *rays[1] * (*params) + cub->hero.py;
+			param_scalar = *params;
+
+			
+			x = *rd->rx * param_scalar + cub->hero.px;
+			y = *rd->ry * param_scalar + cub->hero.py;
 	//		printf("x, y : %f, %f\n", x, y);
 //			printf("cx, cy : %d, %d\n", cx, cy);
 			if (*buffs[1] || x < 0.0f || y < 0.0f)
@@ -142,17 +142,20 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rd)
 //					(int)(fmodf(*rays[1] * (*params) + cub->hero.py, CELL_WIDTH)
 //						* flr_ratios[1]));
 		}
-		rays[0] = rd[0].rx;
-		rays[1] = rd[0].ry;
+//		rays[0] = rd[0].rx;
+//		rays[1] = rd[0].ry;
 	}
 }
 
-static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
+static void	__render_floor_ceiling(t_cub *cub, t_rdata *rdata)
 {
-	const float		*rays[2] = {rd[0].rx, rd[0].ry};
+	//const float		*rays[2] = {rd[0].rx, rd[0].ry};
+	t_rdata			*rd;
 	float			*params;
+//	float			param_scalar;
 	uint32_t		*buffs[4];
 	int				incr[2];
+//	mlx_texture_t	*texs[2];
 	int				cx;
 	int				cy;
 	float			mx;
@@ -162,17 +165,26 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 	mlx_texture_t	**tex_arr;
 
 //	__render_floor_init(cub, buffs, &params);
-	printf("renderering floor and ceiling \n");
+//	printf("renderering floor and ceiling \n");
 	__render_ceiling_init(cub, buffs, &params);
 	incr[1] = 0;
 	while (++incr[1] < cub->scn_midy)
 	{
+		rd = rdata - 1;
 		incr[0] = -1;
 		while (++incr[0] < SCN_WIDTH)
 		{
-			__render_flr_cil_incr(&params, rays, buffs);
-			x = *rays[0] * (*params) + cub->hero.px;
-			y = *rays[1] * (*params) + cub->hero.py;
+			++rd;
+			__render_flr_cil_incr(&params, buffs);
+
+//			printf("*params vs param_scalar vs rd->dist : %f vs %f vs %f\n",
+//				*params, param_scalar, rd->dist);
+
+//			param_scalar = *params;
+//			if (param_scalar >= rd->dist)
+//				param_scalar = rd->dist - 0.01f;
+			x = *rd->rx * (*params) + cub->hero.px;
+			y = *rd->ry * (*params) + cub->hero.py;
 	//		printf("x, y : %f, %f\n", x, y);
 //			printf("cx, cy : %d, %d\n", cx, cy);
 			if (*buffs[1] || x < 0.0f || y < 0.0f)
@@ -184,10 +196,23 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 				continue ;			
 			mx = x - (cx * CELL_WIDTH);//fmodf(x, CELL_WIDTH);//x - cx;
 			my = y - (cy * CELL_WIDTH);//fmodf(y, CELL_WIDTH);//y - cy;
+
+			if (is_wall(&cub->map, cx, cy))
+			{
+//				printf("is wall. cell before : (%d, %d)\n", cx, cy);
+//				if (rd->side % 2)
+				if (rd->side == N_SIDE || rd->side == S_SIDE)
+					cy = rd->cy - rd->cincr_y;
+				else
+					cx = rd->cx - rd->cincr_x;
+//				printf("is wall. cell after : (%d, %d)\n", cx, cy);
+			}
+
 			tex_arr = cub->map.mx[cy][cx]->xwalls;
 		//	printf("tex_arr : %p, mx %f, my %f\n", tex_arr, mx, my);
 			if (!tex_arr)// || tex_arr[2] != NULL)
 				continue ;
+
 		//	printf("drawing on mx %f, my %f\n", mx, my);
 			*buffs[0] = get_tex_pixel(tex_arr[0],
 				mx * tex_arr[0]->width * cub->inv_cw,//* flr_ratios[0],
@@ -201,8 +226,8 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rd)
 //					(int)(fmodf(*rays[1] * (*params) + cub->hero.py, CELL_WIDTH)
 //						* flr_ratios[1]));
 		}
-		rays[0] = rd[0].rx;
-		rays[1] = rd[0].ry;
+//		rays[0] = rd[0].rx;
+//		rays[1] = rd[0].ry;
 		buffs[2] -= 2 * SCN_WIDTH;
 	}
 }

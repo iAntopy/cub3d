@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/11 17:08:25 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:40:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	raycaster_clear(t_rcast *rcast, int exit_status)
 	return (exit_status);
 }
 
-static void	init_raydata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd)
+static void	init_rdata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd)
 {
 	int	i;
 
@@ -29,7 +29,6 @@ static void	init_raydata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *p
 	while (++i < SCN_WIDTH)
 	{
 		rd[i].idx = i;
-//		rd[i].rcast = rcast;
 		rd[i].inv_cw = cub->inv_cw;
 		rd[i].near_proj_factor = &cub->near_proj_factor;
 		rd[i].pcx = &cub->hero.cell_x;
@@ -42,19 +41,13 @@ static void	init_raydata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *p
 		rd[i].ry = _mtx_index_fptr(rc->rays[1], i, 0);
 		pd[i].rdata = rd + i;
 		pd[i].fwd_len = _mtx_index_fptr(rc->fwd_rayspan, i, 0);
-		if (!pd[i].fwd_len)
-		while (1)
-			printf("pd[i].fwd_len ptr : %p\n", pd[i].fwd_len);
 	}
-	printf("\n\n\nhero cell_x/y : %d, %d\n", cub->hero.cell_x, cub->hero.cell_y);
-	printf("*rd->pcx/y : %d, %d\n", *rc->rdata->pcx, *rc->rdata->pcy);
 }
 
 int	init_raycaster(t_cub *cub)
 {
 	t_rcast	*rcast;
 
-	printf("init raycaster starts \n");
 	rcast = &cub->hero.rcast;
 	rcast->cub = cub;
 	rcast->map = &cub->map;
@@ -75,8 +68,7 @@ int	init_raycaster(t_cub *cub)
 	cub->hero.diry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH / 2, 0);
 	cub->hero.fov_rx = _mtx_index_fptr(rcast->rays[0], SCN_WIDTH - 1, 0);
 	cub->hero.fov_ry = _mtx_index_fptr(rcast->rays[1], SCN_WIDTH - 1, 0);
-	init_raydata_consts(cub, rcast, rcast->rdata, rcast->prtl_proj);
+	init_rdata_consts(cub, rcast, rcast->rdata, rcast->prtl_proj);
 	update_fov(cub, FOV);
-	printf("init raycaster exits \n");
 	return (0);
 }

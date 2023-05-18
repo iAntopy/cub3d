@@ -1,9 +1,9 @@
-! 1/#
-+ 2/%
-# 1/%
-% 1/#
-$ 2/&
-& 2/$
+! 1/%
++ 2/#
+# 2/&
+% 1/$
+$ 1/%
+& 2/#
 a tex/ext/rusty-metal.png
 b tex/ext/dark-metal.png
 c tex/ext/white-marble.png
