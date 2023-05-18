@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 20:37:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:42:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,11 @@ int	order_draw_call(t_thdraw *threads, int from, int to)
 	i = from - 1;
 	nb_spins = 10;
 	while (++i < to && --nb_spins)
-		if (threads[i].isidle || usleep(1))
+	{
+		if (threads[i].isidle)
 			i = -1;
+		usleep(10);
+	}
 	i = from - 1;
 	while (++i < to)
 	{
