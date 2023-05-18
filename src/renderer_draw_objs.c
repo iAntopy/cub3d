@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 22:19:25 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:25:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,30 @@ void	__render_proj_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_pdata *pd, in
 	}
 }
 
+// Assumes is_drawable == true, checked earlier.
+static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
+{
+	const float		inv_45deg = INV_45;
+	mlx_texture_t	*tex;
+	float			delta_ori;
+	int				idx;
+
+	if (!obj)
+		return (NULL);
+	tex = NULL;
+	if (obj->type->is_oriented)
+	{
+		delta_ori = obj->ori - cub->hero.ply_obj->ori + FOV45_HF;
+		if (delta_ori < 0)
+			delta_ori += M_TAU;
+		idx = (int)(delta_ori / 8.0f);
+		tex = obj->gset->xwalls[idx];
+	}
+	else
+		tex = obj->gset->xwalls[obj->allegiance];
+	return (tex);
+}
+
 void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pframe)
 {
 	const int	*pframe = cub->renderer.pframe;
@@ -274,7 +298,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 //	printf("\nlink id %d %p, (%.2f, %.2f)\n", link->_id, link, link->px, link->py);
 	while (obj)
 	{
-		if ((!obj->type->is_drawable || !obj->type->gset) && next_obj(&obj))
+		if ((!obj->type->is_drawable || !obj->gset) && next_obj(&obj))
 //		{
 //			obj = obj->next;
 			continue ;
@@ -303,8 +327,8 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 //			obj = obj->next;
 			continue ;
 //		}
-
-		tex = obj->type->gset->xwalls[obj->tex_idx];
+		tex = select_draw_texture(cub, obj);
+//		tex = obj->type->gset->xwalls[obj->tex_idx];
 		tincrs[0] = (float)tex->width / (float)dims[0];
 		tincrs[1] = (float)tex->height / (float)dims[1];
 		toffs[0] = 0;
@@ -455,7 +479,8 @@ void	render_objects(t_cub *cub)
 	while (obj)
 	{
 //		printf("obj->type : %p\n", obj->type);
-		if ((!obj->type->is_drawable || !obj->type->gset) && next_obj(&obj))
+		if ((!obj->type->is_drawable || !obj->type->gsets[0]
+			 || obj == cub->hero.ply_obj) && next_obj(&obj))
 		{
 //			if (obj)
 //				printf("BYPASS OBJ DRAW : id %d, type ptr : %p, drawable : %d, gset ptr : %p\n",
@@ -467,7 +492,8 @@ void	render_objects(t_cub *cub)
 		obj->ox = obj->px - cub->hero.ply_obj->px;
 		obj->oy = obj->py - cub->hero.ply_obj->py;
 		obj->dist = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
-		tex = obj->type->gset->xwalls[obj->tex_idx];
+		tex = select_draw_texture(cub, obj);
+//		tex = obj->type->gset->xwalls[obj->tex_idx];
 		ratio = cub->near_z / obj->dist;
 		dims[0] = (int)(ratio * obj->type->width);
 		dims[1] = (int)(ratio * obj->type->height);

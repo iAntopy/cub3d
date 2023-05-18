@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 23:27:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:10:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 
 # define FOV45 0.785398163397448f
 # define FOV45_HF 0.39269908169872414f
+# define INV_45 1.27323954474f
 
 # define FOV20 0.349065850398865915f
 # define FOV20_HF 0.17453292519943295f
@@ -345,7 +346,9 @@ typedef struct s_object_model
 						// Multi textures used for animation or to simulate object orientation.
 //	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
 	// // // 	
-	t_matrx			*gset; /// rely to model
+	t_matrx			*gsets[4];//	All sets of textures for this model. 4 possible
+								// sets based on the allegiances or NEUTRAL (0). Oriented objs 
+								// will load 1 sets of 8 textures for each allegiance.
 	// // //
 	/// OPTIONAL FIELDS //////
 	float			speed;//	moveing speed when applicable.
@@ -362,6 +365,8 @@ typedef struct s_objects_list_elem
 
 	int			tex_idx;
 	int			allegiance;
+	t_matrx		*gset; /// rely to model
+	
 	
 	float		px;//	Position X
 	float		py;//	Position Y
