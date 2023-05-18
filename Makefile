@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/17 21:21:53 by gehebert         ###   ########.fr        #
+#    Updated: 2023/05/17 22:00:17 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@
 SRC_FLS	:=		main.c 			\
 			event_handlers.c	\
 			error_handling.c 	\
+			error_handling2.c 	\
 			init_raycaster.c	\
 			floor_caster.c		\
 			sky_caster.c		\
@@ -29,6 +30,7 @@ SRC_FLS	:=		main.c 			\
 			t_color_shift.c		\
 			t_color_creat.c 	\
 			t_map_parse.c 		\
+			t_minimap.c			\
 			t_map_tool.c 		\
 			t_ref_build.c 		\
 			t_obj_model.c 		\
@@ -37,9 +39,13 @@ SRC_FLS	:=		main.c 			\
 			t_minimap.c			\
 			tex_parse.c			\
 			t_ref_name.c		\
+			map_instanciator.c	\
 			draw_threads.c		\
 			object_model_creation.c \
-			object_actions.c
+			object_framework_manager.c		\
+			object_actions.c		\
+			object_linkers.c	\
+			object_instanciators.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 

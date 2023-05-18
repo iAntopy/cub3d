@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:21:15 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:58:50 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@
 # define FOV60 1.047197551196597746f
 # define FOV60_HF 0.52359877559829887f
 
+# define FOV45 0.785398163397448f
+# define FOV45_HF 0.39269908169872414f
+
 # define FOV20 0.349065850398865915f
 # define FOV20_HF 0.17453292519943295f
 
@@ -67,7 +70,12 @@
 # define MAP_LCHR "abcdefghijz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "#%$&!+=;*()><?"
+# define MAP_MCHR "#%&$<>(){}!+|-*=:@?;"
+
+# define MOD_PORT "#%&$<>(){}"
+# define MOD_LEV "!+|-"
+# define MOD_FIRE "*=:"
+# define MOD_SPEC "@?;"
 
 # define CUBMAP_BUFMAX 100000
 
@@ -78,7 +86,9 @@
 # define PROJ_COLOR 0xffbcbbb0
 # define TRANSPARENCY 0xcfffffff
 
-#define FIREPIT_SPAWN_TICKS 100
+
+# define NB_OBJ_TYPES 5
+# define FIREPIT_SPAWN_TICKS 100
 
 enum	e_sides
 {
@@ -86,6 +96,26 @@ enum	e_sides
 	N_SIDE = 1,
 	E_SIDE = 2,
 	S_SIDE = 3
+};
+
+enum	e_object_allegiance
+{
+	ALI_NEUTRAL,
+	ALI_TORRENT,
+	ALI_LEGION,
+	ALI_ARMADA
+};
+
+enum	e_object_types
+{
+	OBJ_NULL,
+	OBJ_LEVER,
+	OBJ_PORTAL,
+	OBJ_FIREBALL,
+	OBJ_FIREPIT,
+	OBJ_PLAYER,
+	OBJ_ACTIVATE,
+	OBJ_DEACTIVATE
 };
 
 typedef struct s_object_model		t_omdl;
@@ -106,10 +136,15 @@ typedef struct s_objx
 {
 	char 			name;		// '#' 
 	int				obj_id;		 // enrg. id	
-	int				o_type;		// model_type
-	int 			alleg;		// allegence _txtr
 	int 			opos[2];	// relativ pos (reltv. obj_id)
+	int				o_type;		// model_type
+	///							/// get_pos has split job...
+	
+	int 			alleg;		// allegence _txtr
 	char			relativ;	// char obj_id
+	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
+	struct s_objx	*self_ref;	 // self ptr to cmp with relative's objx ptr;
+	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
 
@@ -239,8 +274,8 @@ typedef struct s_portal_projection_data
 	float	*fwd_len;// sin(theta offset for this ray). used in portal projection to find ray collision on obj
 
 //	Init data;
-	int		px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
-	int		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
+	float	px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
+	float	py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
 	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
 	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
 
@@ -285,7 +320,8 @@ typedef struct s_main_character_data
 	float	*fov_lx;// left most fov ray x
 	float	*fov_ly;// left most fov ray y 
 	float	*fov_rx;// right most fov ray x 
-	float	*fov_ry;// right most fov ray y 
+	float	*fov_ry;// right most fov ray y
+	int		allegiance;
 	t_rcast	rcast;
 }	t_hero;
 
@@ -331,24 +367,6 @@ typedef struct s_object_model
 	int				dmg;
 }	t_omdl;
 
-enum	e_object_types
-{
-	OBJ_NULL,
-	OBJ_PORTAL,
-	OBJ_LEVER,
-	OBJ_FIREBALL,
-	OBJ_ACTIVATE,
-	OBJ_DEACTIVATE
-};
-
-enum	e_object_allegiance
-{
-	ALI_NEUTRAL,
-	ALI_TORRENT,
-	ALI_LEGION,
-	ALI_ARMADA
-};
-
 // returns 0 if possible and successful, otherwise -1.
 typedef int (* t_obj_act)(t_oinst *, t_cub *);
 
@@ -381,8 +399,12 @@ typedef struct s_objects_list_elem
 	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
 	int			isactive;
+	
 	// PORTAL SPECIFIC
+	int			rel_type_enum;
 	void		*relative;
+
+	
 	t_matrx		special_gset;// currently used for lever/pressure plate to have unique pset for floortile
 
 	struct s_objects_list_elem	*next;
@@ -403,6 +425,7 @@ typedef struct s_objects_list_elem
 typedef struct s_drawable_objects
 {
 	/// OBJECT MODELS (constant) /////////////////////////
+	t_omdl	player;//	Player object model;
 	t_omdl	portal;//	Portal object model;
 	t_omdl	fireball;//	Fireball object model;
 	t_omdl	firepit;//	Fireball generator obj;
@@ -431,6 +454,7 @@ typedef struct s_renderer_column_params
 
 typedef struct s_renderer
 {
+	mlx_image_t	*sky_layer;
 	mlx_image_t	*bg_layer;
 	mlx_image_t	*walls_layer;
 	mlx_image_t	*proj_layer;
@@ -449,7 +473,7 @@ typedef struct s_renderer
 //	int			*sky_toffs;
 
 	t_oinst		*portal;// pointer to portal currently being rendered
-	int		pframe[4];// min and max coords of projection frame for current portal.
+	int			pframe[4];// min and max coords of projection frame for current portal.
 
 	float		flrw_to_cw;
 	float		flrh_to_cw;
@@ -522,6 +546,7 @@ char			*ft_strncpy_i(char *dst, const char *src, \
 size_t len, unsigned int idx);
 
 t_cub			path_from_line(t_cub cub);
+int				instanciate_map_objects(t_cub *cub);
 
 /// COLOR PARSE ////////////
 int				str_to_color(int r, int g, int b, int t);
@@ -585,23 +610,39 @@ int				clear_skycaster(t_cub *cub);
 
 /// DRAW THREADS API
 int				init_draw_threads(t_cub *cub, t_thdraw *threads);
-int				order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to);
+int				order_draw_call(t_thdraw *threads, int from, int to);
 void			stop_draw_threads(t_thdraw *threads);
 
 /// OBJECT MANAGEMENT SYSTEM ////////
+int				get_new_obj_id(void);
 int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
-int				create_obj_instance(t_cub *cub, int *pos, int type_enum, int allegiance, void *param);
+int				create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance, void *param);
 int				delete_oinst_by_id(t_cub *cub, int id);
 t_oinst			*get_obj(t_cub *cub, int id);
 int				delete_oinst_by_type(t_cub *cub, int type_enum);
 void			delete_all_obj_instances(t_cub *cub);
+
+int				link_portal_instances(t_oinst *prtl1, t_oinst *prtl2);
+int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);
+int				link_fireball_to_player(t_oinst *fball, t_hero *player);
+int				link_firepit_to_player(t_oinst *fpit, t_hero *player);
+
+/// OBJECT INSTANCIATOR (DO NOT USE DIRECTELY ! USE create_obj_instance())
+int				create_player_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
+int				create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
+int				create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
+int				create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
+int				create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
+
+
 
 /// OBJECT ACTIVATION FUNCS /////////
 void		    commit_all_obj_actions(t_cub *cub);
 int				activate_portal(t_oinst *obj, unsigned int new_status);
 
 /// OBJECT ACTIONS CALLBACKS
+int				__obj_action_player(t_oinst *obj, t_cub *cub);
 int				__obj_action_portal(t_oinst *obj, t_cub *cub);
 int				__obj_action_fireball(t_oinst *obj, t_cub *cub);
 int				__obj_action_firepit(t_oinst *obj, t_cub *cub);
@@ -618,11 +659,15 @@ int				report_err_strerror(char *msg);
 int				report_mlx_init_error(void);
 void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
+int				report_threads_err(t_thdraw *threads, char *err, int print_err);
+int				report_obj_err(t_oinst *obj, char *msg);
 
 /// MODEL ////////////////////
-t_omdl			*init_lever_model(t_objs *objs);
+t_omdl			*init_player_model(t_objs *objs);
 t_omdl			*init_portal_model(t_objs *objs);
+t_omdl			*init_lever_model(t_objs *objs);
 t_omdl			*init_fireball_model(t_objs *objs);
+t_omdl			*init_firepit_model(t_objs *objs);
 
 /// TESTING TXTR_DICT
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
@@ -637,26 +682,23 @@ t_cub			*mapx_builder(t_map *m, t_cub *cub);
 t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_cub			*e_mtrx_count(t_cub *cub);
+void		 	p_list_objx(t_objx **objx, int id, int num);
 
 char			*chrs_builder(t_cub *cub);
-// t_cub			*chsr_feed(t_cub *cub);
-// t_box	 		*e_mtrx_link(t_box *box, char **raw);
-// t_cub			*e_mtrx_count(t_cub *cub);
-// t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
-
-void		 	p_list_objx(t_objx **objx, int id, int num);
 t_objx			*objx_init(t_objx *objx);
 t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
 t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
-
+t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
+
 void			minimap_set_pos(t_cub *cub);
 void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);
 void			mlx_draw_mmap(t_cub *cub);
 void			mlx_draw_player(t_cub * cub, t_map *map);
 void			mlx_update_mmap(t_cub *cub, t_map *m);
+
 
 
 #endif

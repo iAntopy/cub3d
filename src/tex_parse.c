@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/14 23:27:50 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 19:54:39 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	tex_parse(t_cub *cub, t_map *map)
 		return (-1);
 	if (!xwalls_builder(cub, map->raw))
 		return (error_clr(NULL, map));
-		
 	return (0);
 }
 
