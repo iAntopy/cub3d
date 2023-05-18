@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 18:43:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:21:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 	t_hero		*player;
 	float		pos[4];
 
-//	(void)obj;
-//	(void)cub;
 	if (obj->isactive)
 	{
 		if (counter > 1000)
@@ -54,8 +52,8 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 	dist = dx * dx + dy * dy;
 	if (dist < PORTAL_TRIGGER_DIST_SQ)
 	{
-		cub->hero.px = link->px + dx * 1.0f;
-		cub->hero.py = link->py + dy * 1.0f;
+		cub->hero.px = link->px + dx * 1.5f;
+		cub->hero.py = link->py + dy * 1.5f;
 		return (0);
 	}
 	else

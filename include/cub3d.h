@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:25:42 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:55:51 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -614,6 +614,7 @@ int				order_draw_call(t_thdraw *threads, int from, int to);
 void			stop_draw_threads(t_thdraw *threads);
 
 /// OBJECT MANAGEMENT SYSTEM ////////
+int				get_new_obj_id(void);
 int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
 int				create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance, void *param);
@@ -626,6 +627,13 @@ int				link_portal_instances(t_oinst *prtl1, t_oinst *prtl2);
 int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);
 int				link_fireball_to_player(t_oinst *fball, t_hero *player);
 int				link_firepit_to_player(t_oinst *fpit, t_hero *player);
+
+/// OBJECT INSTANCIATOR (DO NOT USE DIRECTELY ! USE create_obj_instance())
+int				create_player_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
+int				create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
+int				create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
+int				create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
+int				create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
 
 
 
@@ -652,6 +660,7 @@ int				report_mlx_init_error(void);
 void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 int				report_threads_err(t_thdraw *threads, char *err, int print_err);
+int				report_obj_err(t_oinst *obj, char *msg);
 
 /// MODEL ////////////////////
 t_omdl			*init_player_model(t_objs *objs);
