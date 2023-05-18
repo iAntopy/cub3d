@@ -70,12 +70,12 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
 
-	
+	init_player_model(objs);	
 	if (t_name[0] == '*')              		   	///// fireball
 	{
 		printf(">>>>	MODEL : FB [%d] >>>\n", box->n_fbll);
 		if (box->n_fbll == 0)
-			objs->fball =  *init_fireball_model(objs);
+			init_fireball_model(objs);
 		box->n_fbll++;
 	}
 	else  if (t_name[0] == '!' || t_name[0] == '+')       		  		//// lever

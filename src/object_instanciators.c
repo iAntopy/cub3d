@@ -32,6 +32,8 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 	new_obj->tex_idx = 0;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
+	new_obj->cx = (int)(pos[0] * cub->inv_cw);
+	new_obj->cy = (int)(pos[1] * cub->inv_cw);
 	new_obj->action = __obj_action_player;
 	new_obj->rel_type_enum = 0;
 	new_obj->relative = link;
@@ -57,8 +59,10 @@ int	create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 	new_obj->_id = get_new_obj_id();
 	new_obj->tex_idx = 0;
 	new_obj->allegiance = allegiance;
-	new_obj->px = cell[0];
-	new_obj->py = cell[1];
+	new_obj->cx = cell[0];
+	new_obj->cy = cell[1];
+	new_obj->px = pos[0];
+	new_obj->py = pos[1];
 	new_obj->relative = link;
 	new_obj->isactive = 0;	
 	new_obj->action = __obj_action_lever;

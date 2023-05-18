@@ -90,6 +90,8 @@
 # define NB_OBJ_TYPES 5
 # define FIREPIT_SPAWN_TICKS 100
 
+# define MAX_PLAYERS 8
+
 enum	e_sides
 {
 	W_SIDE = 0,
@@ -307,26 +309,6 @@ typedef struct s_raycaster_data
 	t_pdata		*prtl_proj;//	idem but used excusively for raycasting portal projections
 }	t_rcast;
 
-typedef struct s_main_character_data
-{
-	int		cell_x;
-	int		cell_y;
-	float	px;
-	float	py;
-	float	ori;//	player orientation in radian
-	int		allegiance;
-
-	t_oinst	*player_obj;
-
-	float	*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
-	float	*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
-	float	*fov_lx;// left most fov ray x
-	float	*fov_ly;// left most fov ray y 
-	float	*fov_rx;// right most fov ray x 
-	float	*fov_ry;// right most fov ray y
-	t_rcast	rcast;
-}	t_hero;
-
 typedef struct s_draw_thread_profil
 {
 	t_cub			*cub;
@@ -349,6 +331,7 @@ typedef struct s_object_model
 	char			*model_name;//	For debug info and logging purposes.
 	int				type_enum;
 	int				is_drawable;
+	int				is_oriented;
 	int				width;// Width of object in world coords.
 	int				half_w;
 	int				height;// Height of object in world coords (set auto).
@@ -382,6 +365,8 @@ typedef struct s_objects_list_elem
 	
 	float		px;//	Position X
 	float		py;//	Position Y
+	int			cx;//	Current cell X
+	int			cy;//	Current cell Y
 	float		ori;//	object orientation when applicable
 	float		dx;//	obj direction X
 	float		dy;//	obj direction Y
@@ -428,11 +413,11 @@ typedef struct s_drawable_objects
 {
 	/// OBJECT MODELS (constant) /////////////////////////
 	t_omdl	player;//	Player object model;
+	t_omdl	lever;		//	Switch object model;
 	t_omdl	portal;//	Portal object model;
 	t_omdl	fireball;//	Fireball object model;
 	t_omdl	firepit;//	Fireball generator obj;
-	t_omdl	lever;		//	Switch object model;
-	t_omdl	fball;	//	Attack object model;
+	t_omdl	firepet;//	Fireball generator obj;
 	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
 	//t_oclct	*collectibles;
 	//t_oenmi	*ennemies;
@@ -453,6 +438,25 @@ typedef struct s_renderer_column_params
 	float			ratio;
 //	int			px_incry;
 }	t_rcol;
+
+typedef struct s_main_character_data
+{
+	// int		cell_x;
+	// int		cell_y;
+	// float	px;
+	// float	py;
+	// float	ori;//	player orientation in radian
+	// int		allegiance;
+	t_oinst		*ply_obj;
+
+	float		*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
+	float		*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
+	float		*fov_lx;// left most fov ray x
+	float		*fov_ly;// left most fov ray y 
+	float		*fov_rx;// right most fov ray x 
+	float		*fov_ry;// right most fov ray y
+	t_rcast		rcast;
+}	t_hero;
 
 typedef struct s_renderer
 {
@@ -498,7 +502,10 @@ typedef struct s_cub3d_core_data
 //	mlx_texture_t	*floor_tex;
 //	mlx_texture_t	*sky_tex;
 
-	int				tex_id;
+	int				nb_players;
+	int				player_ids[MAX_PLAYERS];// ids to player obj instances
+
+//	int				tex_id;
 	/// CONSTANT VALUES ////////////////////////////////////////
 	int				scn_midx;	// mid screen x coordinate
 	int				scn_midy;	// mid screen y coordinate
@@ -617,7 +624,7 @@ void			stop_draw_threads(t_thdraw *threads);
 
 /// OBJECT MANAGEMENT SYSTEM ////////
 int				get_new_obj_id(void);
-int				init_obj_framework(t_cub *cub);
+//int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
 int				create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance, void *param);
 int				delete_oinst_by_id(t_cub *cub, int id);

@@ -48,26 +48,30 @@ int	cub_init_core_data(t_cub *cub)
 	return (0);
 }
 
-int	set_player_cell_pos(t_cub *cub, int x, int y)
+static int	setup_hero(t_cub *cub)
 {
-	printf("Player (x, y) : (%d, %d)\n", x, y);
-	if (is_wall(&cub->map, x, y))
-		return (printf("ERROR hero can't be placed in wall."));
-	cub->hero.cell_x = x;
-	cub->hero.cell_y = y;
-	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
-	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
-	cub->hero.ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
-	cub->hero.allegiance = ALI_NEUTRAL;
+//	printf("Player (x, y) : (%d, %d)\n", x, y);
+//	if (is_wall(&cub->map, x, y))
+//		return (printf("ERROR hero can't be placed in wall."));
+	if (!cub->player_ids[0])
+		return (report_err("Error : No player found in map\n"));
+	cub->hero.ply_obj = get_obj(cub, cub->player_ids[0]);
+//	cub->hero.cell_x = x;
+//	cub->hero.cell_y = y;
+//	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
+//	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
+	cub->hero.ply_obj->ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
+//	cub->hero.allegiance = ALI_NEUTRAL;
 	cub->renderer.requires_update = 1;
-	cub->map.width_px = cub->map.width * CELL_WIDTH;
-	cub->map.height_px = cub->map.height * CELL_WIDTH;
+
 	return (0);
 }
 
 void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 {
 	printf("Setting up hooks and focus\n");
+	cub->map.width_px = cub->map.width * CELL_WIDTH;
+	cub->map.height_px = cub->map.height * CELL_WIDTH;
 	mlx_focus(cub->mlx);
 	mlx_set_cursor_mode(cub->mlx, MLX_MOUSE_HIDDEN);
 	mlx_cursor_hook(cub->mlx, on_cursor_move, cub);
@@ -86,13 +90,12 @@ int	main(int argc, char **argv)
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
 	if (map_checker(&cub, &cub.map, argv[1]) != 0
-		|| set_player_cell_pos(&cub, cub.map.hero_x, cub.map.hero_y) != 0)
+		|| instanciate_map_objects(&cub) < 0
+		|| setup_hero(&cub) != 0)
 	{
 		ft_eprintf("WOWOW map checker failed HARD !\n");
 		return (cub_clear(&cub, EXIT_FAILURE));
 	}
-	printf("WOWOOW : cub.objs.portal.type_enum : %d\n", cub.objs.portal.type_enum);
-	printf("WOWOOW : cub.objs.lever.type_enum : %d\n", cub.objs.lever.type_enum);
 
 	printf("Initializing MLX42 context.\n");
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
@@ -161,12 +164,8 @@ int	main(int argc, char **argv)
 	if (!cub.objs.firepit.gset)
 		init_firepit_model(&cub.objs);
 */
-	init_player_model(&cub.objs);
-	float pos[2];
-	pos[0] = cub.hero.px;
-	pos[1] = cub.hero.py;
-	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
-	instanciate_map_objects(&cub);
+//	init_player_model(&cub.objs);
+
 
 ////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
 	int	i;

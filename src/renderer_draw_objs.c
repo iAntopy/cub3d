@@ -269,8 +269,8 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 	obj = cub->objs.instances;
 	prtl = (t_oinst *)cub->renderer.portal;
 	link = (t_oinst *)cub->renderer.portal->relative;
-	ppos[0] = cub->hero.px + (link->px - prtl->px);
-	ppos[1] = cub->hero.py + (link->py - prtl->py);
+	ppos[0] = cub->hero.ply_obj->px + (link->px - prtl->px);
+	ppos[1] = cub->hero.ply_obj->py + (link->py - prtl->py);
 //	printf("\nlink id %d %p, (%.2f, %.2f)\n", link->_id, link, link->px, link->py);
 	while (obj)
 	{
@@ -464,8 +464,8 @@ void	render_objects(t_cub *cub)
 			continue ;
 		}
 //		printf("obj draw init checks PASSED \n");
-		obj->ox = obj->px - cub->hero.px;
-		obj->oy = obj->py - cub->hero.py;
+		obj->ox = obj->px - cub->hero.ply_obj->px;
+		obj->oy = obj->py - cub->hero.ply_obj->py;
 		obj->dist = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
 		tex = obj->type->gset->xwalls[obj->tex_idx];
 		ratio = cub->near_z / obj->dist;

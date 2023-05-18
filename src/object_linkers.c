@@ -45,7 +45,7 @@ int	link_fireball_to_player(t_oinst *fball, t_hero *player)
 	if (!fball || !player
 		|| (fball->type->type_enum != OBJ_FIREBALL))
 		return (report_err("fball is not a OBJ_FIREBALL.\n"));
-	if (fball->allegiance == player->allegiance)
+	if (fball->allegiance == player->ply_obj->allegiance)
 		return (report_err("Cannot link fireball to player of same team.\n"));
 	fball->relative = player;
 	return (0);
@@ -56,7 +56,7 @@ int	link_firepit_to_player(t_oinst *fpit, t_hero *player)
 	if (!fpit || !player
 		|| (fpit->type->type_enum != OBJ_FIREPIT))
 		return (report_err("fpit is not a OBJ_FIREPIT.\n"));
-	if (fpit->allegiance == player->allegiance)
+	if (fpit->allegiance == player->ply_obj->allegiance)
 		return (report_err("Cannot link firepit to player of same team.\n"));
 	fpit->relative = player;
 	return (0);

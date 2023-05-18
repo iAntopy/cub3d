@@ -116,8 +116,8 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rdata)
 			param_scalar = *params;
 
 			
-			x = *rd->rx * param_scalar + cub->hero.px;
-			y = *rd->ry * param_scalar + cub->hero.py;
+			x = *rd->rx * param_scalar + cub->hero.ply_obj->px;
+			y = *rd->ry * param_scalar + cub->hero.ply_obj->py;
 	//		printf("x, y : %f, %f\n", x, y);
 //			printf("cx, cy : %d, %d\n", cx, cy);
 			if (*buffs[1] || x < 0.0f || y < 0.0f)
@@ -183,8 +183,8 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rdata)
 //			param_scalar = *params;
 //			if (param_scalar >= rd->dist)
 //				param_scalar = rd->dist - 0.01f;
-			x = *rd->rx * (*params) + cub->hero.px;
-			y = *rd->ry * (*params) + cub->hero.py;
+			x = *rd->rx * (*params) + cub->hero.ply_obj->px;
+			y = *rd->ry * (*params) + cub->hero.ply_obj->py;
 	//		printf("x, y : %f, %f\n", x, y);
 //			printf("cx, cy : %d, %d\n", cx, cy);
 			if (*buffs[1] || x < 0.0f || y < 0.0f)

@@ -24,6 +24,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.model_name = "player";
 	objs->player.type_enum = OBJ_PLAYER;
 	objs->player.is_drawable = 0;
+	objs->player.is_oriented = 1;
 	objs->player.nb_texs = 0;
 	objs->player.draw_offy = 0;
 //	objs->player.gset =  gset_builder("tex/gset_p/", 4);
@@ -49,6 +50,7 @@ t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.type_enum = OBJ_PORTAL;
 	printf("INIT OBJ_PORTAL type struct with portal.type_enum = %d\n", objs->portal.type_enum);
 	objs->portal.is_drawable = 1;
+	objs->player.is_oriented = 0;
 	objs->portal.nb_texs = 4;
 	objs->portal.draw_offy = 0;
 	objs->portal.gset =  gset_builder("tex/gset_p/", 4);
@@ -75,6 +77,7 @@ t_omdl	*init_lever_model(t_objs *objs)
 	objs->lever.type_enum = OBJ_LEVER;
 	printf("INIT OBJ_LEVER type struct with lever.type_enum = %d\n", objs->lever.type_enum);
 	objs->lever.is_drawable = 0;
+	objs->lever.is_oriented = 0;
 	objs->lever.nb_texs = 2;
 //	objs->portal.draw_offy = 20;
 	objs->lever.gset = gset_builder("tex/gset_lev/", 2);
@@ -96,22 +99,23 @@ t_omdl	*init_fireball_model(t_objs *objs)
 
 	if (objs->fireball.type_enum)
 		return (NULL);
-	objs->fball.model_name = "fireball";
-	objs->fball.type_enum = OBJ_FIREBALL;
-	objs->fball.is_drawable = 1;
-	objs->fball.nb_texs = 6;
-	objs->fball.draw_offy = 0;
-	objs->fball.gset = gset_builder("tex/gset_fb/", 6);
-	tex = objs->fball.gset->xwalls[0];
+	objs->fireball.model_name = "fireball";
+	objs->fireball.type_enum = OBJ_FIREBALL;
+	objs->fireball.is_drawable = 1;
+	objs->fireball.is_oriented = 0;
+	objs->fireball.nb_texs = 6;
+	objs->fireball.draw_offy = 0;
+	objs->fireball.gset = gset_builder("tex/gset_fb/", 6);
+	tex = objs->fireball.gset->xwalls[0];
 	// printf("A Fireball ptr : %p  \n", objs->fball.gset->xwalls[0]);
 //	objs->fball.texs[0] = objs->fball.gset->xwalls[0];
-	objs->fball.width = CELL_WIDTH;
-	objs->fball.half_w = objs->fball.width >> 1;
-	objs->fball.height = objs->fball.width * (tex->height / tex->width);
-	objs->fball.half_h = objs->fball.height >> 1;
-	objs->fball.speed = 2.0f;
+	objs->fireball.width = CELL_WIDTH;
+	objs->fireball.half_w = objs->fireball.width >> 1;
+	objs->fireball.height = objs->fireball.width * (tex->height / tex->width);
+	objs->fireball.half_h = objs->fireball.height >> 1;
+	objs->fireball.speed = 2.0f;
 	// printf("FireBall object model initialized !\n");
-	return (&objs->fball);
+	return (&objs->fireball);
 }
 
 t_omdl	*init_firepit_model(t_objs *objs)
@@ -126,6 +130,8 @@ t_omdl	*init_firepit_model(t_objs *objs)
 		return (NULL);
 	objs->firepit.model_name = "firepit";
 	objs->firepit.type_enum = OBJ_FIREPIT;
+	objs->firepit.is_drawable = 1;
+	objs->firepit.is_oriented = 0;
 	objs->firepit.nb_texs = 1;
 	objs->firepit.draw_offy = 20;
 

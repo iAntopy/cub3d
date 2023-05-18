@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 22:16:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 23:28:37 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,11 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 	printf("inst one Check PASSED\n");
 	printf("\nCreating obj inst at pos (%d, %d), name %c, type %d\n",
 		ob->opos[0], ob->opos[1], ob->name, ob->o_type);
-	if (ob->o_type == OBJ_PLAYER)
+	if (ob->o_type == OBJ_PLAYER && cub->nb_players < MAX_PLAYERS)
+	{
 		inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, &cub->hero);
+		cub->player_ids[cub->nb_players++] = inst_id;
+	}
 	else
 		inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, NULL);
 
