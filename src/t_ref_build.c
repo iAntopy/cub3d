@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 20:43:05 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:56:56 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 	char	**tex_set;
 
     if (cub->box.n_dual > i)
-    {	
+    {		
 		tex_set = ft_split_space(t_name);
 	
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
@@ -125,7 +125,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 				}
-				if ((p_box < max - (cub->box.pset + 1)) && (p_box > cub->box.meta -1))
+				if ((p_box <= max - (cub->box.pset + 1)) && (p_box - cub->box.meta >= 0)) /// floor + ceil
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
 				}

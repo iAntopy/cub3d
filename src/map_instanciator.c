@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 23:04:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 07:05:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,16 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 			o->relativ, o->wobj);
 		if (o->o_type == OBJ_PORTAL)
 		{
-			printf("linking portal - name %c, type %d to name %c, type %d\n",
-				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type);
+//			printf("linking portal - name %c, type %d to name %c, type %d\n",
+//				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type);
 			link_portal_instances(o->wobj, o->rel_ref->wobj);
 		}
 		else if (o->o_type == OBJ_LEVER)
 		{
-			printf("linking lever to portal - name %c, type %d to name %c, type %d\n",
-				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type);
+			printf("linking lever to portal - name %c, type %d to name %c, type %d, wobj enum : %d, rel\
+ wobj enum : %d\n",
+				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type,
+					o->wobj->type->type_enum, o->rel_ref->wobj->type->type_enum);
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 			printf("lever relative ptr : %p\n", o->wobj->relative);
 		}
@@ -101,8 +103,11 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 {
 	float	pos[2];
 	int		inst_id;
-		
-	if (ob->obj_id < 0 || ob->wobj || ob->o_type < 1 || NB_OBJ_TYPES < ob->o_type
+	
+	printf("instanciate_specific_obj START \n");
+	printf("Try creating obj inst at pos (%d, %d), name %c, type %d, alleg %d\n",
+		ob->opos[0], ob->opos[1], ob->name, ob->o_type, ob->alleg);
+	if (ob->obj_id < 0 || ob->o_type < 1 || NB_OBJ_TYPES < ob->o_type
 			|| ob->alleg < 1 || 3 < ob->alleg)
 			return (NULL);
 	
@@ -128,11 +133,12 @@ int	instanciate_map_objects(t_cub *cub)
 	int	nb_meta;
 	int	i;
 
-	printf("\nStarting map instanciation \n");
+	printf("\nStarting map instanciation. cub->objs.lever.type_enum : %d \n", cub->objs.lever.type_enum);
 	if (!cub || !cub->box.objx)
 		return (-1);
 	nb_meta = cub->box.meta;
 
+	printf("objx before : \n");
 	print_all_map_insts(cub->box.objx, nb_meta);
 	printf(" Check passed, nb_meta : %d\n", nb_meta);
 	i = -1;
@@ -143,6 +149,7 @@ int	instanciate_map_objects(t_cub *cub)
 	link_all_map_instances(cub->box.objx, nb_meta);
 	printf("Linking map instances DONE\n\n");
 
+	printf("objx after : \n");
 	print_all_map_insts(cub->box.objx, nb_meta);
 		
 	i = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 20:48:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 19:54:58 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ int	main(int argc, char **argv)
 		ft_eprintf("WOWOW map checker failed HARD !\n");
 		return (cub_clear(&cub, EXIT_FAILURE));
 	}
+	printf("WOWOOW : cub.objs.portal.type_enum : %d\n", cub.objs.portal.type_enum);
+	printf("WOWOOW : cub.objs.lever.type_enum : %d\n", cub.objs.lever.type_enum);
+
 	printf("Initializing MLX42 context.\n");
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	printf("What happened MLX42 context.\n");
@@ -144,10 +147,6 @@ int	main(int argc, char **argv)
 //	pos[1] = 10 * CELL_WIDTH;
 //	create_obj_instance(&cub, pos, OBJ_FIREPIT, &cub.hero);
 
-//	mlx_set_color_in_rows(cub.renderer.mmap_layer, 0, 15, 0xffffffff);
-//	pos[0] = 125;
-//	pos[1] = 100;
-//	mlx_draw_square(cub.renderer.mmap_layer, pos, 50, 0xffffffff);
 /////// END OF DEBUG SECTION
 */
 

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/16 03:35:30 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:57:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@
 
 # define FOV60 1.047197551196597746f
 # define FOV60_HF 0.52359877559829887f
+
+# define FOV45 0.785398163397448f
+# define FOV45_HF 0.39269908169872414f
 
 # define FOV20 0.349065850398865915f
 # define FOV20_HF 0.17453292519943295f
@@ -171,6 +174,7 @@ typedef struct s_box
 	t_matrx			*gset; /// rely to model
 	// t_matrx			*dual; /// rely to model
 }	t_box;
+
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
 // grid_coords : top-left corner coordinate for grid indexed [cell_y][cell_x]
 // file : map filename *.cub
@@ -270,8 +274,8 @@ typedef struct s_portal_projection_data
 	float	*fwd_len;// sin(theta offset for this ray). used in portal projection to find ray collision on obj
 
 //	Init data;
-	int		px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
-	int		py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
+	float	px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
+	float	py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
 	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
 	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
 
@@ -501,8 +505,6 @@ typedef struct s_cub3d_core_data
 	float			inv_two_pi;	// 1 / 2pi;
 	int				buff_offys[SCN_HEIGHT];//	indexable array of all j * SCN_WIDTH 
 										//	offsets in y directions to optimize rendering.
-
-
 	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float			fov;// = fov;// field of view
 	float			hfov;// = fov * 0.5f;// half fov
@@ -608,7 +610,7 @@ int				clear_skycaster(t_cub *cub);
 
 /// DRAW THREADS API
 int				init_draw_threads(t_cub *cub, t_thdraw *threads);
-int				order_draw_call(t_cub *cub, t_thdraw *threads, int from, int to);
+int				order_draw_call(t_thdraw *threads, int from, int to);
 void			stop_draw_threads(t_thdraw *threads);
 
 /// OBJECT MANAGEMENT SYSTEM ////////
@@ -649,6 +651,7 @@ int				report_err_strerror(char *msg);
 int				report_mlx_init_error(void);
 void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
+int				report_threads_err(t_thdraw *threads, char *err, int print_err);
 
 /// MODEL ////////////////////
 t_omdl			*init_player_model(t_objs *objs);

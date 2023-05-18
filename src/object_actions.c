@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 23:13:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:43:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 	dist = dx * dx + dy * dy;
 	if (dist < PORTAL_TRIGGER_DIST_SQ)
 	{
-		cub->hero.px = link->px + dx * 1.5f;
-		cub->hero.py = link->py + dy * 1.5f;
+		cub->hero.px = link->px + dx * 1.0f;
+		cub->hero.py = link->py + dy * 1.0f;
 		return (0);
 	}
 	else
@@ -160,21 +160,23 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	}
 	else if (obj->relative)
 	{
-	//	ft_eprintf("lever relative exists\n");
+//		ft_eprintf("lever relative exists\n");
 		cx = (int)obj->px;
 		cy = (int)obj->py;
-	//	ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
-	//		cub->hero.cell_x, cub->hero.cell_y);
+//		ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
+//			cub->hero.cell_x, cub->hero.cell_y);
 		if (!(cub->hero.cell_x == cx
 			&& cub->hero.cell_y == cy))
 			return (-1);
-	//	ft_eprintf("PRESSED !\n");
+		ft_eprintf("PRESSED !\n");
 		activate_portal((t_oinst *)obj->relative, 1);
 		obj->isactive = 1;
 		obj->special_gset.xwalls[0] = obj->type->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
 //		dual->xwalls[0] = obj->type->gset->xwalls[1];
 	}
+//	else
+//		printf("Lever has no relative\n");
 	return (0);
 }
 

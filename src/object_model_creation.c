@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 23:10:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/16 09:10:20 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ static int	create_portal_instance(t_cub *cub, float *pos, int allegiance,\
 	new_obj->py = pos[1];
 	new_obj->action = __obj_action_portal;
 	new_obj->rel_type_enum = 0;
-	new_obj->relative = NULL;
+	new_obj->relative = new_obj;
 	new_obj->isactive = 0;
 //	new_obj->action = NULL;
 	if (link && link->type->type_enum == OBJ_PORTAL)
@@ -289,6 +289,8 @@ static int	create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst
 	cell[0] = (int)(pos[0] * cub->inv_cw);
 	cell[1] = (int)(pos[1] * cub->inv_cw);
 	new_obj->type = &cub->objs.lever;
+	printf("Crreating lever instance. new_obj->type->type_enum = %d vs OBJ_LEVER (%d)\n", new_obj->type->type_enum,
+		OBJ_LEVER);
 	new_obj->_id = get_new_obj_id();
 	new_obj->tex_idx = 0;
 	new_obj->allegiance = allegiance;
@@ -490,15 +492,21 @@ int	create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance,\
 
 	cell[0] = (int)(pos[0] * cub->inv_cw);
 	cell[1] = (int)(pos[1] * cub->inv_cw);
-	printf("Creating obj with type : %d\n", type_enum);
+	printf("Creating obj with type : %d. IF is PORTAL = %d\n", type_enum, OBJ_PORTAL);
 	if (is_wall(&cub->map, cell[0], cell[1]))
 		return (report_err("ERROR : Trying to create object in wall.\n"));
 	if (type_enum == OBJ_PLAYER)
 		obj_id = create_player_instance(cub, pos, allegiance, param);
 	else if (type_enum == OBJ_PORTAL)
+	{
+		printf("creating portal\n");
 		obj_id = create_portal_instance(cub, pos, allegiance, param);
+	}
 	else if (type_enum == OBJ_LEVER)
+	{
+		printf("creating lever\n");
 		obj_id = create_lever_instance(cub, pos, allegiance, param);
+	}
 	else if (type_enum == OBJ_FIREBALL)
 		obj_id = create_fireball_instance(cub, pos, allegiance, param);
 	else

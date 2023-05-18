@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 18:00:35 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:53:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,7 @@ static void	__render_proj_floor_sky(t_cub *cub, t_pdata *pdata, uint32_t *pbuff,
 //			printf("mx %p\n", cub->map.mx);
 //			printf("mx[0] %p\n", cub->map.mx[0]);
 //			printf("mx[0][0] %p\n", cub->map.mx[0][0]);
+
 			pset = cub->map.mx[c[1]][c[0]];
 			
 			if (!pset)
@@ -345,18 +346,24 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 //			printf("p in bound\n");
 			c[0] = (int)(p[0] * cub->inv_cw);
 			c[1] = (int)(p[1] * cub->inv_cw);
-
-//			printf("getting tex at cell (%d, %d)\n", c[0], c[1]);//, cub->map.mx[c[1]][c[0]]);
+			
+			t[0] = p[0] - (c[0] * CELL_WIDTH);
+			t[1] = p[1] - (c[1] * CELL_WIDTH);
+			if (is_wall(&cub->map, c[0], c[1]))
+			{
+//				printf("is wall. cell before : (%d, %d)\n", c[0], c[1]);
+				if (pd->rdata->side == N_SIDE || pd->rdata->side == S_SIDE)
+					c[1] = pd->cy - pd->rdata->cincr_y;
+				else
+					c[0] = pd->cx - pd->rdata->cincr_x;
+//				printf("is wall. cell after : (%d, %d)\n", c[0], c[1]);
+			}
 			pset = cub->map.mx[c[1]][c[0]];
 			
 			if (!pset)
 				continue ;
 			tex_flr = pset->xwalls[0];
 
-			t[0] = p[0] - (c[0] * CELL_WIDTH);
-			t[1] = p[1] - (c[1] * CELL_WIDTH);
-
-//			printf("x : %d, *pf : %p, *pc : %p, pc raw offset : %ld\n", i, (void *)(size_t)*pf, (void *)(size_t)*pc, pc - pbuff);
 			*pf = get_tex_pixel(tex_flr, t[0] * tex_flr->width * cub->inv_cw,
 				t[1] * tex_flr->height * cub->inv_cw) & TRANSPARENCY;
 //			printf("*pf : %p, ", (void*)(size_t)*pf);
@@ -366,7 +373,8 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 			if (!tex_cil)
 				continue ;
 			pc = pbuff + i + (SCN_WIDTH * (SCN_HEIGHT - j));
-//			if ((SCN_HEIGHT - j) > 200 && i < pframe[2] - 100)
+//			printf("x : %d, *pf : %p, *pc : %p, pc raw offset : %ld\n", i, (void *)(size_t)*pf, (void *)(size_t)*pc, pc - pbuff);
+///			if ((SCN_HEIGHT - j) > 200 && i < pframe[2] - 100)
 //				printf("pc x : %ld\n", (size_t)pc % SCN_WIDTH);
 //				printf("x, y : (%d, %d). *pc (%p) vs PROJ_COLOR (%p), !dpbuff_cil[i * SCN_HEIGHT] ? %d\n", i, j,
 //					(void *)(size_t)*pc, (void *)(size_t)0xffbcbbb0, !dpbuff_cil[i * SCN_HEIGHT]);
