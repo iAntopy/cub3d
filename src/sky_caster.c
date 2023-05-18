@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sky_caster.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 02:30:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 20:18:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 10:36:53 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 int	init_skycaster(t_cub *cub)
 {
