@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:55:51 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 23:27:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,14 +314,16 @@ typedef struct s_main_character_data
 	float	px;
 	float	py;
 	float	ori;//	player orientation in radian
-	float	ori_factor;//	ori / 2pi, updated in cub_player_rotate
+	int		allegiance;
+
+	t_oinst	*player_obj;
+
 	float	*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
 	float	*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
 	float	*fov_lx;// left most fov ray x
 	float	*fov_ly;// left most fov ray y 
 	float	*fov_rx;// right most fov ray x 
 	float	*fov_ry;// right most fov ray y
-	int		allegiance;
 	t_rcast	rcast;
 }	t_hero;
 
@@ -380,6 +382,7 @@ typedef struct s_objects_list_elem
 	
 	float		px;//	Position X
 	float		py;//	Position Y
+	float		ori;//	object orientation when applicable
 	float		dx;//	obj direction X
 	float		dy;//	obj direction Y
 	float		speed;//	moveing speed when applicable.
@@ -393,17 +396,16 @@ typedef struct s_objects_list_elem
 //	float		uy;//	obj unit delta y from player
 	float		dist;//	distance from player
 
-	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
-	float		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
-	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
-	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
+//	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
+//	float		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
+//	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
+//	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
 	int			isactive;
 	
 	// PORTAL SPECIFIC
 	int			rel_type_enum;
 	void		*relative;
-
 	
 	t_matrx		special_gset;// currently used for lever/pressure plate to have unique pset for floortile
 

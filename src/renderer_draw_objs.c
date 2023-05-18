@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:22:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 22:19:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -454,16 +454,16 @@ void	render_objects(t_cub *cub)
 	obj = cub->objs.instances;
 	while (obj)
 	{
-		printf("obj->type : %p\n", obj->type);
+//		printf("obj->type : %p\n", obj->type);
 		if ((!obj->type->is_drawable || !obj->type->gset) && next_obj(&obj))
 		{
-			if (obj)
-				printf("BYPASS OBJ DRAW : id %d, type ptr : %p, drawable : %d, gset ptr : %p\n",
-					obj->_id, obj->type, obj->type->is_drawable, obj->type->gset);
+//			if (obj)
+//				printf("BYPASS OBJ DRAW : id %d, type ptr : %p, drawable : %d, gset ptr : %p\n",
+//					obj->_id, obj->type, obj->type->is_drawable, obj->type->gset);
 //			obj = obj->next;
 			continue ;
 		}
-		printf("obj draw init checks PASSED \n");
+//		printf("obj draw init checks PASSED \n");
 		obj->ox = obj->px - cub->hero.px;
 		obj->oy = obj->py - cub->hero.py;
 		obj->dist = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
@@ -516,7 +516,7 @@ void	render_objects(t_cub *cub)
 
 		if (obj->type->type_enum == OBJ_PORTAL && obj->isactive)
 		{
-			printf("RENDERING PORTAL OBJECT WITH PROJ! from start %d to end %d\n", loffs[0], loffs[2]);
+//			printf("RENDERING PORTAL OBJECT WITH PROJ! from start %d to end %d\n", loffs[0], loffs[2]);
 			
 			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
 			int	*pframe = cub->renderer.pframe;
