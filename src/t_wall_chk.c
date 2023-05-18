@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/16 04:07:51 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:30:26 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,10 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	head = (ft_in_set(cub->box.chrs[o_cells], (const char *)MAP_MCHR)); 
 	if (head == 17)
 		objx->o_type = 5;
-	else if (head > 16)
-		objx->o_type = 6;
+	// else if (head > 16)
+	// 	objx->o_type = 6;
 	else if (head > 13 &&  head < 17)
-		objx->o_type = 2;
+		objx->o_type = 3;
 	else if (head < 10)
 		objx->o_type = 2;
 	else if (head < 14)

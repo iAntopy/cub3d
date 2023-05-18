@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/15 22:25:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:32:31 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,14 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	{
 		printf(">>>>	MODEL : LVLR [%d] >>>\n", box->n_lvls);
 		if (box->n_lvls == 0)
-			objs->lever =  *init_lever_model(objs);
+			init_lever_model(objs);
 		box->n_lvls++;
 	}
 	else if (t_name[0] != '?' && t_name[0] != '@') //// portal
 	{
 		printf(">>>>	MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		if (box->n_prts == 0)
-			objs->lever =  *init_portal_model(objs);
+			init_portal_model(objs);
 		box->n_prts++;
 	}
 	// printf(">>>> TEST >>> [%c]\n", t_name[0]);   			
