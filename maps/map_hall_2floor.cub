@@ -1,10 +1,10 @@
-# 1/%
-% 1/#
-! 1/#
 a tex/ext/rusty-metal.png
 b tex/ext/dark-metal.png
-c tex/ext/wall_concret.png
+c tex/ext/grunge-rock_.png
 d tex/ext/travertine-stone.png
+e tex/ext/white-marble.png
+f tex/ext/comida_pan.png
+z tex/ext/sky_star.png
 0 tex/ext/floor.png tex/ext/grunge-rock_.png
 1 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
 
@@ -12,15 +12,16 @@ A baaa
 B ccaa
 C cccc
 D abcb
+E bbbb
 
 AAAAAAAAADDDDDDD
-D000!0000111111A
-D0000000A111111A
-D00#0000A111111A
-D0000000A111111A
-BBB00BBBB1DDDDDA
+D00000000111111E
+D0000000A111111E
+D0000000A111111E
+D0000000A111111E
+BBB00BBBB1DDDDDE
 C0000000C111111D
-C000@000C111111D
-C0000000C111%11D
-C00000000111111D
+C000@0000111111D
+C0000000C111111D
+C0000000C111111D
 CCCCCCCCCDDDDDDD

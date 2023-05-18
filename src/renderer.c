@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 22:30:18 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/15 00:14:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	init_renderer(t_cub *cub)
 	cub->renderer.sky_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT >> 1);
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
-	//	cub->renderer.proj_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
+//	cub->renderer.proj_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.objs_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.mmap_layer = mlx_new_image(cub->mlx, MMP_WIDTH, MMP_HEIGHT);
 

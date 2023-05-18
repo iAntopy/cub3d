@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   sky_caster.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 02:30:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 10:36:53 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:18:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 int	init_skycaster(t_cub *cub)
 {
 	int	i;
 	
-	if (cub->tex.open_sky && !cub->box.sky)
+	if (!cub->box.sky)
 		return (report_err("No sky texture provided.\n"));
 	printf("sky textures LOADED\n");
+	cub->tex.skymap = cub->box.sky;
 	printf("sky ptr : %p\n", cub->tex.skymap);
 
 	// cub->tex.open_sky = 1;

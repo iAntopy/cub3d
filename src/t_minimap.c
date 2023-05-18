@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:58:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 22:24:07 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/16 00:08:35 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ void	minimap_check(t_cub *cub, t_map *m)
 			{
 				pos[0] = m->pos_x *10;
 				pos[1] = m->pos_y *10;			
-				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x2f888888);	
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x00888888);	
 				printf("\tMINIMAP_CHK STAT_X[%d]::STAT_Y[%d]: \n", stat[0], stat[1]);
 			}
 			else if (o_cells > cub->box.meta -1 && o_cells < cub->box.meta + cub->box.pset) // floor
 			{
 				pos[0] = m->pos_x *10;
 				pos[1] = m->pos_y *10;
-				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0xafffffff);
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0xffffffff);
 			}
 			m->pos_x++;
 		}
@@ -74,37 +74,37 @@ void	minimap_check(t_cub *cub, t_map *m)
 /// set map_char to map_pixel
 // void	mlx_draw_mmap(t_cub *cub)
 // {
-	// 	int	len[2];
-	// 	int mmax[2];
-	// 	int id;
-		
-	// 	id = 0;
-	// 	mmax[0] = 10;//cub->map.height;
-	// 	mmax[1] = 10;//cub->map.width;      
-		
-	// 	len[0] = 0;//cub->hero.cell_x * 10;
-	// 	len[1] = 0;//cub->hero.cell_y * 10;
+// 	int	len[2];
+// 	int mmax[2];
+// 	int id;
+	
+// 	id = 0;
+// 	mmax[0] = 10;//cub->map.height;
+// 	mmax[1] = 10;//cub->map.width;      
+	
+// 	len[0] = 0;//cub->hero.cell_x * 10;
+// 	len[1] = 0;//cub->hero.cell_y * 10;
 
-	// 	while (len[0] < mmax[0])
-	// 	{
-	// 		len[1] = 0;
-	// 		while (len[1] < mmax[1])
-	// 		{
-	// 			len[0] *= 15;
-	// 			len[1] *= 15;
-	// 			if (id % 2)
-	// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0x99ffaaff);	
-	// 			else
-	// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0xffffffff);
+// 	while (len[0] < mmax[0])
+// 	{
+// 		len[1] = 0;
+// 		while (len[1] < mmax[1])
+// 		{
+// 			len[0] *= 15;
+// 			len[1] *= 15;
+// 			if (id % 2)
+// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0x99ffaaff);	
+// 			else
+// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0xffffffff);
 
-	// 			len[0] /= 15;
-	// 			len[1] /= 15;
-	// 			len[1]++;
-	// 			id++;
-	// 		}
-	// 		len[0]++;
-	// 		id++;
-	// 	}
+// 			len[0] /= 15;
+// 			len[1] /= 15;
+// 			len[1]++;
+// 			id++;
+// 		}
+// 		len[0]++;
+// 		id++;
+// 	}
 // 	printf("MiniMAP END (x[%d],y[%d] \n\n",len[0], len[1]);
 // 	// mlx_draw_player(cub, &cub->map);
 // }

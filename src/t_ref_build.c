@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 22:48:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:56:56 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 	if (!gset)
 		return (NULL);
 	i = 0;
-	// printf("GSET txtr >>>> *%s Model >>> \n", path);
+	printf("GSET txtr >>>> *%s Model >>> \n", path);
 	while (i < txtr_nb )
 	{
 
 		name = ft_strjoin(path, ft_itoa(i));
 		arr_name = ft_strjoin((const char *)name, ".png");
 		
-		// printf(">>>> GSET: [%d]  >>>{%s}", i, arr_name);
+		printf(">>>> GSET: [%d]  >>>{%s}", i, arr_name);
 		gset->xwalls[i] = mlx_load_png(arr_name);
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(arr_name));
- 		// printf(">> >> ptr : %p i: %d\n", gset->xwalls[i] ,i);
+ 		printf(">> >> ptr : %p i: %d\n", gset->xwalls[i] ,i);
 		i++;
 		// free(name);
 		// free(arr_name);
@@ -75,7 +75,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	{
 		printf(">>>>	MODEL : FB [%d] >>>\n", box->n_fbll);
 		if (box->n_fbll == 0)
-			init_fireball_model(objs);
+			objs->fball =  *init_fireball_model(objs);
 		box->n_fbll++;
 	}
 	else  if (t_name[0] == '!' || t_name[0] == '+')       		  		//// lever
@@ -105,9 +105,9 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	int 		grim;
 	int 		max;
 	chrs = cub->box.chrs;
-	max = (int)ft_strlen(chrs) - 1;
-	printf("MAPX:start ..., chrs : {:%s:} ::Max[%d]\n", chrs, max);
+	printf("MAPX:start ..., chrs : %s\n", chrs);
 	grim = cub->box.meta + cub->box.n_dual;
+	max = (int)ft_strlen(chrs) - 1;
 	k = -1;
 	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
 	while (++k < m->height)
@@ -119,14 +119,13 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-				// printf("MapX_ALL [[%d, %d]] P_BOX[%d]==>> {%c}\n", m->pos_y, m->pos_x, p_box, chrs[p_box]);
 			if (p_box != -1)
 			{
-				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1))) // decor
+				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 				}
-				else if ((p_box <= max - (cub->box.pset + 1)) && (p_box - cub->box.meta >= 0)) /// floor + ceil
+				if ((p_box <= max - (cub->box.pset + 1)) && (p_box - cub->box.meta >= 0)) /// floor + ceil
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
 				}

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_draw_floor.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
 /*   Updated: 2023/05/17 17:43:22 by iamongeo         ###   ########.fr       */
