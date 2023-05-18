@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 20:55:11 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:30:10 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
 			{
-
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
 					cub = dual_builder(cub, d_id, tex_path);								
