@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:58:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 21:59:51 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 22:24:07 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ void	minimap_check(t_cub *cub, t_map *m)
 			{
 				pos[0] = m->pos_x *10;
 				pos[1] = m->pos_y *10;			
-				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x00888888);	
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x2f888888);	
 				printf("\tMINIMAP_CHK STAT_X[%d]::STAT_Y[%d]: \n", stat[0], stat[1]);
 			}
 			else if (o_cells > cub->box.meta -1 && o_cells < cub->box.meta + cub->box.pset) // floor
 			{
 				pos[0] = m->pos_x *10;
 				pos[1] = m->pos_y *10;
-				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0xffffffff);
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0xafffffff);
 			}
 			m->pos_x++;
 		}
