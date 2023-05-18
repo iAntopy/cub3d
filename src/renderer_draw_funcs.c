@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_draw_funcs.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
 /*   Updated: 2023/05/17 16:09:11 by iamongeo         ###   ########.fr       */

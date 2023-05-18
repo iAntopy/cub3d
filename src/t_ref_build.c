@@ -24,18 +24,18 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 	if (!gset)
 		return (NULL);
 	i = 0;
-	printf("GSET txtr >>>> *%s Model >>> \n", path);
+	// printf("GSET txtr >>>> *%s Model >>> \n", path);
 	while (i < txtr_nb )
 	{
 
 		name = ft_strjoin(path, ft_itoa(i));
 		arr_name = ft_strjoin((const char *)name, ".png");
 		
-		printf(">>>> GSET: [%d]  >>>{%s}", i, arr_name);
+		// printf(">>>> GSET: [%d]  >>>{%s}", i, arr_name);
 		gset->xwalls[i] = mlx_load_png(arr_name);
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(arr_name));
- 		printf(">> >> ptr : %p i: %d\n", gset->xwalls[i] ,i);
+ 		// printf(">> >> ptr : %p i: %d\n", gset->xwalls[i] ,i);
 		i++;
 		// free(name);
 		// free(arr_name);
@@ -47,9 +47,7 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 {
 	char	**tex_set;
-	const char 	*cmp;
-	
-	cmp = "tex/ext/void_.png";
+
     if (cub->box.n_dual > i)
     {		
 		tex_set = ft_split_space(t_name);
@@ -121,7 +119,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-			// printf("MapX_ALL [[%d, %d]] P_BOX[%d]==>> {%c}\n", m->pos_y, m->pos_x, p_box, chrs[p_box]);
+				// printf("MapX_ALL [[%d, %d]] P_BOX[%d]==>> {%c}\n", m->pos_y, m->pos_x, p_box, chrs[p_box]);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1))) // decor

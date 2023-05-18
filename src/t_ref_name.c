@@ -97,7 +97,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
 			{
-
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
 					cub = dual_builder(cub, d_id, tex_path);								

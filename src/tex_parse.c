@@ -23,6 +23,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	ref = raw[queue];
 	if (ft_in_set((const char)raw[queue][0], (const char *)MAP_UCHR) > -1)
 	{
+		printf("PSET MAKER !!\n");
 		while (fill++ < 3)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);

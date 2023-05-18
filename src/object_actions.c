@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   object_actions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
 /*   Updated: 2023/05/17 21:21:01 by iamongeo         ###   ########.fr       */
