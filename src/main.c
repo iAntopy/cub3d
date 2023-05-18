@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 15:10:19 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:20:23 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ int	main(int argc, char **argv)
 
 /////// END OF DEBUG SECTION
 
-
+	/// sitting here
+	 minimap_set_pos(&cub);
 //	p_list_objx(cub.box.objx, 3, 0);
 
 

@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/14 04:39:32 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/17 21:21:53 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRC_FLS	:=		main.c 			\
 			t_obj_model.c 		\
 			t_wall_chk.c		\
 			t_empty_line.c		\
+			t_minimap.c			\
 			tex_parse.c			\
 			t_ref_name.c		\
 			draw_threads.c		\

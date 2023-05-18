@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/14 23:28:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:21:15 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -652,5 +652,11 @@ t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
 
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
+void			minimap_set_pos(t_cub *cub);
+void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);
+void			mlx_draw_mmap(t_cub *cub);
+void			mlx_draw_player(t_cub * cub, t_map *map);
+void			mlx_update_mmap(t_cub *cub, t_map *m);
+
 
 #endif
