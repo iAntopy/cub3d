@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 21:59:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 22:48:43 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	{
 		printf(">>>>	MODEL : FB [%d] >>>\n", box->n_fbll);
 		if (box->n_fbll == 0)
-			objs->fball =  *init_fireball_model(objs);
+			init_fireball_model(objs);
 		box->n_fbll++;
 	}
 	else  if (t_name[0] == '!' || t_name[0] == '+')       		  		//// lever
