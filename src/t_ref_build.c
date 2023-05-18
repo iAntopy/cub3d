@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 20:32:31 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:43:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,6 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
     }
     return (cub);
 }
-		// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
-			// printf("DUAL[%d].xwall[0] >> ptr : %p \n", i, &cub->dual[i].xwalls[]);
-				//    if (cub->box.open_sky == 0 && tex_set[1])/// not open_sky
-			//			cub->tex.skymap = cub->dual[i].xwalls[1];
-			//			cub->tex.sky_tex = cub->dual[i].xwalls[1];
-			//			cub->box.sky = cub->dual[i].xwalls[1];
-			//			cub->box.sky_tex = cub->dual[i].xwalls[1];
-			//		else
-			//			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[0]);
-			// cub->dual = (t_matrx *)malloc(sizeof(mlx_texture_t *) * 1);
-			// if (!cub->dual)
-			// 	return (NULL);
-			// printf("DUAL TEST i:[%d] t_name{{%s}} >>\n", i, t_name);
-		// printf("DUAL ptr{%p}} >>\n",  &cub->dual[i]);
 
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
@@ -133,38 +119,21 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-			// printf("MapX FACTOR >>  (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
-					// printf("MapX >> (%d, %d)>> p_box[%d]: txtr_ptr:%p\n", m->pos_y, m->pos_x, p_box - grim, cub->pset[p_box - grim ].xwalls[0]);
 				}
 				if ((p_box < max - (cub->box.pset + 1)) && (p_box > cub->box.meta -1))
 				{
-					// printf("MapX DUAL FACTOR >>  start:%c : MAX--:%c:\n", chrs[p_box] ,  chrs[max - (cub->box.pset + 1 )]);
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
-					// printf("MAPX>> dual[%d]->xwalls[0] : %p\n", p_box - cub->box.meta, &cub->dual[p_box - cub->box.meta].xwalls[0]);
-					// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);
-	
-					
 				}
 				if (p_box == max)
 				{
-	//				printf("HERO__MapX >> (%d, %d)>> p_box[%d]: \n", m->pos_y, m->pos_x, p_box);
-	//				printf("FOUND IT ");
 					cub->box.meta++;
-					// p_list_objx(cub->box.objx , p_box, 0); 
-					
-				}
-	//			if (p_box < cub->box.meta )
-	//			{
-	//				printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
-	//				printf("FOUND IT ");
-	//				p_list_objx(cub->box.objx , p_box, 0); 
-	//			}
-				
+					// p_list_objx(cub->box.objx , p_box, 0); 					
+				}	
 			}
 			m->pos_x++;
 		}
@@ -174,3 +143,11 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	return (cub);
 }
 
+//			if (p_box < cub->box.meta )
+	//			{
+	//				printf("MapX >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+	//				printf("FOUND IT ");
+	//				p_list_objx(cub->box.objx , p_box, 0); 
+	//			}
+// printf("MAPX>> dual[%d]->xwalls[0] : %p\n", p_box - cub->box.meta, &cub->dual[p_box - cub->box.meta].xwalls[0]);
+					// printf("new pset %p, xwalls[0] : %p\n", m->mx[m->pos_y][m->pos_x], m->mx[m->pos_y][m->pos_x]->xwalls[0]);

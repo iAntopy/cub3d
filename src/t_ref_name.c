@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/16 01:51:32 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:45:37 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
 					cub = dual_builder(cub, d_id, tex_path);								
-				// printf("\nDUALLINK [i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[0]);
-				// printf("DUALLINK [i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, cub->dual[d_id].xwalls[1]);
-				// printf("DUALLINK &&[i;%d] xwall[0]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[0]);
-				// printf("DUALLINK &&[i;%d] xwall[1]>>ptr{%p}} >>\n", d_id, &cub->dual[d_id].xwalls[1]);
 			}
 		}
 	}
