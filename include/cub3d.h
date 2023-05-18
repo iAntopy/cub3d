@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 20:57:05 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/17 21:25:42 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -673,22 +673,23 @@ t_cub			*mapx_builder(t_map *m, t_cub *cub);
 t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_cub			*e_mtrx_count(t_cub *cub);
+void		 	p_list_objx(t_objx **objx, int id, int num);
 
 char			*chrs_builder(t_cub *cub);
-// t_cub			*chsr_feed(t_cub *cub);
-// t_box	 		*e_mtrx_link(t_box *box, char **raw);
-// t_cub			*e_mtrx_count(t_cub *cub);
-// t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
-
-void		 	p_list_objx(t_objx **objx, int id, int num);
 t_objx			*objx_init(t_objx *objx);
 t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
 t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
 t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 
-
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
+
+void			minimap_set_pos(t_cub *cub);
+void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);
+void			mlx_draw_mmap(t_cub *cub);
+void			mlx_draw_player(t_cub * cub, t_map *map);
+void			mlx_update_mmap(t_cub *cub, t_map *m);
+
 
 
 #endif
