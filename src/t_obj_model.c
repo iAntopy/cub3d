@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 07:01:28 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 09:59:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 t_omdl	*init_player_model(t_objs *objs)
 {
-//	mlx_texture_t	*tex;
+	mlx_texture_t	*tex;
+
 	printf("\n\nTrying to init player model.");
 	if (objs->player.type_enum)
 		return (NULL);
@@ -28,7 +29,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.is_drawable = 1;
 	objs->player.is_oriented = 1;
 	objs->player.nb_texs = 8;
-	objs->player.draw_offy = 0;
+	objs->player.draw_offy = 10;
 	objs->player.gsets[0] = gset_builder("tex/gset_player/", objs->player.nb_texs);
 	if (!objs->player.gsets[0])
 		return (NULL);
@@ -36,13 +37,13 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.gsets[2] = objs->player.gsets[0];
 	objs->player.gsets[3] = objs->player.gsets[0];
 //	objs->player.gset =  gset_builder("tex/gset_p/", 4);
-//	tex = objs->portal.gset->xwalls[0];
+	tex = objs->portal.gsets[0]->xwalls[0];
 // 	printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
 //	objs->player.texs[0] = objs->portal.gset->xwalls[0];
 	objs->player.width = 32;
 	objs->player.half_w = objs->player.width >> 1;
-	objs->player.height = CELL_WIDTH;
-//	objs->player.height = objs->portal.width * (tex->height / tex->width);
+//	objs->player.height = CELL_WIDTH;
+	objs->player.height = objs->player.width * (tex->height / tex->width);
 	objs->player.half_h = objs->player.height >> 1;
 	// printf("Portal object model initialized !\n");
 	return (&objs->player);
