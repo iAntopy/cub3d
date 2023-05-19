@@ -87,10 +87,12 @@ static void	raycast_all_vectors(t_rdata *rdata, t_map *map)
 // If player moves, rotates or changes fov, call this function.
 void	update_rays(t_cub *cub)
 {
-	_mtx_addf_pscalar(cub->hero.rcast.theta_offs, cub->hero.ori,
+	const float	ply_ori = cub->hero.ply_obj->ori;
+
+	_mtx_addf_pscalar(cub->hero.rcast.theta_offs, ply_ori,
 		cub->hero.rcast.ray_thetas);
 	mtx_linspace_update(cub->hero.rcast.ray_thetas,
-		cub->hero.ori - cub->hfov, cub->hero.ori + FOV_HF, 1);
+		ply_ori - cub->hfov, ply_ori + FOV_HF, 1);
 	mtx_cos(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[0]);
 	mtx_sin(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[1]);
 	raycast_all_vectors(cub->hero.rcast.rdata, &cub->map);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/18 20:58:50 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/19 03:11:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,27 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 	char *name;
 	int i;
 
-	gset = (t_matrx *)malloc(sizeof(mlx_texture_t ) * txtr_nb);	
+	gset = (t_matrx *)malloc(sizeof(t_matrx));	
 	if (!gset)
 		return (NULL);
 	i = 0;
-	printf("GSET txtr >>>> *%s Model >>> \n", path);
-	while (i < txtr_nb )
+	printf("GSET %d txtrs >>>> *%s Model >>> \n", txtr_nb, path);
+	while (i < txtr_nb)
 	{
-
 		name = ft_strjoin(path, ft_itoa(i));
 		arr_name = ft_strjoin((const char *)name, ".png");
 		
 		printf(">>>> GSET: [%d]  >>>{%s}", i, arr_name);
 		gset->xwalls[i] = mlx_load_png(arr_name);
+		printf("gset->xwalls[%d] : %p\n", i, gset->xwalls[i]);
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(arr_name));
- 		printf(">> >> ptr : %p i: %d\n", gset->xwalls[i] ,i);
+ 		printf(">> >> ptr : %p i: %d, tex ptr : %p\n", gset->xwalls[i] ,i, gset->xwalls[i]);
 		i++;
 		// free(name);
 		// free(arr_name);
 	}
+	printf("Returning from gset builder avec gset = %p\n", gset);
 	return (gset);
 }
 

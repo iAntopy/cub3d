@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:16:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:25:02 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,25 @@ int	get_new_obj_id(void)
 static void	clear_obj_model(t_omdl *mdl)
 {
 	t_matrx	*gset;
-	int	i;
+	int		i;
+	int		j;
 
-	if (!mdl || !mdl->gset)
+	if (!mdl || !mdl->gsets[0])
 		return ;
-	gset = mdl->gset;
 	i = -1;
-	while (++i < mdl->nb_texs)
+	while (++i < 4)
 	{
-		if (gset->xwalls[i])
+		gset = mdl->gsets[i];
+		if (!gset)
+			continue ;
+		j = -1;
+		while (++j < mdl->nb_texs)
 		{
-			mlx_delete_texture(gset->xwalls[i]);
-			gset->xwalls[i] = NULL;
+			if (gset->xwalls[i])
+			{
+				mlx_delete_texture(gset->xwalls[i]);
+				gset->xwalls[i] = NULL;
+			}
 		}
 	}
 }

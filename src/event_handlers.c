@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 18:35:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 02:07:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ void	on_close(void *param)
 void	on_keypress(mlx_key_data_t event, void *param)
 {
 	t_cub	*cub;
-	t_oinst	*obj;
+//	t_oinst	*obj;
 
 	cub = (t_cub *)param;
 	if (event.action != MLX_PRESS)
 		return ;
-	
+	(void)cub;	
+	/*
 	obj = cub->objs.instances;
 	if (event.key == MLX_KEY_SPACE && obj && obj->next)
 	{
@@ -42,7 +43,7 @@ void	on_keypress(mlx_key_data_t event, void *param)
 			? (0): (1));
 	}
 	cub->renderer.requires_update = 1;
-
+*/
 /*
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);

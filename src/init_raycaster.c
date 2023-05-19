@@ -31,10 +31,10 @@ static void	init_rdata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd)
 		rd[i].idx = i;
 		rd[i].inv_cw = cub->inv_cw;
 		rd[i].near_proj_factor = &cub->near_proj_factor;
-		rd[i].pcx = &cub->hero.cell_x;
-		rd[i].pcy = &cub->hero.cell_y;
-		rd[i].px = &cub->hero.px;
-		rd[i].py = &cub->hero.py;
+		rd[i].pcx = &cub->hero.ply_obj->cx;//cell_x;
+		rd[i].pcy = &cub->hero.ply_obj->cy;//cell_y;
+		rd[i].px = &cub->hero.ply_obj->px;//px;
+		rd[i].py = &cub->hero.ply_obj->py;//px;
 		rd[i].p_dirx = cub->hero.dirx;
 		rd[i].p_diry = cub->hero.diry;
 		rd[i].rx = _mtx_index_fptr(rc->rays[0], i, 0);
@@ -44,6 +44,7 @@ static void	init_rdata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd)
 	}
 }
 
+// Depends on/Assumes cub->hero.ply_obj is initialized
 int	init_raycaster(t_cub *cub)
 {
 	t_rcast	*rcast;

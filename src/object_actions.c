@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:21:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:50:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 			pos[1] = obj->py;
 			pos[2] = (*player->dirx) * 10.0f ;
 			pos[3] = (*player->diry) * 10.0f ;
-			create_obj_instance(cub, pos, OBJ_FIREBALL, player->allegiance, NULL);
+			create_obj_instance(cub, pos, OBJ_FIREBALL,
+				player->ply_obj->allegiance, NULL);
 			counter = 0;
 		}
 		++counter;
@@ -47,13 +48,13 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 	if (!obj->isactive || !obj->relative)
 		return (-1);
 	link = obj->relative;
-	dx = obj->px - cub->hero.px;
-	dy = obj->py - cub->hero.py;
+	dx = obj->px - cub->hero.ply_obj->px;
+	dy = obj->py - cub->hero.ply_obj->py;
 	dist = dx * dx + dy * dy;
 	if (dist < PORTAL_TRIGGER_DIST_SQ)
 	{
-		cub->hero.px = link->px + dx * 1.5f;
-		cub->hero.py = link->py + dy * 1.5f;
+		cub->hero.ply_obj->px = link->px + dx * 1.5f;
+		cub->hero.ply_obj->py = link->py + dy * 1.5f;
 		return (0);
 	}
 	else
@@ -71,10 +72,10 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		return (-1);
 	if (obj->relative)
 	{
-		player = obj->relative;
+		player = (t_hero *)obj->relative;
 
-		obj->dx = player->px - obj->px;
-		obj->dy = player->py - obj->py;
+		obj->dx = player->ply_obj->px - obj->px;
+		obj->dy = player->ply_obj->py - obj->py;
 		dist = sqrtf(obj->dx * obj->dx + obj->dy * obj->dy);
 		if (dist < 10)
 		{
@@ -142,8 +143,8 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 {
 	static int	counter;
-	int		cx;
-	int		cy;
+//	int		cx;
+//	int		cy;
 
 	if (obj->isactive)
 	{
@@ -151,7 +152,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;
-			obj->special_gset.xwalls[0] = obj->type->gset->xwalls[0];
+			obj->special_gset.xwalls[0] = obj->gset->xwalls[0];
 			counter = 0;
 		}
 		++counter;
@@ -159,17 +160,17 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	else if (obj->relative)
 	{
 //		ft_eprintf("lever relative exists\n");
-		cx = (int)obj->px;
-		cy = (int)obj->py;
+//		cx = (int)obj->px;
+//		cy = (int)obj->py;
 //		ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
 //			cub->hero.cell_x, cub->hero.cell_y);
-		if (!(cub->hero.cell_x == cx
-			&& cub->hero.cell_y == cy))
+		if (!(cub->hero.ply_obj->cx == obj->cx
+			&& cub->hero.ply_obj->cy == obj->cy))
 			return (-1);
 		ft_eprintf("PRESSED !\n");
 		activate_portal((t_oinst *)obj->relative, 1);
 		obj->isactive = 1;
-		obj->special_gset.xwalls[0] = obj->type->gset->xwalls[1];
+		obj->special_gset.xwalls[0] = obj->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
 //		dual->xwalls[0] = obj->type->gset->xwalls[1];
 	}
