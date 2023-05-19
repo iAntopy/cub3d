@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/18 20:16:14 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 20:30:35 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,62 +86,43 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	char 	idx;
 	int 	head;
 
-	/// add new id_member
-	// objx = (t_objx *)calloc(sizeof(t_objx), 1);    
-	/*	get pos : name 	  (char)
-				: id 	  (obj_id)
-				: o_type  (int) : enum_type
-				: alleg	  (int)	: enum
-				: relativ (char) :obj_name
-				: opos[2] (int) coord[2]() [0:x],[1:y])
-				: *rel_ref (objx) *ptr -> relativ
-				: *wobj	   (t_oinst) instcs.		*/
-														
-			//		:: add define char type for model (spec)
-			// 		::	--	--	--	
-			//		:: get_pos  ++ 	>> 	name ,id , pos[2]
-			// 		:: get_refs ++ 	>> 	o_type, alleg, relativ,
-	    
-	/*	get_pos	*/	
-
 	objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
 
 	idx = *ft_substr(cub->box.chrs, o_cells, 1);
 	objx->obj_id = id;		       	//	OR _Index_ (obj_int_id) 'i' ... "maybe both!"
 	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
 
+			// {
+			// 	printf("*** PLAYER {%c}***\n", idx);
+			// }
+			// {
+			// 	printf("*** LEVER[%d]::{%c}***\n", head, idx);	
+			// }
+			// {
+			// 	printf("*** PORTAL[%d]::{%c}***\n", head, idx);	
+			// }
+			// {
+			// 	printf("*** FIREBALL[%d]::{%c}***\n", head, idx);	
+			// }
+			// {
+			// 	printf("*** FIREPIT[%d]::{%c}***\n", head, idx);	
+			// }
+			// {
+			// 	printf("*** SPEC[%d]::{%c}***\n", head, idx);	
+			// }
 	head = (ft_in_set(idx, (const char *)MAP_MCHR)); 
-			printf("*** INIT[%d]::{%c}***\n", head, idx);	
 	if (head == 18)
-	{
 		objx->o_type = 5;
-		printf("*** PLAYER {%c}***\n", idx);
-	}
-	else if (head < 5)
-	{
-		printf("*** LEVER[%d]::{%c}***\n", head, idx);	
+	else if (head < 4)
 		objx->o_type = 1;
-	}
 	else if (head < 12)
-	{
-		printf("*** PORTALSPEC[%d]::{%c}***\n", head, idx);	
 		objx->o_type = 2;
-	}
 	else if (head > 11 &&  head < 15)
-	{
 		objx->o_type = 3;
-		printf("*** FIREBALL[%d]::{%c}***\n", head, idx);	
-	}
 	else if (head > 14 &&  head < 18)
-	{
 		objx->o_type = 4;
-		printf("*** FIREPIT[%d]::{%c}***\n", head, idx);	
-	}
 	else if (head > 17)
-	{
 		objx->o_type = 6;
-		printf("*** SPEC[%d]::{%c}***\n", head, idx);	
-	}
 	
 	objx->opos[0] = m->pos_x;		/// main event! 
 	objx->opos[1] = m->pos_y;
@@ -151,13 +132,11 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 
 	if (objx->o_type == 5)//0 && objx->o_type < 7)
 		objx->alleg = ALI_TORRENT;
-
-	// objx[id]self_ref = cub->box.objx[id];
+		
+	
 	printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
 	printf("[%d]::{%c}\n",  objx->alleg, objx->relativ);
 	printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);	
-
-
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");
