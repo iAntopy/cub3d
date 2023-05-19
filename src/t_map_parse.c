@@ -117,6 +117,8 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	map->height = transcribe(map, map_offset);
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
+	printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, map_offset);
+	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
 	ox = 0;
 	p_list_objx(cub->box.objx, ox, cub->box.meta);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
