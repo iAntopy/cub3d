@@ -233,3 +233,4 @@ int	instanciate_map_objects(t_cub *cub)
 	printf("Map instanciation DONE. WOW !\n\n\n\n");
 	return (0);
 }
+*/
