@@ -1,0 +1,42 @@
+$ 2/2
+! 1/(
++ 2/<
+| 3/{
+< 2/>
+> 2/<
+( 1/)
+) 1/(
+{ 3/}
+} 3/{
+a tex/ext/old-wood-planks.png
+b tex/ext/tree-bark.png
+c tex/ext/tree-branch.png
+d tex/ext/tree-dark.png
+e tex/ext/tree-old.png
+f tex/ext/smooth-sand-dunes.png
+z tex/ext/skymap3.png
+0 tex/ext/beach_sand.png tex/ext/semi_transparent_blurry_glass_.png
+1 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
+2 tex/ext/grass-floor.png tex/ext/red-mountain-rock_.png
+
+A abab
+B cdcd
+C efef
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+A000000000!0000000000000000A
+A0000}00@0000000000000(0000A
+A00000000000000000000000000A
+AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+B1111111111111111111111111111111111B
+B11111111{11111|111111111111111>111B
+B1111111111111111111111111111111111B
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+CCCCCCCCCCCCCCCCCCCCCCC
+C222222222222222222222C
+C2222222<2222222222222C
+C22222222222+222222222C
+C22222$222222222222)22C
+C222222222222222222222C
+CCCCCCCCCCCCCCCCCCCCCCC
