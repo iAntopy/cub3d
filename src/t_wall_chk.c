@@ -92,24 +92,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	objx->obj_id = id;		       	//	OR _Index_ (obj_int_id) 'i' ... "maybe both!"
 	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
 
-			// {
-			// 	printf("*** PLAYER {%c}***\n", idx);
-			// }
-			// {
-			// 	printf("*** LEVER[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** PORTAL[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** FIREBALL[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** FIREPIT[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** SPEC[%d]::{%c}***\n", head, idx);	
-			// }
+	
 	head = (ft_in_set(idx, (const char *)MAP_MCHR)); 
 	if (head < 4)
 		objx->o_type = OBJ_LEVER;

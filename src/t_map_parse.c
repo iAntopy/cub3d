@@ -103,7 +103,7 @@ int	read_whole_file(t_map *map, char *filepath)
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int	map_len;
-	int	map_offset;
+	int	map_offset;	
 
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))

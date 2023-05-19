@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:58:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/18 13:44:01 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/19 01:44:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 void	minimap_check(t_cub *cub, t_map *m)
 {
-	int 	stat[2];
+//	int 	stat[2];
 	int		pos[2];
 	int		o_cells;
 	
 	o_cells = -1;
-	stat[0] = 0;
-	stat[1] = 0;
+//	stat[0] = 0;
+//	stat[1] = 0;
 	
 	m->pos_y = 0;
 	
@@ -66,8 +66,8 @@ void	minimap_check(t_cub *cub, t_map *m)
 			m->pos_x++;
 		}
 		m->pos_y++;
-		stat[0] = m->pos_x;
-		stat[1] = m->pos_y;
+//		stat[0] = m->pos_x;
+//		stat[1] = m->pos_y;
 	}
 		printf("\tMINIMAP_CHK STAT_X[%d]::STAT_Y[%d]: \n", stat[0], stat[1]);
 }

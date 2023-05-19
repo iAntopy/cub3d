@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 00:31:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 03:11:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 		// free(name);
 		// free(arr_name);
 	}
+	printf("Returning from gset builder avec gset = %p\n", gset);
 	return (gset);
 }
 
