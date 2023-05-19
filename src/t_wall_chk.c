@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 20:30:26 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 20:16:14 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,28 +110,44 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	objx->obj_id = id;		       	//	OR _Index_ (obj_int_id) 'i' ... "maybe both!"
 	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
 
-		// 		MOD_PORT : 10 // MOD_LEV : 4 // MOD_FIRE : 3  //  MOD_SPEC : 3  // playr = [16]
-		// 		define : MOD_PORT[#,%,&,$,<,>,(,),{,}] = 10 * def_prts
-		
-	// 	type_model:  	//-NULL- PORTL/LVR - FBll/FPit -PLYR- ACT,DES 			
-						// -0-     1 / 2   -  3 / 4    - 5 -   6,7 -
-	head = (ft_in_set(cub->box.chrs[o_cells], (const char *)MAP_MCHR)); 
-	if (head == 17)
+	head = (ft_in_set(idx, (const char *)MAP_MCHR)); 
+			printf("*** INIT[%d]::{%c}***\n", head, idx);	
+	if (head == 18)
+	{
 		objx->o_type = 5;
-	// else if (head > 16)
-	// 	objx->o_type = 6;
-	else if (head > 13 &&  head < 17)
-		objx->o_type = 3;
-	else if (head < 10)
-		objx->o_type = 2;
-	else if (head < 14)
+		printf("*** PLAYER {%c}***\n", idx);
+	}
+	else if (head < 5)
+	{
+		printf("*** LEVER[%d]::{%c}***\n", head, idx);	
 		objx->o_type = 1;
+	}
+	else if (head < 12)
+	{
+		printf("*** PORTALSPEC[%d]::{%c}***\n", head, idx);	
+		objx->o_type = 2;
+	}
+	else if (head > 11 &&  head < 15)
+	{
+		objx->o_type = 3;
+		printf("*** FIREBALL[%d]::{%c}***\n", head, idx);	
+	}
+	else if (head > 14 &&  head < 18)
+	{
+		objx->o_type = 4;
+		printf("*** FIREPIT[%d]::{%c}***\n", head, idx);	
+	}
+	else if (head > 17)
+	{
+		objx->o_type = 6;
+		printf("*** SPEC[%d]::{%c}***\n", head, idx);	
+	}
 	
 	objx->opos[0] = m->pos_x;		/// main event! 
 	objx->opos[1] = m->pos_y;
 
 	objx->relativ =  m->raw[o_cells][4];	
-	objx->alleg = m->raw[o_cells][2] - 48;//ALI_TORRENT;			
+	objx->alleg = m->raw[o_cells][2] - 48; //ALI_TORRENT;			
 
 	if (objx->o_type == 5)//0 && objx->o_type < 7)
 		objx->alleg = ALI_TORRENT;
