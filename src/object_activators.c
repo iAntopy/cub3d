@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 22:27:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:47:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 		printf("DEACTIVATING PORTAL id %d\n", obj->_id);
 		obj->isactive = 0;
 		obj->tex_idx = 0;
-		tex = obj->type->gset->xwalls[0];
+		tex = obj->gset->xwalls[0];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
 	}
 	else if (!obj->isactive && new_state == 1)
@@ -36,7 +36,7 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 		printf("ACTIVATING PORTAL id %d, allegiance : %d\n", obj->_id, obj->allegiance);
 		obj->isactive = 1;
 		obj->tex_idx = obj->allegiance;
-		tex = obj->type->gset->xwalls[obj->allegiance];
+		tex = obj->gset->xwalls[obj->allegiance];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
 	}
 	else

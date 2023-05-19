@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:21:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:50:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;
-			obj->special_gset.xwalls[0] = obj->type->gset->xwalls[0];
+			obj->special_gset.xwalls[0] = obj->gset->xwalls[0];
 			counter = 0;
 		}
 		++counter;
@@ -170,7 +170,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 		ft_eprintf("PRESSED !\n");
 		activate_portal((t_oinst *)obj->relative, 1);
 		obj->isactive = 1;
-		obj->special_gset.xwalls[0] = obj->type->gset->xwalls[1];
+		obj->special_gset.xwalls[0] = obj->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
 //		dual->xwalls[0] = obj->type->gset->xwalls[1];
 	}

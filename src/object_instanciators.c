@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 19:24:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:50:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 	new_obj->relative = link;
 	new_obj->isactive = 0;	
 	new_obj->action = __obj_action_lever;
-	new_obj->gset = NULL;
+	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	if (cub->map.mx[cell[1]][cell[0]])

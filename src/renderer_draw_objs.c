@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 19:25:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:41:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,6 @@ void	__render_proj_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_pdata *pd, in
 // Assumes is_drawable == true, checked earlier.
 static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 {
-	const float		inv_45deg = INV_45;
 	mlx_texture_t	*tex;
 	float			delta_ori;
 	int				idx;
