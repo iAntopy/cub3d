@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 00:24:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 03:32:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,7 +273,10 @@ static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 		tex = obj->gset->xwalls[idx];
 	}
 	else
-		tex = obj->gset->xwalls[obj->allegiance];
+	{
+		tex = obj->gset->xwalls[obj->tex_idx];
+		printf("selected none oriented texture : %p\n", tex);
+	}
 	return (tex);
 }
 
@@ -326,8 +329,10 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 		dims[0] = (int)(ratio * obj->type->width);
 		dims[1] = (int)(ratio * obj->type->height);
 
-		if ((obj == link || odist <= 0 || pframe[2] <= drawx || (drawx + dims[0])
-			< pframe[0]) && next_obj(&obj))
+		if ((obj == link || (odist <= 1) || (drawx + (dims[0] >> 1)) < pframe[1]
+			|| pframe[2] <= (drawx - (dims[0] >> 1))) && next_obj(&obj))
+//		if ((obj == link || odist <= 0 || pframe[2] <= drawx || (drawx + dims[0])
+//			< pframe[0]) && next_obj(&obj))
 //		{
 //			obj = obj->next;
 			continue ;
@@ -496,14 +501,20 @@ void	render_objects(t_cub *cub)
 //		printf("obj draw init checks PASSED \n");
 		obj->ox = obj->px - cub->hero.ply_obj->px;
 		obj->oy = obj->py - cub->hero.ply_obj->py;
+		printf("obj->px/y : (%f, %f), hero px, py : (%f, %f)\n", obj->px, obj->py,
+			cub->hero.ply_obj->px, cub->hero.ply_obj->py);
 		obj->dist = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
 		tex = select_draw_texture(cub, obj);
 //		tex = obj->type->gset->xwalls[obj->tex_idx];
 		ratio = cub->near_z / obj->dist;
+		printf("ratio : %f, hero dirx, diry : <%f, %f>\n", ratio, *cub->hero.dirx, *cub->hero.diry);
 		dims[0] = (int)(ratio * obj->type->width);
 		dims[1] = (int)(ratio * obj->type->height);
 		drawx = (int)(((*cub->hero.dirx) * obj->oy - (*cub->hero.diry) * obj->ox)
 			* ratio) + cub->scn_midx;
+
+		printf("drawx : %d, dims : (%d, %d), type w, h : (%d, %d)\n", drawx, dims[0], dims[1],
+			obj->type->width, obj->type->height);
 
 		if (((obj->dist <= 1) || (drawx + (dims[0] >> 1)) < 0
 			|| SCN_WIDTH <= (drawx - (dims[0] >> 1))) && next_obj(&obj))

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 00:02:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 03:13:41 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.nb_texs = 4;
 	objs->portal.draw_offy = 0;
 	objs->portal.gsets[0] =  gset_builder("tex/gset_p/", objs->portal.nb_texs);
-	if (!objs->player.gsets[0])
-		return (NULL);
+	if (!objs->portal.gsets[0])
+		return (ft_eprintf("PORTAL GSET failed to load !\n"), NULL);
 	tex = objs->portal.gsets[0]->xwalls[0];
 	// printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
 	//		objs->portal.texs[0] = objs->portal.gset->xwalls[0];
