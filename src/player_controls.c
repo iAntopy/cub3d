@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 20:30:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:14:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ void	cub_player_rotate(t_cub *cub, float rot)
 		return ;
 //	printf("rot : %f\n", rot);
 	cub->hero.ply_obj->ori += rot;
+	if (cub->hero.ply_obj->ori < 0)
+		cub->hero.ply_obj->ori += M_TAU;
+	else if (cub->hero.ply_obj->ori > M_TAU)
+		cub->hero.ply_obj->ori -= M_TAU;
 	cub->renderer.sky_ori_offset = (int)(cub->hero.ply_obj->ori
 		* cub->renderer.sky_radial_width);
 //	update_sky_toffs(cub, cub->renderer.sky_base_toffs,

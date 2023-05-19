@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 19:41:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:24:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,19 +251,25 @@ void	__render_proj_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_pdata *pd, in
 // Assumes is_drawable == true, checked earlier.
 static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 {
+	const float		rad_to_idx_ratio = 8.0f / M_TAU;
 	mlx_texture_t	*tex;
 	float			delta_ori;
 	int				idx;
 
+	printf("selecting texture, cub %p, obj %p, is oriented %d\n", cub, obj, obj->type->is_oriented);
+	printf("obj type : %d\n", obj->type->type_enum);
 	if (!obj)
 		return (NULL);
 	tex = NULL;
 	if (obj->type->is_oriented)
 	{
-		delta_ori = obj->ori - cub->hero.ply_obj->ori + FOV45_HF;
+		delta_ori = cub->hero.ply_obj->ori - obj->ori + FOV45_HF;
 		if (delta_ori < 0)
 			delta_ori += M_TAU;
-		idx = (int)(delta_ori / 8.0f);
+		else if (delta_ori > M_TAU)
+			delta_ori -= M_TAU;
+		idx = (int)(delta_ori * rad_to_idx_ratio);
+		printf("select text idx : %d, delta_ori : %f \n", idx, delta_ori);
 		tex = obj->gset->xwalls[idx];
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 19:46:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:25:02 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void	clear_obj_model(t_omdl *mdl)
 	while (++i < 4)
 	{
 		gset = mdl->gsets[i];
+		if (!gset)
+			continue ;
 		j = -1;
 		while (++j < mdl->nb_texs)
 		{

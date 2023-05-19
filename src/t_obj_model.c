@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/18 20:03:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:02:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.half_w = objs->player.width >> 1;
 	objs->player.height = CELL_WIDTH;
 //	objs->player.height = objs->portal.width * (tex->height / tex->width);
-	objs->player.half_h = objs->portal.height >> 1;
+	objs->player.half_h = objs->player.height >> 1;
 	// printf("Portal object model initialized !\n");
 	return (&objs->player);
 }
@@ -56,7 +56,7 @@ t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.type_enum = OBJ_PORTAL;
 	printf("INIT OBJ_PORTAL type struct with portal.type_enum = %d\n", objs->portal.type_enum);
 	objs->portal.is_drawable = 1;
-	objs->player.is_oriented = 0;
+	objs->portal.is_oriented = 0;
 	objs->portal.nb_texs = 4;
 	objs->portal.draw_offy = 0;
 	objs->portal.gsets[0] =  gset_builder("tex/gset_p/", objs->portal.nb_texs);
@@ -89,7 +89,7 @@ t_omdl	*init_lever_model(t_objs *objs)
 	objs->lever.nb_texs = 2;
 //	objs->portal.draw_offy = 20;
 	objs->lever.gsets[0] = gset_builder("tex/gset_lev/", objs->lever.nb_texs);
-	if (!objs->player.gsets[0])
+	if (!objs->lever.gsets[0])
 		return (NULL);
 	tex = objs->lever.gsets[0]->xwalls[0];
 	// printf("A Lever ptr : %p  \n", objs->lever.gset->xwalls[0]);
@@ -118,7 +118,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.is_oriented = 0;
 	objs->fireball.nb_texs = 4;
 	objs->fireball.draw_offy = 0;
-	objs->fireball.gsets[0] = gset_builder("tex/gset_fireball/", objs->portal.nb_texs);
+	objs->fireball.gsets[0] = gset_builder("tex/gset_fireball/", objs->fireball.nb_texs);
 	if (!objs->player.gsets[0])
 		return (NULL);
 	tex = objs->fireball.gsets[0]->xwalls[0];
@@ -156,7 +156,7 @@ t_omdl	*init_firepit_model(t_objs *objs)
 		return (NULL);
 	}
 	objs->firepit.gsets[0] = gset_builder("tex/gset_firepit/", objs->firepit.nb_texs);
-	if (!objs->player.gsets[0])
+	if (!objs->firepit.gsets[0])
 		return (NULL);
 //	tex = mlx_load_png(tex_path1);
 	tex = objs->firepit.gsets[0]->xwalls[0];
