@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/18 20:52:45 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:46:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,18 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 			// 	printf("*** SPEC[%d]::{%c}***\n", head, idx);	
 			// }
 	head = (ft_in_set(idx, (const char *)MAP_MCHR)); 
-	if (head == 18)
-		objx->o_type = 5;
-	else if (head < 4)
-		objx->o_type = 1;
+	if (head < 4)
+		objx->o_type = OBJ_LEVER;
 	else if (head < 12)
-		objx->o_type = 2;
-	else if (head > 11 &&  head < 15)
-		objx->o_type = 3;
-	else if (head > 14 &&  head < 18)
-		objx->o_type = 4;
-	else if (head > 17)
-		objx->o_type = 6;
+		objx->o_type = OBJ_PORTAL;
+	else if (head < 15)
+		objx->o_type = OBJ_FIREBALL;
+	else if (head < 18)
+		objx->o_type = OBJ_FIREPIT;
+	else if (head < 21)
+		objx->o_type = OBJ_PLAYER;
+	else
+		objx->o_type = OBJ_FLAG;
 	
 	objx->opos[0] = m->pos_x;		/// main event! 
 	objx->opos[1] = m->pos_y;

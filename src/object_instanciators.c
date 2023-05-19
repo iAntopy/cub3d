@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 19:24:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:02:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 	printf("create_player_instance : Creating player at (%f, %f)\n",
 		pos[0], pos[1]);
 	new_obj->type = &cub->objs.player;
+	printf("is_oriented at player instanciation : %d, %d\n", 
+		new_obj->type->is_drawable, new_obj->type->is_oriented);
 	new_obj->_id = get_new_obj_id();
 	new_obj->allegiance = allegiance;
 	new_obj->tex_idx = 0;
@@ -34,6 +36,7 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 	new_obj->py = pos[1];
 	new_obj->cx = (int)(pos[0] * cub->inv_cw);
 	new_obj->cy = (int)(pos[1] * cub->inv_cw);
+	new_obj->ori = 0.0f;
 	new_obj->action = __obj_action_player;
 	new_obj->rel_type_enum = 0;
 	new_obj->relative = link;
@@ -67,7 +70,7 @@ int	create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 	new_obj->relative = link;
 	new_obj->isactive = 0;	
 	new_obj->action = __obj_action_lever;
-	new_obj->gset = NULL;
+	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	if (cub->map.mx[cell[1]][cell[0]])

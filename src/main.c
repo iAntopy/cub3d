@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 13:13:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:32:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ int	main(int argc, char **argv)
 	 minimap_set_pos(&cub);
 
 ////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
+
 	int	i;
 	int	j;
 	i = -1;
@@ -185,6 +186,14 @@ int	main(int argc, char **argv)
 		}
 	}
 
+	float 	pos[2];
+	pos[0] = 10 * CELL_WIDTH + 1;
+	pos[1] = 2 * CELL_WIDTH + 1;
+	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
+
+////////
+	/// sitting here
+	 minimap_set_pos(&cub);
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");

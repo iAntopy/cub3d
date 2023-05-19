@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 21:23:19 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:46:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 
 # define FOV45 0.785398163397448f
 # define FOV45_HF 0.39269908169872414f
-# define INV_45 1.27323954474f
+//# define INV_45 1.27323954474f
 
 # define FOV20 0.349065850398865915f
 # define FOV20_HF 0.17453292519943295f
@@ -117,6 +117,7 @@ enum	e_object_types
 	OBJ_FIREBALL,
 	OBJ_FIREPIT,
 	OBJ_PLAYER,
+	OBJ_FLAG,
 	OBJ_ACTIVATE,
 	OBJ_DEACTIVATE
 };
