@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 20:10:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 07:01:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 t_omdl	*init_player_model(t_objs *objs)
 {
 //	mlx_texture_t	*tex;
+	printf("\n\nTrying to init player model.");
 	if (objs->player.type_enum)
 		return (NULL);
 	printf("\n\n INITIALIZING PLAYER TYPE !!!! \n");
@@ -50,10 +51,12 @@ t_omdl	*init_player_model(t_objs *objs)
 t_omdl	*init_spawnpoint_model(t_objs *objs)
 {
 //	mlx_texture_t	*tex;
-	if (objs->player.type_enum)
+	printf("player enum at init spawnpoint start: %d\n", objs->player.type_enum);
+	if (objs->spawnp.type_enum)
 		return (NULL);
-	objs->spawnp.model_name = "spwanpoint";
+	objs->spawnp.model_name = "spawnpoint";
 	objs->spawnp.type_enum = OBJ_SPAWNPOINT;
+	printf("INIT OBJ_SPAWNPOINT type struct with spawnp.type_enum = %d\n", objs->spawnp.type_enum);
 	objs->spawnp.is_drawable = 0;
 	objs->spawnp.is_oriented = 0;
 	objs->spawnp.nb_texs = 0;
@@ -67,6 +70,7 @@ t_omdl	*init_spawnpoint_model(t_objs *objs)
 //	objs->spawnp.height = objs->portal.width * (tex->height / tex->width);
 	objs->spawnp.half_h = objs->spawnp.height >> 1;
 	// printf("Portal object model initialized !\n");
+	printf("player enum at init spawnpoint end: %d\n", objs->player.type_enum);
 	return (&objs->spawnp);
 }
 

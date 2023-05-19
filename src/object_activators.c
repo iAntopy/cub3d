@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 20:19:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 07:38:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,16 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 
 int	set_playable_obj(t_cub *cub, t_oinst *player)
 {
-	
+	t_rcast	*rc;
+
+	if (!cub || !player)//|| player->type->type_enum != OBJ_PLAYER)
+		return (report_err("set_playable_object : missing inputs."));
+	cub->hero.ply_obj = player;
+	rc = &cub->hero.rcast;
+	init_raycaster(cub);
+	init_rdata_consts(cub, rc, rc->rdata, rc->prtl_proj);
+	update_fov(cub, cub->fov);
+	return (0);
 }
 
 int	spawn_new_player(t_oinst *spawnp, int is_playable)
@@ -54,15 +63,39 @@ int	spawn_new_player(t_oinst *spawnp, int is_playable)
 	t_cub	*cub;
 	t_oinst	*player;
 	int		id;
-	int		pos[2];
+	float		pos[2];
 
+	printf("Trying to spawning new player. spawnp : %p\n", spawnp);
+	printf("spawnp->type->type_enum : %d\n", spawnp->type->type_enum);
 	if (!spawnp || spawnp->type->type_enum != OBJ_SPAWNPOINT)
 		return (-1);
+	printf("Spawning new player\n");
 	cub = (t_cub *)spawnp->relative;
+	printf("player type_enum : %d\n", cub->objs.player.type_enum);
 	pos[0] = spawnp->px;
 	pos[1] = spawnp->py;
 	id = create_player_instance(cub, pos, spawnp->allegiance, spawnp);
+	player = get_obj(cub, id);
+	cub->player_ids[cub->nb_players++] = id;
 	if (is_playable)
+	{
 		set_playable_obj(cub, player);
+		cub->renderer.requires_update = 1;
+	}
+	return (id);
+}
+
+// Set player position to its currently set spawnpoint.
+int	respawn_player(t_oinst *player)
+{
+	t_oinst	*spawnp;
+	
+	if (!player || player->type->type_enum != OBJ_PLAYER)
+		return (report_err("Trying to respawn none-player type."));
+	spawnp = (t_oinst *)player->relative;
+	player->px = spawnp->px;
+	player->py = spawnp->py;
+	player->cx = spawnp->cx;
+	player->cy = spawnp->cx;
 	return (0);
 }

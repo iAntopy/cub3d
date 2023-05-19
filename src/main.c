@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 18:41:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 07:40:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int	main(int argc, char **argv)
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
+	set_playable_obj(&cub, cub.hero.ply_obj);
 		// || init_obj_framework(&cub) < 0
 /*
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
@@ -176,16 +177,16 @@ int	main(int argc, char **argv)
 		j = -1;
 		while (++j < cub.map.width)	
 		{
-			printf("map cell gset ptr : %p, ", cub.map.mx[i][j]);
-//			if (!cub.map.mx[i][j] || !cub.map.mx[i][j]->xwalls[0])
-//				cub.map.mx[i][j] = &cub.dual[0];
+//			printf("map cell gset ptr : %p, ", cub.map.mx[i][j]);
+			if (!cub.map.mx[i][j] || !cub.map.mx[i][j]->xwalls[0])
+				cub.map.mx[i][j] = &cub.dual[0];
 		}
 	}
 
-	float 	pos[2];
-	pos[0] = 13 * CELL_WIDTH + 1;
-	pos[1] = 2 * CELL_WIDTH + 1;
-	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
+//	float 	pos[2];
+//	pos[0] = 13 * CELL_WIDTH + 1;
+//	pos[1] = 2 * CELL_WIDTH + 1;
+//	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
 
 ////////
 	/// sitting here

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 20:12:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 08:02:29 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 {
 	t_oinst	*new_obj;
 
-	if (!link)
-		return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
+	if (!spawnp)
+		return (report_err("Creating a player instance must provide ptr to a spawnpoint obj inst.\n"));
+	printf("player type_enum at createplayer inst start: %d\n", cub->objs.player.type_enum);
+	if (!cub->objs.player.type_enum)
+		init_player_model(&cub->objs);
 	new_obj = NULL;
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());
@@ -45,21 +48,22 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 	printf("Single Player instance created at pos (%f, %f)\n", pos[0], pos[1]);
+	printf("player type_enum at createplayer inst end: %d\n", cub->objs.player.type_enum);
 	return (new_obj->_id);	
 }
 
 // pos is in world coord, NOT cell coord.
-int	create_spawnpoint_instance(t_cub *cub, float *pos, int allegiance)
+int	create_spawnp_instance(t_cub *cub, float *pos, int allegiance)
 {
 	t_oinst	*new_obj;
 
-	if (!link)
-		return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
+	if (!cub->objs.spawnp.type_enum)
+		init_spawnpoint_model(&cub->objs);
 	new_obj = NULL;
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());
 	
-	printf("create_spawnpoint_instance : Creating player at (%f, %f)\n",
+	printf("create_spawnpoint_instance : Creating spawnp at (%f, %f)\n",
 		pos[0], pos[1]);
 	new_obj->type = &cub->objs.spawnp;
 	new_obj->_id = get_new_obj_id();
@@ -72,7 +76,7 @@ int	create_spawnpoint_instance(t_cub *cub, float *pos, int allegiance)
 	new_obj->ori = 0.0f;
 	new_obj->action = __obj_action_spawnpoint;
 //	new_obj->rel_type_enum = 0;
-	new_obj->relative = link;
+	new_obj->relative = cub;
 	new_obj->isactive = 1;
 	new_obj->gset = NULL;
 //	new_obj->gset = new_obj->type->gsets[new_obj->allegiance];
@@ -135,6 +139,8 @@ int	create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link
 	new_obj->tex_idx = 0;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
+	new_obj->cx = (int)(pos[0] * cub->inv_cw);
+	new_obj->cy = (int)(pos[1] * cub->inv_cw);
 	new_obj->action = __obj_action_portal;
 	new_obj->rel_type_enum = 0;
 	new_obj->relative = new_obj;

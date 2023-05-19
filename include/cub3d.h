@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 20:20:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 06:30:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -600,6 +600,7 @@ int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
 
 /// RENDERER /////////////////
 int				init_renderer(t_cub *cub);
+void			init_rdata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd);
 int				renderer_clear(t_cub *cub);
 void			render_walls(t_cub *cub);//, t_rdata *rd);
 void			render_floor_sky(t_cub *cub);//, t_rdata *rd);
@@ -650,7 +651,7 @@ int				link_fireball_to_player(t_oinst *fball, t_hero *player);
 int				link_firepit_to_player(t_oinst *fpit, t_hero *player);
 
 /// OBJECT INSTANCIATOR (DO NOT USE DIRECTELY ! USE create_obj_instance())
-int				create_spwan_instance(t_cub *cub, float *pos, int allegiance);
+int				create_spawnp_instance(t_cub *cub, float *pos, int allegiance);
 int				create_player_instance(t_cub *cub, float *pos, int allegiance, t_oinst *spawnp);
 int				create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
 int				create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
@@ -664,6 +665,7 @@ void		    commit_all_obj_actions(t_cub *cub);
 int				activate_portal(t_oinst *obj, unsigned int new_status);
 int				spawn_new_player(t_oinst *spawnp, int is_playable);
 int				set_playable_obj(t_cub *cub, t_oinst *player);
+int				respawn_player(t_oinst *player);
 
 /// OBJECT ACTIONS CALLBACKS
 int				__obj_action_player(t_oinst *obj, t_cub *cub);
@@ -689,6 +691,7 @@ int				report_obj_err(t_oinst *obj, char *msg);
 
 /// MODEL ////////////////////
 t_omdl			*init_player_model(t_objs *objs);
+t_omdl			*init_spawnpoint_model(t_objs *objs);
 t_omdl			*init_portal_model(t_objs *objs);
 t_omdl			*init_lever_model(t_objs *objs);
 t_omdl			*init_fireball_model(t_objs *objs);
