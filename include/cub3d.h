@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:58:50 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:46:52 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@
 # define TEX_FLOOR			5
 
 # define MAP_CHARS "0AB@"
-# define MAP_LCHR "abcdefghijz"
+# define MAP_LCHR "abcdefghijklmnopz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "#%&$<>(){}!+|-*=:@?;"
+# define MAP_MCHR "!+|-<>(){}[]*#%=:;@$&?"
 
-# define MOD_PORT "#%&$<>(){}"
 # define MOD_LEV "!+|-"
-# define MOD_FIRE "*=:"
-# define MOD_SPEC "@?;"
+# define MOD_PORT "<>(){}[]"
+# define MOD_FIRE "*#%=:;"
+# define MOD_SPEC "@$&?"
 
 # define CUBMAP_BUFMAX 100000
 
@@ -168,7 +168,9 @@ typedef struct s_box
 	int				n_prts;
 	int				n_lvls;
 	int				n_fbll;
+	int				n_fpit;
 	int				n_objs;
+	int 			n_plyr;
 
 	t_objx			**objx;
 	t_matrx			*gset; /// rely to model

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 21:59:10 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 21:10:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*chrs_builder(t_cub *cub)
 
 	j = 0;
 	i = 0;
+	printf("raw vision raw[0][0] = %c \n", *cub->map.raw[0] );
 	rawz = cub->map.raw;
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[i] && j < cub->box.chrs_len)
@@ -69,7 +70,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			tex_path = ft_substr(raw[i], 2, raw_len - 2);
 			
 			/// meta << number 				// if (raw[i][0] < 48) /// meta << number 
-			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1) && (raw[i][0] < 48) )
+			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
 			{
 				cub = meta_builder(cub, box, tex_name, &cub->objs);			
 				box->n_objs++;
@@ -82,7 +83,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					cub->box.sky = mlx_load_png(tex_path);
 					if (!cub->box.sky)
 						return (report_mlx_tex_load_failed(tex_path));
-					printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p ;;box.sky;;\n", j, raw[i][0], tex_path, cub->box.sky);
+					// printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
 					cub->tex.skymap = cub->box.sky;
 					cub->tex.sky_tex = cub->box.sky;
 				}
@@ -91,7 +92,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					box->xform[j] = mlx_load_png(tex_path);
 					if (!box->xform[j])
 						return (report_mlx_tex_load_failed(tex_path));
-					printf("XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
+					// printf("XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
 					j++;
 				}
 			}
@@ -123,6 +124,8 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			break ;
 		if (rawz[0] > 32 && rawz[0] < 97 && rawz[1] == 32)
 			++cub->box.chrs_len;
+		if (ft_in_set(rawz[0], (const char *)MOD_SPEC) != -1)
+			++cub->box.n_plyr;
 		if (ft_in_set(rawz[0], (const char *)MAP_MCHR) != -1)
 			++cub->box.meta;
 		if (ft_in_set(rawz[0], (const char *)MAP_UCHR) != -1)
@@ -146,11 +149,13 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
 	printf("_dual[%d]", cub->box.n_dual);
+	if (cub->box.n_plyr > 0)
+					printf("__PLYR[%d]__", cub->box.n_plyr + 1);
 	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
 	if (cub->box.open_sky != 0)
-		cub->tex.skymap = cub->box.sky_tex;
+		cub->tex.skymap = cub->box.sky;
 	cub->box.chrs = chrs_builder(cub);
 	return (cub);
 }

@@ -16,9 +16,10 @@ int	init_skycaster(t_cub *cub)
 {
 	int	i;
 	
-	if (cub->tex.open_sky && !cub->box.sky)
+	if (!cub->box.sky)
 		return (report_err("No sky texture provided.\n"));
 	printf("sky textures LOADED\n");
+	cub->tex.skymap = cub->box.sky;
 	printf("sky ptr : %p\n", cub->tex.skymap);
 
 	// cub->tex.open_sky = 1;

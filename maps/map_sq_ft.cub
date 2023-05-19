@@ -1,0 +1,28 @@
+! 1/%
+% 1/#
+# 1/%
+a tex/ext/rusty-metal.png
+b tex/ext/dark-metal.png
+c tex/ext/white-marble.png
+d tex/ext/travertine-stone.png
+z tex/ext/skymap3.png
+0 tex/ext/floor.png tex/ext/red-mountain-rock_.png
+1 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
+
+A baaa
+B ccaa
+C cccc
+D abcb
+E bbbb
+
+AAAAAAAAADDDDDDD
+D00%00000111111E
+D0000000A111111E
+D0!00000A111111E
+D0000000A111111E
+BBB00BBBB1DDDDDE
+C0000000C111111D
+C000@0000111111D
+C0000000C1111#1D
+C0000000C111111D
+CCCCCCCCCDDDDDDD

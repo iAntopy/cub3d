@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:58:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:13:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,6 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	return (0);
 }
 
-// static void	print_tex_ptr_mx_matrix(t_cub *cub)
-// {
-// 	t_matrx	***mx = cub->map.mx;
-// 	int		i;
-// 	int		j;
-
-// 	printf("[");
-// 	i = -1;
-// 	while (++i < cub->map.height)
-// 	{
-// 		printf("[");
-// 		j = -1;
-// 		while (++j < cub->map.width)
-// 		{
-// 			printf("%p, ", mx[i][j]->xwalls[0]);
-// 		}
-// 		if (i < (cub->map.height - 1))
-// 			printf("]\n");
-// 		else
-// 			printf("]");
-// 	}
-// 	printf("]\n");
-	
-// }
-
 void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 {
 	printf("Setting up hooks and focus\n");
@@ -127,19 +102,18 @@ int	main(int argc, char **argv)
 	printf("MLX42 context initialized successfully !\n");
 
 	/// FOR DEBUG PURPOSES ONLY ! DELETE ME !
-//	cub.pset[0].xwalls[1] = cub.pset[1].xwalls[0];
+	cub.pset[0].xwalls[1] = cub.pset[1].xwalls[0];
 
 
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
-		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0)
-//		|| init_draw_threads(&cub, cub.draw_threads) < 0)
-//		|| init_obj_framework(&cub))
+		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
+		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
+		// || init_obj_framework(&cub) < 0
 /*
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
-
 
 	int	pos[2];
 //	pos[0] = (cub.map.width - 3) * CELL_WIDTH;
@@ -152,17 +126,17 @@ int	main(int argc, char **argv)
 	pos[0] = 20 * CELL_WIDTH;
 	pos[1] = 7 * CELL_WIDTH;
 
-	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_TORRENT, get_obj(&cub, portal1_id));
+	create_obj_instance(&cub, pos, OBJ_PORTAL, ALI_LEGION, get_obj(&cub, portal1_id));
 
 	pos[0] = 5 * CELL_WIDTH + 1;
 	pos[1] = 2 * CELL_WIDTH + 1;
 
 	create_obj_instance(&cub, pos, OBJ_LEVER, ALI_NEUTRAL, get_obj(&cub, portal1_id));
 
-	// pos[0] = 10 * CELL_WIDTH + 32;
-	// pos[1] = 7 * CELL_WIDTH + 32;
+	pos[0] = 10 * CELL_WIDTH + 32;
+	pos[1] = 7 * CELL_WIDTH + 32;
 
-	// create_obj_instance(&cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, NULL);
+	create_obj_instance(&cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, NULL);
 //	if (activate_portal(cub.objs.instances, OBJ_ACTIVATE) < 0)
 //		printf("Portal activation FAILURE\n");
 //	else
@@ -194,6 +168,10 @@ int	main(int argc, char **argv)
 	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
 	instanciate_map_objects(&cub);
 
+////////
+	/// sitting here
+	 minimap_set_pos(&cub);
+
 ////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
 	int	i;
 	int	j;
@@ -207,11 +185,8 @@ int	main(int argc, char **argv)
 				cub.map.mx[i][j] = &cub.dual[0];
 		}
 	}
-////////
-	/// sitting here
-	 minimap_set_pos(&cub);
 
-	// print_tex_ptr_mx_matrix(&cub);
+
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
 	mlx_loop(cub.mlx);
