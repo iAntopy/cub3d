@@ -99,9 +99,9 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	else if (head < 12)
 		objx->o_type = OBJ_PORTAL;
 	else if (head < 15)
-		objx->o_type = OBJ_FIREBALL;
-	else if (head < 18)
 		objx->o_type = OBJ_FIREPIT;
+	else if (head < 18)
+		objx->o_type = OBJ_FIREBALL;
 	else if (head < 21)
 		objx->o_type = OBJ_PLAYER;
 	else
@@ -117,9 +117,9 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 		objx->alleg = ALI_TORRENT;
 		
 	
-	printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
-	printf("[%d]::{%c}\n",  objx->alleg, objx->relativ);
-	printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);	
+	printf("META_ID[%d]_typ[%d]_name{%c}__",objx->obj_id, objx->o_type, objx->name);
+	printf("Alg[%d]__Rel{%c}__",  objx->alleg, objx->relativ);
+	printf("(x[%d],y[%d])((head:%d))\n\n", objx->opos[0], objx->opos[1], head);	
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");

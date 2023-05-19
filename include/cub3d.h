@@ -71,11 +71,11 @@
 # define MAP_LCHR "abcdefghijklmnopz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "!+|-<>(){}_^*#%=:;@$&?"
+# define MAP_MCHR "!+|-<>(){}_^=:;*#%@$&?"
 
 # define MOD_LEV "!+|-"
 # define MOD_PORT "<>(){}_^"
-# define MOD_FIRE "*#%=:;"
+# define MOD_FIRE "=:;*#%"
 # define MOD_SPEC "@$&?"
 
 # define CUBMAP_BUFMAX 100000
