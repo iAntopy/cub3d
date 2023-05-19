@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 20:56:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 21:21:41 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,27 +70,41 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
 
-	init_player_model(objs);	
-	if (t_name[0] == '*')              		   	///// fireball
+	
+	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1)		//// lever
 	{
-		printf(">>>>	MODEL : FB [%d] >>>\n", box->n_fbll);
-		if (box->n_fbll == 0)
-			init_fireball_model(objs);
-		box->n_fbll++;
-	}
-	else  if (t_name[0] == '!' || t_name[0] == '+')       		  		//// lever
-	{
-		printf(">>>>	MODEL : LVLR [%d] >>>\n", box->n_lvls);
+		printf(">>>>	MODEL : LVLS [%d] >>>\n", box->n_lvls);
 		if (box->n_lvls == 0)
 			init_lever_model(objs);
 		box->n_lvls++;
 	}
-	else if (t_name[0] != '?' && t_name[0] != '@') //// portal
+	else if (ft_in_set(t_name[0], (const char *)MOD_PORT) != -1)
 	{
 		printf(">>>>	MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		if (box->n_prts == 0)
 			init_portal_model(objs);
 		box->n_prts++;
+	}
+	else if (ft_in_set(t_name[0], (const char *)MOD_FIRE) != -1)
+	{
+		printf(">>>>	MODEL : FB [%d] >>>\n", box->n_fbll);
+		if (t_name[0] == '*' && box->n_fbll == 0)
+		{
+			init_fireball_model(objs);
+			box->n_fbll++;
+		}
+		if (t_name[0] == '#' && box->n_fpit == 0)
+		{
+			init_firepit_model(objs);
+			box->n_fpit++;
+		}
+	}
+	else  if (ft_in_set(t_name[0], (const char *)MOD_SPEC) != -1)	
+	{
+		printf(">>>>	MODEL : PLAYER [%d] >>>\n", box->n_plyr);
+		if (box->n_plyr == 0)
+			init_player_model(objs);
+		box->n_plyr++;
 	}
 	// printf(">>>> TEST >>> [%c]\n", t_name[0]);   			
     return (cub);

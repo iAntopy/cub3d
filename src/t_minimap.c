@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:58:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/16 00:08:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:44:01 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,44 @@ void	minimap_check(t_cub *cub, t_map *m)
 	stat[1] = 0;
 	
 	m->pos_y = 0;
-	while (m->pos_y < m->height &&  m->pos_y *10 < 150) 
+	
+	while (m->pos_y < m->height &&  m->pos_y * 10 < 150) 
 	{
 		m->pos_x = 0;
-		while (m->pos_x < m->width &&  m->pos_x *10 < 140) 
+		while (m->pos_x < m->width &&  m->pos_x * 10 < 150) 
 		{
 			o_cells = ft_in_set((m->m[m->pos_y][m->pos_x]),
 					(const char *)cub->box.chrs);
+			
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0') // wall
 			{
 				pos[0] = m->pos_x *10;
 				pos[1] = m->pos_y *10;
-				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x88000000);
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 10, 0x88000000);
 				//black semi alpha
+				// printf("\tMINIMAP_POS_CHK (X[%d]::Y[%d]>> {%C}) \n", pos[0], pos[1], o_cells);
 			}
 			else if (o_cells == (int_strlen(cub->box.chrs) - 1)) // plyr
 			{
 				pos[0] = m->pos_x *10;
-				pos[1] = m->pos_y *10;			
-				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x00888888);	
-				printf("\tMINIMAP_CHK STAT_X[%d]::STAT_Y[%d]: \n", stat[0], stat[1]);
+				pos[1] = m->pos_y *10;		
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 10, 0xffaa8888);	
+				// printf("\tMINIMAP_CHK STAT_X[%d]::STAT_Y[%d]: \n", stat[0], stat[1]);
+				printf("\tMINIMAP_POS_CHK (X[%d]::Y[%d]>> {%C}) \n", pos[0], pos[1], cub->box.chrs[o_cells]);
+				// mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x88ff66ff);
 			}
-			else if (o_cells > cub->box.meta -1 && o_cells < cub->box.meta + cub->box.pset) // floor
+			else if ((o_cells >= cub->box.meta - 1) && (o_cells < cub->box.meta + cub->box.pset )) // floor
 			{
-				pos[0] = m->pos_x *10;
-				pos[1] = m->pos_y *10;
-				mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0xffffffff);
+				pos[0] = m->pos_x * 10;
+				pos[1] = m->pos_y * 10;
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 10, 0xffffffff);
+			}
+			else if (o_cells < cub->box.meta ) 
+			{
+				pos[0] = m->pos_x * 10;
+				pos[1] = m->pos_y * 10;
+				mlx_draw_square(cub->renderer.mmap_layer, pos, 10, 0xffff66ff);
+				printf("\tMINIMAP_POS_CHK (X[%d]::Y[%d]>> {%C}) \n", pos[0], pos[1], cub->box.chrs[o_cells]);
 			}
 			m->pos_x++;
 		}
@@ -57,56 +69,55 @@ void	minimap_check(t_cub *cub, t_map *m)
 		stat[0] = m->pos_x;
 		stat[1] = m->pos_y;
 	}
-		printf("\tMINIMAP_CHK STAT_X[%d]::STAT_Y[%d]: \n", stat[0], stat[1]);
-	
+		// printf("\tMINIMAP_CHK STAT_X[%d]::STAT_Y[%d]: \n", stat[0], stat[1]);
 }
 
 // /// set player pos to center map 
 // void mlx_draw_player(t_cub * cub, t_map *map)
-// {
-//     int pos[2];
-// 	pos[0] = cub->hero.cell_x * 10;
-// 	pos[1] = cub->hero.cell_y * 10;
-// 	if (pos[0] < map->width && pos[1] < map->height)
-// 		mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x88ff66ff);
+// 	{
+// 	    int pos[2];
+// 		pos[0] = cub->hero.cell_x * 15;
+// 		pos[1] = cub->hero.cell_y * 15;
+// 		if (pos[0] < map->width && pos[1] < map->height)
+// 			mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x88ff66ff);
 // }
 
 /// set map_char to map_pixel
 // void	mlx_draw_mmap(t_cub *cub)
 // {
 // 	int	len[2];
-// 	int mmax[2];
-// 	int id;
-	
-// 	id = 0;
-// 	mmax[0] = 10;//cub->map.height;
-// 	mmax[1] = 10;//cub->map.width;      
-	
-// 	len[0] = 0;//cub->hero.cell_x * 10;
-// 	len[1] = 0;//cub->hero.cell_y * 10;
+	// 	int mmax[2];
+	// 	int id;
+		
+	// 	id = 0;
+	// 	mmax[0] = 10;//cub->map.height;
+	// 	mmax[1] = 10;//cub->map.width;      
+		
+	// 	len[0] = 0;//cub->hero.cell_x * 10;
+	// 	len[1] = 0;//cub->hero.cell_y * 10;
 
-// 	while (len[0] < mmax[0])
-// 	{
-// 		len[1] = 0;
-// 		while (len[1] < mmax[1])
-// 		{
-// 			len[0] *= 15;
-// 			len[1] *= 15;
-// 			if (id % 2)
-// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0x99ffaaff);	
-// 			else
-// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0xffffffff);
+	// 	while (len[0] < mmax[0])
+	// 	{
+	// 		len[1] = 0;
+	// 		while (len[1] < mmax[1])
+	// 		{
+	// 			len[0] *= 15;
+	// 			len[1] *= 15;
+	// 			if (id % 2)
+	// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0x99ffaaff);	
+	// 			else
+	// 				mlx_draw_square(cub->renderer.mmap_layer, len, 15, 0xffffffff);
 
-// 			len[0] /= 15;
-// 			len[1] /= 15;
-// 			len[1]++;
-// 			id++;
-// 		}
-// 		len[0]++;
-// 		id++;
-// 	}
-// 	printf("MiniMAP END (x[%d],y[%d] \n\n",len[0], len[1]);
-// 	// mlx_draw_player(cub, &cub->map);
+	// 			len[0] /= 15;
+	// 			len[1] /= 15;
+	// 			len[1]++;
+	// 			id++;
+	// 		}
+	// 		len[0]++;
+	// 		id++;
+	// 	}
+	// 	printf("MiniMAP END (x[%d],y[%d] \n\n",len[0], len[1]);
+	// 	// mlx_draw_player(cub, &cub->map);
 // }
 
 /// set map_char to map_pixel
@@ -236,9 +247,9 @@ void    minimap_set_pos(t_cub *cub)
 	// mlx_draw_mmap(cub);
 	// mlx_update_mmap(t_cub *cub, t_map *m);
 	// mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x88000000);//black semi alpha
-	// mlx_draw_player(cub, m);
 	// minimap_surround(cub, pos, mmax);
     minimap_check(cub, &cub->map);
+	// mlx_draw_player(cub, &cub->map);
 }
 
 

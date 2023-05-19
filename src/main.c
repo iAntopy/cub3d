@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:26:15 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/18 13:13:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,10 @@ int	main(int argc, char **argv)
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
 		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
-		// || init_obj_framework(&cub) < 0
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 
+		// || init_obj_framework(&cub) < 0
 /*
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 
@@ -167,6 +167,10 @@ int	main(int argc, char **argv)
 //	init_player_model(&cub.objs);
 
 
+////////
+	/// sitting here
+	 minimap_set_pos(&cub);
+
 ////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
 	int	i;
 	int	j;
@@ -180,9 +184,7 @@ int	main(int argc, char **argv)
 				cub.map.mx[i][j] = &cub.dual[0];
 		}
 	}
-////////
-	/// sitting here
-	 minimap_set_pos(&cub);
+
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
