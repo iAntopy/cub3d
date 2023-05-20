@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 23:28:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 17:43:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 		inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, NULL);
 
 	ob->wobj = get_obj(cub, inst_id);
-	printf("Created obj inst with type enum : %d\n", ob->wobj->type->type_enum);
+	printf("Created obj id %d, ptr %p inst with type enum : %d\n", ob->wobj->_id, ob->wobj, ob->wobj->type->type_enum);
 	printf("MAP INSTANCIATOR CREATED OBJ : %p\n", ob->wobj);
 	ob->rel_ref = find_relative(cub, ob, nb_meta);
 	return (ob->wobj);

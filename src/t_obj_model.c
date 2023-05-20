@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 03:13:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 20:10:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_omdl	*init_player_model(t_objs *objs)
 //	mlx_texture_t	*tex;
 	if (objs->player.type_enum)
 		return (NULL);
+	printf("\n\n INITIALIZING PLAYER TYPE !!!! \n");
 	objs->player.model_name = "player";
 	objs->player.type_enum = OBJ_PLAYER;
 	objs->player.is_drawable = 1;
@@ -44,6 +45,29 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.half_h = objs->player.height >> 1;
 	// printf("Portal object model initialized !\n");
 	return (&objs->player);
+}
+
+t_omdl	*init_spawnpoint_model(t_objs *objs)
+{
+//	mlx_texture_t	*tex;
+	if (objs->player.type_enum)
+		return (NULL);
+	objs->spawnp.model_name = "spwanpoint";
+	objs->spawnp.type_enum = OBJ_SPAWNPOINT;
+	objs->spawnp.is_drawable = 0;
+	objs->spawnp.is_oriented = 0;
+	objs->spawnp.nb_texs = 0;
+	objs->spawnp.draw_offy = 0;
+//	objs->spawnp.gsets[0] = gset_builder("tex/gset_spawnp/", objs->spawnp.nb_texs);
+//	if (!objs->spawnp.gsets[0])
+//		return (NULL);
+	objs->spawnp.width = CELL_WIDTH;
+	objs->spawnp.half_w = objs->spawnp.width >> 1;
+	objs->spawnp.height = CELL_WIDTH;
+//	objs->spawnp.height = objs->portal.width * (tex->height / tex->width);
+	objs->spawnp.half_h = objs->spawnp.height >> 1;
+	// printf("Portal object model initialized !\n");
+	return (&objs->spawnp);
 }
 
 t_omdl	*init_portal_model(t_objs *objs)
@@ -119,7 +143,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.nb_texs = 4;
 	objs->fireball.draw_offy = 0;
 	objs->fireball.gsets[0] = gset_builder("tex/gset_fireball/", objs->fireball.nb_texs);
-	if (!objs->player.gsets[0])
+	if (!objs->fireball.gsets[0])
 		return (NULL);
 	tex = objs->fireball.gsets[0]->xwalls[0];
 	// printf("A Fireball ptr : %p  \n", objs->fball.gset->xwalls[0]);
