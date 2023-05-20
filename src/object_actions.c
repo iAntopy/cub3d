@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 20:10:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 07:34:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 
 	if (!obj->isactive)
 		return (-1);
-	
+//	printf("nb players : %d\n", cub->nb_players);
 	i = -1;
 	while (++i < cub->nb_players)
 	{
 		player = get_obj(cub, i);
-		if (player->allegiance == obj->allegiance
+		if (player && player->allegiance == obj->allegiance
 			&& player->cx == obj->cx && player->cy == obj->cy)
 			player->spawnpoint = obj;
 	}

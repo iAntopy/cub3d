@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 18:53:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 06:49:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	else  if (ft_in_set(t_name[0], (const char *)MOD_SPEC) != -1)	
 	{
 		printf(">>>>	MODEL : PLAYER [%d] >>>\n", box->n_plyr);
-		if (box->n_plyr == 0)
-			init_player_model(objs);
+//		if (box->n_plyr == 0)
+//			init_player_model(objs);
 		box->n_plyr++;
 	}
 	// printf(">>>> TEST >>> [%c]\n", t_name[0]);   			

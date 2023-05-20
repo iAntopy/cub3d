@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 00:13:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 07:31:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_oinst	*get_obj(t_cub *cub, int id)
 {
 	t_oinst	*elem;
 
-	printf("get oinst for id %d\n", id);
+//	printf("get oinst for id %d\n", id);
 	elem = cub->objs.instances;
 	while (elem)
 	{
@@ -27,7 +27,7 @@ t_oinst	*get_obj(t_cub *cub, int id)
 		}
 		elem = elem->next;
 	}
-	printf("No object with id %d\n", id);
+//	printf("No object with id %d\n", id);
 	return (NULL);
 }
 

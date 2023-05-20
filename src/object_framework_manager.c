@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 00:25:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 06:22:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,11 @@ int	create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance,\
 		return (report_err("ERROR : Trying to create object in wall.\n"));
 	if (type_enum == OBJ_PLAYER)
 		obj_id = create_player_instance(cub, pos, allegiance, param);
+	else if (type_enum == OBJ_SPAWNPOINT)
+	{
+		printf("creating spawnpoint\n");
+		obj_id = create_spawnp_instance(cub, pos, allegiance);
+	}
 	else if (type_enum == OBJ_PORTAL)
 	{
 		printf("creating portal\n");
