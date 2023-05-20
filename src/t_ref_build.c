@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 03:11:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:53:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
 
-	
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1)		//// lever
 	{
 		printf(">>>>	MODEL : LVLS [%d] >>>\n", box->n_lvls);
@@ -134,6 +133,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
+			printf("p_box : %d, chrs : %s\n", p_box, chrs);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))

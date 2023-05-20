@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/18 19:50:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 20:10:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,44 @@
 
 int	__obj_action_player(t_oinst *obj, t_cub *cub)
 {
-	static int	counter;
-	t_hero		*player;
-	float		pos[4];
+//	static int	counter;
+//	t_hero		*player;
+//	float		pos[4];
+	(void)obj;
+	(void)cub;
+//	if (obj->isactive)
+//	{
+		// if (counter > 1000)
+		// {
+		// 	player = (t_hero *)obj->relative;
+		// 	pos[0] = obj->px;
+		// 	pos[1] = obj->py;
+		// 	pos[2] = (*player->dirx) * 10.0f ;
+		// 	pos[3] = (*player->diry) * 10.0f ;
+		// 	create_obj_instance(cub, pos, OBJ_FIREBALL,
+		// 		player->ply_obj->allegiance, NULL);
+		// 	counter = 0;
+		// }
+		// ++counter;
+//	}
+	return (0);
+}
 
-	if (obj->isactive)
+int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
+{
+	t_oinst		*player;
+	int			i;
+
+	if (!obj->isactive)
+		return (-1);
+	
+	i = -1;
+	while (++i < cub->nb_players)
 	{
-		if (counter > 1000)
-		{
-			player = (t_hero *)obj->relative;
-			pos[0] = obj->px;
-			pos[1] = obj->py;
-			pos[2] = (*player->dirx) * 10.0f ;
-			pos[3] = (*player->diry) * 10.0f ;
-			create_obj_instance(cub, pos, OBJ_FIREBALL,
-				player->ply_obj->allegiance, NULL);
-			counter = 0;
-		}
-		++counter;
+		player = get_obj(cub, i);
+		if (player->allegiance == obj->allegiance
+			&& player->cx == obj->cx && player->cy == obj->cy)
+			player->spawnpoint = obj;
 	}
 	return (0);
 }
@@ -142,22 +162,22 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 
 int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 {
-	static int	counter;
+//	static int	counter;
 //	int		cx;
 //	int		cy;
 
-	if (obj->isactive)
-	{
-		if (counter > 400)
-		{
-			activate_portal((t_oinst *)obj->relative, 0);
-			obj->isactive = 0;
-			obj->special_gset.xwalls[0] = obj->gset->xwalls[0];
-			counter = 0;
-		}
-		++counter;
-	}
-	else if (obj->relative)
+	// if (obj->isactive)
+	// {
+	// 	if (counter > 400)
+	// 	{
+	// 		activate_portal((t_oinst *)obj->relative, 0);
+	// 		obj->isactive = 0;
+	// 		obj->special_gset.xwalls[0] = obj->gset->xwalls[0];
+	// 		counter = 0;
+	// 	}
+	// 	++counter;
+	// }
+	if (obj->relative)
 	{
 //		ft_eprintf("lever relative exists\n");
 //		cx = (int)obj->px;

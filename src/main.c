@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 00:32:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:41:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,11 +166,6 @@ int	main(int argc, char **argv)
 */
 //	init_player_model(&cub.objs);
 
-
-////////
-	/// sitting here
-	 minimap_set_pos(&cub);
-
 ////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
 
 	int	i;
@@ -181,13 +176,14 @@ int	main(int argc, char **argv)
 		j = -1;
 		while (++j < cub.map.width)	
 		{
-			if (!cub.map.mx[i][j] || !cub.map.mx[i][j]->xwalls[0])
-				cub.map.mx[i][j] = &cub.dual[0];
+			printf("map cell gset ptr : %p, ", cub.map.mx[i][j]);
+//			if (!cub.map.mx[i][j] || !cub.map.mx[i][j]->xwalls[0])
+//				cub.map.mx[i][j] = &cub.dual[0];
 		}
 	}
 
 	float 	pos[2];
-	pos[0] = 10 * CELL_WIDTH + 1;
+	pos[0] = 13 * CELL_WIDTH + 1;
 	pos[1] = 2 * CELL_WIDTH + 1;
 	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
 

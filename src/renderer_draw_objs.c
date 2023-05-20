@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 03:32:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:48:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void	__render_proj_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_pdata *pd, in
 		}
 	}
 }
-
+/*
 // Assumes is_drawable == true, checked earlier.
 static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 {
@@ -279,6 +279,74 @@ static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 	}
 	return (tex);
 }
+*/
+
+// Assumes is_drawable == true, checked earlier.
+static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
+{
+	const float		rad_to_idx_ratio = 8.0f * M_INV_TAU;
+	float			dpos[2];
+	float			rel_ori;
+	mlx_texture_t	*tex;
+	int				idx;
+
+//	printf("selecting texture, cub %p, obj %p, is oriented %d\n", cub, obj, obj->type->is_oriented);
+//	printf("obj type : %d\n", obj->type->type_enum);
+	if (!obj)
+		return (NULL);
+	tex = NULL;
+	if (obj->type->is_oriented)
+	{
+		dpos[0] = obj->px - cub->hero.ply_obj->px;
+		dpos[1] = obj->py - cub->hero.ply_obj->py;
+		rel_ori = atan2f(dpos[1], dpos[0]) + FOV45_HF;
+		if (rel_ori < 0)
+			rel_ori += M_TAU;
+		idx = (int)(rel_ori * rad_to_idx_ratio);
+//		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
+		tex = obj->gset->xwalls[idx];
+	}
+	else
+//	{
+		tex = obj->gset->xwalls[obj->tex_idx];
+//		printf("selected none oriented texture : %p\n", tex);
+//	}
+	return (tex);
+}
+
+
+// Assumes is_drawable == true, checked earlier.
+static mlx_texture_t	*select_draw_proj_texture(t_oinst *obj, float *ppos)
+{
+	const float		rad_to_idx_ratio = 8.0f * M_INV_TAU;
+	float			dpos[2];
+	float			rel_ori;
+	mlx_texture_t	*tex;
+	int				idx;
+
+//	printf("selecting texture, cub %p, obj %p, is oriented %d\n", cub, obj, obj->type->is_oriented);
+//	printf("obj type : %d\n", obj->type->type_enum);
+	if (!obj)
+		return (NULL);
+	tex = NULL;
+	if (obj->type->is_oriented)
+	{
+		dpos[0] = obj->px - ppos[0];
+		dpos[1] = obj->py - ppos[1];
+		rel_ori = atan2f(dpos[1], dpos[0]) + FOV45_HF;
+		if (rel_ori < 0)
+			rel_ori += M_TAU;
+		idx = (int)(rel_ori * rad_to_idx_ratio);
+//		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
+		tex = obj->gset->xwalls[idx];
+	}
+	else
+//	{
+		tex = obj->gset->xwalls[obj->tex_idx];
+//		printf("selected none oriented texture : %p\n", tex);
+//	}
+	return (tex);
+}
 
 void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pframe)
 {
@@ -293,10 +361,10 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 	float		odist;
 	mlx_texture_t	*tex;
 
-	int		loffs[4];
-	int		toffs[2];
+	int			loffs[4];
+	int			toffs[2];
 	float		tincrs[2];
-	int		dims[2];
+	int			dims[2];
 
 	obj = cub->objs.instances;
 	prtl = (t_oinst *)cub->renderer.portal;
@@ -311,7 +379,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 //			obj = obj->next;
 			continue ;
 //		}
-//		printf("\n\n Rendering obj %p\n", obj);
+		printf("\n\n Rendering PROJECTED obj %p, type : %d\n", obj, obj->type->type_enum);
 //		ov[0] = obj->px - link->px;
 //		ov[1] = obj->py - link->py;
 		ov[0] = obj->px - ppos[0];
@@ -337,7 +405,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 //			obj = obj->next;
 			continue ;
 //		}
-		tex = select_draw_texture(cub, obj);
+		tex = select_draw_proj_texture(obj, ppos);
 //		tex = obj->type->gset->xwalls[obj->tex_idx];
 		tincrs[0] = (float)tex->width / (float)dims[0];
 		tincrs[1] = (float)tex->height / (float)dims[1];

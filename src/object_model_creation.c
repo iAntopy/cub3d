@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/13 22:54:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 19:25:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -416,5 +416,7 @@ int	create_obj_instance(t_cub *cub, int *pos, int type_enum, void *param)
 		obj_id = create_fireball_instance(cub, pos, &obj_id, param);
 	else if (type_enum == OBJ_FIREPIT)
 		obj_id = create_firepit_instance(cub, pos, &obj_id, param);
+	else if (type_enum == OBJ_SPAWNPOINT)
+		obj_id = create_spawnpoint_instance(cub, pos, &obj_id, cub);
 	return (obj_id);
 }

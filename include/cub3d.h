@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 00:46:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/19 20:20:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define ROT_FACTOR 0.006135923f
 # define CELL_WIDTH 64
 # define M_TAU 6.283185307179586f
+# define M_INV_TAU 0.15915494309f
 
 # define FOV120 2.0943951023931953f
 # define FOV120_HF 1.0471975511965976f
@@ -117,6 +118,7 @@ enum	e_object_types
 	OBJ_FIREBALL,
 	OBJ_FIREPIT,
 	OBJ_PLAYER,
+	OBJ_SPAWNPOINT,
 	OBJ_FLAG,
 	OBJ_ACTIVATE,
 	OBJ_DEACTIVATE
@@ -368,6 +370,7 @@ typedef struct s_objects_list_elem
 
 	int			tex_idx;
 	int			allegiance;
+	t_oinst		*spawnpoint;
 	t_matrx		*gset; /// rely to model
 	
 	
@@ -421,6 +424,7 @@ typedef struct s_drawable_objects
 {
 	/// OBJECT MODELS (constant) /////////////////////////
 	t_omdl	player;//	Player object model;
+	t_omdl	spawnp;//	Spawnpoint for player object model;
 	t_omdl	lever;		//	Switch object model;
 	t_omdl	portal;//	Portal object model;
 	t_omdl	fireball;//	Fireball object model;
@@ -646,7 +650,8 @@ int				link_fireball_to_player(t_oinst *fball, t_hero *player);
 int				link_firepit_to_player(t_oinst *fpit, t_hero *player);
 
 /// OBJECT INSTANCIATOR (DO NOT USE DIRECTELY ! USE create_obj_instance())
-int				create_player_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
+int				create_spwan_instance(t_cub *cub, float *pos, int allegiance);
+int				create_player_instance(t_cub *cub, float *pos, int allegiance, t_oinst *spawnp);
 int				create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
 int				create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
 int				create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
@@ -657,9 +662,12 @@ int				create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_hero *l
 /// OBJECT ACTIVATION FUNCS /////////
 void		    commit_all_obj_actions(t_cub *cub);
 int				activate_portal(t_oinst *obj, unsigned int new_status);
+int				spawn_new_player(t_oinst *spawnp, int is_playable);
+int				set_playable_obj(t_cub *cub, t_oinst *player);
 
 /// OBJECT ACTIONS CALLBACKS
 int				__obj_action_player(t_oinst *obj, t_cub *cub);
+int				__obj_action_spawnpoint(t_oinst *obj, t_cub *cub);
 int				__obj_action_portal(t_oinst *obj, t_cub *cub);
 int				__obj_action_fireball(t_oinst *obj, t_cub *cub);
 int				__obj_action_firepit(t_oinst *obj, t_cub *cub);
