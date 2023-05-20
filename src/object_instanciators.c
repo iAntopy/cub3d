@@ -18,8 +18,8 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 {
 	t_oinst	*new_obj;
 
-	if (!link)
-		return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
+		// if (!link)
+		// 	return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
 	new_obj = NULL;
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());
@@ -53,8 +53,8 @@ int	create_spawnpoint_instance(t_cub *cub, float *pos, int allegiance)
 {
 	t_oinst	*new_obj;
 
-	if (!link)
-		return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
+	// if (!link)
+	// 	return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
 	new_obj = NULL;
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());

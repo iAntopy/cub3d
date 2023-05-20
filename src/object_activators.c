@@ -44,25 +44,25 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 	return (0);
 }
 
-int	set_playable_obj(t_cub *cub, t_oinst *player)
-{
+// int	set_playable_obj(t_cub *cub, t_oinst *player)
+// {
 	
-}
+// }
 
-int	spawn_new_player(t_oinst *spawnp, int is_playable)
-{
-	t_cub	*cub;
-	t_oinst	*player;
-	int		id;
-	int		pos[2];
+// int	spawn_new_player(t_oinst *spawnp, int is_playable)
+// {
+// 	t_cub	*cub;
+// 	t_oinst	*player;
+// 	int		id;
+// 	int		pos[2];
 
-	if (!spawnp || spawnp->type->type_enum != OBJ_SPAWNPOINT)
-		return (-1);
-	cub = (t_cub *)spawnp->relative;
-	pos[0] = spawnp->px;
-	pos[1] = spawnp->py;
-	id = create_player_instance(cub, pos, spawnp->allegiance, spawnp);
-	if (is_playable)
-		set_playable_obj(cub, player);
-	return (0);
-}
+// 	if (!spawnp || spawnp->type->type_enum != OBJ_SPAWNPOINT)
+// 		return (-1);
+// 	cub = (t_cub *)spawnp->relative;
+// 	pos[0] = spawnp->px;
+// 	pos[1] = spawnp->py;
+// 	id = create_player_instance(cub, pos, spawnp->allegiance, spawnp);
+// 	if (is_playable)
+// 		set_playable_obj(cub, player);
+// 	return (0);
+// }
