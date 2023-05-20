@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_instanciators.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 20:12:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:03:24 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 {
 	t_oinst	*new_obj;
 
-	if (!link)
-		return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
+	// if (!link)
+	// 	return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
 	new_obj = NULL;
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());
@@ -53,8 +53,8 @@ int	create_spawnpoint_instance(t_cub *cub, float *pos, int allegiance)
 {
 	t_oinst	*new_obj;
 
-	if (!link)
-		return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
+	// if (!link)
+	// 	return (report_err("Creating a player instance must provide ptr to t_hero struct.\n"));
 	new_obj = NULL;
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());
