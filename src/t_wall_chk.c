@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 17:37:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:47:34 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,24 +92,6 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	objx->obj_id = id;		       	//	OR _Index_ (obj_int_id) 'i' ... "maybe both!"
 	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
 
-			// {
-			// 	printf("*** PLAYER {%c}***\n", idx);
-			// }
-			// {
-			// 	printf("*** LEVER[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** PORTAL[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** FIREBALL[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** FIREPIT[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** SPEC[%d]::{%c}***\n", head, idx);	
-			// }
 	head = (ft_in_set(idx, (const char *)MAP_MCHR));
 	printf("get_pos: objx type attribution : head %d\n", head); 
 	if (head < 4)

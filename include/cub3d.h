@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 06:30:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:46:03 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ enum	e_object_types
 	OBJ_NULL,
 	OBJ_LEVER,
 	OBJ_PORTAL,
-	OBJ_FIREBALL,
 	OBJ_FIREPIT,
+	OBJ_FIREBALL,
 	OBJ_PLAYER,
 	OBJ_SPAWNPOINT,
 	OBJ_FLAG,
