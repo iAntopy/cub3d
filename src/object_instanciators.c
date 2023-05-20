@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/20 15:03:24 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:04:06 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 // pos is in world coord, NOT cell coord.
 int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
