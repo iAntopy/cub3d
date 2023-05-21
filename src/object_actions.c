@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   object_actions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 07:34:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 21:13:11 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 #define PORTAL_TRIGGER_DIST_SQ 100.0f
 
