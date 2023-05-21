@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/20 15:46:03 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:33:37 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@
 # define MAP_UCHR "ABCDEFGHIJ"
 # define MAP_MCHR "!+|-<>(){}_^=:;*#%@$&?"
 
-# define MOD_LEV "!+|-"
+# define MOD_LEV "!+-"
 # define MOD_PORT "<>(){}_^"
 # define MOD_FIRE "=:;*#%"
 # define MOD_SPEC "@$&?"

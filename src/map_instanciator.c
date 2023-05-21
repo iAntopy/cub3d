@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/20 19:49:05 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:43:14 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,11 @@ int	instanciate_map_objects(t_cub *cub)
 		return (-1);
 	nb_meta = cub->box.meta;
 
-	printf("objx before : \n");
+	printf("objx before : meta = %d\n", nb_meta);
 	print_all_map_insts(cub->box.objx, nb_meta);
 	printf(" Check passed, nb_meta : %d\n", nb_meta);
 	i = -1;
-	while (++i < nb_meta)
+	while (++i <= nb_meta)
 		instanciate_specific_obj(cub, cub->box.objx[i], nb_meta);
 
 	printf("\nLinking map instances :\n");

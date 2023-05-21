@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/20 20:00:33 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:57:14 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,17 +147,17 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
 				}
-				if (p_box == max)
-				{
-					cub->box.meta++;
-					// p_list_objx(cub->box.objx , p_box, 0); 					
-				}	
+				// if (p_box == max)
+				// {
+				// 	cub->box.meta++;
+				// 	// p_list_objx(cub->box.objx , p_box, 0); 					
+				// }	
 			}
 			m->pos_x++;
 		}
 		m->pos_y++;
 	}
-	printf(" ... MAPX:exit\n\n");
+	printf(" ... MAPX:exit \n\n");
 	return (cub);
 }
 
