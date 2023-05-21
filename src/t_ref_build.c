@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/20 15:45:52 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:00:33 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
+	int head;
 
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1)		//// lever
 	{
@@ -85,16 +86,16 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 			init_portal_model(objs);
 		box->n_prts++;
 	}
-	else if (ft_in_set(t_name[0], (const char *)MOD_FIRE) != -1)
+	else if ((head = ft_in_set(t_name[0], (const char *)MOD_FIRE) == 0))
 	{
-		printf(">>>>	MODEL : FBALL [%d] >>>\n", box->n_fbll);
-		if (t_name[0] == '*' && box->n_fbll == 0)
+		printf(">>>> ref[%d]	MODEL : FBALL [%d] >>>\n", head, box->n_fbll);
+		if (head > 2 && box->n_fbll == 0)
 		{
 			printf(">>>>	MODEL : FB[%d] >>>\n", box->n_fbll);
 			init_fireball_model(objs);
 			box->n_fbll++;
 		}
-		if (t_name[0] == '#' && box->n_fpit == 0)
+		if (head < 3 && box->n_fpit == 0)
 		{
 			printf(">>>>	MODEL : FPIT [%d] >>>\n", box->n_fpit);
 			init_firepit_model(objs);

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/20 15:47:34 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:18:50 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,34 +93,37 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
 
 	head = (ft_in_set(idx, (const char *)MAP_MCHR));
-	printf("get_pos: objx type attribution : head %d\n", head); 
-	if (head < 4)
-		objx->o_type = OBJ_LEVER;
-	else if (head < 12)
-		objx->o_type = OBJ_PORTAL;
-	else if (head < 15)
-		objx->o_type = OBJ_FIREPIT;
-	else if (head < 18)
-		objx->o_type = OBJ_FIREBALL;
-	else if (head < 21)
-		objx->o_type = OBJ_PLAYER;
-	else
-		objx->o_type = OBJ_FLAG;
-	printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
-	
-	objx->opos[0] = m->pos_x;		/// main event! 
-	objx->opos[1] = m->pos_y;
-
-	objx->relativ =  m->raw[o_cells][4];	
-	objx->alleg = m->raw[o_cells][2] - 48; //ALI_TORRENT;			
-
-	if (objx->o_type == 5)//0 && objx->o_type < 7)
-		objx->alleg = ALI_TORRENT;
+	if (head != -1)
+	{
+		// printf("get_pos: objx type attribution : head %d\n", head); 
+		if (head < 4)
+			objx->o_type = OBJ_LEVER;
+		else if (head < 12)
+			objx->o_type = OBJ_PORTAL;
+		else if (head < 15)
+			objx->o_type = OBJ_FIREPIT;
+		else if (head < 18)
+			objx->o_type = OBJ_FIREBALL;
+		else if (head < 21)
+			objx->o_type = OBJ_PLAYER;
+		else
+			objx->o_type = OBJ_FLAG;
+		// printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
 		
+		objx->opos[0] = m->pos_x;		/// main event! 
+		objx->opos[1] = m->pos_y;
+
+		objx->relativ =  m->raw[o_cells][4];	
+		objx->alleg = m->raw[o_cells][2] - 48; //ALI_TORRENT;			
+
+		if (objx->o_type == OBJ_PLAYER)
+			objx->alleg = ALI_TORRENT;	
+
+		printf("META_ID[%d]_typ[%d]_name{%c}__",objx->obj_id, objx->o_type, objx->name);
+		printf("Alg[%d]__Rel{%c}__",  objx->alleg, objx->relativ);
+		printf("(x[%d],y[%d])((head:%d))\n\n", objx->opos[0], objx->opos[1], head);	
+	}
 	
-	printf("META_ID[%d]_typ[%d]_name{%c}__",objx->obj_id, objx->o_type, objx->name);
-	printf("Alg[%d]__Rel{%c}__",  objx->alleg, objx->relativ);
-	printf("(x[%d],y[%d])((head:%d))\n\n", objx->opos[0], objx->opos[1], head);	
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");
@@ -169,19 +172,21 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 		{
 			o_cells = ft_in_set((m->m[m->pos_y][m->pos_x]),
 					(const char *)cub->box.chrs);
+				// printf("WALLCHK_ID[%d] O_CELL[%d]\n", id, o_cells);
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0')
 				m->m[m->pos_y][m->pos_x] = 'A';
 			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
 			{	
+				printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
 				m = check_hero_found(m);
 				objx[id] = get_pos(cub, m, o_cells, id);
 				// p_list_objx(cub->box.objx , id, 0); 
 				id++;
 				
 			}
-			else if (o_cells < cub->box.meta && o_cells != -1)
+			else if (o_cells < cub->box.meta - 1 && o_cells > -1)
 			{
-				
+				printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
 				objx[id] = get_pos(cub, m, o_cells, id);
 				id++;
 			}

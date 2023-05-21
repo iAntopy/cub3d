@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_instanciator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 07:32:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 19:49:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 /*
 typedef struct s_objx
