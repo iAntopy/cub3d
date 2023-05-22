@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_instanciator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 07:32:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:27:40 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 /*
 typedef struct s_objx
@@ -84,10 +84,8 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 		}
 		else if (o->o_type == OBJ_LEVER)
 		{
-			printf("linking lever to portal - name %c, type %d to name %c, type %d, wobj enum : %d, rel\
- wobj enum : %d\n",
-				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type,
-					o->wobj->type->type_enum, o->rel_ref->wobj->type->type_enum);
+			printf("linking lever to portal - name %c, type %d to name %c,", o->name, o->o_type, o->rel_ref->name); 
+			printf("type %d, wobj enum : %d, rel wobj enum : %d\n", o->rel_ref->o_type, o->wobj->type->type_enum, o->rel_ref->wobj->type->type_enum);
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 			printf("lever relative ptr : %p\n", o->wobj->relative);
 		}
@@ -108,7 +106,7 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 	printf("Try creating obj inst at pos (%d, %d), name %c, type %d, alleg %d\n",
 		ob->opos[0], ob->opos[1], ob->name, ob->o_type, ob->alleg);
 	if (ob->obj_id < 0 || ob->o_type < 1 || NB_OBJ_TYPES < ob->o_type
-			|| ob->alleg < 1 || 3 < ob->alleg)
+			|| ob->alleg < 1 || 3 > ob->alleg)
 			return (NULL);
 	
 	pos[0] = (float)ob->opos[0] * CELL_WIDTH + (CELL_WIDTH >> 1);
@@ -142,11 +140,11 @@ int	instanciate_map_objects(t_cub *cub)
 		return (-1);
 	nb_meta = cub->box.meta;
 
-	printf("objx before : \n");
+	printf("objx before : meta = %d\n", nb_meta);
 	print_all_map_insts(cub->box.objx, nb_meta);
 	printf(" Check passed, nb_meta : %d\n", nb_meta);
 	i = -1;
-	while (++i < nb_meta)
+	while (++i <= nb_meta)
 		instanciate_specific_obj(cub, cub->box.objx[i], nb_meta);
 
 	printf("\nLinking map instances :\n");

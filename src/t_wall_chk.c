@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 17:37:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:50:56 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,53 +92,38 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	objx->obj_id = id;		       	//	OR _Index_ (obj_int_id) 'i' ... "maybe both!"
 	objx->name = idx;				//	call _Name_ should be (obj_char_name) '#' 
 
-			// {
-			// 	printf("*** PLAYER {%c}***\n", idx);
-			// }
-			// {
-			// 	printf("*** LEVER[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** PORTAL[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** FIREBALL[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** FIREPIT[%d]::{%c}***\n", head, idx);	
-			// }
-			// {
-			// 	printf("*** SPEC[%d]::{%c}***\n", head, idx);	
-			// }
 	head = (ft_in_set(idx, (const char *)MAP_MCHR));
-	printf("get_pos: objx type attribution : head %d\n", head); 
-	if (head < 4)
-		objx->o_type = OBJ_LEVER;
-	else if (head < 12)
-		objx->o_type = OBJ_PORTAL;
-	else if (head < 15)
-		objx->o_type = OBJ_FIREBALL;
-	else if (head < 18)
-		objx->o_type = OBJ_FIREPIT;
-	else if (head < 21)
-		objx->o_type = OBJ_PLAYER;
-	else
-		objx->o_type = OBJ_FLAG;
-	printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
-	
-	objx->opos[0] = m->pos_x;		/// main event! 
-	objx->opos[1] = m->pos_y;
-
-	objx->relativ =  m->raw[o_cells][4];	
-	objx->alleg = m->raw[o_cells][2] - 48; //ALI_TORRENT;			
-
-	if (objx->o_type == 5)//0 && objx->o_type < 7)
-		objx->alleg = ALI_TORRENT;
+	if (head != -1)
+	{
+		// printf("get_pos: objx type attribution : head %d\n", head); 
+		if (head < 4)
+			objx->o_type = OBJ_LEVER;
+		else if (head < 12)
+			objx->o_type = OBJ_PORTAL;
+		else if (head < 15)
+			objx->o_type = OBJ_FIREPIT;
+		else if (head < 18)
+			objx->o_type = OBJ_FIREBALL;
+		else if (head < 21)
+			objx->o_type = OBJ_PLAYER;
+		else
+			objx->o_type = OBJ_FLAG;
+		// printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
 		
+		objx->opos[0] = m->pos_x;		/// main event! 
+		objx->opos[1] = m->pos_y;
+
+		objx->relativ =  m->raw[o_cells][4];	
+		objx->alleg = m->raw[o_cells][2] - 48; //ALI_TORRENT;			
+
+		if (objx->o_type == OBJ_PLAYER)
+			objx->alleg = ALI_TORRENT;	
+
+		printf("META_ID[%d]_typ[%d]_name{%c}__",objx->obj_id, objx->o_type, objx->name);
+		printf("Alg[%d]__Rel{%c}__",  objx->alleg, objx->relativ);
+		printf("(x[%d],y[%d])((head:%d))\n\n", objx->opos[0], objx->opos[1], head);	
+	}
 	
-	printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
-	printf("[%d]::{%c}\n",  objx->alleg, objx->relativ);
-	printf("_(x[%d], y[%d])::\n\n", objx->opos[0], objx->opos[1]);	
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");
@@ -176,7 +161,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 	printf("Wall_chk META  %d::: \n", cub->box.meta);
 	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
 	
-	id = 0;
+	id = -1;
 	// chr_name = cub->box.chrs;
 	o_cells = -1;
 	m->pos_y = 0;
@@ -187,21 +172,23 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 		{
 			o_cells = ft_in_set((m->m[m->pos_y][m->pos_x]),
 					(const char *)cub->box.chrs);
+				// printf("WALLCHK_ID[%d] O_CELL[%d]\n", id, o_cells);
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0')
 				m->m[m->pos_y][m->pos_x] = 'A';
 			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
 			{	
 				m = check_hero_found(m);
-				objx[id] = get_pos(cub, m, o_cells, id);
-				// p_list_objx(cub->box.objx , id, 0); 
 				id++;
+				objx[id] = get_pos(cub, m, o_cells, id);
+				printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
+				// p_list_objx(cub->box.objx , id, 0); 
 				
 			}
-			else if (o_cells < cub->box.meta && o_cells != -1)
+			else if (o_cells < cub->box.meta - 1 && o_cells > -1)
 			{
-				
-				objx[id] = get_pos(cub, m, o_cells, id);
 				id++;
+				objx[id] = get_pos(cub, m, o_cells, id);
+				printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
 			}
 			m->pos_x++;
 		}
@@ -210,6 +197,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 	cub->box.objx = objx;
 	// int ox = 0;
 	// p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
+	// printf("before it end_ WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
 	return (cub);
 }
 

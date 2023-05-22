@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 06:49:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:57:14 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)// t_box *box)
 		name = ft_strjoin(path, ft_itoa(i));
 		arr_name = ft_strjoin((const char *)name, ".png");
 		
-		printf(">>>> GSET: [%d]  >>>{%s}", i, arr_name);
+		// printf(">>>> GSET: [%d]  >>>{%s}", i, arr_name);
 		gset->xwalls[i] = mlx_load_png(arr_name);
-		printf("gset->xwalls[%d] : %p\n", i, gset->xwalls[i]);
+		// printf("gset->xwalls[%d] : %p\n", i, gset->xwalls[i]);
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(arr_name));
  		printf(">> >> ptr : %p i: %d, tex ptr : %p\n", gset->xwalls[i] ,i, gset->xwalls[i]);
@@ -70,6 +70,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 
 t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
+	int head;
 
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1)		//// lever
 	{
@@ -85,16 +86,18 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 			init_portal_model(objs);
 		box->n_prts++;
 	}
-	else if (ft_in_set(t_name[0], (const char *)MOD_FIRE) != -1)
+	else if ((head = ft_in_set(t_name[0], (const char *)MOD_FIRE) == 0))
 	{
-		printf(">>>>	MODEL : FB [%d] >>>\n", box->n_fbll);
-		if (t_name[0] == '*' && box->n_fbll == 0)
+		printf(">>>> ref[%d]	MODEL : FBALL [%d] >>>\n", head, box->n_fbll);
+		if (head > 2 && box->n_fbll == 0)
 		{
+			printf(">>>>	MODEL : FB[%d] >>>\n", box->n_fbll);
 			init_fireball_model(objs);
 			box->n_fbll++;
 		}
-		if (t_name[0] == '#' && box->n_fpit == 0)
+		if (head < 3 && box->n_fpit == 0)
 		{
+			printf(">>>>	MODEL : FPIT [%d] >>>\n", box->n_fpit);
 			init_firepit_model(objs);
 			box->n_fpit++;
 		}
@@ -133,7 +136,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-			printf("p_box : %d, chrs : %s\n", p_box, chrs);
+			// printf("p_box : %d, chrs : %s\n", p_box, chrs);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))
@@ -144,17 +147,17 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 				{
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
 				}
-				if (p_box == max)
-				{
-					cub->box.meta++;
-					// p_list_objx(cub->box.objx , p_box, 0); 					
-				}	
+				// if (p_box == max)
+				// {
+				// 	cub->box.meta++;
+				// 	// p_list_objx(cub->box.objx , p_box, 0); 					
+				// }	
 			}
 			m->pos_x++;
 		}
 		m->pos_y++;
 	}
-	printf(" ... MAPX:exit\n\n");
+	printf(" ... MAPX:exit \n\n");
 	return (cub);
 }
 

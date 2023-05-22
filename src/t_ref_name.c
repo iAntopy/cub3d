@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 06:39:28 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:55:24 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ t_cub	*e_mtrx_count(t_cub *cub)
 
 	i = -1;
 	cub->box.chrs_len = 1;
+	cub->box.meta = 1;
 	while (*cub->map.raw && cub->map.raw[++i])
 	{
 		rawz = cub->map.raw[i];

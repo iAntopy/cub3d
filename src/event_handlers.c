@@ -69,7 +69,6 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	}
 	cub->renderer.requires_update = 1;
 */
-/*
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
 	else if (event.key == MLX_KEY_LEFT)
@@ -80,6 +79,7 @@ void	on_keypress(mlx_key_data_t event, void *param)
 		cub_player_zoom(cub, -0.1);
 	else if (event.key == MLX_KEY_DOWN)
 		cub_player_zoom(cub, 0.1);
+/*
 */
 }
 
