@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/20 20:43:14 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:27:40 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 	printf("Try creating obj inst at pos (%d, %d), name %c, type %d, alleg %d\n",
 		ob->opos[0], ob->opos[1], ob->name, ob->o_type, ob->alleg);
 	if (ob->obj_id < 0 || ob->o_type < 1 || NB_OBJ_TYPES < ob->o_type
-			|| ob->alleg < 1 || 3 < ob->alleg)
+			|| ob->alleg < 1 || 3 > ob->alleg)
 			return (NULL);
 	
 	pos[0] = (float)ob->opos[0] * CELL_WIDTH + (CELL_WIDTH >> 1);
