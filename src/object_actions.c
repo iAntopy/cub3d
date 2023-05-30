@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 07:34:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 16:41:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,17 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 
 int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 {
-	t_oinst		*player;
-	int			i;
+//	t_oinst		*player;
+//	int			i;
 
 	if (!obj->isactive)
 		return (-1);
+	(void)cub;
 //	printf("nb players : %d\n", cub->nb_players);
+
+	/// This updates the players spawn point to the one placed in its current
+	/// cell if spawnpoint is active and of same allegience.
+	/*
 	i = -1;
 	while (++i < cub->nb_players)
 	{
@@ -55,6 +60,7 @@ int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 			&& player->cx == obj->cx && player->cy == obj->cy)
 			player->spawnpoint = obj;
 	}
+	*/
 	return (0);
 }
 

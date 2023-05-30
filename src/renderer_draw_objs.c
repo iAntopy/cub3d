@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 18:48:44 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:13:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,9 +299,11 @@ static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 	{
 		dpos[0] = obj->px - cub->hero.ply_obj->px;
 		dpos[1] = obj->py - cub->hero.ply_obj->py;
-		rel_ori = atan2f(dpos[1], dpos[0]) + FOV45_HF;
+		rel_ori = atan2f(dpos[1], dpos[0]) - obj->ori + FOV45_HF;// + FOV45_HF;
 		if (rel_ori < 0)
 			rel_ori += M_TAU;
+		rel_ori = fmodf(rel_ori, M_TAU);
+		
 		idx = (int)(rel_ori * rad_to_idx_ratio);
 //		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
 		tex = obj->gset->xwalls[idx];
@@ -333,9 +335,11 @@ static mlx_texture_t	*select_draw_proj_texture(t_oinst *obj, float *ppos)
 	{
 		dpos[0] = obj->px - ppos[0];
 		dpos[1] = obj->py - ppos[1];
-		rel_ori = atan2f(dpos[1], dpos[0]) + FOV45_HF;
+		rel_ori = atan2f(dpos[1], dpos[0]) - obj->ori + FOV45_HF;
 		if (rel_ori < 0)
 			rel_ori += M_TAU;
+		rel_ori = fmodf(rel_ori, M_TAU);
+		printf("rel_ori : between player and obj %d: %f\n", obj->_id, rel_ori);
 		idx = (int)(rel_ori * rad_to_idx_ratio);
 //		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
 		tex = obj->gset->xwalls[idx];
@@ -356,9 +360,11 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 	t_oinst		*link;
 	float		ppos[2];
 	float		ov[2];
+	float		pv[2];
 	int			drawx;
 	float		ratio;
 	float		odist;
+	float		pdist;
 	mlx_texture_t	*tex;
 
 	int			loffs[4];
@@ -379,16 +385,19 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 //			obj = obj->next;
 			continue ;
 //		}
-		printf("\n\n Rendering PROJECTED obj %p, type : %d\n", obj, obj->type->type_enum);
+		printf("Rendering PROJECTED obj %d, type : %d\n", obj->_id, obj->type->type_enum);
 //		ov[0] = obj->px - link->px;
 //		ov[1] = obj->py - link->py;
 		ov[0] = obj->px - ppos[0];
 		ov[1] = obj->py - ppos[1];
+		pv[0] = link->px - ppos[0];
+		pv[1] = link->py - ppos[1];
 //		printf("obj id %d (%.2f, %.2f) to portal id %d (%.2f, %.2f)\n", obj->_id, obj->px, obj->py, link->_id, link->px, link->py);
 //		obj->ox = obj->px - cub->hero.px;
 //		obj->oy = obj->py - cub->hero.py;
 		
 		odist = (*cub->hero.dirx) * ov[0] + (*cub->hero.diry) * ov[1];
+		pdist = (*cub->hero.dirx) * pv[0] + (*cub->hero.diry) * pv[1];
 
 		ratio = cub->near_z / odist;
 		drawx = (int)(((*cub->hero.dirx) * ov[1] - (*cub->hero.diry) * ov[0])
@@ -397,7 +406,9 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 		dims[0] = (int)(ratio * obj->type->width);
 		dims[1] = (int)(ratio * obj->type->height);
 
-		if ((obj == link || (odist <= 1) || (drawx + (dims[0] >> 1)) < pframe[1]
+		printf("pdist : %f, odist : %f\n", pdist, odist );
+		if ((pdist <= 0.0f || ((odist - 1.0f) <= pdist)
+			|| (drawx + (dims[0] >> 1)) < pframe[0]
 			|| pframe[2] <= (drawx - (dims[0] >> 1))) && next_obj(&obj))
 //		if ((obj == link || odist <= 0 || pframe[2] <= drawx || (drawx + dims[0])
 //			< pframe[0]) && next_obj(&obj))
@@ -569,20 +580,20 @@ void	render_objects(t_cub *cub)
 //		printf("obj draw init checks PASSED \n");
 		obj->ox = obj->px - cub->hero.ply_obj->px;
 		obj->oy = obj->py - cub->hero.ply_obj->py;
-		printf("obj->px/y : (%f, %f), hero px, py : (%f, %f)\n", obj->px, obj->py,
-			cub->hero.ply_obj->px, cub->hero.ply_obj->py);
+//		printf("obj->px/y : (%f, %f), hero px, py : (%f, %f)\n", obj->px, obj->py,
+//			cub->hero.ply_obj->px, cub->hero.ply_obj->py);
 		obj->dist = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
 		tex = select_draw_texture(cub, obj);
 //		tex = obj->type->gset->xwalls[obj->tex_idx];
 		ratio = cub->near_z / obj->dist;
-		printf("ratio : %f, hero dirx, diry : <%f, %f>\n", ratio, *cub->hero.dirx, *cub->hero.diry);
+//		printf("ratio : %f, hero dirx, diry : <%f, %f>\n", ratio, *cub->hero.dirx, *cub->hero.diry);
 		dims[0] = (int)(ratio * obj->type->width);
 		dims[1] = (int)(ratio * obj->type->height);
 		drawx = (int)(((*cub->hero.dirx) * obj->oy - (*cub->hero.diry) * obj->ox)
 			* ratio) + cub->scn_midx;
 
-		printf("drawx : %d, dims : (%d, %d), type w, h : (%d, %d)\n", drawx, dims[0], dims[1],
-			obj->type->width, obj->type->height);
+//		printf("drawx : %d, dims : (%d, %d), type w, h : (%d, %d)\n", drawx, dims[0], dims[1],
+//			obj->type->width, obj->type->height);
 
 		if (((obj->dist <= 1) || (drawx + (dims[0] >> 1)) < 0
 			|| SCN_WIDTH <= (drawx - (dims[0] >> 1))) && next_obj(&obj))

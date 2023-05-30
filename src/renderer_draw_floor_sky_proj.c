@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 17:53:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 16:15:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 	mlx_texture_t	*tex_cil;
 	t_pdata			*pd;
 	char			*isproj;
+	int				ceil_offset;
 //	float			divergent_lens_ratio;
 
 	float			ray_scalar;
@@ -314,7 +315,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 //			++isproj;
 //			++dpbuff_flr;
 //			if (!isproj[i * SCN_HEIGHT] || dpbuff_flr[i * SCN_HEIGHT])
-			if (!isproj[i] || dpbuff_flr[i])
+			if (!isproj[i])// || dpbuff_flr[i])
 				continue ;
 //			printf("wow");
 //			divergent_lens_ratio = (j - cub->scn_midy) / (float)(pframe[3] - pframe[1]);
@@ -363,16 +364,18 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 			if (!pset)
 				continue ;
 			tex_flr = pset->xwalls[0];
-
-			*pf = get_tex_pixel(tex_flr, t[0] * tex_flr->width * cub->inv_cw,
-				t[1] * tex_flr->height * cub->inv_cw) & TRANSPARENCY;
+			
+			if (!dpbuff_flr[i])
+				*pf = get_tex_pixel(tex_flr, t[0] * tex_flr->width * cub->inv_cw,
+					t[1] * tex_flr->height * cub->inv_cw) & TRANSPARENCY;
 //			printf("*pf : %p, ", (void*)(size_t)*pf);
 
 //			pc = pf - (2 * (j - cub->scn_midy) * SCN_WIDTH);
+			ceil_offset = i + (SCN_WIDTH * (SCN_HEIGHT - j));
 			tex_cil = pset->xwalls[1];
-			if (!tex_cil)
+			if (!tex_cil || cub->renderer.dpbuff[ceil_offset])
 				continue ;
-			pc = pbuff + i + (SCN_WIDTH * (SCN_HEIGHT - j));
+			pc = pbuff + ceil_offset;
 //			printf("x : %d, *pf : %p, *pc : %p, pc raw offset : %ld\n", i, (void *)(size_t)*pf, (void *)(size_t)*pc, pc - pbuff);
 ///			if ((SCN_HEIGHT - j) > 200 && i < pframe[2] - 100)
 //				printf("pc x : %ld\n", (size_t)pc % SCN_WIDTH);
