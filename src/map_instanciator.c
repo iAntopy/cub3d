@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 22:12:06 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/29 23:47:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,21 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 	while (++i < nb_meta)
 	{
 		o = ob[i];
-//		printf("looking at obj : %d %c\n", o->o_type, o->name);
+		printf("looking at obj : %d %c\n", o->o_type, o->name);
 		printf("| %d - %c - type %d - pos (%d, %d) - rel %c - wobj %p\n",
 			o->obj_id, o->name, o->o_type, o->opos[0], o->opos[1],
 			o->relativ, o->wobj);
 		if (o->o_type == OBJ_PORTAL)
 		{
-//			printf("linking portal - name %c, type %d to name %c, type %d\n",
-//				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type);
+			// printf("linking portal - name %c, type %d to name %c, type %d\n",6
 			link_portal_instances(o->wobj, o->rel_ref->wobj);
 		}
 		else if (o->o_type == OBJ_LEVER)
 		{
-			printf("linking lever to portal - name %c, type %d to name %c,", o->name, o->o_type, o->rel_ref->name); 
-			printf("type %d, wobj enum : %d, rel wobj enum : %d\n", o->rel_ref->o_type, o->wobj->type->type_enum, o->rel_ref->wobj->type->type_enum);
+			printf("linking lever objx : %p -> rel : %p\n", o, o->rel_ref);
+//			printf("linking lever to portal - name %c, type %d to name %c, type %d, wobj enum : %d, rel wobj enum : %d\n",
+//				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type,
+//					o->wobj->type->type_enum, o->rel_ref->wobj->type->type_enum);
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 			printf("lever relative ptr : %p\n", o->wobj->relative);
 		}
@@ -106,7 +107,7 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 	printf("Try creating obj inst at pos (%d, %d), name %c, type %d, alleg %d\n",
 		ob->opos[0], ob->opos[1], ob->name, ob->o_type, ob->alleg);
 	if (ob->obj_id < 0 || ob->o_type < 1 || NB_OBJ_TYPES < ob->o_type
-			|| ob->alleg < 1 || 3 > ob->alleg)
+			|| ob->alleg < 1 || 3 < ob->alleg)
 			return (NULL);
 	
 	pos[0] = (float)ob->opos[0] * CELL_WIDTH + (CELL_WIDTH >> 1);

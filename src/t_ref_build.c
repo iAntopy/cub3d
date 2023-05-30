@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/29 23:11:48 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/29 23:00:12 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-			// printf("p_box : %d, chrs : %s\n", p_box, chrs);
+//			printf("p_box : %d, chrs : %s\n", p_box, chrs);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))

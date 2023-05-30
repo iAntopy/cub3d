@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/20 20:33:37 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/29 22:30:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,10 @@ typedef struct s_map_data
 	int		total_area;
 	char	*collision_map;
 	float	**grid_coords;
+	
+	// minimap data
+	int		mmp_mid[2];
+	int		mmp_ply_off[2];
 
 	// Germain specific Stuff
 
@@ -728,5 +732,7 @@ void			mlx_draw_player(t_cub * cub, t_map *map);
 void			mlx_update_mmap(t_cub *cub, t_map *m);
 
 
+void			update_minimap(t_cub *cub);
+void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
 
 #endif
