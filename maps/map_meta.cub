@@ -1,18 +1,13 @@
-$ 2/2
 ! 1/(
-( 1/)
-) 1/(
 + 2/<
 < 2/>
 > 2/<
-- 3/_
-_ 3/^
-^ 3/_
-a tex/ext/old-wood-planks.png
-b tex/ext/tree-bark.png
-c tex/ext/tree-branch.png
-d tex/ext/tree-dark.png
-e tex/ext/tree-old.png
+( 1/)
+) 1/(
+a tex/ext/rusty-metal.png
+b tex/ext/dark-metal.png
+c tex/ext/white-marble.png
+d tex/ext/travertine-stone.png
 z tex/ext/skymap3.png
 0 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
 1 tex/ext/grass-floor.png tex/ext/red-mountain-rock_.png
@@ -23,10 +18,10 @@ B cdcd
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 A00000000000000000!0000000000000000A
 A0000000@000000000000000000000(0000A
-A00<00000000000000000000$0000000000A
+A00<0000000000000000000000000000000A
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B1111111^1111-111111_11111111111111B
+B1111111111111111111111111111111111B
 B111)1111111111111+111111111111>111B
 B1111111111111111111111111111111111B
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB

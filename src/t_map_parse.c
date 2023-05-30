@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/20 20:31:06 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/29 22:54:47 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	if (tex_parse(cub, map) < 0)
 		return (-1);
 		
-	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset;
+	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset - 1;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
 	

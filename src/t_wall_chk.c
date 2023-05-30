@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/20 20:50:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/29 22:50:33 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	head = (ft_in_set(idx, (const char *)MAP_MCHR));
 	if (head != -1)
 	{
-		// printf("get_pos: objx type attribution : head %d\n", head); 
+		// printf("get_pos: objx type attribution : head %d\n", head);  
 		if (head < 4)
 			objx->o_type = OBJ_LEVER;
 		else if (head < 12)

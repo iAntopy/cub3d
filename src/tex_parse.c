@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/17 19:54:39 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/29 22:39:26 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 	char	*ref;
 
 	// queue = cub->box.xnum - cub->box.pnum;
-	queue = (cub->box.xnum  + cub->box.meta);
+	queue = (cub->box.xnum  + cub->box.meta - 1);
 	len = 0;
 	while (len < cub->box.pset)
 	{
