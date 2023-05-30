@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 17:13:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 22:56:29 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,11 +300,12 @@ static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 		dpos[0] = obj->px - cub->hero.ply_obj->px;
 		dpos[1] = obj->py - cub->hero.ply_obj->py;
 		rel_ori = atan2f(dpos[1], dpos[0]) - obj->ori + FOV45_HF;// + FOV45_HF;
-		if (rel_ori < 0)
+		while (rel_ori < 0)
 			rel_ori += M_TAU;
-		rel_ori = fmodf(rel_ori, M_TAU);
+//		if (rel_ori < 0)
+//		rel_ori = fmodf(rel_ori, M_TAU);
 		
-		idx = (int)(rel_ori * rad_to_idx_ratio);
+		idx = (int)(rel_ori * rad_to_idx_ratio) % 8;
 //		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
 		tex = obj->gset->xwalls[idx];
 	}
@@ -336,11 +337,13 @@ static mlx_texture_t	*select_draw_proj_texture(t_oinst *obj, float *ppos)
 		dpos[0] = obj->px - ppos[0];
 		dpos[1] = obj->py - ppos[1];
 		rel_ori = atan2f(dpos[1], dpos[0]) - obj->ori + FOV45_HF;
-		if (rel_ori < 0)
+		while (rel_ori < 0)
 			rel_ori += M_TAU;
-		rel_ori = fmodf(rel_ori, M_TAU);
-		printf("rel_ori : between player and obj %d: %f\n", obj->_id, rel_ori);
-		idx = (int)(rel_ori * rad_to_idx_ratio);
+//		if (rel_ori < 0)
+//			rel_ori += M_TAU;
+//		rel_ori = fmodf(rel_ori, M_TAU);
+//		printf("rel_ori : between player and obj %d: %f\n", obj->_id, rel_ori);
+		idx = (int)(rel_ori * rad_to_idx_ratio) % 8;
 //		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
 		tex = obj->gset->xwalls[idx];
 	}

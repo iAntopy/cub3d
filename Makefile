@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/17 22:17:23 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/29 22:27:39 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC_FLS	:=		main.c 			\
 			t_color_creat.c 	\
 			t_map_parse.c 		\
 			t_minimap.c			\
+			t_minimap2.c		\
 			t_map_tool.c 		\
 			t_ref_build.c 		\
 			t_obj_model.c 		\
@@ -42,10 +43,11 @@ SRC_FLS	:=		main.c 			\
 			draw_threads.c		\
 			object_framework_manager.c		\
 			object_deleters_and_getter.c	\
-			object_activators.c		\
-			object_actions.c		\
+			object_activators.c	\
+			object_actions.c	\
 			object_linkers.c	\
-			object_instanciators.c
+			object_instanciators.c	\
+			mlx_draw_line.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 

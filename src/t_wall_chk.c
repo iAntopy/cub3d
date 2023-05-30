@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 17:37:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 23:43:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 			// 	printf("*** SPEC[%d]::{%c}***\n", head, idx);	
 			// }
 	head = (ft_in_set(idx, (const char *)MAP_MCHR));
-	printf("get_pos: objx type attribution : head %d\n", head); 
+//	printf("get_pos: objx type attribution : head %d\n", head); 
 	if (head < 4)
 		objx->o_type = OBJ_LEVER;
 	else if (head < 12)
@@ -124,7 +124,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 		objx->o_type = OBJ_PLAYER;
 	else
 		objx->o_type = OBJ_FLAG;
-	printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
+//	printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
 	
 	objx->opos[0] = m->pos_x;		/// main event! 
 	objx->opos[1] = m->pos_y;

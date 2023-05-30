@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 07:32:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 23:47:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 		}
 		else if (o->o_type == OBJ_LEVER)
 		{
-			printf("linking lever to portal - name %c, type %d to name %c, type %d, wobj enum : %d, rel\
- wobj enum : %d\n",
-				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type,
-					o->wobj->type->type_enum, o->rel_ref->wobj->type->type_enum);
+			printf("linking lever objx : %p -> rel : %p\n", o, o->rel_ref);
+//			printf("linking lever to portal - name %c, type %d to name %c, type %d, wobj enum : %d, rel wobj enum : %d\n",
+//				o->name, o->o_type, o->rel_ref->name, o->rel_ref->o_type,
+//					o->wobj->type->type_enum, o->rel_ref->wobj->type->type_enum);
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 			printf("lever relative ptr : %p\n", o->wobj->relative);
 		}

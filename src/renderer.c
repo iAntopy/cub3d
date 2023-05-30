@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/15 00:14:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:53:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ int	init_renderer(t_cub *cub)
 		|| !cub->renderer.objs_layer
 		|| !cub->renderer.mmap_layer)
 		return (-1);
+
+	cub->map.mmp_mid[0] = MMP_WIDTH >> 1;
+	cub->map.mmp_mid[1] = MMP_HEIGHT >> 1;
+	cub->map.mmp_ply_off[0] = cub->map.mmp_mid[0] - 5;//
+	cub->map.mmp_ply_off[1] = cub->map.mmp_mid[1] - 5;// = MMP_HEIGHT >> 1;
 
 //	if (!ft_malloc_p(2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
 //			(void **)&cub->renderer.dbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
