@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:58:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 01:44:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:50:10 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ void	minimap_check(t_cub *cub, t_map *m)
 }
 
 // /// set player pos to center map 
-// void mlx_draw_player(t_cub * cub, t_map *map)
-// 	{
-// 	    int pos[2];
-// 		pos[0] = cub->hero.cell_x * 15;
-// 		pos[1] = cub->hero.cell_y * 15;
-// 		if (pos[0] < map->width && pos[1] < map->height)
-// 			mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x88ff66ff);
+	// void mlx_draw_player(t_cub * cub, t_map *map)
+	// 	{
+	// 	    int pos[2];
+	// 		pos[0] = cub->hero.cell_x * 15;
+	// 		pos[1] = cub->hero.cell_y * 15;
+	// 		if (pos[0] < map->width && pos[1] < map->height)
+	// 			mlx_draw_square(cub->renderer.mmap_layer, pos, 15, 0x88ff66ff);
 // }
 
 /// set map_char to map_pixel
