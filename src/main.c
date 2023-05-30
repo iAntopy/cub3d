@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 22:42:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:49:25 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,19 +169,19 @@ int	main(int argc, char **argv)
 
 ////// DEBUG CODE TO FORCE ALL mapx floor cells to have textures.
 
-// 	int	i;
-// 	int	j;
-// 	i = -1;
-// 	while (++i < cub.map.height)
-// 	{
-// 		j = -1;
-// 		while (++j < cub.map.width)	
-// 		{
-// //			printf("map cell gset ptr : %p, ", cub.map.mx[i][j]);
-// 			if (!cub.map.mx[i][j] || !cub.map.mx[i][j]->xwalls[0])
-// 				cub.map.mx[i][j] = &cub.dual[0];
-// 		}
-// 	}
+	int	i;
+	int	j;
+	i = -1;
+	while (++i < cub.map.height)
+	{
+		j = -1;
+		while (++j < cub.map.width)	
+		{
+//			printf("map cell gset ptr : %p, ", cub.map.mx[i][j]);
+			if (!cub.map.mx[i][j] || !cub.map.mx[i][j]->xwalls[0])
+				cub.map.mx[i][j] = &cub.dual[0];
+		}
+	}
 
 //	float 	pos[2];
 //	pos[0] = 13 * CELL_WIDTH + 1;
