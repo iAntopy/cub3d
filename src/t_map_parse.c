@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/18 20:55:15 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:31:06 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	read_whole_file(t_map *map, char *filepath)
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int	map_len;
-	int	map_offset;
+	int	map_offset;	
 
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
@@ -128,6 +128,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	print_collision_map(map);
 //	clr_legend_strct(cub->box);
+	printf("END map_chkobjx before : meta = %d\n", cub->box.meta);
 	printf("Clear DONE\n");
 	return (0);
 }

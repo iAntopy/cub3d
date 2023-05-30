@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 06:30:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:33:37 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@
 # define MAP_LCHR "abcdefghijklmnopz"
 # define MAP_NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "!+|-<>(){}[]*#%=:;@$&?"
+# define MAP_MCHR "!+|-<>(){}_^=:;*#%@$&?"
 
-# define MOD_LEV "!+|-"
-# define MOD_PORT "<>(){}[]"
-# define MOD_FIRE "*#%=:;"
+# define MOD_LEV "!+-"
+# define MOD_PORT "<>(){}_^"
+# define MOD_FIRE "=:;*#%"
 # define MOD_SPEC "@$&?"
 
 # define CUBMAP_BUFMAX 100000
@@ -115,8 +115,8 @@ enum	e_object_types
 	OBJ_NULL,
 	OBJ_LEVER,
 	OBJ_PORTAL,
-	OBJ_FIREBALL,
 	OBJ_FIREPIT,
+	OBJ_FIREBALL,
 	OBJ_PLAYER,
 	OBJ_SPAWNPOINT,
 	OBJ_FLAG,

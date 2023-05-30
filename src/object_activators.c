@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   object_activators.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 07:38:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:22:55 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 // Pass either OBJ_ACTIVATE or OBJ_DEACTIVATE as mode.
 int	activate_portal(t_oinst *obj, unsigned int new_state)
