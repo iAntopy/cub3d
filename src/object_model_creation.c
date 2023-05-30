@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 19:25:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/29 16:38:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,7 @@ static int	create_firepit_instance(t_cub *cub, int *pos, int *obj_id, t_hero *li
 	printf("Single firepit instance created at pos (%d, %d)\n", pos[0], pos[1]);
 	return (new_obj->_id);	
 }
-
+/*
 t_oinst	*get_obj(t_cub *cub, int id)
 {
 	t_oinst	*elem;
@@ -289,7 +289,7 @@ t_oinst	*get_obj(t_cub *cub, int id)
 	printf("No object with id %d\n", id);
 	return (NULL);
 }
-
+*/
 // Delete one specific object with id.
 int	delete_oinst_by_id(t_cub *cub, int id)
 {
