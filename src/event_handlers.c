@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 21:23:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:19:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	on_update(t_cub *cub)
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
-		printf("wow");
+//		printf("wow");
 		update_minimap(cub);
 		order_draw_call(cub->draw_threads, 0, 3);
 //		printf("drawing walls\n");
