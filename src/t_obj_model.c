@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 15:57:48 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 16:03:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	tex = objs->portal.gsets[0]->xwalls[0];
 // 	printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
 //	objs->player.texs[0] = objs->portal.gset->xwalls[0];
-	objs->player.width = 48;
+	objs->player.width = 64;
 	objs->player.half_w = objs->player.width >> 1;
 //	objs->player.height = CELL_WIDTH;
 	objs->player.height = objs->player.width * (tex->height / tex->width);

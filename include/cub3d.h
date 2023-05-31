@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 18:38:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/31 16:50:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ typedef struct s_objx
 
 typedef struct s_box 
 {	
-
 	mlx_texture_t	**xform;
 	mlx_texture_t	*sky_tex;	
 	mlx_texture_t	*sky;	
@@ -231,14 +230,14 @@ typedef struct s_texture_data
 	int				color[2];
 	
 	//	mlx_texture_t	*walls[4];
-	mlx_texture_t	*sky_tex;	// yessss
+//	mlx_texture_t	*sky_tex;	// yessss
 	// t_matrx			*gset;		// model_txtr
 	// t_matrx			*dual;		// floor & ceiling
 	// // // //
 	mlx_texture_t	*skymap;	
-	mlx_texture_t	*floor;		
-	char			**rgbx;
-	int				open_sky;
+//	mlx_texture_t	*floor;		
+//	char			**rgbx;
+//	int				open_sky;// DEPRECATED !!
 }	t_tex;
 
 typedef struct s_ray_collision_data
