@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:11:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 20:55:47 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:41:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,20 @@ void	mlx_draw_square(mlx_image_t *img, int pos[2], int side, uint32_t col)
 {
 	int			i;
 	uint32_t	*pxls;
+	int			frame[4];
+	int			sides[2];
 
-	pxls = (uint32_t *)img->pixels + pos[0] + pos[1] * img->width;
+	frame[0] = ft_clamp(pos[0], 0, img->width);
+	frame[1] = ft_clamp(pos[1], 0, img->width);
+	frame[2] = ft_clamp(pos[0] + side, 0, img->width);
+	frame[3] = ft_clamp(pos[1] + side, 0, img->width);
+	sides[0] = frame[2] - frame[0];
+	sides[1] = frame[3] - frame[1];
+	pxls = (uint32_t *)img->pixels + frame[0] + frame[1] * img->width;
 	i = -1;
-	while (++i < side)
-		__mlx_fill_pixels((uint8_t *)(pxls + (i * img->width)), side * sizeof(uint32_t), col);
+	while (++i < sides[1])
+		__mlx_fill_pixels((uint8_t *)(pxls + (i * img->width)),
+			sides[0] * sizeof(uint32_t), col);
 }
 
 void	cub_put_pixel(mlx_image_t *img, int x, int y, int col)
