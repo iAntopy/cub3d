@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/22 19:28:02 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:25:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	__render_ceiling_init(t_cub *cub, uint32_t **b, float **p)
 	b[2] = (uint32_t *)cub->renderer.bg_layer->pixels
 		+ (SCN_WIDTH * (cub->scn_midy - 2)) - 1;
 }
-
+/*
 static void	__render_floor_incr(float **ps, uint32_t **bs)
 {
 //	static int	i;
@@ -39,7 +39,7 @@ static void	__render_floor_incr(float **ps, uint32_t **bs)
 	++(bs[0]);
 	++(bs[1]);
 }
-
+*/
 static void	__render_flr_cil_incr(float **ps, uint32_t **bs)
 {
 	++(*ps);
@@ -82,7 +82,7 @@ void	__render_sky(t_cub *cub, t_rdata *rd)
 				+ (*tofs[1]) * cub->tex.skymap->width];
 	}
 }
-
+/*
 static void	__render_floor_sky(t_cub *cub, t_rdata *rdata)
 {
 //	const float		flr_ratios[2] = {};//{cub->renderer.flrw_to_cw, cub->renderer.flrh_to_cw};
@@ -134,7 +134,7 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rdata)
 			if (!tex_arr)// || tex_arr[1] != NULL)
 				continue ;
 	//		printf("drawing on mx %f, my %f\n", mx, my);
-			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,//* flr_ratios[0],
+			*buffs[0] = get_tex_pixel(tex_arr[0], mx * tex_arr[0]->width * cub->inv_cw,// flr_ratios[0],
 				my * tex_arr[0]->height * cub->inv_cw);//flr_ratios[1]);
 //			*buffs[0] = floor_get_pixel(cub->floor_tex,
 //					(int)(fmodf(*rays[0] * (*params) + cub->hero.px, CELL_WIDTH)
@@ -146,6 +146,7 @@ static void	__render_floor_sky(t_cub *cub, t_rdata *rdata)
 //		rays[1] = rd[0].ry;
 	}
 }
+*/
 
 static void	__render_floor_ceiling(t_cub *cub, t_rdata *rdata)
 {
@@ -235,8 +236,8 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rdata)
 void	render_floor_sky(t_cub *cub)//, t_rdata *rd)
 {
 	__render_sky(cub, cub->hero.rcast.rdata);
-	if (0 || cub->tex.open_sky)
-		__render_floor_sky(cub, cub->hero.rcast.rdata);// rd);
-	else
-		__render_floor_ceiling(cub, cub->hero.rcast.rdata);//;rd);
+//	if (0 || cub->tex.open_sky)
+//		__render_floor_sky(cub, cub->hero.rcast.rdata);// rd);
+//	else
+	__render_floor_ceiling(cub, cub->hero.rcast.rdata);//;rd);
 }

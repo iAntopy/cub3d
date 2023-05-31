@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 22:30:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:38:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,10 @@ typedef struct s_map_data
 	// minimap data
 	int		mmp_mid[2];
 	int		mmp_ply_off[2];
+	float	map_to_world_x_rt;
+	float	world_to_map_x_rt;
+	float	map_to_world_y_rt;
+	float	world_to_map_y_rt;
 
 	// Germain specific Stuff
 

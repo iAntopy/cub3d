@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 23:36:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/30 15:38:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	cub_player_rotate(t_cub *cub, float rot)
 {
 	if (!rot)
 		return ;
-//	printf("rot : %f\n", rot);
 	cub->hero.ply_obj->ori += rot;
 	if (cub->hero.ply_obj->ori < 0)
 		cub->hero.ply_obj->ori += M_TAU;
@@ -25,8 +24,6 @@ void	cub_player_rotate(t_cub *cub, float rot)
 		cub->hero.ply_obj->ori -= M_TAU;
 	cub->renderer.sky_ori_offset = (int)(cub->hero.ply_obj->ori
 		* cub->renderer.sky_radial_width);
-//	update_sky_toffs(cub, cub->renderer.sky_base_toffs,
-//		cub->renderer.sky_toffs);
 	update_rays(cub);
 	cub->renderer.requires_update = 1;
 }
@@ -80,8 +77,6 @@ void	cub_player_zoom(t_cub *cub, float dz)
 		new_fov = FOV_MAX;
 	if (new_fov != cub->fov)
 	{
-//		update_sky_base_toffs(cub, cub->renderer.sky_base_toffs,
-//			cub->renderer.sky_toffs);
 		update_fov(cub, new_fov);
 		cub->renderer.requires_update = 1;
 	}

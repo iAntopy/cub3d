@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 21:53:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:38:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 int	renderer_clear(t_cub *cub)
 {
-	printf("renderer clear entered \n");
+//	printf("renderer clear entered \n");
 	if (cub->renderer.bg_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
 	if (cub->renderer.sky_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
-	printf("renderer clear bg DONE \n");
+//	printf("renderer clear bg DONE \n");
 	if (cub->renderer.walls_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.walls_layer);
-	printf("renderer clear walls DONE \n");
+//	printf("renderer clear walls DONE \n");
 //	if (cub->renderer.proj_layer)
 //		mlx_delete_image(cub->mlx, cub->renderer.objs_layer);
 //	printf("renderer clear walls DONE \n");
 	if (cub->renderer.objs_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.objs_layer);
-	printf("renderer clear objs DONE\n");
+//	printf("renderer clear objs DONE\n");
 	if (cub->renderer.mmap_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.mmap_layer);
 	if (cub->renderer.dbuff)
@@ -37,7 +37,7 @@ int	renderer_clear(t_cub *cub)
 		ft_free_p((void **)&cub->renderer.dpbuff);
 	if (cub->renderer.isproj)
 		ft_free_p((void **)&cub->renderer.isproj);
-	printf("renderer clear mmap DONE : SUCCESS \n");
+//	printf("renderer clear mmap DONE : SUCCESS \n");
 	return (0);
 }
 
@@ -71,7 +71,10 @@ int	init_renderer(t_cub *cub)
 	cub->map.mmp_mid[1] = MMP_HEIGHT >> 1;
 	cub->map.mmp_ply_off[0] = cub->map.mmp_mid[0] - 5;//
 	cub->map.mmp_ply_off[1] = cub->map.mmp_mid[1] - 5;// = MMP_HEIGHT >> 1;
-
+	cub->map.map_to_world_x_rt = CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
+	cub->map.world_to_map_x_rt = 1.0f / cub->map.map_to_world_x_rt;//CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
+	cub->map.map_to_world_y_rt = CELL_WIDTH * 10.0f / (float)MMP_HEIGHT;
+	cub->map.world_to_map_y_rt = 1.0f / cub->map.map_to_world_y_rt;//CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
 //	if (!ft_malloc_p(2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
 //			(void **)&cub->renderer.dbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
 //		return (-1);
@@ -98,10 +101,8 @@ int	init_renderer(t_cub *cub)
 	mlx_image_to_window(cub->mlx, cub->renderer.mmap_layer,
 		(int)(SCN_WIDTH * 0.03f),
 		SCN_HEIGHT - MMP_HEIGHT - (int)(SCN_HEIGHT * 0.03f));
-
 	j = -1;
 	while (++j < SCN_HEIGHT)
 		cub->buff_offys[j] = j * SCN_WIDTH;
-
 	return (0);
 }
