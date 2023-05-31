@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 20:42:38 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:12:44 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	on_update(t_cub *cub)
 		ft_deltatime_usec_note(NULL);
 		// printf("wow");
 		update_minimap(cub);
-		// order_draw_call(cub->draw_threads, 0, 3);
+		order_draw_call(cub->draw_threads, 0, 3);
 //		printf("drawing walls\n");
 		render_walls(cub);//, cub->hero.rcast.rdata);
 		// printf("drawing floor\n");
