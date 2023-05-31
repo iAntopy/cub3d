@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:56:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 22:43:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:46:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,13 @@
 
 static int	minimap_pixel_is_wall(t_cub *cub, int *ms)
 {
-//	const int	mmp_world_scaler = CELL_WIDTH * 10.0f;
 	int	        ps[2];
 	int         cs[2];
 
 	ps[0] = (cub->hero.ply_obj->px + (ms[0] - cub->map.mmp_mid[0]) * cub->map.map_to_world_x_rt);// / (float)MMP_WIDTH)
-//		* mmp_world_scaler);
 	ps[1] = (cub->hero.ply_obj->py + (ms[1] - cub->map.mmp_mid[1]) * cub->map.map_to_world_y_rt);// / (float)MMP_HEIGHT)
-//		* mmp_world_scaler);
-
 	cs[0] = (int)(ps[0] * cub->inv_cw);
 	cs[1] = (int)(ps[1] * cub->inv_cw);
-//	if (cs[0] >= 0 && cs[1] >= 0 && cs[0] < cub->map.width && cs[1] < cub->map.height)
-//		printf("map pix potential : ps (%d, %d), ms (%d, %d)\n", ps[0], ps[1], cs[0], cs[1]);
-	
 	return (cs[0] < 0 || cs[1] < 0
 		|| cs[0] >= cub->map.width || cs[1] >= cub->map.height
 		|| is_wall(&cub->map, cs[0], cs[1]));
@@ -49,69 +42,22 @@ static void	minimap_draw_objs(t_cub *cub)
 			obj = obj->next;
 			continue ;
 		}
-		//if (obj->type->type_enum == OBJ_PORTAL)
 		icon_col = 0xff00ff00;
-//		printf("obj %d: (%d, %d)\n", obj->_id, ms[0], ms[1]);
-		ms[0] -= 5;//ft_clamp(ms[0] - 5, 0, MMP_WIDTH);
-		ms[1] -= 5;//ft_clamp(ms[1] - 5, 0, MMP_WIDTH);
+		ms[0] -= 5;
+		ms[1] -= 5;
 		mlx_draw_square(cub->renderer.mmap_layer, ms, 10, icon_col & TRANSPARENCY);
 		obj = obj->next;
 	}
 }
 
-/*
-#define MMP_FOV_LEN 65
-// ms : map coords (x, y)
-// ms_to_mid is perpendicular vector from normal
 static int	minimap_pixel_in_fov(t_cub *cub, int *ms, const float *left_r, const float *right_r)
 {
 	const int	to_mid[2] = {ms[0] - cub->map.mmp_mid[0], ms[1] - cub->map.mmp_mid[1]};
 	const int	is_in_front = 0 < (to_mid[0] * (*cub->hero.dirx) + to_mid[1] * (*cub->hero.diry));
-	float			proj_len;
-	float		mmp_len;
-	float		theta;
-	int			scn_x;
-	
-//	printf("dot left : %f, dot right : %f\n", (to_mid[1] * left_r[0] - to_mid[0] * left_r[1]), 
-//		(to_mid[1] * right_r[0] - to_mid[0] * right_r[1]));
-	if (is_in_front && (((to_mid[1] * left_r[0] - to_mid[0] * left_r[1]) > 0))
-		!= ((to_mid[1] * right_r[0] - to_mid[0] * right_r[1]) > 0))
-	{
-		if (!to_mid[0] && !to_mid[1])
-			return (0);
-		
-//		theta = atan2f(delta[1], delta[0]) - cub->hero.ply_obj->ori;
-//		if (theta < -M_PI)
-//			theta += M_TAU;
-//		scn_x = (int)((theta / cub->fov) * SCN_WIDTH + cub->scn_midx);
-//		if (theta < 0.0f)
-//			theta += M_TAU;
-//		printf("rel angle : %f\n", theta);//, scn_x);
-		proj_len = to_mid[1] * (*cub->hero.dirx) - to_mid[0] * (*cub->hero.diry);
-		mmp_len = sqrtf(to_mid[0] * to_mid[0] + to_mid[1] * to_mid[1]);
-		theta = asinf(proj_len / mmp_len);
-		scn_x = (int)(theta / cub->fov * SCN_WIDTH) + cub->scn_midx;
-		if (mmp_len * cub->map.map_to_world_x_rt > cub->hero.rcast.rdata[scn_x].dist)
-			return (0);
-
-		return (1);
-	}
-	return (0);
-}
-*/
-static int	minimap_pixel_in_fov(t_cub *cub, int *ms, const float *left_r, const float *right_r)
-{
-	const int	to_mid[2] = {ms[0] - cub->map.mmp_mid[0], ms[1] - cub->map.mmp_mid[1]};
-	const int	is_in_front = 0 < (to_mid[0] * (*cub->hero.dirx) + to_mid[1] * (*cub->hero.diry));
-//	float			proj_len;
-//	float		mmp_len;
-//	float		theta;
 	int			scn_x;
 	float		dist;
 	float		ratio;
 	
-//	printf("dot left : %f, dot right : %f\n", (to_mid[1] * left_r[0] - to_mid[0] * left_r[1]), 
-//		(to_mid[1] * right_r[0] - to_mid[0] * right_r[1]));
 	if (is_in_front && (((to_mid[1] * left_r[0] - to_mid[0] * left_r[1]) > 0))
 		!= ((to_mid[1] * right_r[0] - to_mid[0] * right_r[1]) > 0))
 	{
