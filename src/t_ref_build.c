@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/29 23:00:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/30 20:16:33 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,13 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
+		// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
         if (tex_set[1])/// not open_sky
         {	
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
-			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
         }   
 
     }
@@ -136,15 +137,17 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-//			printf("p_box : %d, chrs : %s\n", p_box, chrs);
+			// printf("p_box : %d, chrs : %s\n", p_box, chrs);
 			if (p_box != -1)
 			{
 				if ((p_box < max - (cub->box.pset - 2)) && (p_box > max - (cub->box.pset + cub->box.n_dual - 1)))
 				{
+					// printf("MapX pset-2 >> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 				}
-				if ((p_box <= max - (cub->box.pset + 1)) && (p_box - cub->box.meta >= 0)) /// floor + ceil
+				else if ((p_box <= max - (cub->box.pset + 1)) && (p_box - cub->box.meta >= 0)) /// floor + ceil
 				{
+					// printf("MapX  pset + 1>> (%d, %d)>> p_box[%d]: ptr:%p\n", m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
 				}
 				// if (p_box == max)

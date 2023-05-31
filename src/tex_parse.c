@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/29 22:39:26 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/30 20:02:15 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 		
 		printf("PSET:: CHAR>>(%c)", ref[0]);
 		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		
 		cub->pset = pset_maker(cub, raw, queue, len);
 		len++;
