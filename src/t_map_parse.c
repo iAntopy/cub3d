@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/29 22:54:47 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:58:44 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 		++i;
 	}
 	cub->map.m = m;
-	cub = wall_check(cub, &cub->map);
+	wall_check(cub, &cub->map);
 	return (cub);
 }
 
@@ -108,7 +108,6 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
-		
 	map_len = read_whole_file(map, file);
 	if (tex_parse(cub, map) < 0)
 		return (-1);
@@ -116,19 +115,14 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset - 1;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
-	
-	printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, map_offset);
-	printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);
+		// printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, map_offset);
+		// printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);	
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
-	// int ox = 0;
-	// p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
-	printf("A ptr : %p =? %p\n", map->mx[0][0], &cub->pset[2]);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
 	print_collision_map(map);
 //	clr_legend_strct(cub->box);
-	printf("END map_chkobjx before : meta = %d\n", cub->box.meta);
 	printf("Clear DONE\n");
 	return (0);
 }

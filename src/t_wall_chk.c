@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/30 20:31:15 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:45:42 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,60 +23,6 @@ void	clr_legend_strct(t_box box)
 	free(*box.xform);
 }
 
-// typedef struct s_objx
-	// {
-	// 	char 			name;		// '#' 
-	// 	int				obj_id;		 // enrg. id	
-	// 	int 			opos[2];	// relativ pos (reltv. obj_id)
-	// 	t_oinst			*wobj;		// world object instance
-	// 	///							/// get_pos has split job...
-		
-	// 	int				o_type;		// model_type
-	// 	int 			alleg;		// allegence _txtr
-	// 	char			relativ;	// char obj_id
-	// 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
-// }	t_objx;
-
-
-// t_objx	*get_ref(t_cub *cub, t_objx *objx, int id)
-	// {
-	// 	char ext_ref;
-	// 	// int ext_id;
-
-	// 	ext_ref = cub->box.chrs[id];
-
-	// 	printf("_(ext_ref[%c] ::chrs{%s}::\n\n", ext_ref, cub->box.chrs);
-	// 	// ext_ref = cub->box.objx[id]->relativ;
-	// 	// ext_id = ft_in_set(ext_ref, (const char *)cub->box.chrs); 
-	// 	// *ptr objx[id] // objx->[chrs[id]] ....  ref by header_file
-	// 	// objx->rel_ref = cub->box.objx[ext_id];
-		
-	// 	// objx->relativ =   ext_ref;//cub->box.chrs[id];
-	// 	//m->raw[o_cells][4];			// objx->relativ =  *objx[0]->'#' 	
-	// 	// 	enum type alleg (0-3)  
-	// 		// objx->alleg = ALI_TORRENT;			// 	objx->alleg = m->raw[o_cells][2] - 48;		
-	// 	return (objx);	
-// }
-
-// /// add new id_member
-		// 	objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
-		// 	idx = *ft_substr(cub->box.chrs, o_cells, 1);
-			
-		// 	objx->name = idx;//cub->box.chrs[o_cells];		 // '#' char name 
-		// 	objx->obj_id = id;		          
-		// 	if (o_cells < cub->box.n_lvls)
-		// 		objx->o_type = 2;
-		// 	else if (o_cells < (cub->box.n_prts + cub->box.n_lvls))
-		// 		objx->o_type = 1;
-		// 	else
-		// 		objx->o_type = 3;
-		// 	// printf("META_ID[%d]typ[%d](Name//Alleg//Reltv)::{%c}::",objx->obj_id, objx->o_type, objx->name);
-		// 	objx->alleg = m->raw[o_cells][2] - 48;		    // txtr_ref
-		// 	objx->relativ =  m->raw[o_cells][4];
-		// 	// printf("[%d]::{%c}",  objx->alleg, objx->relativ);
-		// 	objx->opos[0] = m->pos_x;
-		// 	objx->opos[1] = m->pos_y;
-		// 	// printf("_(x[%d], y[%d])::\n\n", 
 
 /// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
 t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
@@ -96,6 +42,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	if (head != -1)
 	{
 		// printf("get_pos: objx type attribution : head %d\n", head);  
+		// printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
 		if (head < 4)
 			objx->o_type = OBJ_LEVER;
 		else if (head < 12)
@@ -108,7 +55,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 			objx->o_type = OBJ_PLAYER;
 		else
 			objx->o_type = OBJ_FLAG;
-		// printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
+		
 		
 		objx->opos[0] = m->pos_x;		/// main event! 
 		objx->opos[1] = m->pos_y;
@@ -118,12 +65,10 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 
 		if (objx->o_type == OBJ_PLAYER)
 			objx->alleg = ALI_TORRENT;	
-
-		printf("META_ID[%d]_typ[%d]_name{%c}__",objx->obj_id, objx->o_type, objx->name);
-		printf("Alg[%d]__Rel{%c}__",  objx->alleg, objx->relativ);
-		printf("(x[%d],y[%d])((head:%d))\n\n", objx->opos[0], objx->opos[1], head);	
+		// printf("META_ID[%d]_typ[%d]_name{%c}__",objx->obj_id, objx->o_type, objx->name);
+		// printf("Alg[%d]__Rel{%c}__",  objx->alleg, objx->relativ);
+		// printf("(x[%d],y[%d])((head:%d))\n\n", objx->opos[0], objx->opos[1], head);	
 	}
-	
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");
@@ -132,7 +77,6 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	}
 	return (objx);
 }
-
 
 t_map	*check_hero_found(t_map *m)
 {
@@ -145,16 +89,12 @@ t_map	*check_hero_found(t_map *m)
 	m->flg_chk = 2;
 	m->hero_x = m->pos_x;
 	m->hero_y = m->pos_y;
-	// m->m[m->pos_y][m->pos_x] = '0';
-	// printf("player x[%d]", m->pos_x);
-	// printf("player y[%d]\n\n", m->pos_y);
 	return (m);
 }
 
 t_cub	*wall_check(t_cub *cub, t_map *m)
 {
 	t_objx 	**objx;
-	// const char	*chr_name;
 	int		o_cells;
 	int 	id;
 	
@@ -162,7 +102,6 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
 	
 	id = -1;
-	// chr_name = cub->box.chrs;
 	o_cells = -1;
 	m->pos_y = 0;
 	while (m->pos_y < m->height)
@@ -172,7 +111,6 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 		{
 			o_cells = ft_in_set((m->m[m->pos_y][m->pos_x]),
 					(const char *)cub->box.chrs);
-				// printf("WALLCHK_ID[%d] O_CELL[%d]\n", id, o_cells);
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0')
 				m->m[m->pos_y][m->pos_x] = 'A';
 			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
@@ -180,24 +118,20 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 				m = check_hero_found(m);
 				id++;
 				objx[id] = get_pos(cub, m, o_cells, id);
-				printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
-				// p_list_objx(cub->box.objx , id, 0); 
 				
 			}
 			else if (o_cells < cub->box.meta - 1 && o_cells > -1)
 			{
 				id++;
 				objx[id] = get_pos(cub, m, o_cells, id);
-				printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
 			}
 			m->pos_x++;
 		}
 		m->pos_y++;
 	}
 	cub->box.objx = objx;
-	// int ox = 0;
-	// p_list_objx(cub->box.objx , ox, cub->box.meta); // objx, id, how-many to list
-	// printf("before it end_ WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
 	return (cub);
 }
-
+				// printf("WALLCHK_ID[%d] O_CELL[%d]\n", id, o_cells);
+				// printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);
+				// printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id, o_cells, cub->box.chrs[o_cells]);

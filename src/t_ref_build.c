@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/30 22:10:53 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 18:38:59 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,12 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 				// printf("MapX --- chrs{%c} p_box [%d] : N' grim [%d] max [%d]\n", (chrs[p_box]), p_box, grim, max);
 				// printf("MapX CHECK --- (W,min)grim + dual = [%d] : (F,max) max - DUAL [%d]\n",  grim + cub->box.n_dual, max - cub->box.n_dual);
 				
-				if ((p_box >= (grim ) && (p_box < (max)))) // wall  // 
+				if ((p_box >= grim  && (p_box < max))) // wall  // 
 				{
 					printf("MapX WALLS >> (%d, %d)>> p_box - grim[%d]: ptr:%p\n", m->pos_y, m->pos_x, (p_box - grim), &cub->pset[p_box]);
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 				}
-				else if ((p_box >= grim) && p_box <= (max - cub->box.n_dual)) /// floor + ceil // debut dual
+				else if ((p_box < grim) && p_box > (grim - cub->box.n_dual)) /// floor + ceil // debut dual
 				{
 					printf("MapX FLOOR{chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
