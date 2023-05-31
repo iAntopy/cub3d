@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/19 09:59:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/31 15:57:48 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.is_drawable = 1;
 	objs->player.is_oriented = 1;
 	objs->player.nb_texs = 8;
-	objs->player.draw_offy = 10;
+	objs->player.draw_offy = 16;
 	objs->player.gsets[0] = gset_builder("tex/gset_player/", objs->player.nb_texs);
 	if (!objs->player.gsets[0])
 		return (NULL);
@@ -40,7 +40,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	tex = objs->portal.gsets[0]->xwalls[0];
 // 	printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
 //	objs->player.texs[0] = objs->portal.gset->xwalls[0];
-	objs->player.width = 32;
+	objs->player.width = 48;
 	objs->player.half_w = objs->player.width >> 1;
 //	objs->player.height = CELL_WIDTH;
 	objs->player.height = objs->player.width * (tex->height / tex->width);
