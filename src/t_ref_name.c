@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 15:06:50 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:35:56 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*chrs_builder(t_cub *cub)
 
 	j = 0;
 	i = 0;
-	printf("raw vision raw[0][0] = %c \n", *cub->map.raw[0] );
 	rawz = cub->map.raw;
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[i] && j < cub->box.chrs_len)
@@ -158,8 +157,6 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
-	if (cub->box.open_sky != 0)
-		cub->tex.skymap = cub->box.sky;
 	cub->box.chrs = chrs_builder(cub);
 	return (cub);
 }
