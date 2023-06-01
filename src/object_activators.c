@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_activators.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/20 16:22:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 19:08:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 int	activate_portal(t_oinst *obj, unsigned int new_state)
 {
 	mlx_texture_t	*tex;
+	t_oinst			*link;
 
 	if (obj->type->type_enum != OBJ_PORTAL)
 		return (report_obj_err(obj, "ACTIVATION FAILED : not a portal obj.\n"));
 	else if (new_state >= 2)
 		return (report_obj_err(obj, "ACTIVATION FAILED : invalid state.\n"));
+	link = (t_oinst *)obj->relative;
 	if (obj->isactive && new_state == 0)
 	{
 		printf("DEACTIVATING PORTAL id %d\n", obj->_id);
@@ -28,16 +30,18 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 		obj->tex_idx = 0;
 		tex = obj->gset->xwalls[0];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
+		activate_portal(link, 0);
 	}
 	else if (!obj->isactive && new_state == 1)
 	{
-		if (!obj->relative)
+		if (!link)
 			return (ft_eprintf("Cannot activate portal without a link\n"), -1);
 		printf("ACTIVATING PORTAL id %d, allegiance : %d\n", obj->_id, obj->allegiance);
 		obj->isactive = 1;
 		obj->tex_idx = obj->allegiance;
 		tex = obj->gset->xwalls[obj->allegiance];
 		obj->type->height = obj->type->width * (tex->height / tex->width);
+		activate_portal(link, 1);
 	}
 	else
 		return (-1);
@@ -71,6 +75,8 @@ int	spawn_new_player(t_oinst *spawnp, int is_playable)
 		return (-1);
 	printf("Spawning new player\n");
 	cub = (t_cub *)spawnp->relative;
+	if (cub->nb_players >= MAX_PLAYERS)
+		return (-1);
 	printf("player type_enum : %d\n", cub->objs.player.type_enum);
 	pos[0] = spawnp->px;
 	pos[1] = spawnp->py;

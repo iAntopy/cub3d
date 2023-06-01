@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/31 17:09:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:11:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,8 +307,8 @@ static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 		
 		idx = (int)(rel_ori * rad_to_idx_ratio) % 8;
 		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
-//		if (idx == 7)
-//			printf("tex 7 pixel [0][0] : %p\n", (void *)((size_t)(*((uint32_t *)obj->gset->xwalls[idx]->pixels))));
+		if (idx == 6)
+			printf("tex 6 pixel [0][0] : %p\n", (void *)((size_t)(*((uint32_t *)obj->gset->xwalls[idx]->pixels))));
 		tex = obj->gset->xwalls[idx];
 	}
 	else

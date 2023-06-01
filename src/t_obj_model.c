@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 16:03:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 00:34:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.is_oriented = 0;
 	objs->fireball.nb_texs = 4;
 	objs->fireball.draw_offy = 0;
-	objs->fireball.gsets[0] = gset_builder("tex/gset_fireball/", objs->fireball.nb_texs);
+	objs->fireball.gsets[0] = gset_builder("tex/gset_fb/", objs->fireball.nb_texs);
 	if (!objs->fireball.gsets[0])
 		return (NULL);
 	tex = objs->fireball.gsets[0]->xwalls[0];
