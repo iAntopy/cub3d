@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 15:30:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:44:21 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,9 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	else  if (ft_in_set(t_name[0], (const char *)MOD_SPEC) != -1)	
 	{
 		printf(">>>>	MODEL : PLAYER [%d] >>>\n", box->n_plyr);
-	//		if (box->n_plyr == 0)
-	//			init_player_model(objs);
-		// box->n_plyr++;
+			// if (box->n_plyr == 0)
+			// 	init_player_model(objs);
+			// box->n_plyr++;
 	}
 			
     return (cub);
@@ -153,10 +153,12 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta + 1];		
 				}
 				else if ((p_box < cub->box.meta - 1) && p_box > -1)
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; //m->mx[m->pos_y][m->pos_x - 1];
-				else if (p_box == max)
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; 
-	
+				{
+					printf("MapX META X {chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+					m->mx[m->pos_y][m->pos_x] = m->mx[m->pos_y][m->pos_x - 1];
+				}
+				if (p_box == max)
+					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x - 1];	
 			}
 			m->pos_x++;
 		}

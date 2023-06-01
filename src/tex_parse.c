@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 22:54:38 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:07:02 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ int	tex_parse(t_cub *cub, t_map *map)
 	printf("Tex_parse...\n\n");
 	cub->box.n_dual = 0;
 	cub->box.pset = 0;
-	e_list_txtr(cub, &cub->box, map);
+	if (!e_list_txtr(cub, &cub->box, map))
+		return(-1);
 	nb = cub->box.xnum;
 		
 	while (map->raw[nb] && map->raw[nb][0] != ' ')

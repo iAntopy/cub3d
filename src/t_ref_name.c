@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 15:36:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:45:06 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*chrs_builder(t_cub *cub)
 
 	j = 0;
 	i = 0;
-	printf("raw vision raw[0][0] = %c \n", *cub->map.raw[0] );
 	rawz = cub->map.raw;
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[i] && j < cub->box.chrs_len)
@@ -71,8 +70,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			tex_name = ft_substr(raw[i], 0, 1);
 			tex_path = ft_substr(raw[i], 2, raw_len - 2);
 			
-			/// meta << number 				// if (raw[i][0] < 48) /// meta << number 
-			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
+			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))			/// meta << number 				
 			{
 				cub = meta_builder(cub, box, tex_name, &cub->objs);			
 				printf("METABUILDER:[%c]  CHRS{%c} path{{%s}} \n", tex_name[0], raw[i][0], tex_path);
@@ -103,7 +101,8 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			{
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
-					cub = dual_builder(cub, d_id, tex_path);								
+					if (!dual_builder(cub, d_id, tex_path))
+						return (NULL);						
 			}
 		}
 	}
@@ -138,8 +137,7 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			cub->box.n_dual++;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
-		if (rawz[0] == 'z')
-			cub->box.open_sky = 1; // no  tile == skymap
+
 	}
 
 	return (cub);
@@ -148,7 +146,6 @@ t_cub	*e_mtrx_count(t_cub *cub)
 t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
 	box->xnum = 0;
-	box->open_sky = 0;
 	cub = e_mtrx_count(cub);
 
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
