@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/29 22:27:39 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/31 23:33:00 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,8 @@ SRC_FLS	:=		main.c 			\
 			draw_threads.c		\
 			object_framework_manager.c		\
 			object_deleters_and_getter.c	\
+			object_controls.c	\
+			object_controls2.c	\
 			object_activators.c	\
 			object_actions.c	\
 			object_linkers.c	\
