@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 20:48:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:32:57 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
 			{
 				cub = meta_builder(cub, box, tex_name, &cub->objs);			
+				printf("METABUILDER:[%c]  CHRS{%c} path{{%s}} \n", tex_name[0], raw[i][0], tex_path);
 				box->n_objs++;
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)

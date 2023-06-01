@@ -11,6 +11,7 @@ tex/ext/s_side.png
 tex/ext/sky_star.png
 tex/ext/skymap3.png
 ///									ceiling
+tex/ext/mountain_crack_.png
 tex/ext/grunge-rock_.png
 tex/ext/starry-night-sky_.png
 tex/ext/red-mountain-rock_.png
@@ -31,7 +32,6 @@ tex/ext/beach_sand.png
 
 ///                                 mountain
 tex/ext/gray-mountain-rock.png
-tex/ext/mountain_crack.png
 tex/ext/mountain-rock.png
 tex/ext/mountain_rock.png
 tex/ext/mountain-stone-rock.png

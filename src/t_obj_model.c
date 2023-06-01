@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 15:57:48 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 23:54:45 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.is_oriented = 0;
 	objs->fireball.nb_texs = 4;
 	objs->fireball.draw_offy = 0;
-	objs->fireball.gsets[0] = gset_builder("tex/gset_fireball/", objs->fireball.nb_texs);
+	objs->fireball.gsets[0] = gset_builder("tex/gset_fb/", objs->fireball.nb_texs);
 	if (!objs->fireball.gsets[0])
 		return (NULL);
 	tex = objs->fireball.gsets[0]->xwalls[0];
@@ -220,3 +220,19 @@ void 	p_list_objx(t_objx **objx, int id, int num)
 	}
 }	
 
+int 	get_objx(t_objx **objx, char name, int num)
+{
+	int id;
+	id = 0;
+	while(id < num)
+	{
+		if (objx[id]->name != name)
+			id++;
+		// printf("LIST_META_obj_id[%d]::NAME:{%c} :: type_[%d] >>>",  objx[id]->obj_id, objx[id]->name, objx[id]->o_type);
+		// printf(" RLTV_[%c] <<< {A:%d}_", objx[id]->relativ, objx[id]->alleg );    
+		// printf("__( x[%d], y[%d] )::\n", objx[id]->opos[0], objx[id]->opos[1]);
+		else 
+			printf("LIST_META_obj ID= %d\n", id);
+	}
+	return (id);
+}	

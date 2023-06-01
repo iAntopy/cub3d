@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 18:38:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/31 23:52:33 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -738,5 +738,5 @@ void			mlx_update_mmap(t_cub *cub, t_map *m);
 
 void			update_minimap(t_cub *cub);
 void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
-
+int			 	get_objx(t_objx **objx, char name, int num);
 #endif

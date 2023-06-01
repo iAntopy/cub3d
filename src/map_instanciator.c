@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 20:28:17 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 23:31:31 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 			printf("lever relative ptr : %p\n", o->wobj->relative);
 		}
-//		else if (ob->o_type == OBJ_FIREBALL)
-//			link_fireball_to_player(o->wobj, (t_hero *)o->rel_ref->wobj);
+		// else if (ob->o_type == OBJ_FIREBALL)
+			// link_fireball_to_player(o->wobj, (t_hero *)o->rel_ref->wobj);
 //		else if (ob->o_type == OBJ_FIREBALL)
 //			link_firepit_to_player(o->wobj, (t_hero *)o->rel_ref->wobj);
 	}
@@ -119,7 +119,7 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 	{
 		inst_id = create_obj_instance(cub, pos, OBJ_SPAWNPOINT, ob->alleg, cub);
 		inst_id = spawn_new_player(get_obj(cub, inst_id), 0);
-		//inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, &cub->hero);
+		// inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, &cub->hero);
 	}
 	else
 		inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, NULL);
