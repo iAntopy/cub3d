@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/31 23:55:01 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:35:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,6 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, report_mlx_init_error()));
 	printf("MLX42 context initialized successfully !\n");
 
-	/// FOR DEBUG PURPOSES ONLY ! DELETE ME !
-	// cub.pset[0].xwalls[1] = cub.pset[1].xwalls[0];
-
 
 	printf("cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
@@ -188,7 +185,6 @@ int	main(int argc, char **argv)
 //	pos[0] = 13 * CELL_WIDTH + 1;
 //	pos[1] = 2 * CELL_WIDTH + 1;
 //	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
-
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");

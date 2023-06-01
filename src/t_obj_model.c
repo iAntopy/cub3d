@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 23:54:45 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:31:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ t_omdl	*init_player_model(t_objs *objs)
 	tex = objs->portal.gsets[0]->xwalls[0];
 // 	printf("A Portal ptr : %p  \n", objs->portal.gset->xwalls[0]);
 //	objs->player.texs[0] = objs->portal.gset->xwalls[0];
-	objs->player.width = 48;
+	objs->player.width = 64;
 	objs->player.half_w = objs->player.width >> 1;
 //	objs->player.height = CELL_WIDTH;
-	objs->player.height = objs->player.width * (tex->height / tex->width);
+	objs->player.height = (int)(objs->player.width * (tex->height / (float)tex->width));
 	objs->player.half_h = objs->player.height >> 1;
 	// printf("Portal object model initialized !\n");
 	return (&objs->player);
@@ -68,7 +68,7 @@ t_omdl	*init_spawnpoint_model(t_objs *objs)
 	objs->spawnp.width = CELL_WIDTH;
 	objs->spawnp.half_w = objs->spawnp.width >> 1;
 	objs->spawnp.height = CELL_WIDTH;
-//	objs->spawnp.height = objs->portal.width * (tex->height / tex->width);
+//	objs->spawnp.height = objs->portal.width * (tex->height / (float)tex->width);
 	objs->spawnp.half_h = objs->spawnp.height >> 1;
 	// printf("Portal object model initialized !\n");
 	printf("player enum at init spawnpoint end: %d\n", objs->player.type_enum);
@@ -96,7 +96,7 @@ t_omdl	*init_portal_model(t_objs *objs)
 	//		objs->portal.texs[0] = objs->portal.gset->xwalls[0];
 	objs->portal.width = CELL_WIDTH;
 	objs->portal.half_w = objs->portal.width >> 1;
-	objs->portal.height = objs->portal.width * (tex->height / tex->width);
+	objs->portal.height = (int)(objs->portal.width * (tex->height / (float)tex->width));
 	objs->portal.half_h = objs->portal.height >> 1;
 	objs->portal.proj_width = (int)(objs->portal.width * 0.7);//objs->portal.width >> 1;
 	objs->portal.proj_height = (int)(objs->portal.height * 0.7);//objs->portal.height >> 1;
@@ -128,7 +128,7 @@ t_omdl	*init_lever_model(t_objs *objs)
 	printf("objs->lever ptr : %p\n", &objs->lever);
 	printf("objs->lever.width : %d\n", objs->lever.width);
 	objs->lever.half_w = objs->lever.width >> 1;
-	objs->lever.height = objs->lever.width * (tex->height / tex->width);
+	objs->lever.height = (int)(objs->lever.width * (tex->height / (float)tex->width));
 	objs->lever.half_h = objs->lever.height >> 1;
 	// printf("Lever object model initialized !\n");
 	printf("INIT OBJ_LEVER  at exit type struct with lever.type_enum = %d\n", objs->lever.type_enum);
@@ -151,14 +151,15 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	if (!objs->fireball.gsets[0])
 		return (NULL);
 	tex = objs->fireball.gsets[0]->xwalls[0];
+	printf("tex (w, h) : (%d, %d)\n", tex->width, tex->height);
 	// printf("A Fireball ptr : %p  \n", objs->fball.gset->xwalls[0]);
 //	objs->fball.texs[0] = objs->fball.gset->xwalls[0];
-	objs->fireball.width = CELL_WIDTH;
+	objs->fireball.width = 32;
 	objs->fireball.half_w = objs->fireball.width >> 1;
-	objs->fireball.height = objs->fireball.width * (tex->height / tex->width);
+	objs->fireball.height = (int)(objs->fireball.width * (tex->height / (float)tex->width));
 	objs->fireball.half_h = objs->fireball.height >> 1;
-	objs->fireball.speed = 2.0f;
-	// printf("FireBall object model initialized !\n");
+	objs->fireball.speed = 1.0f;
+	printf("FireBall object model initialized ! (w, h) : (%d, %d)\n", objs->fireball.width, objs->fireball.height);
 	return (&objs->fireball);
 }
 
@@ -196,7 +197,7 @@ t_omdl	*init_firepit_model(t_objs *objs)
 	//		printf("tex w h (%d, %d)\n", tex->width, tex->height);
 	objs->firepit.width = CELL_WIDTH;
 	objs->firepit.half_w = objs->firepit.width >> 1;
-	objs->firepit.height = objs->firepit.width * (tex->height / (float)tex->width);
+	objs->firepit.height = (int)(objs->firepit.width * (tex->height / (float)tex->width));
 	objs->firepit.half_h = objs->firepit.height >> 1;
 //	printf("firepit w h : (%d, %d), half w h (%d, %d)\n", 
 //		objs->firepit.width, objs->firepit.height, objs->firepit.half_w, objs->firepit.half_h);

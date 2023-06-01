@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 15:38:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:25:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,7 @@
 // Pass some positive/negative increment to rotate right/left
 void	cub_player_rotate(t_cub *cub, float rot)
 {
-	if (!rot)
-		return ;
-	cub->hero.ply_obj->ori += rot;
-	if (cub->hero.ply_obj->ori < 0)
-		cub->hero.ply_obj->ori += M_TAU;
-	else if (cub->hero.ply_obj->ori > M_TAU)
-		cub->hero.ply_obj->ori -= M_TAU;
+	obj_rotate(cub, cub->hero.ply_obj, rot);
 	cub->renderer.sky_ori_offset = (int)(cub->hero.ply_obj->ori
 		* cub->renderer.sky_radial_width);
 	update_rays(cub);
@@ -32,6 +26,12 @@ void	cub_player_rotate(t_cub *cub, float rot)
 // Pass some positive/negative increment to d_strafe to move left/right
 void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 {
+	obj_move_rel(cub, cub->hero.ply_obj, d_walk, d_strafe);
+	update_rays(cub);
+	cub->renderer.requires_update = 1;
+}
+/*
+	
 	float	dx;
 	float	dy;
 	int		cx;
@@ -57,10 +57,8 @@ void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 	}
 	cub->hero.ply_obj->cx = (int)(cub->inv_cw * cub->hero.ply_obj->px);
 	cub->hero.ply_obj->cy = (int)(cub->inv_cw * cub->hero.ply_obj->py);
-	update_rays(cub);
-	cub->renderer.requires_update = 1;
 }
-
+*/
 // Pass some positive/negative increment to zoom in/out by this factor.
 // ex: dz = +0.1 would multiply the current fov by 1.1 (1 + dz)
 // ex: dz = -0.1 would multiply the current fov by 0.9 (1 + dz)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_actions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 21:54:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 00:30:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 //	float		pos[4];
 	(void)obj;
 	(void)cub;
+//	if (obj != cub->hero.ply_obj)
+//	{
+		
+//	}
+	
 //	if (obj->isactive)
 //	{
 		// if (counter > 1000)
@@ -90,18 +95,19 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 {
 	float	dist;
-	t_hero	*player;
-	t_oinst	*objs;
-	float	delta_prtl[2];
+	t_oinst	*other;
+//	float	delta_prtl[2];
 	
+//	printf("FIREBAAAAAAAAALLLL\n");
 	if (!obj->isactive)
 		return (-1);
 	if (obj->relative)
 	{
-		player = (t_hero *)obj->relative;
+//		player = (t_hero *)obj->relative;
+		other = (t_oinst *)obj->relative;
 
-		obj->dx = player->ply_obj->px - obj->px;
-		obj->dy = player->ply_obj->py - obj->py;
+		obj->dx = other->px - obj->px;
+		obj->dy = other->py - obj->py;
 		dist = sqrtf(obj->dx * obj->dx + obj->dy * obj->dy);
 		if (dist < 10)
 		{
@@ -121,6 +127,7 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		obj->px += obj->dx * obj->type->speed;
 		obj->py += obj->dy * obj->type->speed;
 	}
+	/*
 	objs = cub->objs.instances;
 	while (objs)
 	{
@@ -138,51 +145,47 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		}
 		objs = objs->next;
 	}
+	*/
 	return (0);
 }
 
 int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 {
-	static int	counter;
 	float		pos[4];
 	
 	if (!obj->isactive)
 		return (-1);
-	if (obj->relative)
+	if (++obj->counter > FIREPIT_SPAWN_TICKS)
 	{
-//		printf("delta_time : %zd\n", delta_time);
-		if (++counter > FIREPIT_SPAWN_TICKS)
-		{
-			pos[0] = obj->px;
-			pos[1] = obj->py;
-			pos[2] = 0;
-			pos[3] = 0;
+		pos[0] = obj->px;
+		pos[1] = obj->py;
+		pos[2] = obj->dx;
+		pos[3] = obj->dy;
 //			printf("SPAWNING FIREBALL\n");
-			create_obj_instance(cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, obj->relative);
-			counter = 0;
-		}
+		create_obj_instance(cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, obj->relative);
+		obj->counter = 0;
 	}
-
 	return (0);
 }
 
 int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 {
-//	static int	counter;
+	t_oinst	*prtl;
 //	int		cx;
 //	int		cy;
 
-	// if (obj->isactive)
-	// {
-	// 	if (counter > 400)
-	// 	{
-	// 		activate_portal((t_oinst *)obj->relative, 0);
-	// 		obj->isactive = 0;
-	// 		obj->special_gset.xwalls[0] = obj->gset->xwalls[0];
-	// 		counter = 0;
-	// 	}
-	// 	++counter;
-	// }
+	if (obj->isactive)
+	{
+		prtl = (t_oinst *)obj->relative;
+		if (obj->counter > 400)
+		{
+			activate_portal((t_oinst *)obj->relative, 0);
+			obj->isactive = 0;
+			obj->special_gset.xwalls[0] = obj->gset->xwalls[0];
+			obj->counter = 0;
+		}
+		++obj->counter;
+	}
 	if (obj->relative)
 	{
 //		ft_eprintf("lever relative exists\n");
@@ -190,11 +193,12 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 //		cy = (int)obj->py;
 //		ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
 //			cub->hero.cell_x, cub->hero.cell_y);
+		prtl = (t_oinst *)obj->relative;
 		if (!(cub->hero.ply_obj->cx == obj->cx
 			&& cub->hero.ply_obj->cy == obj->cy))
 			return (-1);
 		ft_eprintf("PRESSED !\n");
-		activate_portal((t_oinst *)obj->relative, 1);
+		activate_portal(prtl, 1);
 		obj->isactive = 1;
 		obj->special_gset.xwalls[0] = obj->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
