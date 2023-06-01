@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 15:36:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:47:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 		printf("| %d - %c - type %d - pos (%d, %d) - rel %c - wobj %p, wobj type enum : %d\n",
 			o->obj_id, o->name, o->o_type, o->opos[0], o->opos[1],
 			o->relativ, o->wobj, o->wobj->type->type_enum);
+		printf("rel_ref : %p\n", o->rel_ref);
 		if (o->o_type == OBJ_PORTAL)
 		{
 			// printf("linking portal - name %c, type %d to name %c, type %d\n",6

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 00:27:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:39:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ int	create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_oinst *li
 	new_obj->type = &cub->objs.fireball;
 	new_obj->_id = get_new_obj_id();
 	new_obj->allegiance = allegiance;
-	new_obj->tex_idx = 0;
+	new_obj->tex_idx = allegiance;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
 	new_obj->dx = pos[2];
@@ -205,7 +205,7 @@ int	create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_oinst *lin
 	new_obj->type = &cub->objs.firepit;
 	new_obj->_id = get_new_obj_id();
 	new_obj->allegiance = allegiance;
-	new_obj->tex_idx = 0;
+	new_obj->tex_idx = allegiance;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
 	new_obj->dx = pos[2];

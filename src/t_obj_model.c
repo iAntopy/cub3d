@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 16:31:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:42:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,10 +151,9 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	if (!objs->fireball.gsets[0])
 		return (NULL);
 	tex = objs->fireball.gsets[0]->xwalls[0];
-	printf("tex (w, h) : (%d, %d)\n", tex->width, tex->height);
 	// printf("A Fireball ptr : %p  \n", objs->fball.gset->xwalls[0]);
 //	objs->fball.texs[0] = objs->fball.gset->xwalls[0];
-	objs->fireball.width = 32;
+	objs->fireball.width = CELL_WIDTH;
 	objs->fireball.half_w = objs->fireball.width >> 1;
 	objs->fireball.height = (int)(objs->fireball.width * (tex->height / (float)tex->width));
 	objs->fireball.half_h = objs->fireball.height >> 1;
