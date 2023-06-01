@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 00:30:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 18:01:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,11 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 		return (-1);
 }
 
+void	__fireball_check_hit(t_oinst *obj)
+{
+	
+}
+
 int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 {
 	float	dist;
@@ -111,7 +116,8 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		dist = sqrtf(obj->dx * obj->dx + obj->dy * obj->dy);
 		if (dist < 10)
 		{
-			ft_printf("OUCH MAUDIT CA FAIT MAL!\n");
+//			ft_printf("OUCH MAUDIT CA FAIT MAL!\n");
+			respawn_player((t_oinst *)obj->relative);
 			delete_oinst_by_id(cub, obj->_id);
 			return (0);
 		}
@@ -119,14 +125,19 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		obj->dy /= dist;
 		obj->px += obj->dx * obj->type->speed;
 		obj->py += obj->dy * obj->type->speed;
-		if (is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw))
-			delete_oinst_by_id(cub, obj->_id);
 	}
 	else
 	{
+		other = cub->objs.instances;
+		while (other)
+//		{
+			
+//		}
 		obj->px += obj->dx * obj->type->speed;
 		obj->py += obj->dy * obj->type->speed;
 	}
+	if (is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw))
+			delete_oinst_by_id(cub, obj->_id);
 	/*
 	objs = cub->objs.instances;
 	while (objs)
@@ -152,17 +163,21 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 {
 	float		pos[4];
+	int			inst_id;
 	
 	if (!obj->isactive)
 		return (-1);
+	printf("firepit active\n");
 	if (++obj->counter > FIREPIT_SPAWN_TICKS)
 	{
 		pos[0] = obj->px;
 		pos[1] = obj->py;
 		pos[2] = obj->dx;
 		pos[3] = obj->dy;
-//			printf("SPAWNING FIREBALL\n");
-		create_obj_instance(cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, obj->relative);
+		printf("SPAWNING FIREBALL : pos (%f, %f), dir (%f, %f)\n", pos[0], pos[1], pos[2], pos[3]);
+		inst_id = create_obj_instance(cub, pos, OBJ_FIREBALL,
+			obj->allegiance, obj->relative);
+		activate_fireball(get_obj(cub, inst_id), 1, NULL);
 		obj->counter = 0;
 	}
 	return (0);

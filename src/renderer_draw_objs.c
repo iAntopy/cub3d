@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 16:32:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 17:43:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,8 +311,6 @@ static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 	}
 	else
 	{
-		if (obj->type->type_enum == OBJ_FIREBALL)
-			printf("FIREBALL : obj gset xwalls[0-1] : %p, %p\n", obj->gset->xwalls[0], obj->gset->xwalls[1]);
 		tex = obj->gset->xwalls[obj->tex_idx];
 //		printf("selected none oriented texture : %p\n", tex);
 	}
@@ -605,18 +603,12 @@ void	render_objects(t_cub *cub)
 
 //		printf("drawx : %d, dims : (%d, %d), type w, h : (%d, %d)\n", drawx, dims[0], dims[1],
 //			obj->type->width, obj->type->height);
-		if (obj->type->type_enum == OBJ_FIREBALL)
-			printf("Trying to draw fireball 1\n");
-
 		if (((obj->dist <= 1) || (drawx + (dims[0] >> 1)) < 0
 			|| SCN_WIDTH <= (drawx - (dims[0] >> 1))) && next_obj(&obj))
 //		{
 //			obj = obj->next;
 			continue ;
 //		}
-		if (obj->type->type_enum == OBJ_FIREBALL)
-			printf("Trying to draw fireball 2\n");
-			
 		tincrs[0] = (float)tex->width / (float)dims[0];
 		tincrs[1] = (float)tex->height / (float)dims[1];
 		toffs[0] = 0;
@@ -689,12 +681,7 @@ void	render_objects(t_cub *cub)
 //			__render_proj_floor(cub);
 		}
 		else
-		{
-			if (obj->type->type_enum == OBJ_FIREBALL)
-				printf("Trying to draw fireball 3. loffs : (%d, %d), dims: (%d, %d)\n", 
-					loffs[0], loffs[1], dims[0], dims[1]);
 			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
-		}
 		obj = obj->next;
 	}
 }

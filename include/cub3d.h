@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 15:34:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 17:43:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@
 
 
 # define NB_OBJ_TYPES 5
-# define FIREPIT_SPAWN_TICKS 100
+# define FIREPIT_SPAWN_TICKS 200
 
 # define MAX_PLAYERS 8
 
@@ -678,6 +678,8 @@ void   			obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy);
 /// OBJECT ACTIVATION FUNCS /////////
 void		    commit_all_obj_actions(t_cub *cub);
 int				activate_portal(t_oinst *obj, unsigned int new_status);
+int				activate_fireball(t_oinst *obj, int new_state, t_oinst *target);
+int				activate_firepit(t_oinst *obj, int new_state, t_oinst *target);
 int				spawn_new_player(t_oinst *spawnp, int is_playable);
 int				set_playable_obj(t_cub *cub, t_oinst *player);
 int				respawn_player(t_oinst *player);

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 15:34:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:59:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	on_update(t_cub *cub)
 //	else
 //		delta_time = 0;
 	on_update_keypressed(cub);
-	if (cub->renderer.requires_update)
+	if (1 || cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
 		// printf("wow");

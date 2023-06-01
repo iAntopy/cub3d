@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 16:42:08 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 17:43:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.is_drawable = 1;
 	objs->player.is_oriented = 1;
 	objs->player.nb_texs = 8;
-	objs->player.draw_offy = 16;
+	objs->player.draw_offy = 10;
 	objs->player.gsets[0] = gset_builder("tex/gset_player/", objs->player.nb_texs);
 	if (!objs->player.gsets[0])
 		return (NULL);
@@ -157,7 +157,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.half_w = objs->fireball.width >> 1;
 	objs->fireball.height = (int)(objs->fireball.width * (tex->height / (float)tex->width));
 	objs->fireball.half_h = objs->fireball.height >> 1;
-	objs->fireball.speed = 1.0f;
+	objs->fireball.speed = 2.0f;
 	printf("FireBall object model initialized ! (w, h) : (%d, %d)\n", objs->fireball.width, objs->fireball.height);
 	return (&objs->fireball);
 }

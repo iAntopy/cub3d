@@ -8,7 +8,8 @@ $ 2/2
 - 3/_
 _ 3/^
 ^ 3/_
-= 2/9
+= 2/0
+; 3/2
 a tex/ext/old-wood-planks.png
 b tex/ext/tree-bark.png
 c tex/ext/tree-branch.png
@@ -26,9 +27,9 @@ C efef
 
                AAAAAAAA
                A000@00A
-               A0=0000A
+               A000000A
     AAAAAAAAAAAA000(00AAAAAAAAAAAA
-    A0000000000000000000000000000A
+    A0;000000000000000000000000=0A
     A0AAAAAAAAAAAAAAAAAAAAAAAAAA0A
     A0A                        A0A
     A0A                        A0A
