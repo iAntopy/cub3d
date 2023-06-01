@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 21:59:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:44:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,16 +158,10 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 				else if ((p_box < cub->box.meta - 1) && p_box > -1)
 				{
 					printf("MapX META X {chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; //m->mx[m->pos_y][m->pos_x - 1];
+					m->mx[m->pos_y][m->pos_x] = m->mx[m->pos_y][m->pos_x - 1];
 				}
 				if (p_box == max)
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; 
-				// {
-				// 	printf(" ... MAPX:MAX \n\n");
-				// 	// cub->box.meta++;
-				// 	// p_list_objx(cub->box.objx , p_box, 0); 					
-				// }	
-	
+					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x - 1];	
 			}
 			m->pos_x++;
 		}
