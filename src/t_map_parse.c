@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 02:01:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:04:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset - 1;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
-		// printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, map_offset);
-		// printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);	
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)

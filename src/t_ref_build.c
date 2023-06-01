@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 23:10:15 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:30:43 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
     if (cub->box.n_dual > i)
     {		
 		tex_set = ft_split_space(t_name);
+		cub->dual[i].xwalls[1] = NULL;
 	
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
@@ -74,7 +75,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	int head;
 
 	head = ft_in_set(t_name[0], (const char *)MAP_MCHR);
-	printf("\n\n>>>> TEST >>> [%c] ::: head <%d>\n", t_name[0], head);   
+	printf(">>>> TEST >>> [%c] ::: head <%d>\n", t_name[0], head);   
 
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1)		//// lever
 	{
