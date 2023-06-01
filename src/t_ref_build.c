@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 18:38:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 21:59:35 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
-		// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
+		printf("DUAL[%d] (xwall[0]) >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
         if (tex_set[1])/// not open_sky
         {	
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
-			// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
         }   
 
     }
@@ -137,27 +137,37 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		while (m->pos_x < m->width)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
-			// printf("p_box : %d, chrs : %s\n", p_box, chrs);
+					// printf("p_box : %d, chrs : %s\n", p_box, chrs);
+					// printf("MapX --- chrs{%c} p_box [%d] : N' grim [%d] max [%d]\n", (chrs[p_box]), p_box, grim, max);
+					// printf("MapX CHECK --- (W,min)grim + dual = [%d] : (F,max) max - DUAL [%d]\n",  grim + cub->box.n_dual, max - cub->box.n_dual);
 			if (p_box != -1)
 			{
-				// printf("MapX --- chrs{%c} p_box [%d] : N' grim [%d] max [%d]\n", (chrs[p_box]), p_box, grim, max);
-				// printf("MapX CHECK --- (W,min)grim + dual = [%d] : (F,max) max - DUAL [%d]\n",  grim + cub->box.n_dual, max - cub->box.n_dual);
 				
 				if ((p_box >= grim  && (p_box < max))) // wall  // 
 				{
-					printf("MapX WALLS >> (%d, %d)>> p_box - grim[%d]: ptr:%p\n", m->pos_y, m->pos_x, (p_box - grim), &cub->pset[p_box]);
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
+						// printf("MapX WALLS >> (%d, %d)>> [box - grim[%d]]: ptr:%p\n", m->pos_y, m->pos_x, (p_box - grim), &cub->pset[p_box]);
+						// printf("MapX WALLS >> {{%c}}(%d, %d)>> [p_box: %d] {p_box-grim:%d}: \n",chrs[p_box], m->pos_y, m->pos_x,  p_box, (p_box - grim));
 				}
-				else if ((p_box < grim) && p_box > (grim - cub->box.n_dual)) /// floor + ceil // debut dual
+				else if ((p_box < grim) && p_box > (grim - cub->box.n_dual - 1)) /// floor + ceil // debut dual
 				{
-					printf("MapX FLOOR{chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta];
+					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta + 1];
+						// printf("MapX FLOOR{chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+						// printf("MapX FLOOR{chrs{%c}}>> (%d, %d)>> p_box[%d]:  (box-meta:%d)\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, (p_box - cub->box.meta + 1));
 				}
-				// if (p_box == max)
+				else if ((p_box < cub->box.meta - 1) && p_box > -1)
+				{
+					printf("MapX META X {chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; //m->mx[m->pos_y][m->pos_x - 1];
+				}
+				if (p_box == max)
+					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; 
 				// {
-				// 	cub->box.meta++;
+				// 	printf(" ... MAPX:MAX \n\n");
+				// 	// cub->box.meta++;
 				// 	// p_list_objx(cub->box.objx , p_box, 0); 					
 				// }	
+	
 			}
 			m->pos_x++;
 		}

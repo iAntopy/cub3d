@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 17:56:58 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 20:48:56 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	if (!cub->dual)
 		return (NULL);
 	box->n_objs = 0;
-//	init_player_model(&cub->objs);
-//	init_spawnpoint_model(&cub->objs);
+	//	init_player_model(&cub->objs);
+	//	init_spawnpoint_model(&cub->objs);
 	printf("LINK\n");
 	while (++i < box->xnum + box->meta )
 	{
