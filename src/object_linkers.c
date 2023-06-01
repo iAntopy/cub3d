@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 20:43:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 00:31:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,28 @@ int	link_lever_to_portal(t_oinst *lever, t_oinst *prtl)
 	return (0);
 }
 
-int	link_fireball_to_player(t_oinst *fball, t_hero *player)
+int	link_fireball_to_target(t_oinst *fball, t_oinst *target)
 {
-	if (!fball || !player
+	printf("Linking fireball to target. fball : %p, target : %p, fball type enum : %d\n", fball, target, fball->type->type_enum);
+	if (!fball || !target
 		|| (fball->type->type_enum != OBJ_FIREBALL))
 		return (report_err("fball is not a OBJ_FIREBALL.\n"));
-	if (fball->allegiance == player->ply_obj->allegiance)
+	if (fball->allegiance == target->allegiance)
 		return (report_err("Cannot link fireball to player of same team.\n"));
-	fball->relative = player;
+	fball->relative = target;
+	fball->isactive = 1;
 	return (0);
 }
 
-int	link_firepit_to_player(t_oinst *fpit, t_hero *player)
+int	link_firepit_to_target(t_oinst *fpit, t_oinst *target)
 {
-	if (!fpit || !player
+	printf("Linking firepit to target. fpit : %p, target : %p, fpit type enum : %d\n", fpit, target, fpit->type->type_enum);
+	if (!fpit || !target
 		|| (fpit->type->type_enum != OBJ_FIREPIT))
 		return (report_err("fpit is not a OBJ_FIREPIT.\n"));
-	if (fpit->allegiance == player->ply_obj->allegiance)
+	if (fpit->allegiance == target->allegiance)
 		return (report_err("Cannot link firepit to player of same team.\n"));
-	fpit->relative = player;
+	fpit->relative = target;
+	fpit->isactive = 1;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 20:49:18 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:54:38 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 		while (fill++ < 3)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-			printf("MAKER: recett{%c} index[%d]\n", ref[fill + 2],id);
+			// printf("MAKER: recett{%c} index[%d]\n", ref[fill + 2],id);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			 printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
+			//  printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
 		}
 	}
 	return (cub->pset);

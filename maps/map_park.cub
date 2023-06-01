@@ -10,14 +10,14 @@ _ 3/^
 ^ 3/_
 a tex/ext/old-wood-planks.png
 b tex/ext/tree-bark.png
-c tex/ext/tree-branch.png
-d tex/ext/tree-dark.png
-e tex/ext/tree-old.png
-f tex/ext/smooth-sand-dunes.png
+c tex/ext/hedge-wall_a.png
+d tex/ext/hedge-wall.png
+e tex/ext/purple-flowers.png
+f tex/ext/pink-flowers.png
 z tex/ext/skymap3.png
 0 tex/ext/beach_sand.png tex/ext/semi_blurry_glass_.png
-1 tex/ext/floortile4.png tex/ext/starry-night-sky_.png
-2 tex/ext/grass-floor.png tex/ext/red-mountain-rock_.png
+1 tex/ext/floortile4.png tex/ext/red-mountain-rock_.png
+2 tex/ext/grass-floor.png tex/ext/starry-night-sky_.png
 
 A abab
 B cdcd

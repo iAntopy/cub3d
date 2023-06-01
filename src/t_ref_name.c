@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 20:48:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:36:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,20 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
 			{
 				cub = meta_builder(cub, box, tex_name, &cub->objs);			
+				printf("METABUILDER:[%c]  CHRS{%c} path{{%s}} \n", tex_name[0], raw[i][0], tex_path);
 				box->n_objs++;
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
 			{
 				if (tex_name[0] == 'z')
 				{
-					cub->box.open_sky = 1;
+//					cub->box.open_sky = 1;
 					cub->box.sky = mlx_load_png(tex_path);
 					if (!cub->box.sky)
 						return (report_mlx_tex_load_failed(tex_path));
 					// printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
-					cub->tex.skymap = cub->box.sky;
-					cub->tex.sky_tex = cub->box.sky;
+//					cub->tex.skymap = cub->box.sky;
+//					cub->tex.sky_tex = cub->box.sky;
 				}
 				else
 				{
@@ -157,6 +158,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
+	if (!cub)
+		return (NULL);
 	if (cub->box.open_sky != 0)
 		cub->tex.skymap = cub->box.sky;
 	cub->box.chrs = chrs_builder(cub);

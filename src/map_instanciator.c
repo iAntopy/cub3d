@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_instanciator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 20:28:17 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:36:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 	{
 		o = ob[i];
 		printf("looking at obj : %d %c\n", o->o_type, o->name);
-		printf("| %d - %c - type %d - pos (%d, %d) - rel %c - wobj %p\n",
+		printf("| %d - %c - type %d - pos (%d, %d) - rel %c - wobj %p, wobj type enum : %d\n",
 			o->obj_id, o->name, o->o_type, o->opos[0], o->opos[1],
-			o->relativ, o->wobj);
+			o->relativ, o->wobj, o->wobj->type->type_enum);
 		if (o->o_type == OBJ_PORTAL)
 		{
 			// printf("linking portal - name %c, type %d to name %c, type %d\n",6
@@ -90,18 +90,51 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 			printf("lever relative ptr : %p\n", o->wobj->relative);
 		}
-//		else if (ob->o_type == OBJ_FIREBALL)
-//			link_fireball_to_player(o->wobj, (t_hero *)o->rel_ref->wobj);
-//		else if (ob->o_type == OBJ_FIREBALL)
-//			link_firepit_to_player(o->wobj, (t_hero *)o->rel_ref->wobj);
+		else if (o->o_type == OBJ_FIREBALL && o->rel_ref && o->rel_ref->wobj)
+		{
+			link_fireball_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
+		}
+		else if (o->o_type == OBJ_FIREPIT && o->rel_ref && o->rel_ref->wobj)
+			link_firepit_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
 	}
 	return (0);
 }
 
+static t_oinst	*obj_instanciation_by_type(t_cub *cub, t_objx *ob, float *pos, int nb_meta)
+{
+	int		inst_id;
+//	t_oinst	*other;
+	
+	printf("obj_instanciation_by_type : START\n");
+	if (ob->o_type == OBJ_PLAYER && cub->nb_players < MAX_PLAYERS)
+	{
+		inst_id = create_obj_instance(cub, pos, OBJ_SPAWNPOINT, ob->alleg, cub);
+		inst_id = spawn_new_player(get_obj(cub, inst_id), 0);
+	}
+	else if (ob->o_type == OBJ_FIREBALL || ob->o_type == OBJ_FIREPIT)
+	{
+		printf("Creating FIREBALL OR FIREPIT. relativ : %c\n", ob->relativ);
+		pos[2] = (M_PI / 4.0f) * ob->relativ + (M_PI / 2.0f);
+		pos[3] = (M_PI / 4.0f) * ob->relativ + (M_PI / 2.0f);
+		if (ob->relativ == '9')
+		{
+			ob->relativ = '@';
+			ob->rel_ref = find_relative(cub, ob, nb_meta);
+			printf("\n\nCreating FIREBALL with player targeting. rel_ref : %p\n", ob->rel_ref);
+//			other = cub->hero.ply_obj;
+		}
+		inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, NULL);
+//		obj_set_direction(cub, get_obj(cub, inst_id), dir[0], dir[1]);
+	}
+	else
+		inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, NULL);
+	printf("NEW OBJ O_TYPE : %d\n", get_obj(cub, inst_id)->type->type_enum);
+	return (get_obj(cub, inst_id));
+}
+
 static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 {
-	float	pos[2];
-	int		inst_id;
+	float	pos[4];
 	
 	printf("instanciate_specific_obj START \n");
 	printf("Try creating obj inst at pos (%d, %d), name %c, type %d, alleg %d\n",
@@ -115,16 +148,9 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 	printf("inst one Check PASSED\n");
 	printf("\nCreating obj inst at pos (%d, %d), name %c, type %d\n",
 		ob->opos[0], ob->opos[1], ob->name, ob->o_type);
-	if (ob->o_type == OBJ_PLAYER && cub->nb_players < MAX_PLAYERS)
-	{
-		inst_id = create_obj_instance(cub, pos, OBJ_SPAWNPOINT, ob->alleg, cub);
-		inst_id = spawn_new_player(get_obj(cub, inst_id), 0);
-		//inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, &cub->hero);
-	}
-	else
-		inst_id = create_obj_instance(cub, pos, ob->o_type, ob->alleg, NULL);
-
-	ob->wobj = get_obj(cub, inst_id);
+		
+	ob->wobj = obj_instanciation_by_type(cub, ob, pos, ob->o_type);
+	
 	printf("Created obj id %d, ptr %p inst with type enum : %d\n", ob->wobj->_id, ob->wobj, ob->wobj->type->type_enum);
 	printf("MAP INSTANCIATOR CREATED OBJ : %p\n", ob->wobj);
 	ob->rel_ref = find_relative(cub, ob, nb_meta);
@@ -142,7 +168,7 @@ int	instanciate_map_objects(t_cub *cub)
 	nb_meta = cub->box.meta;
 
 	printf("objx before : meta = %d\n", nb_meta);
-	print_all_map_insts(cub->box.objx, nb_meta);
+//	print_all_map_insts(cub->box.objx, nb_meta);
 	printf(" Check passed, nb_meta : %d\n", nb_meta);
 	i = -1;
 	while (++i < nb_meta)

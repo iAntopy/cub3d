@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 18:38:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:34:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,14 +149,13 @@ typedef struct s_objx
 	int 			alleg;		// allegence _txtr
 	char			relativ;	// char obj_id
 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
-	struct s_objx	*self_ref;	 // self ptr to cmp with relative's objx ptr;
+//	struct s_objx	*self_ref;	 // self ptr to cmp with relative's objx ptr;
 	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
 
 typedef struct s_box 
 {	
-
 	mlx_texture_t	**xform;
 	mlx_texture_t	*sky_tex;	
 	mlx_texture_t	*sky;	
@@ -231,14 +230,14 @@ typedef struct s_texture_data
 	int				color[2];
 	
 	//	mlx_texture_t	*walls[4];
-	mlx_texture_t	*sky_tex;	// yessss
+//	mlx_texture_t	*sky_tex;	// yessss
 	// t_matrx			*gset;		// model_txtr
 	// t_matrx			*dual;		// floor & ceiling
 	// // // //
 	mlx_texture_t	*skymap;	
-	mlx_texture_t	*floor;		
-	char			**rgbx;
-	int				open_sky;
+//	mlx_texture_t	*floor;		
+//	char			**rgbx;
+//	int				open_sky;// DEPRECATED !!
 }	t_tex;
 
 typedef struct s_ray_collision_data
@@ -406,6 +405,7 @@ typedef struct s_objects_list_elem
 //	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
 	
 	int			isactive;
+	int			counter;
 	
 	// PORTAL SPECIFIC
 	int			rel_type_enum;
@@ -655,17 +655,24 @@ void			delete_all_obj_instances(t_cub *cub);
 
 int				link_portal_instances(t_oinst *prtl1, t_oinst *prtl2);
 int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);
-int				link_fireball_to_player(t_oinst *fball, t_hero *player);
-int				link_firepit_to_player(t_oinst *fpit, t_hero *player);
+int				link_fireball_to_target(t_oinst *fball, t_oinst *target);
+int				link_firepit_to_target(t_oinst *fball, t_oinst *target);
 
 /// OBJECT INSTANCIATOR (DO NOT USE DIRECTELY ! USE create_obj_instance())
 int				create_spawnp_instance(t_cub *cub, float *pos, int allegiance);
 int				create_player_instance(t_cub *cub, float *pos, int allegiance, t_oinst *spawnp);
 int				create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
 int				create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
-int				create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
-int				create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_hero *link);
+int				create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
+int				create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
 
+/// OBJECT CONTROLS
+void			obj_move_rel(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe);
+void			obj_move_abs(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe);
+void			obj_rotate(t_cub *cub, t_oinst *obj, float rot);
+void			obj_set_orientation(t_cub *cub, t_oinst *obj, float ori);
+void		    obj_set_position(t_cub *cub, t_oinst *obj, int px, int py);
+void   			obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy);
 
 
 /// OBJECT ACTIVATION FUNCS /////////
@@ -738,5 +745,5 @@ void			mlx_update_mmap(t_cub *cub, t_map *m);
 
 void			update_minimap(t_cub *cub);
 void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
-
+int			 	get_objx(t_objx **objx, char name, int num);
 #endif

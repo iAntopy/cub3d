@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 16:09:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/31 21:21:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 	int				tex_start_x;
 
 	tex = cub->map.mx[rd->cy][rd->cx]->xwalls[rd->side];
+	//printf("map coord : (%d, %d), tex : %p, side : %d, pset ptr : %p\n", rd->cx, rd->cy, tex, rd->side, cub->map.mx[rd->cy][rd->cx]);
 	*tw = tex->width;
 	rc->half_texh = (tex->height >> 1);
 	tex_start_x = (int)(rd->tex_ratio * tex->width);
