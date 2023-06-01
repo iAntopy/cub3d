@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 18:19:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 02:23:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,20 +162,18 @@ void	on_update(t_cub *cub)
 //	}
 //	else
 //		delta_time = 0;
-
-
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
 		// printf("wow");
 		update_minimap(cub);
-		order_draw_call(cub->draw_threads, 0, 3);
+//		order_draw_call(cub->draw_threads, 0, 3);
 //		printf("drawing walls\n");
 		render_walls(cub);//, cub->hero.rcast.rdata);
 		// printf("drawing floor\n");
 		render_floor_sky(cub);//, cub->hero.rcast.rdata);
-//		render_objects(cub);//, cub->hero.rcast.rdata);//, cub->hero.rcast.rdata);
+		render_objects(cub);//, cub->hero.rcast.rdata);//, cub->hero.rcast.rdata);
 //		printf("drawing sky\n");
 //		printf("ALL DONE \n");
 		ft_deltatime_usec_note("this == bananas");

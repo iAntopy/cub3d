@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 17:58:44 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 02:01:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,12 @@ int	read_whole_file(t_map *map, char *filepath)
 /// parsing autopsy
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
-	int	map_len;
 	int	map_offset;	
 
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
-	map_len = read_whole_file(map, file);
-	if (tex_parse(cub, map) < 0)
+	if (read_whole_file(map, file) < 0 || tex_parse(cub, map) < 0)
 		return (-1);
 		
 	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset - 1;
