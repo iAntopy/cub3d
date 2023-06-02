@@ -15,7 +15,7 @@
 /// hole filler
 static char	*spc_chk(t_cub *cub, t_map *m, int j)
 {
-	char	*line;git p
+	char	*line;
 	int		len;
 	int		i;
 

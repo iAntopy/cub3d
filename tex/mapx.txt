@@ -11,6 +11,8 @@ tex/ext/s_side.png
 tex/ext/sky_star.png
 tex/ext/skymap3.png
 ///									ceiling
+tex/ext/semi_blurry_glass_.png
+tex/ext/tile_ceiling_.png
 tex/ext/mountain_crack_.png
 tex/ext/grunge-rock_.png
 tex/ext/starry-night-sky_.png
