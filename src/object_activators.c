@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/31 19:08:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 17:31:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,26 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 	}
 	else
 		return (-1);
+	return (0);
+}
+
+int	activate_fireball(t_oinst *obj, int new_state, t_oinst *target)
+{
+	if (obj->type->type_enum != OBJ_FIREBALL)
+		return (report_err("Trying to activate firepit but obj is not firepit."));
+	if (new_state && target && target->type->type_enum == OBJ_PLAYER)
+		target->relative = target;
+	obj->isactive = new_state;
+	return (0);
+}
+
+int	activate_firepit(t_oinst *obj, int new_state, t_oinst *target)
+{
+	if (obj->type->type_enum != OBJ_FIREPIT)
+		return (report_err("Trying to activate firepit but obj is not firepit."));
+	if (new_state && target && target->type->type_enum == OBJ_PLAYER)
+		target->relative = target;
+	obj->isactive = new_state;
 	return (0);
 }
 

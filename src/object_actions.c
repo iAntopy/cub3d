@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 00:30:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 23:50:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,34 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 //	static int	counter;
 //	t_hero		*player;
 //	float		pos[4];
-	(void)obj;
-	(void)cub;
-//	if (obj != cub->hero.ply_obj)
-//	{
-		
-//	}
+	float		random;
+//	float		delta[2];
+//	float		target[2];
+
+	if (obj != cub->hero.ply_obj)
+	{
+		if (obj->counter > 100)
+		{
+			if (!obj->isactive)
+			{
+				random = ft_random();
+				obj->dx = cosf(random * M_TAU);
+				obj->dy = sinf(random * M_TAU);
+				obj->target[0] = obj->px + CELL_WIDTH * obj->dx;
+				obj->target[1] = obj->px + CELL_WIDTH * obj->dy;
+			}
+			obj->counter = 0;
+		}
+		else
+		{
+			if (fabsf(obj->target[0] - obj->px) < 10.0f
+				&& fabsf(obj->target[1] - obj->py) < 10.0f)
+				obj->isactive = 0;
+			else
+				obj_move_rel(cub, obj, 2, 0);
+			obj->counter++;
+		}
+	}
 	
 //	if (obj->isactive)
 //	{
@@ -92,15 +114,69 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 		return (-1);
 }
 
+int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
+{
+	float	closest_plyr;
+	t_oinst	*other;
+	t_oinst	*target;
+	float	delta[2];
+	float	dist;	
+
+//	printf("fireball is_wall (%d, %d) : %d\n", (int)(obj->px * cub->inv_cw), (int)(obj->py * cub->inv_cw), is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw));
+	if (is_wall(&cub->map, (obj->px + obj->dx * 10.0f) * cub->inv_cw,
+		(obj->py + obj->dy * 10.0f) * cub->inv_cw))
+		return (delete_oinst_by_id(cub, obj->_id));
+	other = cub->objs.instances;
+	closest_plyr = INFINITY;
+	while (other)
+	{
+		if (other->type->type_enum != OBJ_PLAYER
+			|| other->allegiance == obj->allegiance)
+		{
+			other = other->next;
+			continue ;
+		}
+		delta[0] = other->px - obj->px;
+		delta[1] = other->py - obj->py;
+		dist = sqrtf(delta[0] * delta[0] + delta[1] * delta[1]);
+//		printf("fireball dist : %f\n", dist);
+		if (dist < 10)
+		{
+			respawn_player(other);
+			return (delete_oinst_by_id(cub, obj->_id));
+		}
+		else if (obj->relative && dist < closest_plyr)
+		{
+			obj->dx = delta[0] / dist;
+			obj->dy = delta[1] / dist;
+			closest_plyr = dist;
+			target = other;
+		}
+		other = other->next;
+	}
+	if (obj->relative && target != obj->relative)
+	{
+		link_fireball_to_target(obj, target);
+//			obj->px += obj->dx * obj->type->speed;
+//			obj->py += obj->dy * obj->type->speed;
+	}
+//	else
+//		obj_move_abs(cub, obj, obj->dx, obj->dy);
+	return (0);
+}
+
 int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 {
-	float	dist;
-	t_oinst	*other;
+//	float	dist;
+//	t_oinst	*other;
 //	float	delta_prtl[2];
 	
 //	printf("FIREBAAAAAAAAALLLL\n");
 	if (!obj->isactive)
 		return (-1);
+	if (__fireball_check_hit(cub, obj) == 0)
+		obj_move_abs(cub, obj, obj->dx, obj->dy);
+/*
 	if (obj->relative)
 	{
 //		player = (t_hero *)obj->relative;
@@ -111,7 +187,8 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		dist = sqrtf(obj->dx * obj->dx + obj->dy * obj->dy);
 		if (dist < 10)
 		{
-			ft_printf("OUCH MAUDIT CA FAIT MAL!\n");
+//			ft_printf("OUCH MAUDIT CA FAIT MAL!\n");
+			respawn_player((t_oinst *)obj->relative);
 			delete_oinst_by_id(cub, obj->_id);
 			return (0);
 		}
@@ -119,14 +196,18 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		obj->dy /= dist;
 		obj->px += obj->dx * obj->type->speed;
 		obj->py += obj->dy * obj->type->speed;
-		if (is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw))
-			delete_oinst_by_id(cub, obj->_id);
 	}
 	else
 	{
+		other = cub->objs.instances;
+		while (other)
+//		{
+			
+//		}
 		obj->px += obj->dx * obj->type->speed;
 		obj->py += obj->dy * obj->type->speed;
 	}
+*/
 	/*
 	objs = cub->objs.instances;
 	while (objs)
@@ -152,17 +233,21 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 {
 	float		pos[4];
+	int			inst_id;
 	
 	if (!obj->isactive)
 		return (-1);
+	printf("firepit active\n");
 	if (++obj->counter > FIREPIT_SPAWN_TICKS)
 	{
 		pos[0] = obj->px;
 		pos[1] = obj->py;
 		pos[2] = obj->dx;
 		pos[3] = obj->dy;
-//			printf("SPAWNING FIREBALL\n");
-		create_obj_instance(cub, pos, OBJ_FIREBALL, ALI_NEUTRAL, obj->relative);
+		printf("SPAWNING FIREBALL : pos (%f, %f), dir (%f, %f)\n", pos[0], pos[1], pos[2], pos[3]);
+		inst_id = create_obj_instance(cub, pos, OBJ_FIREBALL,
+			obj->allegiance, obj->relative);
+		activate_fireball(get_obj(cub, inst_id), 1, NULL);
 		obj->counter = 0;
 	}
 	return (0);
@@ -177,7 +262,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	if (obj->isactive)
 	{
 		prtl = (t_oinst *)obj->relative;
-		if (obj->counter > 400)
+		if (obj->counter > 600)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;

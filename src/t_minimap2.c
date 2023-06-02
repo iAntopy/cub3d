@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:56:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 22:46:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 22:32:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ static int	minimap_pixel_is_wall(t_cub *cub, int *ms)
 		|| is_wall(&cub->map, cs[0], cs[1]));
 }
 
+static int	pick_icon_color_according_to_otype(t_oinst *obj)
+{
+	static const int	color_chart[7] = {0, 0xff25e807 & TRANSPARENCY, 0xffb84028 & TRANSPARENCY,
+		0xff1bf5ee & TRANSPARENCY, 0xff0c8bfa & TRANSPARENCY,
+		0xff1535eb & TRANSPARENCY, 0xffebc315 & TRANSPARENCY};
+	
+	return (color_chart[obj->type->type_enum]);
+}
+
 static void	minimap_draw_objs(t_cub *cub)
 {
 	t_oinst		*obj;
@@ -42,7 +51,7 @@ static void	minimap_draw_objs(t_cub *cub)
 			obj = obj->next;
 			continue ;
 		}
-		icon_col = 0xff00ff00;
+		icon_col = pick_icon_color_according_to_otype(obj);
 		ms[0] -= 5;
 		ms[1] -= 5;
 		mlx_draw_square(cub->renderer.mmap_layer, ms, 10, icon_col & TRANSPARENCY);

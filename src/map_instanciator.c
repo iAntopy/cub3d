@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 15:36:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 17:41:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 		printf("| %d - %c - type %d - pos (%d, %d) - rel %c - wobj %p, wobj type enum : %d\n",
 			o->obj_id, o->name, o->o_type, o->opos[0], o->opos[1],
 			o->relativ, o->wobj, o->wobj->type->type_enum);
+		printf("rel_ref : %p\n", o->rel_ref);
 		if (o->o_type == OBJ_PORTAL)
 		{
 			// printf("linking portal - name %c, type %d to name %c, type %d\n",6
@@ -90,12 +91,18 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 			printf("lever relative ptr : %p\n", o->wobj->relative);
 		}
-		else if (o->o_type == OBJ_FIREBALL && o->rel_ref && o->rel_ref->wobj)
+		else if (o->o_type == OBJ_FIREBALL)
 		{
-			link_fireball_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
+			if (o->rel_ref && o->rel_ref->wobj)
+				link_fireball_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
+			activate_fireball(o->wobj, 1, NULL);
 		}
-		else if (o->o_type == OBJ_FIREPIT && o->rel_ref && o->rel_ref->wobj)
-			link_firepit_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
+		else if (o->o_type == OBJ_FIREPIT)
+		{
+			if (o->rel_ref && o->rel_ref->wobj)
+				link_firepit_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
+			activate_firepit(o->wobj, 1, NULL);
+		}
 	}
 	return (0);
 }
@@ -114,8 +121,8 @@ static t_oinst	*obj_instanciation_by_type(t_cub *cub, t_objx *ob, float *pos, in
 	else if (ob->o_type == OBJ_FIREBALL || ob->o_type == OBJ_FIREPIT)
 	{
 		printf("Creating FIREBALL OR FIREPIT. relativ : %c\n", ob->relativ);
-		pos[2] = (M_PI / 4.0f) * ob->relativ + (M_PI / 2.0f);
-		pos[3] = (M_PI / 4.0f) * ob->relativ + (M_PI / 2.0f);
+		pos[2] = cosf((M_TAU / 4.0f) * ob->relativ + (M_TAU / 2.0f));
+		pos[3] = sinf((M_TAU / 4.0f) * ob->relativ + (M_TAU / 2.0f));
 		if (ob->relativ == '9')
 		{
 			ob->relativ = '@';

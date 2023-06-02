@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 00:27:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 23:18:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 	new_obj->cy = (int)(pos[1] * cub->inv_cw);
 	new_obj->ori = 0.0f;
 	new_obj->action = __obj_action_player;
+	new_obj->counter = 0;
 	new_obj->rel_type_enum = 0;
 	new_obj->relative = spawnp;
-	new_obj->isactive = 1;
+//	new_obj->isactive = 1;
 	new_obj->gset = new_obj->type->gsets[new_obj->allegiance];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
@@ -171,7 +172,7 @@ int	create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_oinst *li
 	new_obj->type = &cub->objs.fireball;
 	new_obj->_id = get_new_obj_id();
 	new_obj->allegiance = allegiance;
-	new_obj->tex_idx = 0;
+	new_obj->tex_idx = allegiance;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
 	new_obj->dx = pos[2];
@@ -205,7 +206,7 @@ int	create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_oinst *lin
 	new_obj->type = &cub->objs.firepit;
 	new_obj->_id = get_new_obj_id();
 	new_obj->allegiance = allegiance;
-	new_obj->tex_idx = 0;
+	new_obj->tex_idx = allegiance;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
 	new_obj->dx = pos[2];

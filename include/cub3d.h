@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 15:34:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 23:40:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@
 
 
 # define NB_OBJ_TYPES 5
-# define FIREPIT_SPAWN_TICKS 100
+# define FIREPIT_SPAWN_TICKS 200
 
 # define MAX_PLAYERS 8
 
@@ -385,10 +385,12 @@ typedef struct s_objects_list_elem
 	float		py;//	Position Y
 	int			cx;//	Current cell X
 	int			cy;//	Current cell Y
-	float		ori;//	object orientation when applicable
 	float		dx;//	obj direction X
 	float		dy;//	obj direction Y
-	float		speed;//	moveing speed when applicable.
+	float		ori;//	object orientation when applicable
+	
+	float		target[2];// optional target coord
+	float		speed;//	moving speed when applicable.
 
 	t_obj_act	action;
 
@@ -678,6 +680,8 @@ void   			obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy);
 /// OBJECT ACTIVATION FUNCS /////////
 void		    commit_all_obj_actions(t_cub *cub);
 int				activate_portal(t_oinst *obj, unsigned int new_status);
+int				activate_fireball(t_oinst *obj, int new_state, t_oinst *target);
+int				activate_firepit(t_oinst *obj, int new_state, t_oinst *target);
 int				spawn_new_player(t_oinst *spawnp, int is_playable);
 int				set_playable_obj(t_cub *cub, t_oinst *player);
 int				respawn_player(t_oinst *player);
