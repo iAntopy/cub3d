@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 21:31:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 22:18:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,13 @@ int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
 //	printf("fireball is_wall (%d, %d) : %d\n", (int)(obj->px * cub->inv_cw), (int)(obj->py * cub->inv_cw), is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw));
 	if (is_wall(&cub->map, (obj->px + obj->dx * 10.0f) * cub->inv_cw,
 		(obj->py + obj->dy * 10.0f) * cub->inv_cw))
-	{
-		printf("Fireball HITS Wall !\n");
 		return (delete_oinst_by_id(cub, obj->_id));
-	}
 	other = cub->objs.instances;
 	closest_plyr = INFINITY;
 	while (other)
 	{
-		if (other->type->type_enum != OBJ_PLAYER)
+		if (other->type->type_enum != OBJ_PLAYER
+			|| other->allegiance == obj->allegiance)
 		{
 			other = other->next;
 			continue ;
