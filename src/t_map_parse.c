@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 17:58:44 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 20:41:57 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 		++i;
 	}
 	cub->map.m = m;
-	wall_check(cub, &cub->map);
+	if (!wall_check(cub, &cub->map))
+		return (NULL);
 	return (cub);
 }
 
@@ -102,21 +103,17 @@ int	read_whole_file(t_map *map, char *filepath)
 /// parsing autopsy
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
-	int	map_len;
 	int	map_offset;	
 
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
-	map_len = read_whole_file(map, file);
-	if (tex_parse(cub, map) < 0)
+	if (read_whole_file(map, file) < 0 || tex_parse(cub, map) < 0)
 		return (-1);
 		
 	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset - 1;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
-		printf("\n$$$ MAP_RAW (%d)  TXTR [%d] ", map_len, map_offset);
-		printf(" MAP_HEIGHT [%d] $$$\n\n", map->height);	
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)

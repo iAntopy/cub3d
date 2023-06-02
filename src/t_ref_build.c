@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 23:10:15 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 20:07:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
     if (cub->box.n_dual > i)
     {		
 		tex_set = ft_split_space(t_name);
+		cub->dual[i].xwalls[1] = NULL;
 	
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
@@ -74,7 +75,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	int head;
 
 	head = ft_in_set(t_name[0], (const char *)MAP_MCHR);
-	printf("\n\n>>>> TEST >>> [%c] ::: head <%d>\n", t_name[0], head);   
+	printf(">>>> TEST >>> [%c] ::: head <%d>\n", t_name[0], head);   
 
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1)		//// lever
 	{
@@ -109,11 +110,10 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	else  if (ft_in_set(t_name[0], (const char *)MOD_SPEC) != -1)	
 	{
 		printf(">>>>	MODEL : PLAYER [%d] >>>\n", box->n_plyr);
-	//		if (box->n_plyr == 0)
-	//			init_player_model(objs);
-		// box->n_plyr++;
-	}
-			
+			// if (box->n_plyr == 0)
+			// 	init_player_model(objs);
+			// box->n_plyr++;
+	}			
     return (cub);
 }
 
@@ -152,10 +152,12 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 					m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta + 1];		
 				}
 				else if ((p_box < cub->box.meta - 1) && p_box > -1)
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; //m->mx[m->pos_y][m->pos_x - 1];
-				else if (p_box == max)
-					m->mx[m->pos_y][m->pos_x] = &cub->dual[0]; 
-	
+				{
+					printf("MapX META X {chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
+					m->mx[m->pos_y][m->pos_x] = m->mx[m->pos_y][m->pos_x - 1];
+				}
+				if (p_box == max)
+					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x - 1];	
 			}
 			m->pos_x++;
 		}

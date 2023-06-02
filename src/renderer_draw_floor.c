@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_draw_floor.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 18:25:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 15:30:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,8 @@ static void	__render_floor_ceiling(t_cub *cub, t_rdata *rdata)
 			*buffs[0] = get_tex_pixel(tex_arr[0],
 				mx * tex_arr[0]->width * cub->inv_cw,//* flr_ratios[0],
 				my * tex_arr[0]->height * cub->inv_cw);//flr_ratios[1]);
+			if (!tex_arr[1])
+				continue ;
 			*buffs[2] = get_tex_pixel(tex_arr[1],
 				mx * tex_arr[1]->width * cub->inv_cw,//* flr_ratios[0],
 				my * tex_arr[1]->height * cub->inv_cw);//flr_ratios[1]);

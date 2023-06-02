@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 22:56:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:32:12 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ void	__render_proj_walls(t_cub *cub)
 	(void)pb;
 }
 
-void	__render_proj_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_pdata *pd, int *dims,
+void	__render_proj_obj(t_cub *cub, float dist, mlx_texture_t *tex, t_pdata *pd, int *dims,
 		int *loffs, int *toffs, float *tex_incrs)//, int *end)
 {
 	int		toffs_y[SCN_HEIGHT];
@@ -310,10 +310,12 @@ static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
 		tex = obj->gset->xwalls[idx];
 	}
 	else
-//	{
+	{
+		if (obj->type->type_enum == OBJ_FIREBALL)
+			printf("FIREBALL : obj gset xwalls[0-1] : %p, %p\n", obj->gset->xwalls[0], obj->gset->xwalls[1]);
 		tex = obj->gset->xwalls[obj->tex_idx];
 //		printf("selected none oriented texture : %p\n", tex);
-//	}
+	}
 	return (tex);
 }
 
@@ -458,7 +460,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 	}
 }
 
-void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rdata, int *dims,
+void	__render_obj(t_cub *cub, float dist, mlx_texture_t *tex, t_rdata *rdata, int *dims,
 		int *loffs, int *toffs, float *tex_incrs)//, int *end)
 {
 	int			toffs_x[SCN_WIDTH];
@@ -495,19 +497,25 @@ void	__render_obj(t_cub *cub, int dist, mlx_texture_t *tex, t_rdata *rdata, int 
 				+ ((int)(toffs[1] * tex_incrs[1]) * tex->width);
 	dbuff = ((float *)cub->renderer.dbuff) + pbuff_start_off;// + (loffs[0]) + (loffs[1]) * SCN_WIDTH - 1;
 	pbuff = ((uint32_t *)cub->renderer.objs_layer->pixels) + pbuff_start_off;// + (loffs[0]) + (loffs[1]) * SCN_WIDTH - 1;
-
+//	if (obj->type->type_enum == OBJ_FIREBALL)
+//	printf("Trying to draw fireball 4. loffs : (%d, %d), dims: (%d, %d), toffs: (%d, %d)\n", 
+//		loffs[0], loffs[1], dims[0], dims[1], toffs[0], toffs[1]);
 	j = -1;
 	while (++j < dims[1])
 	{
 		tb = tbuff + (int)(j * tex_incrs[1]) * tex->width;
+//		printf("tex_incrs[1] : %f, tex width : %d\n", tex_incrs[1], tex->width);
 		i = -1;
 		while (++i < dims[0])
 		{
 			++dbuff;
 			++pbuff;
 			tex_col = tb[toffs_x[i]];
+//			printf("toffs_x[%d] : %d, dims[0] : %d\n", i, toffs_x[i], dims[0]);
+//			printf("try drawing col : %d, at scn coord (%d, %d), *dbuff : %f, dist : %f\n", tex_col, i, j, *dbuff, dist);
 			if (!tex_col || (*dbuff && (*dbuff < dist)))
 				continue ;
+//			printf("drawing pixel\n");
 			*pbuff = tex_col;
 			*dbuff = dist;
 		}
@@ -597,6 +605,8 @@ void	render_objects(t_cub *cub)
 
 //		printf("drawx : %d, dims : (%d, %d), type w, h : (%d, %d)\n", drawx, dims[0], dims[1],
 //			obj->type->width, obj->type->height);
+		if (obj->type->type_enum == OBJ_FIREBALL)
+			printf("Trying to draw fireball 1\n");
 
 		if (((obj->dist <= 1) || (drawx + (dims[0] >> 1)) < 0
 			|| SCN_WIDTH <= (drawx - (dims[0] >> 1))) && next_obj(&obj))
@@ -604,7 +614,9 @@ void	render_objects(t_cub *cub)
 //			obj = obj->next;
 			continue ;
 //		}
-
+		if (obj->type->type_enum == OBJ_FIREBALL)
+			printf("Trying to draw fireball 2\n");
+			
 		tincrs[0] = (float)tex->width / (float)dims[0];
 		tincrs[1] = (float)tex->height / (float)dims[1];
 		toffs[0] = 0;
@@ -677,8 +689,12 @@ void	render_objects(t_cub *cub)
 //			__render_proj_floor(cub);
 		}
 		else
+		{
+			if (obj->type->type_enum == OBJ_FIREBALL)
+				printf("Trying to draw fireball 3. loffs : (%d, %d), dims: (%d, %d)\n", 
+					loffs[0], loffs[1], dims[0], dims[1]);
 			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
-
+		}
 		obj = obj->next;
 	}
 }

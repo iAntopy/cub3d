@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_instanciators.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 15:36:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 00:27:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 	new_obj->_id = get_new_obj_id();
 	new_obj->allegiance = allegiance;
 	new_obj->tex_idx = 0;
+	new_obj->spawnpoint = spawnp;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
 	new_obj->cx = (int)(pos[0] * cub->inv_cw);
@@ -106,6 +107,7 @@ int	create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 	new_obj->relative = link;
 	new_obj->isactive = 0;	
 	new_obj->action = __obj_action_lever;
+	new_obj->counter = 0;
 	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
@@ -157,10 +159,12 @@ int	create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link
 }
 
 // pos is in world coord, NOT cell coord.
-int	create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_hero *link)
+int	create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 {
 	t_oinst	*new_obj;
 
+	if (!cub->objs.fireball.type_enum)
+		init_fireball_model(&cub->objs);
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());
 
@@ -190,10 +194,12 @@ int	create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_hero *lin
 }
 
 //pos is in world coord, NOT cell coord.
-int	create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_hero *link)
+int	create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 {
 	t_oinst	*new_obj;
 
+	if (!cub->objs.firepit.type_enum)
+		init_firepit_model(&cub->objs);
 	if (!ft_malloc_p(sizeof(t_oinst), (void **)&new_obj))
 		return (report_malloc_error());
 	new_obj->type = &cub->objs.firepit;
@@ -202,8 +208,12 @@ int	create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_hero *link
 	new_obj->tex_idx = 0;
 	new_obj->px = pos[0];
 	new_obj->py = pos[1];
+	new_obj->dx = pos[2];
+	new_obj->dy = pos[3];
 	new_obj->relative = NULL;
 	new_obj->isactive = 0;
+	new_obj->counter = 0;
+	
 	new_obj->action = __obj_action_firepit;
 	if (link)
 	{

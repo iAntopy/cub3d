@@ -8,7 +8,7 @@ $ 2/2
 - 3/_
 _ 3/^
 ^ 3/_
-= 2/9
+* 2/9
 a tex/ext/old-wood-planks.png
 b tex/ext/tree-bark.png
 c tex/ext/hedge-wall_a.png
@@ -16,8 +16,8 @@ d tex/ext/hedge-wall.png
 e tex/ext/purple-flowers.png
 f tex/ext/pink-flowers.png
 z tex/ext/skymap3.png
-0 tex/ext/beach_sand.png tex/ext/semi_blurry_glass_.png
-1 tex/ext/floortile4.png tex/ext/red-mountain-rock_.png
+0 tex/ext/beach_sand.png
+1 tex/ext/floortile4.png tex/ext/tile_ceiling_.png
 2 tex/ext/grass-floor.png tex/ext/starry-night-sky_.png
 
 A abab
@@ -27,7 +27,7 @@ C efef
 AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 A00000000000000000000000000A
 A0000^00@00000!0000000(0000A
-A00000000000000000000000000A
+A000000000000*0000000000000A
 AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B1111111111111111111111111111111111B

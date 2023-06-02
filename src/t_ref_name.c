@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 22:32:57 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 20:18:19 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*chrs_builder(t_cub *cub)
 
 	j = 0;
 	i = 0;
-	printf("raw vision raw[0][0] = %c \n", *cub->map.raw[0] );
 	rawz = cub->map.raw;
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[i] && j < cub->box.chrs_len)
@@ -39,7 +38,6 @@ char	*chrs_builder(t_cub *cub)
 	return (cub->box.chrs);
 }
 
-
 /// link' too too wide ++ doing too many thing!
 t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 {
@@ -48,7 +46,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	char	*tex_name;
 	int		i;
 	int		j;
-		int		d_id;
+	int		d_id;
 
 	i = - 1;
 	j = 0;
@@ -60,8 +58,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	if (!cub->dual)
 		return (NULL);
 	box->n_objs = 0;
-	//	init_player_model(&cub->objs);
-	//	init_spawnpoint_model(&cub->objs);
 	printf("LINK\n");
 	while (++i < box->xnum + box->meta )
 	{
@@ -71,8 +67,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			tex_name = ft_substr(raw[i], 0, 1);
 			tex_path = ft_substr(raw[i], 2, raw_len - 2);
 			
-			/// meta << number 				// if (raw[i][0] < 48) /// meta << number 
-			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
+			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))			/// meta << number 				
 			{
 				cub = meta_builder(cub, box, tex_name, &cub->objs);			
 				printf("METABUILDER:[%c]  CHRS{%c} path{{%s}} \n", tex_name[0], raw[i][0], tex_path);
@@ -82,13 +77,10 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			{
 				if (tex_name[0] == 'z')
 				{
-					cub->box.open_sky = 1;
 					cub->box.sky = mlx_load_png(tex_path);
 					if (!cub->box.sky)
 						return (report_mlx_tex_load_failed(tex_path));
 					// printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
-					cub->tex.skymap = cub->box.sky;
-					cub->tex.sky_tex = cub->box.sky;
 				}
 				else
 				{
@@ -103,7 +95,8 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			{
 				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
 				if(d_id != -1)
-					cub = dual_builder(cub, d_id, tex_path);								
+					if (!dual_builder(cub, d_id, tex_path))
+						return (NULL);						
 			}
 		}
 	}
@@ -138,17 +131,13 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			cub->box.n_dual++;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
-		if (rawz[0] == 'z')
-			cub->box.open_sky = 1; // no  tile == skymap
 	}
-
 	return (cub);
 }
 
 t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
 	box->xnum = 0;
-	box->open_sky = 0;
 	cub = e_mtrx_count(cub);
 
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
@@ -158,6 +147,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
+	if (!cub)
+		return (NULL);
 	if (cub->box.open_sky != 0)
 		cub->tex.skymap = cub->box.sky;
 	cub->box.chrs = chrs_builder(cub);
