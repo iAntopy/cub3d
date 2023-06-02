@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 17:43:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 23:40:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,10 +385,12 @@ typedef struct s_objects_list_elem
 	float		py;//	Position Y
 	int			cx;//	Current cell X
 	int			cy;//	Current cell Y
-	float		ori;//	object orientation when applicable
 	float		dx;//	obj direction X
 	float		dy;//	obj direction Y
-	float		speed;//	moveing speed when applicable.
+	float		ori;//	object orientation when applicable
+	
+	float		target[2];// optional target coord
+	float		speed;//	moving speed when applicable.
 
 	t_obj_act	action;
 

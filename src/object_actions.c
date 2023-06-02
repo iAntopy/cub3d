@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 22:18:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/01 23:50:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,34 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 //	static int	counter;
 //	t_hero		*player;
 //	float		pos[4];
-	(void)obj;
-	(void)cub;
-//	if (obj != cub->hero.ply_obj)
-//	{
-		
-//	}
+	float		random;
+//	float		delta[2];
+//	float		target[2];
+
+	if (obj != cub->hero.ply_obj)
+	{
+		if (obj->counter > 100)
+		{
+			if (!obj->isactive)
+			{
+				random = ft_random();
+				obj->dx = cosf(random * M_TAU);
+				obj->dy = sinf(random * M_TAU);
+				obj->target[0] = obj->px + CELL_WIDTH * obj->dx;
+				obj->target[1] = obj->px + CELL_WIDTH * obj->dy;
+			}
+			obj->counter = 0;
+		}
+		else
+		{
+			if (fabsf(obj->target[0] - obj->px) < 10.0f
+				&& fabsf(obj->target[1] - obj->py) < 10.0f)
+				obj->isactive = 0;
+			else
+				obj_move_rel(cub, obj, 2, 0);
+			obj->counter++;
+		}
+	}
 	
 //	if (obj->isactive)
 //	{
@@ -117,7 +139,7 @@ int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
 		delta[0] = other->px - obj->px;
 		delta[1] = other->py - obj->py;
 		dist = sqrtf(delta[0] * delta[0] + delta[1] * delta[1]);
-		printf("fireball dist : %f\n", dist);
+//		printf("fireball dist : %f\n", dist);
 		if (dist < 10)
 		{
 			respawn_player(other);
