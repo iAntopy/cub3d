@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 16:44:21 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 20:07:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 			// if (box->n_plyr == 0)
 			// 	init_player_model(objs);
 			// box->n_plyr++;
-	}
-			
+	}			
     return (cub);
 }
 
