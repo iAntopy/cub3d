@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/05/31 23:42:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 21:22:14 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 	int		o_cells;
 	int 	id;
 	
-	printf("Wall_chk META  %d::: \n", cub->box.meta);
+	// printf("Wall_chk META  %d::: \n", cub->box.meta);
 	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
 	
 	id = -1;
@@ -125,6 +125,12 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 				id++;
 				objx[id] = get_pos(cub, m, o_cells, id);
 			}
+			// else if (o_cells == -1  && m->m[m->pos_y][m->pos_x] != 0)
+			// {
+			// 	printf(":: SAFE EXIT :: Wall_chk META ::[%d]:: \n\n", m->m[m->pos_y][m->pos_x]);
+			// 	printf(":: SAFE EXIT :: Wall_chk META ::[y:%d][x:%d]:: \n\n", m->pos_y, m->pos_x);
+			// 	return (NULL);
+			// }
 			m->pos_x++;
 		}
 		m->pos_y++;

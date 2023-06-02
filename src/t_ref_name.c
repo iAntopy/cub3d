@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 16:45:06 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 20:18:19 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*chrs_builder(t_cub *cub)
 	return (cub->box.chrs);
 }
 
-
 /// link' too too wide ++ doing too many thing!
 t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 {
@@ -47,7 +46,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	char	*tex_name;
 	int		i;
 	int		j;
-		int		d_id;
+	int		d_id;
 
 	i = - 1;
 	j = 0;
@@ -59,8 +58,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	if (!cub->dual)
 		return (NULL);
 	box->n_objs = 0;
-	//	init_player_model(&cub->objs);
-	//	init_spawnpoint_model(&cub->objs);
 	printf("LINK\n");
 	while (++i < box->xnum + box->meta )
 	{
@@ -80,13 +77,10 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			{
 				if (tex_name[0] == 'z')
 				{
-//					cub->box.open_sky = 1;
 					cub->box.sky = mlx_load_png(tex_path);
 					if (!cub->box.sky)
 						return (report_mlx_tex_load_failed(tex_path));
 					// printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
-//					cub->tex.skymap = cub->box.sky;
-//					cub->tex.sky_tex = cub->box.sky;
 				}
 				else
 				{
@@ -137,9 +131,7 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			cub->box.n_dual++;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
-
 	}
-
 	return (cub);
 }
 

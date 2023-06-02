@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 15:04:05 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/01 20:41:57 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 		++i;
 	}
 	cub->map.m = m;
-	wall_check(cub, &cub->map);
+	if (!wall_check(cub, &cub->map))
+		return (NULL);
 	return (cub);
 }
 
