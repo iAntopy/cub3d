@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 22:25:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 23:14:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,44 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 //	static int	counter;
 //	t_hero		*player;
 //	float		pos[4];
-	float		random;
+//	float		random;
 //	float		delta[2];
 //	float		target[2];
 
-	if (obj != cub->hero.ply_obj)
+	if (obj == cub->hero.ply_obj)
+		return (-1);
+	if (obj->isactive && obj->counter > 100)
 	{
+		obj->isactive = 0;
+		obj->counter = 0;
+	}
+	else if (!obj->isactive && obj->counter > 100)
+	{
+		obj->ori = ft_random() * M_TAU;
+		obj->isactive = 1;
+		obj->counter = 0;
+	}
+	else if (obj->isactive)
+		obj_move_rel(cub, obj, 2.0f, 0.0f);
+	++obj->counter;
+	return (0);
+}
+		
+/*
 		if (obj->counter > 100)
 		{
 			if (!obj->isactive)
 			{
 				random = ft_random();
+				
 				obj->dx = cosf(random * M_TAU);
 				obj->dy = sinf(random * M_TAU);
-				obj->target[0] = obj->px + CELL_WIDTH * obj->dx;
-				obj->target[1] = obj->px + CELL_WIDTH * obj->dy;
+				obj->target[0] = obj->px;// + CELL_WIDTH * obj->dx;
+				obj->target[1] = obj->py;// + CELL_WIDTH * obj->dy;
 				obj->isactive = 1;
 			}
 			obj->counter = 0;
+			printf("PLAYER COUNTER RESET !!!!!!!!!!!\n\n");
 		}
 		else
 		{
@@ -47,8 +67,9 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 				obj_move_rel(cub, obj, 2, 0);
 			obj->counter++;
 		}
+
 	}
-	
+*/	
 //	if (obj->isactive)
 //	{
 		// if (counter > 1000)
@@ -64,8 +85,6 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 		// }
 		// ++counter;
 //	}
-	return (0);
-}
 
 int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 {
@@ -118,26 +137,15 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 			other = other->next;
 			continue ;
 		}
-		dx = obj->px - other->px;//cub->hero.ply_obj->px;
-		dy = obj->py - other->py;//cub->hero.ply_obj->py;
+		dx = obj->px - other->px;
+		dy = obj->py - other->py;
 		dist = dx * dx + dy * dy;
-		printf("portal %d dist : %f\n", obj->_id, dist);
 		if (dist < PORTAL_TRIGGER_DIST_SQ)
 		{
-			printf("PORTAL ID %d TELEPORTS OBJECT ID : %d, before pos (%f, %f)\n", obj->_id, other->_id,
-				other->px, other->py);
-			obj_set_position(cub, other,
-				link->px,// + (dx / dist) * 5.0f,
-				link->py);// + (dy / dist) * 5.0f);
-			printf("PORTAL ID %d TELEPORTS OBJECT ID : %d, after pos (%f, %f)\n", obj->_id, other->_id,
-				other->px, other->py);
+			obj_set_position(cub, other, link->px,link->py);
 			link->counter = 30;
 			break ;
 		}
-//		{
-//			cub->hero.ply_obj->px = link->px + dx * 1.5f;
-//			cub->hero.ply_obj->py = link->py + dy * 1.5f;
-//		}
 		other = other->next;
 	}
 	return (0);
@@ -151,7 +159,6 @@ int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
 	float	delta[2];
 	float	dist;	
 
-//	printf("fireball is_wall (%d, %d) : %d\n", (int)(obj->px * cub->inv_cw), (int)(obj->py * cub->inv_cw), is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw));
 	if (is_wall(&cub->map, (obj->px + obj->dx * 10.0f) * cub->inv_cw,
 		(obj->py + obj->dy * 10.0f) * cub->inv_cw))
 		return (delete_oinst_by_id(cub, obj->_id));
