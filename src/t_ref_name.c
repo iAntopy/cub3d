@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 16:45:06 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/03 01:24:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					box->xform[j] = mlx_load_png(tex_path);
 					if (!box->xform[j])
 						return (report_mlx_tex_load_failed(tex_path));
+					printf("\n\n LOADING SOME WACKY TEXTURES !!! name : %s, path : %s, ptr %p\n", tex_name,
+					tex_path, box->xform[j]);
 					// printf("XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
 					j++;
 				}

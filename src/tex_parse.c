@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 16:07:02 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/03 01:38:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,24 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	int		id;
 	char	*ref;
 
+	printf("\n\n PSET BUILDING!\n");
 	id = 0;
 	fill = -1;
 	ref = raw[queue];
 	if (ft_in_set((const char)raw[queue][0], (const char *)MAP_UCHR) > -1)
 	{
-		while (fill++ < 3)
+		while (++fill < 4)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
 			// printf("MAKER: recett{%c} index[%d]\n", ref[fill + 2],id);
+			printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
 			//  printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
 		}
 	}
+	printf("PSET %d : %p, %p, %p, %p\n", len, cub->pset[len].xwalls[0], cub->pset[len].xwalls[1],
+		cub->pset[len].xwalls[2], cub->pset[len].xwalls[3]);
 	return (cub->pset);
 }
 
@@ -93,7 +97,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 	cub->box.tot = cub->box.xnum + cub->box.meta + cub->box.pset;
 		// printf("\n<<META[%d]::XNUM[%d]", cub->box.meta, cub->box.xnum);
 		// printf("::PSET[%d]::TOT[%d]>> \n\n", cub->box.pset, cub->box.tot);
-	cub->pset = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.pset);
+	cub->pset = (t_matrx *)calloc(sizeof(t_matrx), cub->box.pset);
 	if (!cub->pset)
 		return (-1);
 	if (!xwalls_builder(cub, map->raw))

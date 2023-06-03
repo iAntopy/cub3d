@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/01 16:44:21 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/03 01:47:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,10 +142,13 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		{
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), chrs);
 				
+			printf("BUILDING MAPX :: p_box id : %d, grim : %d\n", p_box, grim);
 			if (p_box != -1)
 			{				
 				if ((p_box >= grim  && (p_box < max))) // wall  // 
 				{
+					printf("BUILDING MAPX :: pset p_box (%d) - grim (%d): %p\n", p_box, grim,
+						&cub->pset[p_box - grim]);
 					m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 				}
 				else if ((p_box < grim) && p_box > (grim - cub->box.n_dual - 1)) /// floor + ceil // debut dual

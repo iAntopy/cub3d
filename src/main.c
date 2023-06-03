@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 17:55:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/03 01:17:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ int	main(int argc, char **argv)
 //	pos[0] = 13 * CELL_WIDTH + 1;
 //	pos[1] = 2 * CELL_WIDTH + 1;
 //	create_obj_instance(&cub, pos, OBJ_PLAYER, ALI_NEUTRAL, &cub.hero);
+	printf("xforms[0] : %p, mx[0][0]->xwalls[0], [1], [2], [3] : %p, %p, %p, %p\n", cub.box.xform[0],
+		cub.map.mx[0][0]->xwalls[0], cub.map.mx[0][0]->xwalls[1], cub.map.mx[0][0]->xwalls[2], cub.map.mx[0][0]->xwalls[3]);
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
