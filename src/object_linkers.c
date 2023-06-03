@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 00:31:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 21:05:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	link_portal_instances(t_oinst *prtl1, t_oinst *prtl2)
 	if (prtl1->allegiance != prtl2->allegiance)
 		return (report_err("Can't link portals of differente team.\n"));
 	prtl1->relative = prtl2;
-	prtl2->relative = prtl1;
+	if (prtl2->relative == prtl2)
+		prtl2->relative = prtl1;
 	return (0);
 }
 
@@ -34,8 +35,8 @@ int	link_lever_to_portal(t_oinst *lever, t_oinst *prtl)
 		|| (prtl->type->type_enum != OBJ_PORTAL))
 		return (report_err("Either lever is not an OBJ_LEVER\
  or prtl not a OBJ_PORTAL.\n"));
-	if (lever->allegiance != prtl->allegiance)
-		return (report_err("Can't link lever to portal of differente team.\n"));
+//	if (lever->allegiance != prtl->allegiance)
+//		return (report_err("Can't link lever to portal of differente team.\n"));
 	lever->relative = prtl;
 	return (0);
 }

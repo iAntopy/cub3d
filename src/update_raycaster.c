@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:10:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/29 22:48:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 17:54:29 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ void	update_rays(t_cub *cub)
 {
 	const float	ply_ori = cub->hero.ply_obj->ori;
 
+	if (!cub->hero.rcast.theta_offs)
+	{
+		init_raycaster(cub);
+		return ;
+	}
+	printf("UPDATE RAYS\n");
 	_mtx_addf_pscalar(cub->hero.rcast.theta_offs, ply_ori,
 		cub->hero.rcast.ray_thetas);
 	mtx_linspace_update(cub->hero.rcast.ray_thetas,
@@ -105,6 +111,8 @@ void	update_rays(t_cub *cub)
 //	factor by the rays length to get draw height.
 void	update_fov(t_cub *cub, float fov)
 {
+	if (!cub->hero.rcast.theta_offs)
+		return ;
 	cub->fov = fov;
 	cub->hfov = 0.5f * fov;
 	cub->near_z = (float)cub->scn_midx / tanf(cub->hfov);

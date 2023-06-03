@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 17:43:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 18:43:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -388,7 +388,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 //			obj = obj->next;
 			continue ;
 //		}
-		printf("Rendering PROJECTED obj %d, type : %d\n", obj->_id, obj->type->type_enum);
+//		printf("Rendering PROJECTED obj %d, type : %d\n", obj->_id, obj->type->type_enum);
 //		ov[0] = obj->px - link->px;
 //		ov[1] = obj->py - link->py;
 		ov[0] = obj->px - ppos[0];
@@ -409,7 +409,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 		dims[0] = (int)(ratio * obj->type->width);
 		dims[1] = (int)(ratio * obj->type->height);
 
-		printf("pdist : %f, odist : %f\n", pdist, odist );
+//		printf("pdist : %f, odist : %f\n", pdist, odist );
 		if ((pdist <= 0.0f || ((odist - 1.0f) <= pdist)
 			|| (drawx + (dims[0] >> 1)) < pframe[0]
 			|| pframe[2] <= (drawx - (dims[0] >> 1))) && next_obj(&obj))

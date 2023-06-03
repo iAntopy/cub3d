@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 23:40:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 21:51:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,6 +446,18 @@ typedef struct s_drawable_objects
 	t_oinst	*instances;
 }	t_objs;
 
+/*
+typedef void				(*t_delayed_act)(t_cub *cub, void *arg1, void *arg2);
+
+typedef struct s_delayed_action
+{
+	ssize_t	start_time;
+	ssize_t	delay_ms;
+
+
+
+}	t_act;
+*/
 // struct of parameters used by render_walls()
 typedef struct s_renderer_column_params
 {
@@ -673,7 +685,7 @@ void			obj_move_rel(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe);
 void			obj_move_abs(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe);
 void			obj_rotate(t_cub *cub, t_oinst *obj, float rot);
 void			obj_set_orientation(t_cub *cub, t_oinst *obj, float ori);
-void		    obj_set_position(t_cub *cub, t_oinst *obj, int px, int py);
+void		    obj_set_position(t_cub *cub, t_oinst *obj, float px, float py);
 void   			obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy);
 
 

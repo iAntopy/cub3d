@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 21:45:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 21:23:54 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 21:50:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,22 @@ void	obj_move_rel(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe)
 	cub->renderer.requires_update = 1;
 }
 
-void    obj_set_position(t_cub *cub, t_oinst *obj, int px, int py)
+void    obj_set_position(t_cub *cub, t_oinst *obj, float px, float py)
 {
-    int		cx;
+	int		cx;
 	int		cy;
-    
-    if (!obj)
-        return ;
 
-    cx = (int)(cub->inv_cw * px);
-	cy = (int)(cub->inv_cw * py);
-    if (!get_is_cell_within_bounds(&cub->map, cx, cy)
-        || is_wall(&cub->map, cx, cy))
+	if (!obj)
 		return ;
-    obj->px = px;
-    obj->py = py;
+	cx = (int)(cub->inv_cw * px);
+	cy = (int)(cub->inv_cw * py);
+
+	printf("place obj at pos : (%f, %f), cell (%d, %d)\n", px, py, cx, cy);
+	if (!get_is_cell_within_bounds(&cub->map, cx, cy)
+		|| is_wall(&cub->map, cx, cy))
+		return ;
+	obj->px = px;
+	obj->py = py;
+	obj->cx = cx;
+	obj->cy = cy;
 }

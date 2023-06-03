@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 17:41:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/03 01:54:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_objx	*find_relative(t_cub *cub, t_objx *ob, int nb_meta)
 	while (++i < nb_meta)
 	{
 		other = cub->box.objx[i];
-		if (other->name == ob->relativ)
+		if (other && other->name == ob->relativ)
 		{
 			printf("found relative of %c (%d) to %c (%d)\n",
 				ob->name, ob->obj_id, other->name, other->obj_id);
@@ -77,12 +77,12 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 			o->obj_id, o->name, o->o_type, o->opos[0], o->opos[1],
 			o->relativ, o->wobj, o->wobj->type->type_enum);
 		printf("rel_ref : %p\n", o->rel_ref);
-		if (o->o_type == OBJ_PORTAL)
+		if (o->o_type == OBJ_PORTAL && o->rel_ref && o->rel_ref->wobj)
 		{
 			// printf("linking portal - name %c, type %d to name %c, type %d\n",6
 			link_portal_instances(o->wobj, o->rel_ref->wobj);
 		}
-		else if (o->o_type == OBJ_LEVER)
+		else if (o->o_type == OBJ_LEVER && o->rel_ref && o->rel_ref->wobj)
 		{
 			printf("linking lever objx : %p -> rel : %p\n", o, o->rel_ref);
 //			printf("linking lever to portal - name %c, type %d to name %c, type %d, wobj enum : %d, rel wobj enum : %d\n",
@@ -116,7 +116,9 @@ static t_oinst	*obj_instanciation_by_type(t_cub *cub, t_objx *ob, float *pos, in
 	if (ob->o_type == OBJ_PLAYER && cub->nb_players < MAX_PLAYERS)
 	{
 		inst_id = create_obj_instance(cub, pos, OBJ_SPAWNPOINT, ob->alleg, cub);
-		inst_id = spawn_new_player(get_obj(cub, inst_id), 0);
+		inst_id = spawn_new_player(get_obj(cub, inst_id), ob->name == '@');
+		obj_set_orientation(cub, get_obj(cub, inst_id),
+			(M_TAU / 4.0f) * ob->relativ + (M_TAU / 2.0f));
 	}
 	else if (ob->o_type == OBJ_FIREBALL || ob->o_type == OBJ_FIREPIT)
 	{

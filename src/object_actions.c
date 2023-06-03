@@ -6,88 +6,67 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 23:50:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/03 00:48:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-#define PORTAL_TRIGGER_DIST_SQ 100.0f
+#define PORTAL_TRIGGER_DIST_SQ 400.0f
 
 int	__obj_action_player(t_oinst *obj, t_cub *cub)
 {
-//	static int	counter;
-//	t_hero		*player;
-//	float		pos[4];
-	float		random;
-//	float		delta[2];
-//	float		target[2];
+	int		is_in_wall;
 
-	if (obj != cub->hero.ply_obj)
+	if (obj == cub->hero.ply_obj)
+		return (-1);
+	if (obj->isactive && obj->counter > 50)
 	{
-		if (obj->counter > 100)
-		{
-			if (!obj->isactive)
-			{
-				random = ft_random();
-				obj->dx = cosf(random * M_TAU);
-				obj->dy = sinf(random * M_TAU);
-				obj->target[0] = obj->px + CELL_WIDTH * obj->dx;
-				obj->target[1] = obj->px + CELL_WIDTH * obj->dy;
-			}
-			obj->counter = 0;
-		}
-		else
-		{
-			if (fabsf(obj->target[0] - obj->px) < 10.0f
-				&& fabsf(obj->target[1] - obj->py) < 10.0f)
-				obj->isactive = 0;
-			else
-				obj_move_rel(cub, obj, 2, 0);
-			obj->counter++;
-		}
+		obj->isactive = 0;
+		obj->counter = 0;
 	}
-	
-//	if (obj->isactive)
-//	{
-		// if (counter > 1000)
-		// {
-		// 	player = (t_hero *)obj->relative;
-		// 	pos[0] = obj->px;
-		// 	pos[1] = obj->py;
-		// 	pos[2] = (*player->dirx) * 10.0f ;
-		// 	pos[3] = (*player->diry) * 10.0f ;
-		// 	create_obj_instance(cub, pos, OBJ_FIREBALL,
-		// 		player->ply_obj->allegiance, NULL);
-		// 	counter = 0;
-		// }
-		// ++counter;
-//	}
+	else if (!obj->isactive && obj->counter > 50)
+	{
+		is_in_wall = 1;
+		while (is_in_wall)
+		{
+			obj->ori = ft_random() * M_TAU;
+			obj->target[0] = obj->px + cosf(obj->ori) * 100.0f;
+			obj->target[1] = obj->py + sinf(obj->ori) * 100.0f;
+			is_in_wall = is_wall(&cub->map, (int)(obj->target[0] * cub->inv_cw),
+				(int)(obj->target[1] * cub->inv_cw));
+		}
+		obj->isactive = 1;
+		obj->counter = 0;
+	}
+	else if (obj->isactive)
+		obj_move_rel(cub, obj, 2.0f, 0.0f);
+	++obj->counter;
 	return (0);
 }
 
 int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 {
-//	t_oinst		*player;
+	t_oinst		*other;
 //	int			i;
 
 	if (!obj->isactive)
 		return (-1);
-	(void)cub;
 //	printf("nb players : %d\n", cub->nb_players);
-
 	/// This updates the players spawn point to the one placed in its current
 	/// cell if spawnpoint is active and of same allegience.
-	/*
-	i = -1;
-	while (++i < cub->nb_players)
+	other = cub->objs.instances;
+	while (other)
 	{
-		player = get_obj(cub, i);
-		if (player && player->allegiance == obj->allegiance
-			&& player->cx == obj->cx && player->cy == obj->cy)
-			player->spawnpoint = obj;
+		if (other->type->type_enum == OBJ_PLAYER
+			&& other->allegiance == obj->allegiance
+			&& other->cx == obj->cx && other->cy == obj->cy)
+		{
+			other->spawnpoint = obj;
+			break ;
+		}
+		other = other->next;
 	}
-	*/
 	return (0);
 }
 
@@ -97,21 +76,38 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 	float	dy;
 	float	dist;
 	t_oinst	*link;
+	t_oinst	*other;
 	
 	if (!obj->isactive || !obj->relative)
 		return (-1);
 	link = obj->relative;
-	dx = obj->px - cub->hero.ply_obj->px;
-	dy = obj->py - cub->hero.ply_obj->py;
-	dist = dx * dx + dy * dy;
-	if (dist < PORTAL_TRIGGER_DIST_SQ)
+
+	if (obj->counter > 0)
 	{
-		cub->hero.ply_obj->px = link->px + dx * 1.5f;
-		cub->hero.ply_obj->py = link->py + dy * 1.5f;
+		obj->counter--;
 		return (0);
 	}
-	else
-		return (-1);
+	other = cub->objs.instances;
+	while (other)
+	{
+		if (!(other->type->type_enum == OBJ_PLAYER
+			|| other->type->type_enum == OBJ_FIREBALL))
+		{
+			other = other->next;
+			continue ;
+		}
+		dx = obj->px - other->px;
+		dy = obj->py - other->py;
+		dist = dx * dx + dy * dy;
+		if (dist < PORTAL_TRIGGER_DIST_SQ)
+		{
+			obj_set_position(cub, other, link->px, link->py);
+			link->counter = 30;
+			break ;
+		}
+		other = other->next;
+	}
+	return (0);
 }
 
 int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
@@ -122,7 +118,6 @@ int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
 	float	delta[2];
 	float	dist;	
 
-//	printf("fireball is_wall (%d, %d) : %d\n", (int)(obj->px * cub->inv_cw), (int)(obj->py * cub->inv_cw), is_wall(&cub->map, obj->px * cub->inv_cw, obj->py * cub->inv_cw));
 	if (is_wall(&cub->map, (obj->px + obj->dx * 10.0f) * cub->inv_cw,
 		(obj->py + obj->dy * 10.0f) * cub->inv_cw))
 		return (delete_oinst_by_id(cub, obj->_id));
@@ -140,7 +135,7 @@ int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
 		delta[1] = other->py - obj->py;
 		dist = sqrtf(delta[0] * delta[0] + delta[1] * delta[1]);
 //		printf("fireball dist : %f\n", dist);
-		if (dist < 10)
+		if (dist < 20)
 		{
 			respawn_player(other);
 			return (delete_oinst_by_id(cub, obj->_id));
@@ -237,7 +232,7 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 	
 	if (!obj->isactive)
 		return (-1);
-	printf("firepit active\n");
+//	printf("firepit active\n");
 	if (++obj->counter > FIREPIT_SPAWN_TICKS)
 	{
 		pos[0] = obj->px;
@@ -256,13 +251,15 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 {
 	t_oinst	*prtl;
+	t_oinst	*other;
+
 //	int		cx;
 //	int		cy;
 
 	if (obj->isactive)
 	{
 		prtl = (t_oinst *)obj->relative;
-		if (obj->counter > 600)
+		if (obj->counter > 300)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;
@@ -279,15 +276,30 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 //		ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
 //			cub->hero.cell_x, cub->hero.cell_y);
 		prtl = (t_oinst *)obj->relative;
+		other = cub->objs.instances;
+		while (other)
+		{
+			if (other->type->type_enum == OBJ_PLAYER
+				&& other->cx == obj->cx && other->cy == obj->cy)
+			{
+				activate_portal(prtl, 1);
+				obj->isactive = 1;
+				obj->special_gset.xwalls[0] = obj->gset->xwalls[1];
+				break ;
+			}
+			other = other->next;
+		}
+/*
+
 		if (!(cub->hero.ply_obj->cx == obj->cx
 			&& cub->hero.ply_obj->cy == obj->cy))
 			return (-1);
 		ft_eprintf("PRESSED !\n");
 		activate_portal(prtl, 1);
 		obj->isactive = 1;
-		obj->special_gset.xwalls[0] = obj->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
 //		dual->xwalls[0] = obj->type->gset->xwalls[1];
+*/
 	}
 //	else
 //		printf("Lever has no relative\n");
