@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 23:14:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 23:30:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,26 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 //	float		random;
 //	float		delta[2];
 //	float		target[2];
+	int		is_in_wall;
 
 	if (obj == cub->hero.ply_obj)
 		return (-1);
-	if (obj->isactive && obj->counter > 100)
+	if (obj->isactive && obj->counter > 50)
 	{
 		obj->isactive = 0;
 		obj->counter = 0;
 	}
-	else if (!obj->isactive && obj->counter > 100)
+	else if (!obj->isactive && obj->counter > 50)
 	{
-		obj->ori = ft_random() * M_TAU;
+		is_in_wall = 1;
+		while (is_in_wall)
+		{
+			obj->ori = ft_random() * M_TAU;
+			obj->target[0] = obj->px + cosf(obj->ori) * 100.0f;
+			obj->target[1] = obj->py + sinf(obj->ori) * 100.0f;
+			is_in_wall = is_wall(&cub->map, (int)(obj->target[0] * cub->inv_cw),
+				(int)(obj->target[1] * cub->inv_cw));
+		}
 		obj->isactive = 1;
 		obj->counter = 0;
 	}
