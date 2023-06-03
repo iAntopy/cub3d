@@ -16,7 +16,7 @@ d tex/ext/hedge-wall.png
 e tex/ext/purple-flowers.png
 f tex/ext/pink-flowers.png
 z tex/ext/skymap3.png
-0 tex/ext/beach_sand.png
+0 tex/ext/beach_sand.png tex/ext/semi_blurry_glass_.png
 1 tex/ext/floortile4.png tex/ext/tile_ceiling_.png
 2 tex/ext/grass-floor.png tex/ext/starry-night-sky_.png
 

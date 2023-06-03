@@ -21,6 +21,12 @@ tex/ext/red-mountain-rock_.png
 tex/ext/floortile4.png
 tex/ext/floor.png
 tex/ext/grass-floor.png
+tex/ext/smooth-sand-dunes.png
+///									NEW
+tex/ext/d_tex.png
+tex/ext/c_tex.png
+tex/ext/b_tex.png
+tex/ext/a_tex.png
 
 ///                                 object
 tex/ext/Portal1.png
