@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 23:30:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 23:52:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 
 int	__obj_action_player(t_oinst *obj, t_cub *cub)
 {
-//	static int	counter;
-//	t_hero		*player;
-//	float		pos[4];
-//	float		random;
-//	float		delta[2];
-//	float		target[2];
 	int		is_in_wall;
 
 	if (obj == cub->hero.ply_obj)
@@ -50,73 +44,30 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 	++obj->counter;
 	return (0);
 }
-		
-/*
-		if (obj->counter > 100)
-		{
-			if (!obj->isactive)
-			{
-				random = ft_random();
-				
-				obj->dx = cosf(random * M_TAU);
-				obj->dy = sinf(random * M_TAU);
-				obj->target[0] = obj->px;// + CELL_WIDTH * obj->dx;
-				obj->target[1] = obj->py;// + CELL_WIDTH * obj->dy;
-				obj->isactive = 1;
-			}
-			obj->counter = 0;
-			printf("PLAYER COUNTER RESET !!!!!!!!!!!\n\n");
-		}
-		else
-		{
-			if (fabsf(obj->target[0] - obj->px) < 10.0f
-				&& fabsf(obj->target[1] - obj->py) < 10.0f)
-				obj->isactive = 0;
-			else
-				obj_move_rel(cub, obj, 2, 0);
-			obj->counter++;
-		}
-
-	}
-*/	
-//	if (obj->isactive)
-//	{
-		// if (counter > 1000)
-		// {
-		// 	player = (t_hero *)obj->relative;
-		// 	pos[0] = obj->px;
-		// 	pos[1] = obj->py;
-		// 	pos[2] = (*player->dirx) * 10.0f ;
-		// 	pos[3] = (*player->diry) * 10.0f ;
-		// 	create_obj_instance(cub, pos, OBJ_FIREBALL,
-		// 		player->ply_obj->allegiance, NULL);
-		// 	counter = 0;
-		// }
-		// ++counter;
-//	}
 
 int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 {
-//	t_oinst		*player;
+	t_oinst		*other;
 //	int			i;
 
 	if (!obj->isactive)
 		return (-1);
-	(void)cub;
 //	printf("nb players : %d\n", cub->nb_players);
-
 	/// This updates the players spawn point to the one placed in its current
 	/// cell if spawnpoint is active and of same allegience.
-	/*
-	i = -1;
-	while (++i < cub->nb_players)
+	other = cub->objs.instances;
+	while (other)
 	{
-		player = get_obj(cub, i);
-		if (player && player->allegiance == obj->allegiance
-			&& player->cx == obj->cx && player->cy == obj->cy)
-			player->spawnpoint = obj;
+		if (other->type->type_enum == OBJ_PLAYER
+//			&& other->allegiance == obj->allegiance
+			&& other->cx == obj->cx && other->cy == obj->cy)
+		{
+			printf("WOWOW !!!! player %d changed spawn point !\n\n", other->_id);
+			other->spawnpoint = obj;
+			break ;
+		}
+		other = other->next;
 	}
-	*/
 	return (0);
 }
 
@@ -185,7 +136,7 @@ int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
 		delta[1] = other->py - obj->py;
 		dist = sqrtf(delta[0] * delta[0] + delta[1] * delta[1]);
 //		printf("fireball dist : %f\n", dist);
-		if (dist < 10)
+		if (dist < 20)
 		{
 			respawn_player(other);
 			return (delete_oinst_by_id(cub, obj->_id));

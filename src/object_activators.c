@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 19:04:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 23:52:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	respawn_player(t_oinst *player)
 	
 	if (!player || player->type->type_enum != OBJ_PLAYER)
 		return (report_err("Trying to respawn none-player type."));
-	spawnp = (t_oinst *)player->relative;
+	spawnp = (t_oinst *)player->spawnpoint;
 	cub = (t_cub *)spawnp->relative;
 	obj_set_position(cub, player, spawnp->px, spawnp->py);
 //	player->px = spawnp->px;
