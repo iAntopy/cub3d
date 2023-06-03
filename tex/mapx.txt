@@ -12,6 +12,7 @@ tex/ext/sky_star.png
 tex/ext/skymap3.png
 ///									ceiling
 tex/ext/semi_blurry_glass_.png
+tex/ext/bay_window_.png
 tex/ext/tile_ceiling_.png
 tex/ext/mountain_crack_.png
 tex/ext/grunge-rock_.png
@@ -22,7 +23,16 @@ tex/ext/floortile4.png
 tex/ext/floor.png
 tex/ext/grass-floor.png
 tex/ext/smooth-sand-dunes.png
-///									NEW
+///									NEW			LIBROS
+
+tex/ext/lib_init.png
+tex/ext/lib_cap.png
+tex/ext/
+tex/ext/
+///									NEW			SpellRoom
+tex/ext/
+tex/ext/
+////								OLD 
 tex/ext/d_tex.png
 tex/ext/c_tex.png
 tex/ext/b_tex.png
