@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 23:52:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 23:57:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 	while (other)
 	{
 		if (other->type->type_enum == OBJ_PLAYER
-//			&& other->allegiance == obj->allegiance
+			&& other->allegiance == obj->allegiance
 			&& other->cx == obj->cx && other->cy == obj->cy)
 		{
 			printf("WOWOW !!!! player %d changed spawn point !\n\n", other->_id);
@@ -102,7 +102,7 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 		dist = dx * dx + dy * dy;
 		if (dist < PORTAL_TRIGGER_DIST_SQ)
 		{
-			obj_set_position(cub, other, link->px,link->py);
+			obj_set_position(cub, other, link->px, link->py);
 			link->counter = 30;
 			break ;
 		}
