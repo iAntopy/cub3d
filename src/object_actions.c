@@ -6,13 +6,13 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 23:50:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 22:25:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-#define PORTAL_TRIGGER_DIST_SQ 100.0f
+#define PORTAL_TRIGGER_DIST_SQ 400.0f
 
 int	__obj_action_player(t_oinst *obj, t_cub *cub)
 {
@@ -34,6 +34,7 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 				obj->dy = sinf(random * M_TAU);
 				obj->target[0] = obj->px + CELL_WIDTH * obj->dx;
 				obj->target[1] = obj->px + CELL_WIDTH * obj->dy;
+				obj->isactive = 1;
 			}
 			obj->counter = 0;
 		}
@@ -97,21 +98,49 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 	float	dy;
 	float	dist;
 	t_oinst	*link;
+	t_oinst	*other;
 	
 	if (!obj->isactive || !obj->relative)
 		return (-1);
 	link = obj->relative;
-	dx = obj->px - cub->hero.ply_obj->px;
-	dy = obj->py - cub->hero.ply_obj->py;
-	dist = dx * dx + dy * dy;
-	if (dist < PORTAL_TRIGGER_DIST_SQ)
+
+	if (obj->counter > 0)
 	{
-		cub->hero.ply_obj->px = link->px + dx * 1.5f;
-		cub->hero.ply_obj->py = link->py + dy * 1.5f;
+		obj->counter--;
 		return (0);
 	}
-	else
-		return (-1);
+	other = cub->objs.instances;
+	while (other)
+	{
+		if (!(other->type->type_enum == OBJ_PLAYER
+			|| other->type->type_enum == OBJ_FIREBALL))
+		{
+			other = other->next;
+			continue ;
+		}
+		dx = obj->px - other->px;//cub->hero.ply_obj->px;
+		dy = obj->py - other->py;//cub->hero.ply_obj->py;
+		dist = dx * dx + dy * dy;
+		printf("portal %d dist : %f\n", obj->_id, dist);
+		if (dist < PORTAL_TRIGGER_DIST_SQ)
+		{
+			printf("PORTAL ID %d TELEPORTS OBJECT ID : %d, before pos (%f, %f)\n", obj->_id, other->_id,
+				other->px, other->py);
+			obj_set_position(cub, other,
+				link->px,// + (dx / dist) * 5.0f,
+				link->py);// + (dy / dist) * 5.0f);
+			printf("PORTAL ID %d TELEPORTS OBJECT ID : %d, after pos (%f, %f)\n", obj->_id, other->_id,
+				other->px, other->py);
+			link->counter = 30;
+			break ;
+		}
+//		{
+//			cub->hero.ply_obj->px = link->px + dx * 1.5f;
+//			cub->hero.ply_obj->py = link->py + dy * 1.5f;
+//		}
+		other = other->next;
+	}
+	return (0);
 }
 
 int	__fireball_check_hit(t_cub *cub, t_oinst *obj)
@@ -237,7 +266,7 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 	
 	if (!obj->isactive)
 		return (-1);
-	printf("firepit active\n");
+//	printf("firepit active\n");
 	if (++obj->counter > FIREPIT_SPAWN_TICKS)
 	{
 		pos[0] = obj->px;
@@ -256,13 +285,15 @@ int	__obj_action_firepit(t_oinst *obj, t_cub *cub)
 int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 {
 	t_oinst	*prtl;
+	t_oinst	*other;
+
 //	int		cx;
 //	int		cy;
 
 	if (obj->isactive)
 	{
 		prtl = (t_oinst *)obj->relative;
-		if (obj->counter > 600)
+		if (obj->counter > 300)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;
@@ -279,15 +310,30 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 //		ft_eprintf("lever cx, cy (%d, %d), hero cx, cy (%d, %d)\n", cx, cy, 
 //			cub->hero.cell_x, cub->hero.cell_y);
 		prtl = (t_oinst *)obj->relative;
+		other = cub->objs.instances;
+		while (other)
+		{
+			if (other->type->type_enum == OBJ_PLAYER
+				&& other->cx == obj->cx && other->cy == obj->cy)
+			{
+				activate_portal(prtl, 1);
+				obj->isactive = 1;
+				obj->special_gset.xwalls[0] = obj->gset->xwalls[1];
+				break ;
+			}
+			other = other->next;
+		}
+/*
+
 		if (!(cub->hero.ply_obj->cx == obj->cx
 			&& cub->hero.ply_obj->cy == obj->cy))
 			return (-1);
 		ft_eprintf("PRESSED !\n");
 		activate_portal(prtl, 1);
 		obj->isactive = 1;
-		obj->special_gset.xwalls[0] = obj->gset->xwalls[1];
 //		dual = cub->map.mx[cy][cx];
 //		dual->xwalls[0] = obj->type->gset->xwalls[1];
+*/
 	}
 //	else
 //		printf("Lever has no relative\n");

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 17:31:16 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 19:04:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,15 @@ int	activate_firepit(t_oinst *obj, int new_state, t_oinst *target)
 
 int	set_playable_obj(t_cub *cub, t_oinst *player)
 {
-	t_rcast	*rc;
-
 	if (!cub || !player)//|| player->type->type_enum != OBJ_PLAYER)
 		return (report_err("set_playable_object : missing inputs."));
 	cub->hero.ply_obj = player;
-	rc = &cub->hero.rcast;
+
 	init_raycaster(cub);
-	init_rdata_consts(cub, rc, rc->rdata, rc->prtl_proj);
-	update_fov(cub, cub->fov);
+	init_rdata_consts(cub, &cub->hero.rcast,
+		cub->hero.rcast.rdata, cub->hero.rcast.prtl_proj);
+	update_rays(cub);
+	cub->renderer.requires_update = 1;
 	return (0);
 }
 
@@ -101,12 +101,15 @@ int	spawn_new_player(t_oinst *spawnp, int is_playable)
 	pos[0] = spawnp->px;
 	pos[1] = spawnp->py;
 	id = create_player_instance(cub, pos, spawnp->allegiance, spawnp);
+	if (id < 0)
+		return (-1);
 	player = get_obj(cub, id);
 	cub->player_ids[cub->nb_players++] = id;
 	if (is_playable)
 	{
 		set_playable_obj(cub, player);
-		cub->renderer.requires_update = 1;
+		printf("setting new playable character obj id : %d (%d) at pos : (%.2f, %.2f)\n", id,
+			cub->hero.ply_obj->_id, cub->hero.ply_obj->px, cub->hero.ply_obj->py);
 	}
 	return (id);
 }
@@ -114,14 +117,23 @@ int	spawn_new_player(t_oinst *spawnp, int is_playable)
 // Set player position to its currently set spawnpoint.
 int	respawn_player(t_oinst *player)
 {
+	t_cub	*cub;
 	t_oinst	*spawnp;
 	
 	if (!player || player->type->type_enum != OBJ_PLAYER)
 		return (report_err("Trying to respawn none-player type."));
 	spawnp = (t_oinst *)player->relative;
-	player->px = spawnp->px;
-	player->py = spawnp->py;
-	player->cx = spawnp->cx;
-	player->cy = spawnp->cx;
+	cub = (t_cub *)spawnp->relative;
+	obj_set_position(cub, player, spawnp->px, spawnp->py);
+//	player->px = spawnp->px;
+//	player->py = spawnp->py;
+//	player->cx = spawnp->cx;
+//	player->cy = spawnp->cx;
+	if (player == cub->hero.ply_obj)
+	{
+		printf("RESPAWN PLAYABLE CHARACTER %p\n", cub->hero.ply_obj);
+		update_rays(cub);
+	}
+	cub->renderer.requires_update = 1;
 	return (0);
 }

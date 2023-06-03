@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 15:35:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 17:55:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	setup_hero(t_cub *cub)
 //	cub->hero.cell_y = y;
 //	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 //	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
-	cub->hero.ply_obj->ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
+//	cub->hero.ply_obj->ori = 0;//M_PI + (M_PI / 2) * cub->map.hero_side;
 //	cub->hero.allegiance = ALI_NEUTRAL;
 	cub->renderer.requires_update = 1;
 
@@ -113,6 +113,7 @@ int	main(int argc, char **argv)
 
 	set_playable_obj(&cub, cub.hero.ply_obj);
 		// || init_obj_framework(&cub) < 0
+	printf("After init : cub->tex.skymap : %p, box sky : %p\n", cub.tex.skymap, cub.box.sky);
 /*
 /////// FOR DEBUG PURPOSES ONLY ! DELETE ME !
 

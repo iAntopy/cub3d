@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 17:41:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 17:00:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,9 @@ static t_oinst	*obj_instanciation_by_type(t_cub *cub, t_objx *ob, float *pos, in
 	if (ob->o_type == OBJ_PLAYER && cub->nb_players < MAX_PLAYERS)
 	{
 		inst_id = create_obj_instance(cub, pos, OBJ_SPAWNPOINT, ob->alleg, cub);
-		inst_id = spawn_new_player(get_obj(cub, inst_id), 0);
+		inst_id = spawn_new_player(get_obj(cub, inst_id), ob->name == '@');
+		obj_set_orientation(cub, get_obj(cub, inst_id),
+			(M_TAU / 4.0f) * ob->relativ + (M_TAU / 2.0f));
 	}
 	else if (ob->o_type == OBJ_FIREBALL || ob->o_type == OBJ_FIREPIT)
 	{

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 16:59:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 18:41:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,10 +164,12 @@ void	on_update(t_cub *cub)
 //	else
 //		delta_time = 0;
 	on_update_keypressed(cub);
-	if (1 || cub->renderer.requires_update)
+	if (cub->renderer.requires_update)
 	{
 		ft_deltatime_usec_note(NULL);
 		// printf("wow");
+		printf("player pos : (%.2f, %.2f)\n", cub->hero.ply_obj->px, cub->hero.ply_obj->py);
+;
 		update_minimap(cub);
 		order_draw_call(cub->draw_threads, 0, 3);
 //		printf("drawing walls\n");

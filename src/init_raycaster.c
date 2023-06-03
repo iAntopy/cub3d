@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 00:39:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 07:22:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/02 17:44:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	init_raycaster(t_cub *cub)
 
 	rcast = &cub->hero.rcast;
 	if (rcast->rdata)
-		return (-1);
+		return (0);
 	rcast->cub = cub;
 	rcast->map = &cub->map;
 	rcast->theta_offs = mtx_create_empty(SCN_WIDTH, 1, DTYPE_F);
