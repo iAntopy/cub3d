@@ -127,9 +127,9 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	int 		grim;
 	int 		max;
 	chrs = cub->box.chrs;
-	printf("MAPX:start ..., chrs : %s\n", chrs);
 	max = (int)ft_strlen(chrs) - 1;
-	grim = max - cub->box.pnum - cub->box.n_dual; // debut dual
+	grim = max - cub->box.pnum - cub->box.pset; // debut dual
+	printf("MAPX:start ..., chrs : %s \t girm:%d  max:%d\n ", chrs, grim, max);
 	k = -1;
 	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
 	while (++k < m->height)
