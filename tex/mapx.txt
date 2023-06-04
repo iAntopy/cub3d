@@ -10,6 +10,7 @@ tex/ext/s_side.png
 ///                                 sky
 tex/ext/sky_star.png
 tex/ext/skymap3.png
+tex/ext/outer_sky.png
 ///									ceiling
 tex/ext/semi_blurry_glass_.png
 tex/ext/bay_window_.png
@@ -23,6 +24,7 @@ tex/ext/floortile4.png
 tex/ext/floor.png
 tex/ext/grass-floor.png
 tex/ext/smooth-sand-dunes.png
+tex/ext/outer_floor.png
 ///									NEW			LIBROS
 
 tex/ext/lib_init.png
@@ -30,8 +32,10 @@ tex/ext/lib_cap.png
 tex/ext/
 tex/ext/
 ///									NEW			SpellRoom
-tex/ext/
-tex/ext/
+tex/ext/outer_floor.png
+tex/ext/acid_ray.png
+tex/ext/outer_wall.png
+tex/ext/outer_sky_.png
 ////								OLD 
 tex/ext/d_tex.png
 tex/ext/c_tex.png
