@@ -5,16 +5,16 @@
 < 2/>
 > 2/<
 * 2/2
-a tex/ext/a_tex.png
-b tex/ext/b_tex.png
-c tex/ext/c_tex.png
-d tex/ext/d_tex.png
-z tex/ext/sky_star.png
-0 tex/ext/smooth-sand-dunes.png tex/ext/semi_blurry_glass_.png
+a tex/ext/rock-wall.png
+b tex/ext/red-brick-wall.png
+c tex/ext/travertine-stone.png
+d tex/ext/tree-branch.png
+z tex/ext/skymap3.png
+0 tex/ext/smooth-sand-dunes.png tex/ext/bay_window_.png
 1 tex/ext/grass-floor.png tex/ext/starry-night-sky_.png
 
-A abab
-B cdcd
+A bbbb
+B acad
 
 AAAAAAAAAAAAAAAAAAAA
 A000000000000000000A
@@ -26,6 +26,7 @@ A0000000000000@0000A
 A000000000000000000A
 A00000000000(000000A
 A000000000000000000A
+AAAAAAAAAAAAAAAAAAAA
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B11*1111111111111111111111111111111B
 B111)1111111111111+111111111111>111B
