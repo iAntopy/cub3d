@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 21:51:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/03 16:53:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,6 +345,7 @@ typedef struct s_object_model
 	int				type_enum;
 	int				is_drawable;
 	int				is_oriented;
+	int				is_solid;
 	int				width;// Width of object in world coords.
 	int				half_w;
 	int				height;// Height of object in world coords (set auto).

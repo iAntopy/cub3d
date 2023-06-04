@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/03 00:48:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/03 16:04:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 			&& other->allegiance == obj->allegiance
 			&& other->cx == obj->cx && other->cy == obj->cy)
 		{
-			other->spawnpoint = obj;
+//			other->spawnpoint = obj;
 			break ;
 		}
 		other = other->next;
