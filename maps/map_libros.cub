@@ -8,13 +8,15 @@ _ 1/^
 - 3/(
 ( 3/)
 ) 3/(
+$ 2/9
+& 3/9
 a tex/ext/lib_init.png
 b tex/ext/lib_cap.png
 c tex/ext/hedge-wall.png
 d tex/ext/hay-straw.png
 e tex/ext/outer_wall.png
 f tex/ext/acid_ray.png
-z tex/ext/sky_star.png
+z tex/ext/skymap3.png
 0 tex/ext/floortile4.png tex/ext/tile_ceiling_.png
 1 tex/ext/grass-floor.png tex/ext/bay_window_.png
 2 tex/ext/outer_floor.png tex/ext/outer_sky_.png
@@ -27,7 +29,7 @@ E eeee
 
 ACCCCCCCAAACCCCCCCA
 A00000000000000000A
-A000@0000000000000A
+A000@0000000000&00A
 ACCCCCC000000CCCCCA
 A00000000000000000A
 A00000000000000000A
@@ -50,7 +52,7 @@ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
       EEEE222222EEEEE
    EEEE22222>222222EEEEE
    E2222222222222-22222E
-   E22222(2222222222222E
+   E22222(2222222$22222E
    EEEE222222222222EEEEE
       EEEE222222EEEEE
         EEEEEEEEEEE
