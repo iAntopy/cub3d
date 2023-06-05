@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 22:31:20 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 00:02:33 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ void	clr_legend_strct(t_box box)
 		box.xnum--;
 	}
 	free(*box.xform);
+	// chk pset
+	// chk dual
+	// chk gset
+	// chk objx
 }
 
 /// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
@@ -59,7 +63,6 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
 		report_err("No META char found in map.");
-		m->flg_chk = 1;
 		return (objx);
 	}
 	return (objx);

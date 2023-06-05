@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 22:25:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/04 23:05:34 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,15 +141,14 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_dual[%d]", cub->box.n_dual);
 	
 	if (cub->box.n_plyr > 0)
-					printf("__PLYR[%d]__", cub->box.n_plyr + 1);
+			printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
+	//else
+		//quick_exit // return -1;
 	
 	cub = e_mtrx_link(cub, box, map->raw);
 	if (!cub)
 		return (NULL);
 		
-	// if (cub->box.open_sky != 0)
-	// 	cub->tex.skymap = cub->box.sky;
-	
 	cub->box.chrs = chrs_builder(cub);
 	
 	return (cub);

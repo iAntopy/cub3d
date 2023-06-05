@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 22:18:48 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 00:15:28 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 					printf("MapX META X {chrs{%c}}>> (%d, %d)>> p_box[%d]: ptr:%p\n", (chrs[p_box]), m->pos_y, m->pos_x, p_box, &cub->pset[p_box]);
 					m->mx[m->pos_y][m->pos_x] = m->mx[m->pos_y][m->pos_x - 1];
 				}
-				if (p_box == max)
+				if (p_box == max)	// get alt tile pos if no [x - 1]
 					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x - 1];	
 			}
 			m->pos_x++;
