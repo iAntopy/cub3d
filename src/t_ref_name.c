@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/03 01:24:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 22:25:43 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,11 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			}
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
 			{
-				if (tex_name[0] == 'z')
+				if (tex_name[0] == 'z')		//cub->box.sky
 				{
 					cub->box.sky = mlx_load_png(tex_path);
 					if (!cub->box.sky)
 						return (report_mlx_tex_load_failed(tex_path));
-					// printf("ZzZzZ XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, cub->box.sky);
 				}
 				else
 				{
@@ -89,7 +88,6 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 						return (report_mlx_tex_load_failed(tex_path));
 					printf("\n\n LOADING SOME WACKY TEXTURES !!! name : %s, path : %s, ptr %p\n", tex_name,
 					tex_path, box->xform[j]);
-					// printf("XFORM:[%d]  CHRS{%c} path{{%s}} >>ptr%p\n", j, raw[i][0], tex_path, box->xform[j]);
 					j++;
 				}
 			}
@@ -103,10 +101,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		}
 	}
 	return (cub);
-}
-					// printf("sky tex after load : %p %p %p\n", cub->box.sky, cub->tex.skymap , cub->tex.sky_tex);
-					// cub->tex.sky = cub->box.sky;
-				
+}				
 
 t_cub	*e_mtrx_count(t_cub *cub)
 {
@@ -144,15 +139,18 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
 	printf("_dual[%d]", cub->box.n_dual);
+	
 	if (cub->box.n_plyr > 0)
 					printf("__PLYR[%d]__", cub->box.n_plyr + 1);
-	printf("_pset[%d]_open_sky[%d]__\n\n", cub->box.pset, cub->box.open_sky);
 	
 	cub = e_mtrx_link(cub, box, map->raw);
 	if (!cub)
 		return (NULL);
-	if (cub->box.open_sky != 0)
-		cub->tex.skymap = cub->box.sky;
+		
+	// if (cub->box.open_sky != 0)
+	// 	cub->tex.skymap = cub->box.sky;
+	
 	cub->box.chrs = chrs_builder(cub);
+	
 	return (cub);
 }

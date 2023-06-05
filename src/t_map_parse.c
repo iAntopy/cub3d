@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 21:17:47 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:50:18 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset - 1;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
+	
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
@@ -121,7 +122,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	print_collision_map(map);
 	//	clr_legend_strct(cub->box); // xform
 	printf("Collisiont check DONE\n");
-	if (instanciate_map_objects(&cub) < 0)
+	if (instanciate_map_objects(cub) < 0)
 		return (-1);
 	printf("Instanciate DONE\n");
 	return (0);

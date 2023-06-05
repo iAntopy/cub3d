@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/03 01:47:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 22:18:48 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,14 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
-		printf("DUAL[%d] (xwall[0]) >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
+		// printf("DUAL[%d] (xwall[0]) >> ptr : %p \n", i, &cub->dual[i].xwalls[0]);
         if (tex_set[1])/// not open_sky
         {	
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
-			printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
+			// printf("DUAL[%d] (xwall[1]) >> ptr : %p \n", i, &cub->dual[i].xwalls[1]);
         }   
-
     }
     return (cub);
 }
@@ -74,47 +73,39 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
 	int head;
 
-	head = ft_in_set(t_name[0], (const char *)MAP_MCHR);
-	printf(">>>> TEST >>> [%c] ::: head <%d>\n", t_name[0], head);   
-
+	head = ft_in_set(t_name[0], (const char *)MAP_MCHR);	// printf(">>>> TEST >>> [%c] ::: head <%d>\n", t_name[0], head);   
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1)		//// lever
 	{
-		printf(">>>>	MODEL : LVLS [%d] >>>\n", box->n_lvls);
 		if (box->n_lvls == 0)
-			init_lever_model(objs);
+			init_lever_model(objs);		// printf(">>>>	MODEL : LVLS [%d] >>>\n", box->n_lvls);
 		box->n_lvls++;
 	}
 	else if (ft_in_set(t_name[0], (const char *)MOD_PORT) != -1)
 	{
-		printf(">>>>	MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		if (box->n_prts == 0)
-			init_portal_model(objs);
+			init_portal_model(objs);	// printf(">>>>	MODEL : PORTAL [%d] >>>\n", box->n_prts);
 		box->n_prts++;
 	}
 	else if (head > 11 && head < 18)//= ft_in_set(t_name[0], (const char *)MOD_FIRE) == 0))
 	{
-		printf(">>>> ref[%d]	MODEL : FBALL [%d] >>>\n", head, box->n_fbll);
+		// printf(">>>> ref[%d]	MODEL : FBALL [%d] >>>\n", head, box->n_fbll);
 		if (head > 11 && box->n_fbll == 0)
 		{
-			printf(">>>>	MODEL : FB[%d] >>>\n", box->n_fbll);
-			init_fireball_model(objs);
+			init_fireball_model(objs);			// printf(">>>>	MODEL : FB[%d] >>>\n", box->n_fbll);
 			box->n_fbll++;
 		}
 		if (head < 15 && box->n_fpit == 0)
 		{
-			printf(">>>>	MODEL : FPIT [%d] >>>\n", box->n_fpit);
-			init_firepit_model(objs);
+			init_firepit_model(objs);			// printf(">>>>	MODEL : FPIT [%d] >>>\n", box->n_fpit);
 			box->n_fpit++;
 		}
 	}
 	else  if (ft_in_set(t_name[0], (const char *)MOD_SPEC) != -1)	
 	{
-		printf(">>>>	MODEL : PLAYER [%d] >>>\n", box->n_plyr);
-			// if (box->n_plyr == 0)
-			// 	init_player_model(objs);
-			// box->n_plyr++;
+		if (box->n_plyr == 0)
+			init_player_model(objs);	// 	printf(">>>>	MODEL : PLAYER [%d] >>>\n", box->n_plyr);
+		box->n_plyr++;
 	}
-			
     return (cub);
 }
 

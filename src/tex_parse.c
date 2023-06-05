@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/03 01:38:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:47:55 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,9 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 	while (len < cub->box.pset)
 	{
 		ref = raw[queue];
-		
-		printf("PSET:: CHAR>>(%c)", ref[0]);
-		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
-		
+			printf("PSET:: CHAR>>(%c)", ref[0]);
+			printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
+			printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		if (!cub->pset)
 			return(NULL);
@@ -94,7 +92,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		cub->box.pset++;
 		nb++;
 	}
-	cub->box.tot = cub->box.xnum + cub->box.meta + cub->box.pset;
+	// cub->box.tot = cub->box.xnum + cub->box.meta + cub->box.pset;
 		// printf("\n<<META[%d]::XNUM[%d]", cub->box.meta, cub->box.xnum);
 		// printf("::PSET[%d]::TOT[%d]>> \n\n", cub->box.pset, cub->box.tot);
 	cub->pset = (t_matrx *)calloc(sizeof(t_matrx), cub->box.pset);

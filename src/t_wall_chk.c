@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 00:48:34 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/04 22:31:20 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 				m = check_hero_found(m);
 				id++;
 				objx[id] = get_pos(cub, m, o_cells, id);
-				
 			}
 			else if (o_cells < cub->box.meta - 1 && o_cells > -1)
 			{
@@ -124,16 +123,16 @@ t_cub	*wall_check(t_cub *cub, t_map *m)
 			// objx->opos[1], head);	
 		// printf("get_pos: objx type attribution : head %d\n", head);  
 		// printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
-// else if (o_cells == -1  && m->m[m->pos_y][m->pos_x] != 0)
-// {
-// 	printf(":: SAFE EXIT :: Wall_chk META ::[%d]:: \n\n", 
-//m->m[m->pos_y][m->pos_x]);
-// 	printf(":: SAFE EXIT :: Wall_chk META ::[y:%d][x:%d]:: 
-//\n\n", m->pos_y, m->pos_x);
-// 	return (NULL);
-// }
-// printf("WALLCHK_ID[%d] O_CELL[%d]\n", id, o_cells);
-// printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id,
-	// o_cells, cub->box.chrs[o_cells]);
-// printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n",
-// id, o_cells, cub->box.chrs[o_cells]);
+		// else if (o_cells == -1  && m->m[m->pos_y][m->pos_x] != 0)
+		// {
+		// 	printf(":: SAFE EXIT :: Wall_chk META ::[%d]:: \n\n", 
+		//m->m[m->pos_y][m->pos_x]);
+		// 	printf(":: SAFE EXIT :: Wall_chk META ::[y:%d][x:%d]:: 
+		//\n\n", m->pos_y, m->pos_x);
+		// 	return (NULL);
+		// }
+		// printf("WALLCHK_ID[%d] O_CELL[%d]\n", id, o_cells);
+		// printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n", id,
+			// o_cells, cub->box.chrs[o_cells]);
+		// printf("WALLCHK_ID[%d] O_CELL[%d] {%c}\n",
+		// id, o_cells, cub->box.chrs[o_cells]);

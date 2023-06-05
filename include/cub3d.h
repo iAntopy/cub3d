@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 21:51:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 22:24:49 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,13 +143,10 @@ typedef struct s_objx
 	char 			name;		// '#' 
 	int				obj_id;		 // enrg. id	
 	int 			opos[2];	// relativ pos (reltv. obj_id)
-	int				o_type;		// model_type
-	///							/// get_pos has split job...
-	
+	int				o_type;		// model_type	
 	int 			alleg;		// allegence _txtr
 	char			relativ;	// char obj_id
 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
-//	struct s_objx	*self_ref;	 // self ptr to cmp with relative's objx ptr;
 	t_oinst			*wobj;		// world object instance
 }	t_objx;
 
@@ -165,7 +162,7 @@ typedef struct s_box
 	int				chrs_len;
 	int				meta;	// ++chr
 	int 			xnum;	// ++total '.png'
-	int				tot;	// header file len...
+
 	int				n_dual;	// double tex_set floor/ ceil
 	int				pset;	// recette poor walls
 
@@ -179,7 +176,6 @@ typedef struct s_box
 
 	t_objx			**objx;
 	t_matrx			*gset; /// rely to model
-	// t_matrx			*dual; /// rely to model
 }	t_box;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.

@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/01 17:34:43 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/04 22:35:33 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,6 @@ SRC_FLS	:=		main.c 			\
 			t_color_shift.c		\
 			t_color_creat.c 	\
 			t_map_parse.c 		\
-			t_minimap.c			\
 			t_minimap2.c		\
 			t_map_tool.c 		\
 			t_ref_build.c 		\
