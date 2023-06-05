@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/19 06:22:16 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:15:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	get_new_obj_id(void)
 {
 	static int	counter;
-	
+
 	return (++counter);
 }
 
@@ -55,7 +55,6 @@ void	clear_obj_framework(t_cub *cub)
 	clear_obj_model(&cub->objs.portal);
 	clear_obj_model(&cub->objs.fireball);
 	clear_obj_model(&cub->objs.firepit);
-	// ADD clear_obj_model() calls as nb of init object models grow.
 	printf("Clearing objects framework SUCCESS\n");
 }
 
@@ -85,38 +84,28 @@ void	clear_obj_framework(t_cub *cub)
 //	array in case of fireballs with indexes 2-3 being direction information.
 // Allegiance is an e_object_allegiance enum,
 // either ALI_NEUTRAL, ALI_TORRENT, ALI_LEGION, ALI_ARMADA.
-int	create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance,\
- void *param)
+// type enum and alleg must be placed in an array[2] and passed as arg.
+int	create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *arg)
 {
 	int	obj_id;
 	int	cell[2];
 
 	cell[0] = (int)(pos[0] * cub->inv_cw);
 	cell[1] = (int)(pos[1] * cub->inv_cw);
-	printf("Creating obj with type : %d. IF is PORTAL = %d\n", type_enum, OBJ_PORTAL);
 	if (is_wall(&cub->map, cell[0], cell[1]))
 		return (report_err("ERROR : Trying to create object in wall.\n"));
-	if (type_enum == OBJ_PLAYER)
-		obj_id = create_player_instance(cub, pos, allegiance, param);
-	else if (type_enum == OBJ_SPAWNPOINT)
-	{
-		printf("creating spawnpoint\n");
-		obj_id = create_spawnp_instance(cub, pos, allegiance);
-	}
-	else if (type_enum == OBJ_PORTAL)
-	{
-		printf("creating portal\n");
-		obj_id = create_portal_instance(cub, pos, allegiance, param);
-	}
-	else if (type_enum == OBJ_LEVER)
-	{
-		printf("creating lever\n");
-		obj_id = create_lever_instance(cub, pos, allegiance, param);
-	}
-	else if (type_enum == OBJ_FIREBALL)
-		obj_id = create_fireball_instance(cub, pos, allegiance, param);
-	else if (type_enum == OBJ_FIREPIT)
-		obj_id = create_firepit_instance(cub, pos, allegiance, param);
+	if (type_alleg[0] == OBJ_PLAYER)
+		obj_id = create_player_instance(cub, pos, type_alleg[1], arg);
+	else if (type_alleg[0] == OBJ_SPAWNPOINT)
+		obj_id = create_spawnp_instance(cub, pos, type_alleg[1]);
+	else if (type_alleg[0] == OBJ_PORTAL)
+		obj_id = create_portal_instance(cub, pos, type_alleg[1], arg);
+	else if (type_alleg[0] == OBJ_LEVER)
+		obj_id = create_lever_instance(cub, pos, type_alleg[1], arg);
+	else if (type_alleg[0] == OBJ_FIREBALL)
+		obj_id = create_fireball_instance(cub, pos, type_alleg[1], arg);
+	else if (type_alleg[0] == OBJ_FIREPIT)
+		obj_id = create_firepit_instance(cub, pos, type_alleg[1], arg);
 	else
 		return (ft_eprintf("Error : Invalid obj type\n"));
 	return (obj_id);

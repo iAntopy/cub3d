@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:56:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 22:32:45 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 22:35:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static int	minimap_pixel_is_wall(t_cub *cub, int *ms)
 
 static int	pick_icon_color_according_to_otype(t_oinst *obj)
 {
-	static const int	color_chart[7] = {0, 0xff25e807 & TRANSPARENCY, 0xffb84028 & TRANSPARENCY,
+	static const int	color_chart[7] = {0, 0xff25e807 & TRANSPARENCY,
+		0xffb84028 & TRANSPARENCY,
 		0xff1bf5ee & TRANSPARENCY, 0xff0c8bfa & TRANSPARENCY,
 		0xff1535eb & TRANSPARENCY, 0xffebc315 & TRANSPARENCY};
 	

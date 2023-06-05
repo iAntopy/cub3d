@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/05 13:34:10 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/05 16:51:22 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,9 +46,11 @@ SRC_FLS	:=		main.c 			\
 			object_controls2.c	\
 			object_activators.c	\
 			object_actions.c	\
+			object_actions2.c	\
 			object_linkers.c	\
 			object_instanciators.c	\
-			mlx_draw_line.c
+			simple_vector_funcs.c	\
+			object_utils.c
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 

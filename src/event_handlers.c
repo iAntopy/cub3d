@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 23:44:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:28:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	on_keypress(mlx_key_data_t event, void *param)
 		obj = cub->objs.instances;
 		while (obj)
 		{
-			if (obj->type->type_enum == OBJ_PORTAL)
+			if (obj_get_type(obj) == OBJ_PORTAL)
 				break ;
 			obj = obj->next;
 		}

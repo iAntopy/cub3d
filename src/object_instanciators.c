@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 23:06:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:02:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ int	create_player_instance(t_cub *cub, float *pos, int allegiance,\
 //	printf("is_drawable and is_oriented at player instanciation : %d, %d\n", 
 //		new_obj->type->is_drawable, new_obj->type->is_oriented);
 	new_obj->_id = get_new_obj_id();
-	new_obj->allegiance = allegiance;
+	new_obj->alleg = allegiance;
 	new_obj->tex_idx = 0;
 	new_obj->spawnpoint = spawnp;
 	obj_set_position(cub, new_obj, pos[0], pos[1]);
 	obj_set_orientation(cub, new_obj, spawnp->ori);
 	new_obj->action = __obj_action_player;
 	new_obj->counter = 0;
-	new_obj->rel_type_enum = 0;
+//	new_obj->rel_type_enum = 0;
 	new_obj->relative = spawnp;
 	new_obj->isactive = 0;
-	new_obj->gset = new_obj->type->gsets[new_obj->allegiance];
+	new_obj->gset = new_obj->type->gsets[new_obj->alleg];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 //	printf("Single Player instance created at pos (%f, %f)\n", pos[0], pos[1]);
@@ -64,7 +64,7 @@ int	create_spawnp_instance(t_cub *cub, float *pos, int allegiance)
 //		pos[0], pos[1]);
 	new_obj->type = &cub->objs.spawnp;
 	new_obj->_id = get_new_obj_id();
-	new_obj->allegiance = allegiance;
+	new_obj->alleg = allegiance;
 	new_obj->tex_idx = 0;
 	obj_set_position(cub, new_obj, pos[0], pos[1]);
 	new_obj->ori = 0.0f;
@@ -73,7 +73,7 @@ int	create_spawnp_instance(t_cub *cub, float *pos, int allegiance)
 	new_obj->relative = cub;
 	new_obj->isactive = 1;
 	new_obj->gset = NULL;
-//	new_obj->gset = new_obj->type->gsets[new_obj->allegiance];
+//	new_obj->gset = new_obj->type->gsets[new_obj->alleg];
 	new_obj->next = cub->objs.instances;
 	cub->objs.instances = new_obj;
 //	printf("Single Spawnpoint instance created at pos (%f, %f)\n", pos[0], pos[1]);
@@ -90,7 +90,7 @@ int	create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link)
 	new_obj->type = &cub->objs.lever;
 	new_obj->_id = get_new_obj_id();
 	new_obj->tex_idx = 0;
-	new_obj->allegiance = allegiance;
+	new_obj->alleg = allegiance;
 	obj_set_position(cub, new_obj, pos[0], pos[1]);
 	cell[0] = new_obj->cx;
 	cell[1] = new_obj->cy;
@@ -122,17 +122,17 @@ int	create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link
 		return (report_malloc_error());
 	new_obj->type = &cub->objs.portal;
 	new_obj->_id = get_new_obj_id();
-	new_obj->allegiance = allegiance;
+	new_obj->alleg = allegiance;
 	new_obj->tex_idx = 0;
 	obj_set_position(cub, new_obj, pos[0], pos[1]);
 	new_obj->action = __obj_action_portal;
-	new_obj->rel_type_enum = 0;
+//	new_obj->rel_type_enum = 0;
 	new_obj->relative = new_obj;
 	new_obj->counter = 0;
 	new_obj->isactive = 0;
 	if (link && link->type->type_enum == OBJ_PORTAL)
 	{
-		new_obj->rel_type_enum = OBJ_PORTAL;
+//		new_obj->rel_type_enum = OBJ_PORTAL;
 		new_obj->relative = link;
 		link->relative = new_obj;
 	}
@@ -154,7 +154,7 @@ int	create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_oinst *li
 
 	new_obj->type = &cub->objs.fireball;
 	new_obj->_id = get_new_obj_id();
-	new_obj->allegiance = allegiance;
+	new_obj->alleg = allegiance;
 	new_obj->tex_idx = allegiance;
 	obj_set_position(cub, new_obj, pos[0], pos[1]);
 	new_obj->dx = pos[2];
@@ -187,7 +187,7 @@ int	create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_oinst *lin
 		return (report_malloc_error());
 	new_obj->type = &cub->objs.firepit;
 	new_obj->_id = get_new_obj_id();
-	new_obj->allegiance = allegiance;
+	new_obj->alleg = allegiance;
 	new_obj->tex_idx = allegiance;
 	obj_set_position(cub, new_obj, pos[0], pos[1]);
 	new_obj->dx = pos[2];
