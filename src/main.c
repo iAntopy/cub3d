@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/03 01:17:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:20:33 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	main(int argc, char **argv)
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
 	if (map_checker(&cub, &cub.map, argv[1]) != 0
-		|| instanciate_map_objects(&cub) < 0
 		|| setup_hero(&cub) != 0)
 	{
 		ft_eprintf("WOWOW map checker failed HARD !\n");

@@ -115,7 +115,7 @@ $  : portal
 ////////
 
 -	map_checker						-- file type check
-	-	read_whole_file				-- map->raw ++ map_len
+	-	read_whole_file				-- map->raw ++ map_len						=> map->raw
 	//
 	-	tex_parse					-- parse header file
 		-	e_list_txtr					-- list all txtr input
@@ -140,17 +140,20 @@ $  : portal
 	-	build_grid ++ build_collis (Ian)
 
 sur la planche de travail.
-	- multi-playr directional,
-	- lever-link : portal, firepit.
-	- fireball directional :
-	- static / hunt trigger
--	pet defender...
-- 	respawn hit
-	- switch body!?!
-	-visual directional feed-back
--	player body textures alleg.
--	map making, fun gathering
- 	- ambiant improved for gameplay
--	flag model/txtr/behave
+	- multi-playr directional, 		OK
+	- lever-link : portal, firepit. OK
+	- fireball directional : 		OK 
+	- static / hunt trigger 		OK
+-	pet defender...					Gold
+- 	respawn hit						OK
+	- switch body!?!        		ok...
+	-visual directional feed-back 	OK 
+-	player body textures alleg. 	-not
+-	map making, fun gathering 		OK
+ 	- ambiant improved for gameplay  mid_ok
+-	flag model/txtr/behave			OK
 and that should be enough, for sure we ( i ) need to clean/leak shit free
+
+--	list data to be free :
+		-- xform
 

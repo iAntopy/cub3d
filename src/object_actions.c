@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_actions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/03 00:48:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 18:49:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	if (obj->isactive)
 	{
 		prtl = (t_oinst *)obj->relative;
-		if (obj->counter > 300)
+		if (obj->counter > 1100)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;
