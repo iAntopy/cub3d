@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 21:05:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:58:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	link_portal_instances(t_oinst *prtl1, t_oinst *prtl2)
 		|| (prtl1->type->type_enum != OBJ_PORTAL)
 		|| (prtl2->type->type_enum != OBJ_PORTAL))
 		return (report_err("Can't link non portals with this function.\n"));
-	if (prtl1->allegiance != prtl2->allegiance)
+	if (prtl1->alleg != prtl2->alleg)
 		return (report_err("Can't link portals of differente team.\n"));
 	prtl1->relative = prtl2;
 	if (prtl2->relative == prtl2)
@@ -35,7 +35,7 @@ int	link_lever_to_portal(t_oinst *lever, t_oinst *prtl)
 		|| (prtl->type->type_enum != OBJ_PORTAL))
 		return (report_err("Either lever is not an OBJ_LEVER\
  or prtl not a OBJ_PORTAL.\n"));
-//	if (lever->allegiance != prtl->allegiance)
+//	if (lever->alleg != prtl->alleg)
 //		return (report_err("Can't link lever to portal of differente team.\n"));
 	lever->relative = prtl;
 	return (0);
@@ -47,7 +47,7 @@ int	link_fireball_to_target(t_oinst *fball, t_oinst *target)
 	if (!fball || !target
 		|| (fball->type->type_enum != OBJ_FIREBALL))
 		return (report_err("fball is not a OBJ_FIREBALL.\n"));
-	if (fball->allegiance == target->allegiance)
+	if (fball->alleg == target->alleg)
 		return (report_err("Cannot link fireball to player of same team.\n"));
 	fball->relative = target;
 	fball->isactive = 1;
@@ -60,7 +60,7 @@ int	link_firepit_to_target(t_oinst *fpit, t_oinst *target)
 	if (!fpit || !target
 		|| (fpit->type->type_enum != OBJ_FIREPIT))
 		return (report_err("fpit is not a OBJ_FIREPIT.\n"));
-	if (fpit->allegiance == target->allegiance)
+	if (fpit->alleg == target->alleg)
 		return (report_err("Cannot link firepit to player of same team.\n"));
 	fpit->relative = target;
 	fpit->isactive = 1;

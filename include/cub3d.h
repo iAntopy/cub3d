@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/03 16:53:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:31:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,8 +247,8 @@ typedef struct s_ray_collision_data
 
 //	Struct constants;
 	int		idx;
-	float		inv_cw;
-	float		*near_proj_factor;
+	float	inv_cw;
+	float	*near_proj_factor;
 	int		*pcx;//	hero cell position in x
 	int		*pcy;// hero cell position in y
 	float	*px;// hero position x; Pointer to cub->hero.px.
@@ -377,10 +377,9 @@ typedef struct s_objects_list_elem
 	int			_id;//	unique obj id. Objects are deletable by id.
 
 	int			tex_idx;
-	int			allegiance;
+	int			alleg;
 	t_oinst		*spawnpoint;
 	t_matrx		*gset; /// rely to model
-	
 	
 	float		px;//	Position X
 	float		py;//	Position Y
@@ -398,20 +397,13 @@ typedef struct s_objects_list_elem
 	/// VARS SET AT RENDER TIME ////////////
 	float		ox;//	obj delta x from player
 	float		oy;//	obj delta y from player
-//	float		ux;//	obj unit delta x from player
-//	float		uy;//	obj unit delta y from player
 	float		dist;//	distance from player
 
-//	float		ox_left;//	obj delta x left edge of obj, perpendicular to [ox, oy] vect
-//	float		oy_left;//	obj delta y left edge of obj, perpendicular to [ox, oy] vect
-//	float		ox_right;//	obj delta x right edge of obj, perpendicular to [ox, oy] vect
-//	float		oy_right;//	obj delta y right edge of obj, perpendicular to [ox, oy] vect
-	
 	int			isactive;
 	int			counter;
 	
 	// PORTAL SPECIFIC
-	int			rel_type_enum;
+//	int			rel_type_enum;
 	void		*relative;
 	
 	t_matrx		special_gset;// currently used for lever/pressure plate to have unique pset for floortile
@@ -660,11 +652,15 @@ void			stop_draw_threads(t_thdraw *threads);
 
 /// OBJECT MANAGEMENT SYSTEM ////////
 int				get_new_obj_id(void);
+int				obj_get_type(t_oinst *obj);
+int				obj_get_issolide(t_oinst *obj);
+int				obj_get_isactive(t_oinst *obj);
+t_oinst			*get_obj(t_cub *cub, int id);
+int 			*obj_type_alleg(int type, int alleg);
 //int				init_obj_framework(t_cub *cub);
 void			clear_obj_framework(t_cub *cub);
-int				create_obj_instance(t_cub *cub, float *pos, int type_enum, int allegiance, void *param);
+int				create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *param);
 int				delete_oinst_by_id(t_cub *cub, int id);
-t_oinst			*get_obj(t_cub *cub, int id);
 int				delete_oinst_by_type(t_cub *cub, int type_enum);
 void			delete_all_obj_instances(t_cub *cub);
 
@@ -750,6 +746,7 @@ t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
 t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
 t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 
+int			 	get_objx(t_objx **objx, char name, int num);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_box box);
 
@@ -759,8 +756,11 @@ void			mlx_draw_mmap(t_cub *cub);
 void			mlx_draw_player(t_cub * cub, t_map *map);
 void			mlx_update_mmap(t_cub *cub, t_map *m);
 
+/// UTILS
+int				get_cell(float px, float py, int *cx, int *cy);
+float			normalize_vec2(float *v, float *dist_p);
 
+/// MINIMAP FUNCS
 void			update_minimap(t_cub *cub);
-void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
-int			 	get_objx(t_objx **objx, char name, int num);
+//void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
 #endif

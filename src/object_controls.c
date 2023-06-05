@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 21:45:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 00:27:16 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:51:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,33 +38,6 @@ t_oinst	*is_in_solid_object(t_cub *cub, t_oinst *obj, float *pos, float *delta)
 	return (NULL);
 }
 
-// give map coord and a pointer to a int cell[2] return array to get cell 
-// values for this position.
-int	get_cell(float px, float py, int *cx, int *cy)
-{
-	static const float	inv_cw = 1.0f / CELL_WIDTH;
-
-	*cx = (int)(inv_cw * px);
-	*cy = (int)(inv_cw * py);
-//	printf("get_cell : pos : (%f, %f), cell : (%d, %d)\n", px, py, *cx, *cy);
-	return (1);
-}
-
-// Returns distance at dist ptr
-float	normalize_vec2(float *v, float *dist_p)
-{
-	*dist_p = sqrtf(v[0] * v[0] + v[1] * v[1]);
-	v[0] /= *dist_p;
-	v[1] /= *dist_p;
-	return (*dist_p);	
-}
-/*
-void	add_vec2(float *v, float dx, float dy)
-{
-	v[0] += dx;
-	v[1] += dy;	
-}
-*/
 void	manage_wall_collisions(t_cub *cub, t_oinst *obj) 
 {
 	const int	half_w = obj->type->width >> 1;
@@ -86,7 +59,7 @@ void	manage_wall_collisions(t_cub *cub, t_oinst *obj)
 	else if (get_cell(obj->px, obj->py  + half_w, cell, cell + 1)
 		&& is_wall(&cub->map, cell[0], cell[1]))
 		obj->py += cell[1] * CELL_WIDTH - (obj->py + half_w);
-	
+	get_cell(obj->px, obj->py, &obj->cx, &obj->cy);
 //	else if (get_cell(obj->px + half_w, obj->py, cell, cell + 1)
 //		&& is_wall(cub, cell[0], cell[1]))
 //		obj->px += cell[0] * CELL_WIDTH - (obj->px + half_w);
@@ -124,8 +97,11 @@ void	manage_collisions(t_cub *cub, t_oinst *ply, float *mv_vect)
 //		delta[2] = sqrtf(delta[3]);
 //		delta[0] /= delta[2];
 //		delta[1] /= delta[2];
-		pos[0] -= delta[0] * (other->type->width - delta[2]) * 0.2f;
-		pos[1] -= delta[1] * (other->type->width - delta[2]) * 0.2f;
+		pos[0] -= delta[0] * (other->type->width - delta[2]) * 0.05f;
+		pos[1] -= delta[1] * (other->type->width - delta[2]) * 0.05f;
+		other->px += delta[0] * (other->type->width - delta[2]) * 0.05f;
+		other->py += delta[1] * (other->type->width - delta[2]) * 0.05f;
+		manage_wall_collisions(cub, other);
 		other = other->next;
 	}
 	ply->px = pos[0];
