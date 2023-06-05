@@ -157,7 +157,7 @@ and that should be enough, for sure we ( i ) need to clean/leak shit free
 --	list data to be free :
 		-- read_whole 	==>> 	map->raw
 
-%%		-- e_link 		==>>	box->xform, cub->dual, ... raw_len,tex_name,tex_path;
+%%		-- e_link 		==>>	box->xform, cub->dual, ... tex_name,tex_path;
 			-- meta_builder :: remove printf set plyr_init_model...
 			-- dual_builder :: cub->dual[].xwalls[]
 		-- tex_parse	==>>	cub->pset[].xwalls[]

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 21:47:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 13:43:44 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 			printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			//  printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
+			 printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
 		}
 	}
 	printf("PSET %d : %p, %p, %p, %p\n", len, cub->pset[len].xwalls[0], cub->pset[len].xwalls[1],
@@ -92,9 +92,6 @@ int	tex_parse(t_cub *cub, t_map *map)
 		cub->box.pset++;
 		nb++;
 	}
-	// cub->box.tot = cub->box.xnum + cub->box.meta + cub->box.pset;
-		// printf("\n<<META[%d]::XNUM[%d]", cub->box.meta, cub->box.xnum);
-		// printf("::PSET[%d]::TOT[%d]>> \n\n", cub->box.pset, cub->box.tot);
 	cub->pset = (t_matrx *)calloc(sizeof(t_matrx), cub->box.pset);
 	if (!cub->pset)
 		return (-1);

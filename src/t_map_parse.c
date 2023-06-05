@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 22:59:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:52:39 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	read_whole_file(t_map *map, char *filepath)
 		return (report_malloc_error());
 	flush_empty_lines(map->raw);
 	close(fd);
-	return (strtab_len(map->raw));	//return (0);
+	return (strtab_len(map->raw));
 }
 
 /// parsing autopsy
@@ -110,17 +110,15 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	if (read_whole_file(map, file) < 0 || tex_parse(cub, map) < 0)
 		return (-1);
-		
-	map_offset = cub->box.xnum  + cub->box.meta + cub->box.pset - 1;
+	map_offset = cub->box.xnum + cub->box.meta + cub->box.pset - 1;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
-	
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
 	print_collision_map(map);
-	//	clr_legend_strct(cub); // xform
+	// clr_legend_strct(cub); // xform
 	printf("Collisiont check DONE\n");
 	if (instanciate_map_objects(cub) < 0)
 		return (-1);
