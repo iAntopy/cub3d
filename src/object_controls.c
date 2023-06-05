@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 21:45:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/04 15:21:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 00:27:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // delta is a pointer to an array that will receive the vector between 
 // obj and pos.
-int	is_in_solid_object(t_cub *cub, t_oinst *obj, float *pos, float *delta)
+t_oinst	*is_in_solid_object(t_cub *cub, t_oinst *obj, float *pos, float *delta)
 {
 	t_oinst	*other;
 
@@ -29,24 +29,120 @@ int	is_in_solid_object(t_cub *cub, t_oinst *obj, float *pos, float *delta)
 		delta[0] = other->px - pos[0];
 		delta[1] = other->py - pos[1];
 		if ((delta[0] * delta[0] + delta[1] * delta[1])
-			< (other->type->width * other->type->width / 2.0f))
-			return (1);
+			< ((other->type->width * other->type->width) >> 1))
+			return (other);
 		other = other->next;
 	}
 	delta[0] = 0.0f;
 	delta[1] = 0.0f;
-	return (0);
+	return (NULL);
 }
 
 // give map coord and a pointer to a int cell[2] return array to get cell 
 // values for this position.
-void	get_cell(float px, float py, int *cx, int *cy)
+int	get_cell(float px, float py, int *cx, int *cy)
 {
 	static const float	inv_cw = 1.0f / CELL_WIDTH;
 
 	*cx = (int)(inv_cw * px);
 	*cy = (int)(inv_cw * py);
-	printf("get_cell : pos : (%f, %f), cell : (%d, %d)\n", px, py, *cx, *cy);
+//	printf("get_cell : pos : (%f, %f), cell : (%d, %d)\n", px, py, *cx, *cy);
+	return (1);
+}
+
+// Returns distance at dist ptr
+float	normalize_vec2(float *v, float *dist_p)
+{
+	*dist_p = sqrtf(v[0] * v[0] + v[1] * v[1]);
+	v[0] /= *dist_p;
+	v[1] /= *dist_p;
+	return (*dist_p);	
+}
+/*
+void	add_vec2(float *v, float dx, float dy)
+{
+	v[0] += dx;
+	v[1] += dy;	
+}
+*/
+void	manage_wall_collisions(t_cub *cub, t_oinst *obj) 
+{
+	const int	half_w = obj->type->width >> 1;
+//	float		pos[2];
+	int			cell[2];
+
+	if (!obj || !obj->type->is_solid)
+		return ;
+	
+	if (get_cell(obj->px - half_w, obj->py, cell, cell + 1)
+		&& is_wall(&cub->map, cell[0], cell[1]))
+		obj->px += (cell[0] + 1) * CELL_WIDTH - (obj->px - half_w);
+	else if (get_cell(obj->px + half_w, obj->py, cell, cell + 1)
+		&& is_wall(&cub->map, cell[0], cell[1]))
+		obj->px += cell[0] * CELL_WIDTH - (obj->px + half_w);
+	if (get_cell(obj->px, obj->py  - half_w, cell, cell + 1)
+		&& is_wall(&cub->map, cell[0], cell[1]))
+		obj->py += (cell[1] + 1) * CELL_WIDTH - (obj->py - half_w);
+	else if (get_cell(obj->px, obj->py  + half_w, cell, cell + 1)
+		&& is_wall(&cub->map, cell[0], cell[1]))
+		obj->py += cell[1] * CELL_WIDTH - (obj->py + half_w);
+	
+//	else if (get_cell(obj->px + half_w, obj->py, cell, cell + 1)
+//		&& is_wall(cub, cell[0], cell[1]))
+//		obj->px += cell[0] * CELL_WIDTH - (obj->px + half_w);
+}
+
+void	manage_collisions(t_cub *cub, t_oinst *ply, float *mv_vect)
+{
+//	const float	target[2] = {ply->px + mv_vect[0], ply->py + mv_vect[1]};
+	const float	mv_dist = sqrtf(mv_vect[0] * mv_vect[0] + mv_vect[1] * mv_vect[1]);
+	t_oinst		*other;
+	float		delta[3];
+	float		pos[2];
+//	int			iswall;
+//	int			cell[2];
+	
+	other = cub->objs.instances;
+	pos[0] = ply->px + mv_vect[0];
+	pos[1] = ply->py + mv_vect[1];
+	while (other)
+	{
+		printf("manage_collisions : mv_dist : %f\n", mv_dist);
+		delta[0] = other->px - pos[0];
+		delta[1] = other->py - pos[1];
+		delta[2] = (delta[0] * delta[0] + delta[1] * delta[1]);
+		printf("other - pos : [%f, %f], dist sq : %f, half other perim : %d\n",
+			delta[0], delta[1], delta[2], (other->type->width * other->type->width) >> 1);
+		if (!other->type->is_solid || !ply->type->is_solid || ply == other
+			|| (delta[2] > ((other->type->width * other->type->width) >> 1)))
+		{
+			other = other->next;
+			continue ;
+		}
+		printf("WHHAAAAAA\n");
+		normalize_vec2(delta, &delta[2]);
+//		delta[2] = sqrtf(delta[3]);
+//		delta[0] /= delta[2];
+//		delta[1] /= delta[2];
+		pos[0] -= delta[0] * (other->type->width - delta[2]) * 0.2f;
+		pos[1] -= delta[1] * (other->type->width - delta[2]) * 0.2f;
+		other = other->next;
+	}
+	ply->px = pos[0];
+	ply->py = pos[1];
+	manage_wall_collisions(cub, ply);
+	/*
+	get_cell(pos[0], pos[1], cell, cell + 1);
+	iswall = is_wall(&cub->map, cell[0], cell[1]);
+//	iswall = !(iswall && (ply->cx != cell[0])) * mv_dist;
+	delta[0] = pos[0] - ply->px;
+	delta[1] = pos[1] - ply->py;
+	normalize_vec2(delta, &delta[2]);
+	printf("mv uvect : [%f, %f]\n", delta[0], delta[1]);
+	ply->px += delta[0] * !(iswall && (ply->cx != cell[0])) * mv_dist;
+	ply->py += delta[1] * !(iswall && (ply->cy != cell[1])) * mv_dist;//& (0xffffffff * is_wall * (obj->cy == cell[1]));
+	get_cell(ply->px, ply->py, &ply->cx, &ply->cy);//cell, cell + 1);
+	*/
 }
 
 void	obj_set_orientation(t_cub *cub, t_oinst *obj, float ori)
@@ -73,20 +169,24 @@ void	obj_rotate(t_cub *cub, t_oinst *obj, float rot)
 
 void	obj_move_abs(t_cub *cub, t_oinst *obj, float dx, float dy)
 {
-	float	pos[2];// = {obj->px + dx, obj->py + dy};
-	int 		cell[2];
+//	float	pos[2];// = {obj->px + dx, obj->py + dy};
+//	int 		cell[2];
 	float	delta[4];
-	int	iswall;
+//	int	iswall;
     
 	if (!obj || (!dx && !dy))
 		return ;
-	pos[0] = obj->px + dx;
-	pos[1] = obj->py + dy;
+//	pos[0] = obj->px + dx;
+//	pos[1] = obj->py + dy;
+	delta[0] = dx;
+	delta[1] = dy;
+	manage_collisions(cub, obj, delta);
 //	get_cell(pos[0], pos[1], cell, cell + 1);
 //	cx = (int)(cub->inv_cw * (obj->px + dx));
 //	cy = (int)(cub->inv_cw * (obj->py + dy));
 //	if (!get_is_cell_within_bounds(&cub->map, cx, cy))
 //		return ;
+/*
 	if (is_in_solid_object(cub, obj, pos, delta))
 	{
 		delta[2] = sqrtf(delta[0] * delta[0] + delta[1] * delta[1]);
@@ -111,7 +211,7 @@ void	obj_move_abs(t_cub *cub, t_oinst *obj, float dx, float dy)
 	obj->px += dx * !(iswall && (obj->cx == cell[0]));
 	obj->py += dy * !(iswall && (obj->cy == cell[1]));//& (0xffffffff * is_wall * (obj->cy == cell[1]));
 	get_cell(obj->px, obj->py, &obj->cx, &obj->cy);//cell, cell + 1);
-
+*/
 	/*
 
 	if (is_wall(&cub->map, cell[0], cell[1]))
@@ -132,24 +232,27 @@ void	obj_move_abs(t_cub *cub, t_oinst *obj, float dx, float dy)
 
 void	obj_move_rel(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe)
 {
-	float	pos[2];
+//	float	pos[2];
 	float	ori_vect[2];
 	float	delta[4];
-	int		cell[2];
-	int		iswall;
+//	int		cell[2];
+//	int		iswall;
 //	float	dy;
 //	int		cx;
 //	int		cy;
 
 	if (!obj || (!d_strafe && !d_walk))// || !ply || ply->type->type_enum != OBJ_PLAYER)
 		return ;
-	printf("\nori pos : (%f, %f), d_walk : %f, d_strafe : %f\n", obj->px, obj->py, d_walk, d_strafe);
+//	printf("\nori pos : (%f, %f), d_walk : %f, d_strafe : %f\n", obj->px, obj->py, d_walk, d_strafe);
+
 	ori_vect[0] = cosf(obj->ori);
 	ori_vect[1] = sinf(obj->ori);
 	printf("raw ori_vect : [%f, %f]\n", ori_vect[0], ori_vect[1]);
 	delta[0] = (d_walk * ori_vect[0]) - (d_strafe * ori_vect[1]);
 	ori_vect[1] = (d_walk * ori_vect[1]) + (d_strafe * ori_vect[0]);
 	ori_vect[0] = delta[0];
+	manage_collisions(cub, obj, ori_vect);
+	/*
 	pos[0] = obj->px + ori_vect[0];
 	pos[1] = obj->py + ori_vect[1];
 	printf("ovect : [%f, %f], pos : (%f, %f)\n", ori_vect[0], ori_vect[1], pos[0], pos[1]);
@@ -158,14 +261,11 @@ void	obj_move_rel(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe)
 //	cy = (int)(cub->inv_cw * (obj->py + dy));
 //	if (!get_is_cell_within_bounds(&cub->map, cx, cy))
 //		return ;
+//	manage_collisions(cub, obj, ori_vect);
 	if (is_in_solid_object(cub, obj, pos, delta))// obj->px + dx, obj->py + dy, ori_vect))
 	{
 		delta[2] = sqrtf(delta[0] * delta[0] + delta[1] * delta[1]);
 		printf("IN SOLID OBJ : delta : [%f, %f], dist : %f\n", delta[0], delta[1], delta[2]);
-		if (delta[2] < 0)
-			printf("delta is negative\n");
-		else
-			printf("delta is positive\n");
 
 		delta[0] /= delta[2];
 		delta[1] /= delta[2];
@@ -190,6 +290,7 @@ void	obj_move_rel(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe)
 	obj->px += ori_vect[0] * !(iswall && (obj->cx != cell[0]));
 	obj->py += ori_vect[1] * !(iswall && (obj->cy != cell[1]));//& (0xffffffff * is_wall * (obj->cy == cell[1]));
 	get_cell(obj->px, obj->py, &obj->cx, &obj->cy);//cell, cell + 1);
+*/
 /*
 	if (is_wall(&cub->map, cx, cy))
 	{

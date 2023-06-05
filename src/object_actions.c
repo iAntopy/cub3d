@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/03 16:04:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/04 18:13:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 
 	if (obj == cub->hero.ply_obj)
 		return (-1);
-	if (obj->isactive && obj->counter > 50)
+	if (obj->isactive && obj->counter > 200)
 	{
 		obj->isactive = 0;
 		obj->counter = 0;
 	}
-	else if (!obj->isactive && obj->counter > 50)
+	else if (!obj->isactive && obj->counter > 200)
 	{
 		is_in_wall = 1;
 		while (is_in_wall)
 		{
 			obj->ori = ft_random() * M_TAU;
-			obj->target[0] = obj->px + cosf(obj->ori) * 100.0f;
-			obj->target[1] = obj->py + sinf(obj->ori) * 100.0f;
+			obj->target[0] = obj->px + cosf(obj->ori) * 200.0f;
+			obj->target[1] = obj->py + sinf(obj->ori) * 200.0f;
 			is_in_wall = is_wall(&cub->map, (int)(obj->target[0] * cub->inv_cw),
 				(int)(obj->target[1] * cub->inv_cw));
 		}
@@ -40,7 +40,7 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 		obj->counter = 0;
 	}
 	else if (obj->isactive)
-		obj_move_rel(cub, obj, 2.0f, 0.0f);
+		obj_move_rel(cub, obj, 1.0f, 0.0f);
 	++obj->counter;
 	return (0);
 }
