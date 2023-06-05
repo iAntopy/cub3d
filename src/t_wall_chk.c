@@ -6,45 +6,45 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 15:52:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:12:50 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-// void	clr_legend_strct(t_cub *cub)
-// {
-// 	printf(":: MID EXIT :: \n\n\n");
-// 	while (cub->box.xform[cub->box.xnum])
-// 	{
-// 		if (cub->box.xform[cub->box.xnum])
-// 		{
-// 			mlx_delete_texture(cub->box.xform[cub->box.xnum]);			
-// 		}	
-// 		printf(":: 1-MID EXIT :: xnum[%d]:: \n", cub->box.xnum);
-// 		cub->box.xnum--;
-// 		printf(":: 2-MID EXIT :: xnum[%d]:: \n", cub->box.xnum);
-// 		free(cub->box.xform[cub->box.xnum]);
-// 	}
-// 	if (*cub->box.xform)
-// 	{
-// 		free(*cub->box.xform);
-// 		printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
-// 	}
-// 	// chk pset		// cub			// t_matrx
-// 	if (cub->pset[0].xwalls[0])
-// 		printf(":: MID EXIT :PSET[0]:: xwalls[%p]:: \n", cub->pset[0].xwalls[0]);
-// 	// chk dual		// cub			// t_matrx
-// 	if (cub->dual[0].xwalls[0])
-// 		printf(":: MID EXIT ::DUAL[0] ::xwalls[%p]:: \n", cub->dual[0].xwalls[0]);
-// 	// chk gset		//box			// t_matrx 
-// 	// if (cub->objs.instances->gset[0])
-// 	// 	printf(":: MID EXIT ::OBJS ::instance gset[%p]:: \n", cub.objs.instances->gset[0]);
-// 	// chk objx
-// 	if (cub->objs.instances)
-// 		printf(":: MID EXIT ::OBJS ::instance[%d]:: \n", cub->box.xnum);
-// 		//	printf("portal ptr : %p\n", cub.objs.instances);
-// }
+void	clr_legend_strct(t_cub *cub)
+{
+	printf(":: MID EXIT :: \n\n\n");
+	// while (cub->box.xform[cub->box.xnum])
+	// {
+	// 	if (cub->box.xform[cub->box.xnum])
+	// 	{
+	// 		mlx_delete_texture(cub->box.xform[cub->box.xnum]);			
+	// 	}	
+	// 	printf(":: 1-MID EXIT :: xnum[%d]:: \n", cub->box.xnum);
+	// 	cub->box.xnum--;
+	// 	printf(":: 2-MID EXIT :: xnum[%d]:: \n", cub->box.xnum);
+	// 	free(cub->box.xform[cub->box.xnum]);
+	// }
+	// if (*cub->box.xform)
+	// {
+	// 	free(*cub->box.xform);
+	// 	printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
+	// }
+	// // chk pset		// cub			// t_matrx
+	if (cub->pset[0].xwalls[0])
+		printf(":: MID EXIT :PSET[0]:: xwalls[%p]:: \n", cub->pset[0].xwalls[0]);
+	// chk dual		// cub			// t_matrx
+	if (cub->dual[0].xwalls[0])
+		printf(":: MID EXIT ::DUAL[0] ::xwalls[%p]:: \n", cub->dual[0].xwalls[0]);
+	// chk gset		//box			// t_matrx 
+	// if (cub->objs.instances->gset[0])
+	// 	printf(":: MID EXIT ::OBJS ::instance gset[%p]:: \n", cub.objs.instances->gset[0]);
+	// chk objx
+	// if (cub->objs.instances)
+	// 	printf(":: MID EXIT ::OBJS ::instance[%d]:: \n", cub->box.xnum);
+		//	printf("portal ptr : %p\n", cub.objs.instances);
+}
 
 /// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
 t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
