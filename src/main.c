@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 01:06:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:43:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
-	if (map_checker(&cub, &cub.map, argv[1]) != 0
-		|| instanciate_map_objects(&cub) < 0)
+	if (map_checker(&cub, &cub.map, argv[1]) != 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	if (!cub.mlx)
@@ -77,7 +76,6 @@ int	main(int argc, char **argv)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
-
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub, report_err_strerror("mlx loop exit error")));
