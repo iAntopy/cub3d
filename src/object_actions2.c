@@ -109,6 +109,8 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	if (obj->isactive)
 	{
 		prtl = (t_oinst *)obj->relative;
+		if (!prtl)
+			return (-1);
 		if (obj->counter > 600)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);

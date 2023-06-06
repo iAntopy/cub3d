@@ -738,7 +738,7 @@ t_omdl			*init_flag_model(t_objs *objs);
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
 t_box 			*xwalls_builder(t_cub *cub, char **raw);
 //
-t_matrx			**init_mx(t_map *m);
+t_matrx			***init_mx(t_map *m);
 t_matrx			*gset_builder(const char *path, int txtr_nb);
 t_cub			*dual_builder(t_cub *cub, int i, char *t_name);
 t_cub			*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs);
