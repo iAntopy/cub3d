@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 16:51:03 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 20:41:46 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,6 @@ typedef struct s_box
 	int				n_lvls;
 	int				n_fbll;
 	int				n_fpit;
-	int				n_objs;
 	int 			n_plyr;
 
 	t_objx			**objx;
@@ -225,15 +224,15 @@ typedef struct s_texture_data
 {
 	int				color[2];
 	
+	mlx_texture_t	*skymap;	
 	//	mlx_texture_t	*walls[4];
-//	mlx_texture_t	*sky_tex;	// yessss
+	//	mlx_texture_t	*sky_tex;	// yessss
 	// t_matrx			*gset;		// model_txtr
 	// t_matrx			*dual;		// floor & ceiling
 	// // // //
-	mlx_texture_t	*skymap;	
-//	mlx_texture_t	*floor;		
-//	char			**rgbx;
-//	int				open_sky;// DEPRECATED !!
+	//	mlx_texture_t	*floor;		
+	//	char			**rgbx;
+	//	int				open_sky;// DEPRECATED !!
 }	t_tex;
 
 typedef struct s_ray_collision_data
@@ -563,6 +562,8 @@ void	print_map(t_map *map);
 /// MAP_CHECKER ///////////////
 //map_parse
 t_cub			*wall_check(t_cub *cub,t_map *map);
+t_cub		*mapx_alt_pos(t_map *m, t_cub *cub);
+
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map);
@@ -725,12 +726,14 @@ t_omdl			*init_firepit_model(t_objs *objs);
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
 t_box 			*xwalls_builder(t_cub *cub, char **raw);
 //
+t_matrx			**init_mx(t_map *m);
 t_matrx			*gset_builder(const char *path, int txtr_nb);
 t_cub			*dual_builder(t_cub *cub, int i, char *t_name);
 t_cub			*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs);
 t_cub			*mapx_builder(t_map *m, t_cub *cub);
 //
 
+int				xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j);
 t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_cub			*e_mtrx_count(t_cub *cub);

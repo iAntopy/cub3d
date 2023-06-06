@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 16:57:49 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:05:48 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,12 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 		while (++fill < 4)
 		{
 			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-			// printf("MAKER: recett{%c} index[%d]\n", ref[fill + 2],id);
 			printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			 printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]); 
+			printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
 		}
 	}
-	printf("PSET %d : %p, %p, %p, %p\n", len, cub->pset[len].xwalls[0], cub->pset[len].xwalls[1],
-		cub->pset[len].xwalls[2], cub->pset[len].xwalls[3]);
 	return (cub->pset);
 }
 
@@ -45,18 +42,17 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 	int		len;
 	char	*ref;
 
-	// queue = cub->box.xnum - cub->box.pnum;
-	queue = (cub->box.xnum  + cub->box.meta - 1);
+	queue = (cub->box.xnum + cub->box.meta - 1);
 	len = 0;
 	while (len < cub->box.pset)
 	{
 		ref = raw[queue];
-			printf("PSET:: CHAR>>(%c)", ref[0]);
-			printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-			printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		printf("PSET:: CHAR>>(%c)", ref[0]);
+		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
+		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		if (!cub->pset)
-			return(NULL);
+			return (NULL);
 		len++;
 		queue++;
 	}
@@ -75,20 +71,19 @@ int	tex_parse(t_cub *cub, t_map *map)
 {
 	int	id;
 	int	nb;
-	
+
 	printf("Tex_parse...\n\n");
 	cub->box.n_dual = 0;
 	cub->box.pset = 0;
 	if (!e_list_txtr(cub, &cub->box, map))
-		return(-1);
+		return (-1);
 	nb = cub->box.xnum;
-		
 	while (map->raw[nb] && map->raw[nb][0] != ' ')
 	{
 		id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
 		if (id < 0 || map->raw[nb][1] != ' ')
-			break;
-		printf("PSET[%d]:: PNUM[%d]  REF = %c \n", cub->box.pset, cub->box.pnum, map->raw[nb][0]);
+			break ;
+		printf("PSET[%d]:: PNUM[%d]  \n", cub->box.pset, cub->box.pnum);
 		cub->box.pset++;
 		nb++;
 	}

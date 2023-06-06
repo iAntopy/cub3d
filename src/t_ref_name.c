@@ -6,18 +6,17 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/04 23:05:34 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:52:29 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-
 char	*chrs_builder(t_cub *cub)
 {
-	int	i;
-	int	j;
-	char **rawz;
+	int		i;
+	int		j;
+	char	**rawz;
 
 	j = 0;
 	i = 0;
@@ -38,70 +37,52 @@ char	*chrs_builder(t_cub *cub)
 	return (cub->box.chrs);
 }
 
+int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
+{
+	if (tex_name[0] == 'z')
+	{
+		cub->box.sky = mlx_load_png(tex_path);
+		if (!cub->box.sky)
+			return (-1);
+	}
+	else
+	{
+		cub->box.xform[j] = mlx_load_png(tex_path);
+		if (!cub->box.xform[j])
+			return (-1);
+		j++;
+	}
+	return (j);
+}
+
 /// link' too too wide ++ doing too many thing!
 t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 {
-	int 	raw_len;
 	char	*tex_path;
 	char	*tex_name;
 	int		i;
 	int		j;
-	int		d_id;
 
-	i = - 1;
+	i = -1;
 	j = 0;
-	box->pnum = 0;
-	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *), box->xnum + 1);
-	if (!box->xform)
-		return (NULL);
-	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
-	if (!cub->dual)
-		return (NULL);
-	box->n_objs = 0;
-	printf("LINK\n");
-	while (++i < box->xnum + box->meta )
+	while (++i < box->xnum + box->meta)
 	{
-		if (raw[i][0] > 32)
+		if (raw[i][0] > 32 && j != -1)
 		{
-			raw_len = ft_strlen(raw[i]);
 			tex_name = ft_substr(raw[i], 0, 1);
-			tex_path = ft_substr(raw[i], 2, raw_len - 2);
-			
-			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))			/// meta << number 				
-			{
-				cub = meta_builder(cub, box, tex_name, &cub->objs);			
-				printf("METABUILDER:[%c]  CHRS{%c} path{{%s}} \n", tex_name[0], raw[i][0], tex_path);
-				box->n_objs++;
-			}
+			tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i]) - 2);
+			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
+				meta_builder(cub, box, tex_name, &cub->objs);
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
-			{
-				if (tex_name[0] == 'z')		//cub->box.sky
-				{
-					cub->box.sky = mlx_load_png(tex_path);
-					if (!cub->box.sky)
-						return (report_mlx_tex_load_failed(tex_path));
-				}
-				else
-				{
-					box->xform[j] = mlx_load_png(tex_path);
-					if (!box->xform[j])
-						return (report_mlx_tex_load_failed(tex_path));
-					printf("\n\n LOADING SOME WACKY TEXTURES !!! name : %s, path : %s, ptr %p\n", tex_name,
-					tex_path, box->xform[j]);
-					j++;
-				}
-			}
+				j = xform_builder(cub, tex_name, tex_path, j);
 			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
-			{
-				d_id = ft_in_set(tex_name[0], (const char *)MAP_NCHR); 
-				if(d_id != -1)
-					if (!dual_builder(cub, d_id, tex_path))
-						return (NULL);						
-			}
+				if (!dual_builder(cub, ft_in_set(tex_name[0],
+							(const char *)MAP_NCHR), tex_path))
+					return (NULL);
 		}
 	}
 	return (cub);
-}				
+}
 
 t_cub	*e_mtrx_count(t_cub *cub)
 {
@@ -135,21 +116,24 @@ t_cub	*e_mtrx_count(t_cub *cub)
 t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
 	box->xnum = 0;
+	box->pnum = 0;
 	cub = e_mtrx_count(cub);
-
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
 	printf("_dual[%d]", cub->box.n_dual);
-	
 	if (cub->box.n_plyr > 0)
-			printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
-	//else
-		//quick_exit // return -1;
-	
+		printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
+	/*//else
+		//quick_exit // return (-1); */
+	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
+			box->xnum + 1);
+	if (!box->xform)
+		return (NULL);
+	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
+	if (!cub->dual)
+		return (NULL);
 	cub = e_mtrx_link(cub, box, map->raw);
 	if (!cub)
 		return (NULL);
-		
 	cub->box.chrs = chrs_builder(cub);
-	
 	return (cub);
 }
