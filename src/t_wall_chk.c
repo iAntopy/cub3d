@@ -6,98 +6,26 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 22:41:04 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:40:35 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	clr_legend_strct(t_cub *cub)
+t_objx	*init_objx(t_cub *cub, t_map *m, int o_cells, int id)
 {
-	printf(":: MID EXIT :: \n\n\n");
-	// while (cub->box.xform[cub->box.xnum])
-	// {
-	// 	if (cub->box.xform[cub->box.xnum])
-	// 	{
-	// 		mlx_delete_texture(cub->box.xform[cub->box.xnum]);			
-	// 	}	
-	// 	printf(":: 1-MID EXIT :: xnum[%d]:: \n", cub->box.xnum);
-	// 	cub->box.xnum--;
-	// 	printf(":: 2-MID EXIT :: xnum[%d]:: \n", cub->box.xnum);
-	// 	free(cub->box.xform[cub->box.xnum]);
-	// }
-	// if (*cub->box.xform)
-	// {
-	// 	free(*cub->box.xform);
-	// 	printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
-	// }
-	// // chk pset		// cub			// t_matrx
-	if (cub->pset[0].xwalls[0])
-		printf(":: MID EXIT :PSET[0]:: xwalls[%p]:: \n", cub->pset[0].xwalls[0]);
-	// chk dual		// cub			// t_matrx
-	if (cub->dual[0].xwalls[0])
-		printf(":: MID EXIT ::DUAL[0] ::xwalls[%p]:: \n", cub->dual[0].xwalls[0]);
-	// chk gset		//box			// t_matrx 
-	// if (cub->objs.instances->gset[0])
-	// 	printf(":: MID EXIT ::OBJS ::instance gset[%p]:: 
-		// \n", cub.objs.instances->gset[0]);
-	// chk objx
-	// if (cub->objs.instances)
-	// 	printf(":: MID EXIT ::OBJS ::instance[%d]:: \n", cub->box.xnum);
-		//	printf("portal ptr : %p\n", cub.objs.instances);
+	t_objx	*objx;
+	char	idx;
+
+	objx = (t_objx *)malloc(sizeof(t_objx) * 1);
+	idx = *ft_substr(cub->box.chrs, o_cells, 1);
+	objx->obj_id = id;
+	objx->name = idx;
+	return (objx);
 }
 
-t_cub *mapx_alt_pos(t_map *m, t_cub *cub, int p_box)
+t_objx	*get_types(t_cub *cub, t_map *m, int head)
 {
-	m->pos_y = 0;
-	while (m->pos_y < m->height)
-	{
-		m->pos_x = 0;
-		while (m->pos_x < m->width)
-		{
-			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), MAP_MCHR);
-			if ( p_box > -1 || p_box == ((int)ft_strlen(cub->box.chrs) - 1))
-			{				
-				if (ft_in_set((m->m[m->pos_y][m->pos_x - 1]), NCHR) != -1)
-					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x - 1];
-				else if (ft_in_set((m->m[m->pos_y + 1][m->pos_x]), NCHR) != -1)
-					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y + 1][m->pos_x];
-				else if (ft_in_set((m->m[m->pos_y - 1][m->pos_x]), NCHR) != -1)
-					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y - 1][m->pos_x];	
-				else if (ft_in_set((m->m[m->pos_y][m->pos_x + 1]), NCHR) != -1)
-					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x + 1];	
-			}
-			m->pos_x++;
-		}
-		m->pos_y++;
-	}
-	return (cub);
-}
-
-
-// t_objx *init_objx(t_cub *cub, t_map *m, int o_cells, int id)
-// {
-	// t_objx *objx;	
-	// char 	idx;
-
-	// objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
-	// idx = *ft_substr(cub->box.chrs, o_cells, 1);
-	// objx->obj_id = id;
-	// objx->name = idx;
-
-// }
-/// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
-t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
-{
-	// t_objx *objx;	
-	// char 	idx;
-	int 	head;
-
-	// objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
-	// idx = *ft_substr(cub->box.chrs, o_cells, 1);
-	// objx->obj_id = id;
-	// objx->name = idx;
-	head = (ft_in_set(idx, (const char *)MAP_MCHR));
 	if (head != -1)
 	{
 		if (head < 4)
@@ -112,12 +40,26 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 			objx->o_type = OBJ_PLAYER;
 		else
 			objx->o_type = OBJ_FLAG;
-		objx->opos[0] = m->pos_x;	
+	}
+	return (objx);
+}
+
+/// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
+t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
+{
+	int	head;
+
+	cub.objx = init_objx(cub, m, o_cells, id);
+	head = (ft_in_set(idx, (const char *)MAP_MCHR));
+	if (head != -1)
+	{
+		objx->o_type = get_types(cub, m, head);
+		objx->opos[0] = m->pos_x;
 		objx->opos[1] = m->pos_y;
-		objx->relativ =  m->raw[o_cells][4];	
-		objx->alleg = m->raw[o_cells][2] - 48; 	
+		objx->relativ = m->raw[o_cells][4];
+		objx->alleg = m->raw[o_cells][2] - 48;
 		if (objx->o_type == OBJ_PLAYER)
-			objx->alleg = ALI_TORRENT;	
+			objx->alleg = ALI_TORRENT;
 	}
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
@@ -126,7 +68,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	}
 	return (objx);
 }
-	
+
 t_map	*check_hero_found(t_map *m)
 {
 	if (m->pos_x <= 0 || m->pos_y <= 0)
@@ -143,8 +85,8 @@ t_map	*check_hero_found(t_map *m)
 
 t_cub	*wall_check(t_cub *cub, t_map *m, t_objx **objx)
 {
-	int		o_cells;
-	int 	id;
+	int	o_cells;
+	int	id;
 
 	id = -1;
 	o_cells = -1;
@@ -160,7 +102,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m, t_objx **objx)
 				m = check_hero_found(m);
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0')
 				m->m[m->pos_y][m->pos_x] = 'A';
-			else if ((o_cells < cub->box.meta - 1 && o_cells > -1) 
+			else if ((o_cells < cub->box.meta - 1 && o_cells > -1)
 				|| o_cells == (int_strlen(cub->box.chrs) - 1))
 				if (++id < cub->box.chrs_len - 1)
 					objx[id] = get_pos(cub, m, o_cells, id);

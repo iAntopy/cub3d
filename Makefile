@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/05 16:51:22 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/06 00:03:57 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,10 +34,12 @@ SRC_FLS	:=		main.c 			\
 			t_map_tool.c 		\
 			t_ref_build.c 		\
 			t_obj_model.c 		\
+			t_obj_model_extend.c	\
 			t_wall_chk.c		\
 			t_empty_line.c		\
 			tex_parse.c			\
 			t_ref_name.c		\
+			t_ref_extend.c		\
 			map_instanciator.c	\
 			draw_threads.c		\
 			object_framework_manager.c		\

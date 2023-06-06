@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 22:40:26 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:50:11 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -563,6 +563,8 @@ void	print_map(t_map *map);
 //map_parse
 t_cub			*wall_check(t_cub *cub,t_map *map, t_objx **objx);
 t_cub			*mapx_alt_pos(t_map *m, t_cub *cub, int p_box);
+t_objx 			*init_objx(t_cub *cub, t_map *m, int o_cells, int id);
+t_objx			*get_types(t_cub *cub, t_map *m, int head);
 
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
@@ -721,6 +723,7 @@ t_omdl			*init_portal_model(t_objs *objs);
 t_omdl			*init_lever_model(t_objs *objs);
 t_omdl			*init_fireball_model(t_objs *objs);
 t_omdl			*init_firepit_model(t_objs *objs);
+t_omdl			*init_flag_model(t_objs *objs);
 
 /// TESTING TXTR_DICT
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);

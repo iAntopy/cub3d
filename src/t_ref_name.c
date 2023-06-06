@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 22:40:30 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:48:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,6 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_dual[%d]", cub->box.n_dual);
 	if (cub->box.n_plyr > 0)
 		printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
-	/*//else
-		//quick_exit // return (-1); */
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
 			box->xnum + 1);
 	if (!box->xform)
@@ -137,3 +135,4 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	cub->box.chrs = chrs_builder(cub);
 	return (cub);
 }
+/*//else		//quick_exit // return (-1); */
