@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 21:45:00 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 00:24:03 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*spc_chk(t_cub *cub, t_map *m, int j)
 	return (line);
 }
 
-static	int	transcribe(t_map *map, int map_offset)
+static int	transcribe(t_map *map, int map_offset)
 {
 	char	**tmp;
 	int		len;
@@ -51,7 +51,7 @@ static	int	transcribe(t_map *map, int map_offset)
 /// map-part of file  >> wall_check
 t_cub	*map_frame(t_map *map, t_cub *cub)
 {
-	t_objx 	**objx;
+	t_objx	**objx;
 	char	**m;
 	int		i;
 	int		q;
@@ -72,7 +72,6 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 		++i;
 	}
 	cub->map.m = m;
-	
 	if (!wall_check(cub, &cub->map, objx))
 		return (NULL);
 	return (cub);
@@ -106,7 +105,7 @@ int	read_whole_file(t_map *map, char *filepath)
 /// parsing autopsy
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
-	int	map_offset;	
+	int	map_offset;
 
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
