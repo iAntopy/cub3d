@@ -12,7 +12,7 @@
 
 #include "../include/cub3d.h"
 
-t_objx	*init_objx(t_cub *cub, int o_cells, int id)
+t_objx	**init_objx(t_cub *cub, int o_cells, int id)
 {
 	t_objx	*objx;
 	char	idx;
