@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/31 22:25:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 22:41:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	cub_player_rotate(t_cub *cub, float rot)
 {
 	obj_rotate(cub, cub->hero.ply_obj, rot);
 	cub->renderer.sky_ori_offset = (int)(cub->hero.ply_obj->ori
-		* cub->renderer.sky_radial_width);
+			* cub->renderer.sky_radial_width);
 	update_rays(cub);
 	cub->renderer.requires_update = 1;
 }
@@ -30,35 +30,7 @@ void	cub_player_move(t_cub *cub, float d_walk, float d_strafe)
 	update_rays(cub);
 	cub->renderer.requires_update = 1;
 }
-/*
-	
-	float	dx;
-	float	dy;
-	int		cx;
-	int		cy;
 
-	if (!d_strafe && !d_walk)
-		return ;
-	dx = (d_walk * (*cub->hero.dirx)) - (d_strafe * (*cub->hero.diry));
-	dy = (d_walk * (*cub->hero.diry)) + (d_strafe * (*cub->hero.dirx));
-	cx = (int)(cub->inv_cw * (cub->hero.ply_obj->px + dx));
-	cy = (int)(cub->inv_cw * (cub->hero.ply_obj->py + dy));
-	if (!get_is_cell_within_bounds(&cub->map, cx, cy))
-		return ;
-	if (is_wall(&cub->map, cx, cy))
-	{
-		cub->hero.ply_obj->px += dx * (cub->hero.ply_obj->cx == cx);
-		cub->hero.ply_obj->py += dy * (cub->hero.ply_obj->cy == cy);
-	}
-	else
-	{
-		cub->hero.ply_obj->px += dx;
-		cub->hero.ply_obj->py += dy;
-	}
-	cub->hero.ply_obj->cx = (int)(cub->inv_cw * cub->hero.ply_obj->px);
-	cub->hero.ply_obj->cy = (int)(cub->inv_cw * cub->hero.ply_obj->py);
-}
-*/
 // Pass some positive/negative increment to zoom in/out by this factor.
 // ex: dz = +0.1 would multiply the current fov by 1.1 (1 + dz)
 // ex: dz = -0.1 would multiply the current fov by 0.9 (1 + dz)

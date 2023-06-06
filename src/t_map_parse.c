@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 01:03:41 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 01:10:18 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,11 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
-	print_collision_map(map);
 	printf("Collisiont check DONE\n");
 	if (instanciate_map_objects(cub) < 0)
 		return (-1);
 	printf("Instanciate DONE\n");
 	return (0);
 }
+	// print_collision_map(map);
 	/* clr_legend_strct(cub); */

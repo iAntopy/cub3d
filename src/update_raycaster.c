@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:10:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 17:54:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 20:20:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,12 @@ static void	raycast_all_vectors(t_rdata *rdata, t_map *map)
 }
 
 // If player moves, rotates or changes fov, call this function.
-void	update_rays(t_cub *cub)
+int	update_rays(t_cub *cub)
 {
 	const float	ply_ori = cub->hero.ply_obj->ori;
 
 	if (!cub->hero.rcast.theta_offs)
-	{
-		init_raycaster(cub);
-		return ;
-	}
-	printf("UPDATE RAYS\n");
+		return (init_raycaster(cub));
 	_mtx_addf_pscalar(cub->hero.rcast.theta_offs, ply_ori,
 		cub->hero.rcast.ray_thetas);
 	mtx_linspace_update(cub->hero.rcast.ray_thetas,
@@ -102,6 +98,7 @@ void	update_rays(t_cub *cub)
 	mtx_cos(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[0]);
 	mtx_sin(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[1]);
 	raycast_all_vectors(cub->hero.rcast.rdata, &cub->map);
+	return (0);
 }
 
 // If Zoom level (fov) changes call this function.
@@ -109,10 +106,10 @@ void	update_rays(t_cub *cub)
 // near_z is the distance from the player to the projection plan.
 // near_proj_factor is a const as long as fov stays the same. Divide this 
 //	factor by the rays length to get draw height.
-void	update_fov(t_cub *cub, float fov)
+int	update_fov(t_cub *cub, float fov)
 {
 	if (!cub->hero.rcast.theta_offs)
-		return ;
+		return (-1);
 	cub->fov = fov;
 	cub->hfov = 0.5f * fov;
 	cub->near_z = (float)cub->scn_midx / tanf(cub->hfov);
@@ -123,5 +120,5 @@ void	update_fov(t_cub *cub, float fov)
 	mtx_linspace_update(cub->hero.rcast.theta_offs, -cub->hfov, cub->hfov, 1);
 	mtx_cos(cub->hero.rcast.theta_offs, cub->hero.rcast.fwd_rayspan);
 	_mtx_ridivf_pscalar(1.0f, cub->hero.rcast.fwd_rayspan);
-	update_rays(cub);
+	return (update_rays(cub));
 }

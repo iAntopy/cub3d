@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:52:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/26 21:05:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:04:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,34 +29,11 @@ int	get_is_cell_within_bounds(t_map *map, int cx, int cy)
 	return ((0 <= cx) && (cx < map->width) && (0 <= cy) && (cy < map->height));
 }
 
-// DO NOT include in release
-void	print_collision_map(t_map *map)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < map->height)
-	{
-		j = -1;
-		while (++j < map->width)
-		{
-			if (is_wall(map, j, i))
-				printf("1");
-			else
-				printf("0");
-		}
-		printf("\n");
-	}
-}
-
 int	build_collision_map(t_map *map)
 {
 	char	*colls;
 	int		i;
 	int		j;
-
-	printf("build_collision_map started \n");
 
 	colls = NULL;
 	if (!ft_malloc_p(sizeof(char) * map->width * map->height, (void **)&colls))
@@ -66,8 +43,7 @@ int	build_collision_map(t_map *map)
 	{
 		j = -1;
 		while (++j < map->width)
-			colls[i * map->width + j] = (ft_strchr(MAP_UCHR, map->m[i][j]) != NULL);//(map->m[i][j] == '1'
-					//|| map->m[i][j] == '\0');
+			colls[i * map->width + j] = !!ft_strchr(MAP_UCHR, map->m[i][j]);
 	}
 	map->collision_map = colls;
 	return (0);
@@ -96,6 +72,5 @@ int	build_grid_coords_map(t_map *map)
 		}
 	}
 	map->grid_coords = gcoords;
-	printf("map->grid_coords : %p\n", map->grid_coords);
 	return (0);
 }
