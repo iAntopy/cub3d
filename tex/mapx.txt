@@ -30,7 +30,6 @@ tex/ext/outer_floor.png
 tex/ext/lib_init.png
 tex/ext/lib_cap.png
 tex/ext/
-tex/ext/
 ///									NEW			SpellRoom
 tex/ext/outer_floor.png
 tex/ext/acid_ray.png
@@ -44,6 +43,9 @@ tex/ext/space_Xwall.png
 tex/ext/s_ceilin_.png
 tex/ext/ult_wall.png
 tex/ext/travel_wall.png
+tex/ext/linear_wall.png
+tex/ext/path_celing.png
+tex/ext/
 
 ////								OLD 
 tex/ext/d_tex.png
