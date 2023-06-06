@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 01:09:30 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:49:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@
 # define NB_DRAW_THREADS 6
 
 # define PROJ_COLOR 0xffbcbbb0
-# define TRANSPARENCY 0xcfffffff
+# define TRANSPARENCY 0xafffffff
 
 
 # define NB_OBJ_TYPES 5

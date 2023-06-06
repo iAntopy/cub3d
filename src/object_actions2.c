@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:08:21 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:43:28 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:10:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 		prtl = (t_oinst *)obj->relative;
 		if (!prtl)
 			return (-1);
-		if (obj->counter > 600)
+		if (obj->counter > 800)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;

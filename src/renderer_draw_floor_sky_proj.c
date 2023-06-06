@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 00:32:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:09:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)
 		{
 			if (sp.isproj[i] && !sp.dpbuff[i])
 				*pb = ((uint32_t *)cub->tex.skymap->pixels)[*tp
-					+ (*sp.soffy) * cub->tex.skymap->width] & 0xafffffff;
+					+ (*sp.soffy) * cub->tex.skymap->width] & TRANSPARENCY;
 			++tp;
 			++pb;
 		}
