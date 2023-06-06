@@ -106,7 +106,9 @@ int	read_whole_file(t_map *map, char *filepath)
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int	map_offset;
+	t_matrx	**mx;
 
+	mx = NULL;
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
@@ -115,7 +117,8 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	map_offset = cub->box.xnum + cub->box.meta + cub->box.pset - 1;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
-	*map->mx = init_mx(map);
+	mx = init_mx(map);
+	map->mx = &mx;
 	if (!map_frame(map, cub) || !mapx_builder(map, cub))
 		return (-1);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)

@@ -566,7 +566,7 @@ void			print_map(t_map *map);
 //map_parse
 t_cub			*wall_check(t_cub *cub,t_map *map, t_objx **objx);
 t_cub			*mapx_alt_pos(t_map *m, t_cub *cub, int p_box);
-t_objx 			**init_objx(t_cub *cub, int o_cells, int id);
+t_objx 			*init_objx(t_cub *cub, int o_cells, int id);
 int				get_types(t_objx *objx, int head);
 
 t_map			*init_map(t_map *map);

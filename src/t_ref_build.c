@@ -92,7 +92,7 @@ t_matrx	**init_mx(t_map *m)
 	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
 	while (++k < m->height)
 		m->mx[k] = (t_matrx **)calloc(sizeof(t_matrx *), m->width);
-	return (*m->mx);
+	return (m->mx);
 }
 
 /// MAPX BUILDER
