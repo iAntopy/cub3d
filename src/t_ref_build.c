@@ -84,7 +84,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	return (cub);
 }
 
-t_matrx	**init_mx(t_map *m)
+t_matrx	***init_mx(t_map *m)
 {
 	int	k;
 
