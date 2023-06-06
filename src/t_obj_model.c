@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 00:23:40 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 01:03:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,19 @@ t_omdl	*init_portal_model(t_objs *objs)
 		return (NULL);
 	objs->portal.model_name = "portal";
 	objs->portal.type_enum = OBJ_PORTAL;
-	printf("INIT OBJ_PORTAL type struct with portal.type_enum = %d\n",
-		objs->portal.type_enum);
 	objs->portal.is_drawable = 1;
 	objs->portal.is_oriented = 0;
 	objs->portal.is_solid = 0;
 	objs->portal.nb_texs = 4;
 	objs->portal.draw_offy = 0;
-	objs->portal.gsets[0] = gset_builder("tex/gset_p/", objs->portal.nb_texs);
+	objs->portal.gsets[0] = gset_builder("tex/gset_p/",
+			objs->portal.nb_texs);
 	if (!objs->portal.gsets[0])
 		return (ft_eprintf("PORTAL GSET failed to load !\n"), NULL);
 	tex = objs->portal.gsets[0]->xwalls[0];
 	objs->portal.width = CELL_WIDTH;
 	objs->portal.half_w = objs->portal.width >> 1;
-	objs->portal.height = (int)(objs->portal.width * (tex->height
+	objs->portal.height = (int)(objs->portal.width *(tex->height
 				/ (float)tex->width));
 	objs->portal.half_h = objs->portal.height >> 1;
 	objs->portal.proj_width = (int)(objs->portal.width * 0.7);
@@ -101,8 +100,7 @@ t_omdl	*init_lever_model(t_objs *objs)
 	objs->lever.is_drawable = 0;
 	objs->lever.is_oriented = 0;
 	objs->lever.nb_texs = 2;
-	objs->lever.gsets[0] = gset_builder("tex/gset_lev/",
-			objs->lever.nb_texs);
+	objs->lever.gsets[0] = gset_builder("tex/gset_lev/", objs->lever.nb_texs);
 	if (!objs->lever.gsets[0])
 		return (NULL);
 	tex = objs->lever.gsets[0]->xwalls[0];

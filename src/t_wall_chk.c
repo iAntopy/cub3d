@@ -6,13 +6,13 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 23:40:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 01:01:07 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-t_objx	*init_objx(t_cub *cub, t_map *m, int o_cells, int id)
+t_objx	*init_objx(t_cub *cub, int o_cells, int id)
 {
 	t_objx	*objx;
 	char	idx;
@@ -24,7 +24,7 @@ t_objx	*init_objx(t_cub *cub, t_map *m, int o_cells, int id)
 	return (objx);
 }
 
-t_objx	*get_types(t_cub *cub, t_map *m, int head)
+int	get_types(t_objx *objx, int head)
 {
 	if (head != -1)
 	{
@@ -41,19 +41,20 @@ t_objx	*get_types(t_cub *cub, t_map *m, int head)
 		else
 			objx->o_type = OBJ_FLAG;
 	}
-	return (objx);
+	return (objx->o_type);
 }
 
 /// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
 t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 {
-	int	head;
+	int		head;
+	t_objx	*objx;
 
-	cub.objx = init_objx(cub, m, o_cells, id);
-	head = (ft_in_set(idx, (const char *)MAP_MCHR));
+	objx = init_objx(cub, o_cells, id);
+	head = (ft_in_set(objx->name, (const char *)MAP_MCHR));
 	if (head != -1)
 	{
-		objx->o_type = get_types(cub, m, head);
+		objx->o_type = get_types(objx, head);
 		objx->opos[0] = m->pos_x;
 		objx->opos[1] = m->pos_y;
 		objx->relativ = m->raw[o_cells][4];

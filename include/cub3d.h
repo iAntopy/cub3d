@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 23:50:11 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 00:48:19 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -428,6 +428,7 @@ typedef struct s_drawable_objects
 	t_omdl	fireball;//	Fireball object model;
 	t_omdl	firepit;//	Fireball generator obj;
 	t_omdl	firepet;//	Fireball generator obj;
+	t_omdl	flag;//		Flag generator obj;
 	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
 	//t_oclct	*collectibles;
 	//t_oenmi	*ennemies;
@@ -554,17 +555,17 @@ typedef struct s_cub3d_core_data
 }	t_cub;
 
 //int	load_map(t_cub *cub, char *map_file);
-int		build_collision_map(t_map *map);
-void	print_collision_map(t_map *map);
-int		build_grid_coords_map(t_map *map);
-void	print_map(t_map *map);
+int				build_collision_map(t_map *map);
+void			print_collision_map(t_map *map);
+int				build_grid_coords_map(t_map *map);
+void			print_map(t_map *map);
 
 /// MAP_CHECKER ///////////////
 //map_parse
 t_cub			*wall_check(t_cub *cub,t_map *map, t_objx **objx);
 t_cub			*mapx_alt_pos(t_map *m, t_cub *cub, int p_box);
-t_objx 			*init_objx(t_cub *cub, t_map *m, int o_cells, int id);
-t_objx			*get_types(t_cub *cub, t_map *m, int head);
+t_objx 			*init_objx(t_cub *cub, int o_cells, int id);
+int				get_types(t_objx *objx, int head);
 
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);

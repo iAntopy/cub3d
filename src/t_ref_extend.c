@@ -6,39 +6,39 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 23:47:00 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 00:57:24 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	clr_legend_strct(t_cub *cub)
-{
-	printf(":: MID EXIT :: \n\n\n");
-	while (cub->box.xform[cub->box.xnum])
-	{
-		if (cub->box.xform[cub->box.xnum])
-		{
-			mlx_delete_texture(cub->box.xform[cub->box.xnum]);
-		}
-		cub->box.xnum--;
-		free(cub->box.xform[cub->box.xnum]);
-	}
-	if (*cub->box.xform)
-	{
-		free(*cub->box.xform);
-		printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
-	}
-	if (cub->pset[0].xwalls[0])
-		printf(":: MID EXIT :PSET[0]:: xwalls[%p]:: \n",
-			cub->pset[0].xwalls[0]);
-	if (cub->dual[0].xwalls[0])
-		printf(":: MID EXIT ::DUAL[0] ::xwalls[%p]:: \n",
-			cub->dual[0].xwalls[0]);
-	if (cub->objs.instances->gset[0])
-		printf(":: MID EXIT ::OBJS ::instance gset[%p]::\n",
-			cub.objs.instances->gset[0]);
-}
+// void	clr_legend_strct(t_cub *cub)
+// {
+// 	printf(":: MID EXIT :: \n\n\n");
+// 	while (cub->box.xform[cub->box.xnum])
+// 	{
+// 		if (cub->box.xform[cub->box.xnum])
+// 		{
+// 			mlx_delete_texture(cub->box.xform[cub->box.xnum]);
+// 		}
+// 		cub->box.xnum--;
+// 		free(cub->box.xform[cub->box.xnum]);
+// 	}
+// 	if (*cub->box.xform)
+// 	{
+// 		free(*cub->box.xform);
+// 		printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
+// 	}
+// 	if (cub->pset[0].xwalls[0])
+// 		printf(":: MID EXIT :PSET[0]:: xwalls[%p]:: \n",
+// 			cub->pset[0].xwalls[0]);
+// 	if (cub->dual[0].xwalls[0])
+// 		printf(":: MID EXIT ::DUAL[0] ::xwalls[%p]:: \n",
+// 			cub->dual[0].xwalls[0]);
+// 	// if (cub->objs.instances->gset[0])
+// 	// 	printf(":: MID EXIT ::OBJS ::instance gset[%p]::\n",
+// 	// 		cub.objs.instances->gset[0]);
+// }
 
 void	p_list_objx(t_objx **objx, int id, int num)
 {

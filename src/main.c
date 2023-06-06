@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/04 21:20:33 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 00:53:42 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int	main(int argc, char **argv)
 /////// END OF DEBUG SECTION
 */
 
-	// p_list_objx(cub.box.objx, 3, 0);
+	p_list_objx(cub.box.objx, 3, 0);
 /*
 	if (!cub.objs.portal.gset)
 		init_portal_model(&cub.objs);
@@ -190,6 +190,7 @@ int	main(int argc, char **argv)
 
 	cub_setup_mlx_hooks_and_settings(&cub);
 	printf("Party time babyyyyy !\n");
+
 	mlx_loop(cub.mlx);
 	ft_free_p((void **)&cub.box.chrs);
 	if (mlx_errno)
