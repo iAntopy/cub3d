@@ -104,7 +104,7 @@ static void	__obj_lever_check_if_pressed(t_oinst *obj, t_cub *cub)
 
 int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 {
-	// t_oinst	*prtl;
+	t_oinst	*prtl;
 
 	if (obj->isactive)
 	{
