@@ -1,0 +1,25 @@
+! 3/<
+< 3/>
+> 3/<
+a tex/ext/travel_wall.png
+b tex/ext/ult_wall.png
+c tex/ext/ult_wall.png
+z tex/ext/sky_star.png
+0 tex/ext/horz_floor.png tex/ext/bay_window_.png
+1 tex/ext/s_floor.png tex/ext/s_ceilin_.png
+
+A ccbc
+B caba
+
+AAAAAAAAAAAAAAAAAAAAA
+A11>11111111!1111@11A
+AAAAAAAAAAAAAAB11111B
+              A11111A
+              B11111B
+              B00000A
+              A00000A
+              A00000B
+              B00000A
+              B00<00A
+              A00000B
+              BBABABB
