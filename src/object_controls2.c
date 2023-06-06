@@ -6,28 +6,25 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 23:02:12 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/01 20:43:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 22:39:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-/*
-void    obj_move_towards(t_oinst *obj, t_oinst *target, float velocity)
-{
-    float   delta[2];
 
-    delta[0] = target->px; - obj->px;
-    delta[1] = target->py; - obj->py;
-
-        
-}
-*/
-/*
-void    obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy)
+int	next_obj(t_oinst **obj_p)
 {
-    if (!obj)
-        return ;
-    obj->dx = dx;
-    obj->dy = dy;
+	*obj_p = (*obj_p)->next;
+	return (1);
 }
-*/
+
+void	obj_look_at(t_oinst *obj, t_oinst *target)
+{
+	float	dist;
+
+	find_vector_delta(&obj->px, &target->px, &obj->dx);
+	normalize_vec2(&obj->dx, &dist);
+	obj->ori = atan2(obj->dy, obj->dx);
+	if (obj->ori < 0)
+		obj->ori += M_TAU;
+}

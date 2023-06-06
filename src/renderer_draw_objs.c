@@ -6,17 +6,11 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/02 18:43:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 20:24:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int next_obj(t_oinst **obj_p)
-{
-	*obj_p = (*obj_p)->next;
-	return (1);
-}
 
 static int	prtl_proj_init_single_vect(t_pdata *pd, t_rdata *rd, t_oinst *obj, t_oinst *link)
 {
@@ -152,7 +146,7 @@ void	__render_proj_walls(t_cub *cub)
 	i = pframe[0] - 1;
 	while (++i < pframe[2])
 	{
-		pd = cub->hero.rcast.prtl_proj + i;
+		pd = cub->hero.rcast.pdata + i;
 //		++pbuff;
 		pb = pbuff + i;// - SCN_WIDTH;
 		
@@ -453,7 +447,7 @@ void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pf
 			dims[1] -= (loffs[3] - pframe[3]);
 			loffs[3] = pframe[3];
 		}
-		__render_proj_obj(cub, odist, tex, cub->hero.rcast.prtl_proj, dims, loffs, toffs, tincrs);
+		__render_proj_obj(cub, odist, tex, cub->hero.rcast.pdata, dims, loffs, toffs, tincrs);
 		obj = obj->next;
 	}
 }
@@ -642,7 +636,7 @@ void	render_objects(t_cub *cub)
 			loffs[3] = SCN_HEIGHT;
 		}
 
-		if (obj->type->type_enum == OBJ_PORTAL && obj->isactive)
+		if (obj_get_type(obj) == OBJ_PORTAL && obj->isactive)
 		{
 //			printf("RENDERING PORTAL OBJECT WITH PROJ! from start %d to end %d\n", loffs[0], loffs[2]);
 			
@@ -674,10 +668,10 @@ void	render_objects(t_cub *cub)
 //			ft_deltatime_usec_note(NULL);
 			__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels, cub->renderer.isproj, pframe, pdims);
 //			ft_deltatime_usec_note("__label_isproj time");
-			prtl_proj_vectors(cub->hero.rcast.prtl_proj, &cub->map, obj, cub->renderer.pframe);
+			prtl_proj_vectors(cub->hero.rcast.pdata, &cub->map, obj, cub->renderer.pframe);
 			order_draw_call(cub->draw_threads, 3, 6);
-//			__render_proj_objects(cub);//, obj, cub->hero.rcast.prtl_proj, pframe);
-//			__render_proj_walls(cub);//, cub->hero.rcast.prtl_proj, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
+//			__render_proj_objects(cub);//, obj, cub->hero.rcast.pdata, pframe);
+//			__render_proj_walls(cub);//, cub->hero.rcast.pdata, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
 //			__render_proj_floor(cub);
 		}
 		else

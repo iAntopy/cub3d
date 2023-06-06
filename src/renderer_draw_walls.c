@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/03 00:49:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:11:51 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 	mlx_texture_t	*tex;
 	int				tex_start_x;
 
-//	printf("tex at cell (%d, %d), side : %d : tex : %p\n", rd->cx, rd->cx, rd->side,
-//		cub->map.mx[rd->cy][rd->cx]->xwalls[rd->side]);
-
 	tex = cub->map.mx[rd->cy][rd->cx]->xwalls[rd->side];
-	//printf("map coord : (%d, %d), tex : %p, side : %d, pset ptr : %p\n", rd->cx, rd->cy, tex, rd->side, cub->map.mx[rd->cy][rd->cx]);
 	*tw = tex->width;
 	rc->half_texh = (tex->height >> 1);
 	tex_start_x = (int)(rd->tex_ratio * tex->width);
@@ -40,14 +36,12 @@ void	render_walls(t_cub *cub)
 	t_rcol		rc;
 	uint32_t	*pxls;
 	int			tex_width;
-	t_rdata		*rd;
 
-	rd = cub->hero.rcast.rdata;
 	clear_image_buffer(cub->renderer.walls_layer);
 	i = -1;
 	while (++i < SCN_WIDTH)
 	{
-		pxls = init_wcol(cub, rd + i, &rc, &tex_width);
+		pxls = init_wcol(cub, cub->hero.rcast.rdata + i, &rc, &tex_width);
 		j = -1;
 		while (++j < rc.scn_height)
 			cub_put_pixel(cub->renderer.walls_layer, i, rc.scn_start_y + j,

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/30 18:38:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 20:03:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	init_renderer(t_cub *cub)
 	cub->map.mmp_mid[1] = MMP_HEIGHT >> 1;
 	cub->map.mmp_ply_off[0] = cub->map.mmp_mid[0] - 5;//
 	cub->map.mmp_ply_off[1] = cub->map.mmp_mid[1] - 5;// = MMP_HEIGHT >> 1;
-	cub->map.map_to_world_x_rt = CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
-	cub->map.world_to_map_x_rt = 1.0f / cub->map.map_to_world_x_rt;//CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
-	cub->map.map_to_world_y_rt = CELL_WIDTH * 10.0f / (float)MMP_HEIGHT;
-	cub->map.world_to_map_y_rt = 1.0f / cub->map.map_to_world_y_rt;//CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
+	cub->map.map_wld_x_rt = CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
+	cub->map.wld_map_x_rt = 1.0f / cub->map.map_wld_x_rt;//CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
+	cub->map.map_wld_y_rt = CELL_WIDTH * 10.0f / (float)MMP_HEIGHT;
+	cub->map.wld_map_y_rt = 1.0f / cub->map.map_wld_y_rt;//CELL_WIDTH * 10.0f / (float)MMP_WIDTH;
 //	if (!ft_malloc_p(2 * sizeof(float) * SCN_WIDTH * SCN_HEIGHT,
 //			(void **)&cub->renderer.dbuff))// 2 rendering depth buffers. 1st: world, 2nd: portal projection.
 //		return (-1);

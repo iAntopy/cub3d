@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/03 16:54:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:53:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.type_enum = OBJ_FIREBALL;
 	objs->fireball.is_drawable = 1;
 	objs->fireball.is_oriented = 0;
-	objs->player.is_solid = 0;
+	objs->fireball.is_solid = 0;
 	objs->fireball.nb_texs = 4;
 	objs->fireball.draw_offy = 0;
 	objs->fireball.gsets[0] = gset_builder("tex/gset_fb/", objs->fireball.nb_texs);
@@ -179,7 +179,7 @@ t_omdl	*init_firepit_model(t_objs *objs)
 	objs->firepit.type_enum = OBJ_FIREPIT;
 	objs->firepit.is_drawable = 1;
 	objs->firepit.is_oriented = 0;
-	objs->player.is_solid = 1;
+	objs->firepit.is_solid = 1;
 	objs->firepit.nb_texs = 4;
 	objs->firepit.draw_offy = 20;
 

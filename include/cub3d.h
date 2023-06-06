@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 16:31:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:54:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mtxlib/includes/mtxlib.h"
+
+# define DEBUG 1
 
 # define SCN_WIDTH  1024
 # define SCN_HEIGHT 780
@@ -204,10 +206,10 @@ typedef struct s_map_data
 	// minimap data
 	int		mmp_mid[2];
 	int		mmp_ply_off[2];
-	float	map_to_world_x_rt;
-	float	world_to_map_x_rt;
-	float	map_to_world_y_rt;
-	float	world_to_map_y_rt;
+	float	map_wld_x_rt;
+	float	wld_map_x_rt;
+	float	map_wld_y_rt;
+	float	wld_map_y_rt;
 
 	// Germain specific Stuff
 
@@ -319,7 +321,7 @@ typedef struct s_raycaster_data
 	t_mtx		*fwd_rayspan;// sin of all theta_offs. updated in update_fov.
 	t_mtx		*rays[2];// X, Y part for each ray vector. index 0 are Xs, 1 are Ys Malloced mtx.
 	t_rdata		*rdata;//	malloced array of struct with collision data. len SCR_WIDTH
-	t_pdata		*prtl_proj;//	idem but used excusively for raycasting portal projections
+	t_pdata		*pdata;//	idem but used excusively for raycasting portal projections
 }	t_rcast;
 
 typedef struct s_draw_thread_profil
@@ -583,6 +585,7 @@ size_t len, unsigned int idx);
 
 t_cub			path_from_line(t_cub cub);
 int				instanciate_map_objects(t_cub *cub);
+float			objx_get_side_ori(t_objx *ob);
 
 /// COLOR PARSE ////////////
 int				str_to_color(int r, int g, int b, int t);
@@ -607,10 +610,11 @@ void			on_cursor_move(double xpos, double ypos, void *param);
 /// RAYCASTER /////////////////
 int				init_raycaster(t_cub *cub);
 int				raycaster_clear(t_rcast *rcast, int exit_status);
-void			update_rays(t_cub *cub);
-void			update_fov(t_cub *cub, float fov);
+int				update_rays(t_cub *cub);
+int				update_fov(t_cub *cub, float fov);
 int				is_wall(t_map *map, int cx, int cy);
 int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
+float			*get_grid_coords(t_map *map, int cx, int cy);
 //float	*get_grid_coords(t_map *map, int cx, int cy);
 
 /// RENDERER /////////////////
@@ -653,7 +657,8 @@ void			stop_draw_threads(t_thdraw *threads);
 /// OBJECT MANAGEMENT SYSTEM ////////
 int				get_new_obj_id(void);
 int				obj_get_type(t_oinst *obj);
-int				obj_get_issolide(t_oinst *obj);
+int 			obj_get_width(t_oinst *obj);
+int				obj_get_issolid(t_oinst *obj);
 int				obj_get_isactive(t_oinst *obj);
 t_oinst			*get_obj(t_cub *cub, int id);
 int 			*obj_type_alleg(int type, int alleg);
@@ -668,6 +673,7 @@ int				link_portal_instances(t_oinst *prtl1, t_oinst *prtl2);
 int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);
 int				link_fireball_to_target(t_oinst *fball, t_oinst *target);
 int				link_firepit_to_target(t_oinst *fball, t_oinst *target);
+
 
 /// OBJECT INSTANCIATOR (DO NOT USE DIRECTELY ! USE create_obj_instance())
 int				create_spawnp_instance(t_cub *cub, float *pos, int allegiance);
@@ -684,6 +690,8 @@ void			obj_rotate(t_cub *cub, t_oinst *obj, float rot);
 void			obj_set_orientation(t_cub *cub, t_oinst *obj, float ori);
 void		    obj_set_position(t_cub *cub, t_oinst *obj, float px, float py);
 void   			obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy);
+void			obj_look_at(t_oinst *obj, t_oinst *target);
+void			manage_collisions(t_cub *cub, t_oinst *ply, float *mv);
 
 
 /// OBJECT ACTIVATION FUNCS /////////
@@ -759,6 +767,8 @@ void			mlx_update_mmap(t_cub *cub, t_map *m);
 /// UTILS
 int				get_cell(float px, float py, int *cx, int *cy);
 float			normalize_vec2(float *v, float *dist_p);
+int				next_obj(t_oinst **obj_p);
+void			find_vector_delta(float *from_, float *to_, float *res);
 
 /// MINIMAP FUNCS
 void			update_minimap(t_cub *cub);

@@ -6,13 +6,14 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/05 16:25:00 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/05 23:12:36 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
 SRC_FLS	:=		main.c 			\
 			event_handlers.c	\
+			event_handlers2.c	\
 			error_handling.c 	\
 			error_handling2.c 	\
 			init_raycaster.c	\
@@ -20,7 +21,7 @@ SRC_FLS	:=		main.c 			\
 			sky_caster.c		\
 			update_raycaster.c	\
 			renderer.c			\
-			renderer_draw_funcs.c	\
+			renderer_draw_walls.c	\
 			renderer_draw_floor.c	\
 			renderer_draw_floor_sky_proj.c	\
 			renderer_draw_objs.c	\
@@ -30,7 +31,6 @@ SRC_FLS	:=		main.c 			\
 			t_color_shift.c		\
 			t_color_creat.c 	\
 			t_map_parse.c 		\
-			t_minimap.c			\
 			t_minimap2.c		\
 			t_map_tool.c 		\
 			t_ref_build.c 		\
@@ -40,6 +40,7 @@ SRC_FLS	:=		main.c 			\
 			tex_parse.c			\
 			t_ref_name.c		\
 			map_instanciator.c	\
+			map_instanciator_utils.c	\
 			draw_threads.c		\
 			object_framework_manager.c		\
 			object_deleters_and_getter.c	\
@@ -50,8 +51,12 @@ SRC_FLS	:=		main.c 			\
 			object_actions2.c	\
 			object_linkers.c	\
 			object_instanciators.c	\
+			object_instanciators2.c	\
+			spawnpoint_funcs.c		\
 			simple_vector_funcs.c	\
-			object_utils.c
+			object_utils.c			\
+			collision_managment.c
+
 
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 16:06:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 19:24:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 	mlx_texture_t	*tex;
 	t_oinst			*link;
 
-	if (obj->type->type_enum != OBJ_PORTAL)
+	if (obj_get_type(obj) != OBJ_PORTAL)
 		return (report_obj_err(obj, "ACTIVATION FAILED : not a portal obj.\n"));
 	else if (new_state >= 2)
 		return (report_obj_err(obj, "ACTIVATION FAILED : invalid state.\n"));
@@ -27,8 +27,6 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 	{
 		obj->isactive = 0;
 		obj->tex_idx = 0;
-		tex = obj->gset->xwalls[0];
-		obj->type->height = obj->type->width * (tex->height / tex->width);
 		activate_portal(link, 0);
 	}
 	else if (!obj->isactive && new_state == 1)
@@ -37,20 +35,18 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 			return (ft_eprintf("Cannot activate portal without a link\n"), -1);
 		obj->isactive = 1;
 		obj->tex_idx = obj->alleg;
-		tex = obj->gset->xwalls[obj->alleg];
-		obj->type->height = obj->type->width * (tex->height / tex->width);
 		activate_portal(link, 1);
 	}
-	else
-		return (-1);
-	return (0);
+	tex = obj->gset->xwalls[obj->tex_idx];
+	obj->type->height = obj_get_width(obj) * (tex->height / tex->width);
+	return (-obj_get_isactive(obj));
 }
 
 int	activate_fireball(t_oinst *obj, int new_state, t_oinst *target)
 {
-	if (obj->type->type_enum != OBJ_FIREBALL)
-		return (report_err("Trying to activate firepit but obj is not firepit."));
-	if (new_state && target && target->type->type_enum == OBJ_PLAYER)
+	if (obj_get_type(obj) != OBJ_FIREBALL)
+		return (report_err("Try activate fireball but is not fireball."));
+	if (new_state && target && obj_get_type(target) == OBJ_PLAYER)
 		target->relative = target;
 	obj->isactive = new_state;
 	return (0);
@@ -58,64 +54,10 @@ int	activate_fireball(t_oinst *obj, int new_state, t_oinst *target)
 
 int	activate_firepit(t_oinst *obj, int new_state, t_oinst *target)
 {
-	if (obj->type->type_enum != OBJ_FIREPIT)
-		return (report_err("Trying to activate firepit but obj is not firepit."));
-	if (new_state && target && target->type->type_enum == OBJ_PLAYER)
+	if (obj_get_type(obj) != OBJ_FIREPIT)
+		return (report_err("Try activate firepit but is not firepit."));
+	if (new_state && target && obj_get_type(target) == OBJ_PLAYER)
 		target->relative = target;
 	obj->isactive = new_state;
-	return (0);
-}
-
-int	set_playable_obj(t_cub *cub, t_oinst *player)
-{
-	if (!cub || !player)
-		return (report_err("set_playable_object : missing inputs."));
-	cub->hero.ply_obj = player;
-	init_raycaster(cub);
-	init_rdata_consts(cub, &cub->hero.rcast,
-		cub->hero.rcast.rdata, cub->hero.rcast.prtl_proj);
-	update_rays(cub);
-	cub->renderer.requires_update = 1;
-	return (0);
-}
-
-int	spawn_new_player(t_oinst *spawnp, int is_playable)
-{
-	t_cub	*cub;
-	t_oinst	*player;
-	int		id;
-	float	pos[2];
-
-	if (!spawnp || spawnp->type->type_enum != OBJ_SPAWNPOINT)
-		return (-1);
-	cub = (t_cub *)spawnp->relative;
-	if (cub->nb_players >= MAX_PLAYERS)
-		return (-1);
-	pos[0] = spawnp->px;
-	pos[1] = spawnp->py;
-	id = create_player_instance(cub, pos, spawnp->alleg, spawnp);
-	if (id < 0)
-		return (-1);
-	player = get_obj(cub, id);
-	cub->player_ids[cub->nb_players++] = id;
-	if (is_playable)
-		set_playable_obj(cub, player);
-	return (id);
-}
-
-// Set player position to its currently set spawnpoint.
-int	respawn_player(t_oinst *player)
-{
-	t_cub	*cub;
-	t_oinst	*spawnp;
-	
-	if (!player || player->type->type_enum != OBJ_PLAYER)
-		return (report_err("Trying to respawn none-player type."));
-	spawnp = (t_oinst *)player->spawnpoint;
-	cub = (t_cub *)spawnp->relative;
-	obj_set_position(cub, player, spawnp->px, spawnp->py);
-	if (player == cub->hero.ply_obj)
-		update_rays(cub);
-	cub->renderer.requires_update = 1;
 	return (0);
 }

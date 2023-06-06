@@ -6,20 +6,11 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 16:28:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:30:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	on_close(void *param)
-{
-	t_cub	*cub;
-
-	cub = (t_cub *)param;
-	printf("CLOSE REQUEST RECEIVED !\n");
-	mlx_close_window(cub->mlx);
-}
 
 void	on_keypress(mlx_key_data_t event, void *param)
 {
@@ -29,47 +20,12 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	cub = (t_cub *)param;
 	if (event.action != MLX_PRESS)
 		return ;
-//	(void)cub;
 	if (event.key == MLX_KEY_SPACE)
 	{
-//		obj = cub->objs.instances;
-//		while (obj)
-//		{
-//			if (obj->type->type_enum == OBJ_SPAWNPOINT)
-//				break ;
-//			obj = obj->next;
-//		}
 		obj = cub->hero.ply_obj->spawnpoint;
 		if (obj)
 			spawn_new_player(obj, 1);
 	}
-	if (event.key == MLX_KEY_ENTER)
-	{
-		obj = cub->objs.instances;
-		while (obj)
-		{
-			if (obj_get_type(obj) == OBJ_PORTAL)
-				break ;
-			obj = obj->next;
-		}
-		if (obj)
-			set_playable_obj(cub, obj);
-
-	}
-	/*
-	obj = cub->objs.instances;
-	if (event.key == MLX_KEY_SPACE && obj && obj->next)
-	{
-		obj = cub->objs.instances;
-		while (obj->type->type_enum != OBJ_PORTAL)
-			obj = obj->next;
-		activate_portal(obj, (obj->isactive)
-			? (0): (1));
-		activate_portal(obj->next, (obj->isactive)
-			? (0): (1));
-	}
-	cub->renderer.requires_update = 1;
-*/
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
 	else if (event.key == MLX_KEY_LEFT)
@@ -80,20 +36,6 @@ void	on_keypress(mlx_key_data_t event, void *param)
 		cub_player_zoom(cub, -0.1);
 	else if (event.key == MLX_KEY_DOWN)
 		cub_player_zoom(cub, 0.1);
-/*
-*/
-}
-
-void	on_scroll(double deltax, double deltay, void *param)
-{
-	t_cub	*cub;
-
-	(void)deltax;
-	cub = (t_cub *)param;
-	if (deltax)
-		cub_player_zoom(cub, deltax * 0.1f);
-	else
-		cub_player_zoom(cub, deltay * 0.1f);
 }
 
 void	on_cursor_move(double xpos, double ypos, void *param)
@@ -136,7 +78,7 @@ static void	on_update_keypressed(t_cub *cub)
 	if (kp[0] || kp[1] || *(size_t *)(kp + 2))
 		cub_player_move(cub, (kp[0] * (kp[0] + kp[8]) - kp[1] * (kp[1] + kp[8]))
 			* 100 * cub->mlx->delta_time,
-		(kp[3] * (kp[3] + kp[8]) - kp[2] * (kp[2] + kp[8]))
+			(kp[3] * (kp[3] + kp[8]) - kp[2] * (kp[2] + kp[8]))
 			* 100 * cub->mlx->delta_time);
 	if (*((size_t *)(kp + 4)))
 		cub_player_rotate(cub, (kp[5] - kp[4]) * 1.0f * cub->mlx->delta_time);
@@ -146,40 +88,16 @@ static void	on_update_keypressed(t_cub *cub)
 
 void	on_update(t_cub *cub)
 {
-//	static const float	incr = 0.1f;
-//	static int			counter;
-//	static ssize_t	delta_time;
-
-//	delta_time = ft_deltatime_usec();
-//	ft_printf("delta_time : %d\n", (int)delta_time);
-//	if (delta_time < 50000)
-//	{
-	
-//	cub->objs.instances->next->px += 2.0f * cosf((counter++) * incr);
-//	ft_deltatime_usec_note(NULL);
 	commit_all_obj_actions(cub);
-//	ft_deltatime_usec_note("Time for commit actions \n");
-//	cub->renderer.requires_update = 1;
-//	}
-//	else
-//		delta_time = 0;
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
-		ft_deltatime_usec_note(NULL);
-		// printf("wow");
-//		printf("player pos : (%.2f, %.2f)\n", cub->hero.ply_obj->px, cub->hero.ply_obj->py);
-
+		if (DEBUG)
+			ft_deltatime_usec_note(NULL);
 		update_minimap(cub);
 		order_draw_call(cub->draw_threads, 0, 3);
-//		printf("drawing walls\n");
-//		render_walls(cub);//, cub->hero.rcast.rdata);
-		// printf("drawing floor\n");
-//		render_floor_sky(cub);//, cub->hero.rcast.rdata);
-//		render_objects(cub);//, cub->hero.rcast.rdata);//, cub->hero.rcast.rdata);
-//		printf("drawing sky\n");
-//		printf("ALL DONE \n");
-		ft_deltatime_usec_note("this == bananas");
+		if (DEBUG)
+			ft_deltatime_usec_note("this == bananas");
 		cub->renderer.requires_update = 0;
 	}
 }
