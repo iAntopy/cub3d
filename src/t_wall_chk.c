@@ -74,17 +74,29 @@ t_cub *mapx_alt_pos(t_map *m, t_cub *cub, int p_box)
 	return (cub);
 }
 
+
+// t_objx *init_objx(t_cub *cub, t_map *m, int o_cells, int id)
+// {
+	// t_objx *objx;	
+	// char 	idx;
+
+	// objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
+	// idx = *ft_substr(cub->box.chrs, o_cells, 1);
+	// objx->obj_id = id;
+	// objx->name = idx;
+
+// }
 /// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
 t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 {
-	t_objx *objx;	
-	char 	idx;
+	// t_objx *objx;	
+	// char 	idx;
 	int 	head;
 
-	objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
-	idx = *ft_substr(cub->box.chrs, o_cells, 1);
-	objx->obj_id = id;
-	objx->name = idx;
+	// objx = (t_objx *)malloc(sizeof(t_objx ) * 1);    
+	// idx = *ft_substr(cub->box.chrs, o_cells, 1);
+	// objx->obj_id = id;
+	// objx->name = idx;
 	head = (ft_in_set(idx, (const char *)MAP_MCHR));
 	if (head != -1)
 	{
