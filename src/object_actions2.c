@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   object_actions2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:08:21 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 22:35:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 13:50:49 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 
 #define PORTAL_TRIGGER_DIST_SQ 400.0f
 #define NPC_TWICH_TIMER 100
@@ -109,8 +109,8 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 	if (obj->isactive)
 	{
 		prtl = (t_oinst *)obj->relative;
-		if (!prtl)
-			return (-1);
+		// if (!prtl)
+			// return (-1);
 		if (obj->counter > 600)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
