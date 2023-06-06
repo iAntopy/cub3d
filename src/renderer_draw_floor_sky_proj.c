@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 00:19:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 00:32:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,17 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)
 	}
 }
 
+static void	__floor_ceil_inwall_exception(t_cub *cub, t_pdata *pd, int *cell)
+{
+	if (is_wall(&cub->map, cell[0], cell[1]))
+	{
+		if (pd->rdata->side == N_SIDE || pd->rdata->side == S_SIDE)
+			cell[1] = pd->cy - pd->rdata->cincr_y;
+		else
+			cell[0] = pd->cx - pd->rdata->cincr_x;
+	}
+}
+
 static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pbuff, int *pframe)
 {
 	float			*params = cub->renderer.floor_factors;
@@ -127,13 +138,7 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 				continue ;
 			get_cell(p[0], p[1], c, c + 1);
 			find_vector_delta(get_grid_coords(&cub->map, c[0], c[1]), p, t);
-			if (is_wall(&cub->map, c[0], c[1]))
-			{
-				if (pd->rdata->side == N_SIDE || pd->rdata->side == S_SIDE)
-					c[1] = pd->cy - pd->rdata->cincr_y;
-				else
-					c[0] = pd->cx - pd->rdata->cincr_x;
-			}
+			__floor_ceil_inwall_exception(cub, pd, c);
 			pset = cub->map.mx[c[1]][c[0]];
 			
 			if (!pset)
@@ -147,8 +152,6 @@ static void	__render_proj_floor_ceiling(t_cub *cub, t_pdata *pdata, uint32_t *pb
 			tex_cil = pset->xwalls[1];
 			if (!tex_cil || cub->renderer.dpbuff[ceil_offset])
 				continue ;
-//			pc = pbuff + ceil_offset;
-			//*pc = get_tex_pixel(tex_cil, t[0] * tex_cil->width * cub->inv_cw,
 			pbuff[ceil_offset] = get_tex_pixel(tex_cil, t[0] * tex_cil->width * cub->inv_cw,
 				t[1] * tex_cil->height * cub->inv_cw) & TRANSPARENCY;
 		}
