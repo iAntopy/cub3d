@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 20:08:10 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 21:45:00 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static	int	transcribe(t_map *map, int map_offset)
 /// map-part of file  >> wall_check
 t_cub	*map_frame(t_map *map, t_cub *cub)
 {
+	t_objx 	**objx;
 	char	**m;
 	int		i;
 	int		q;
@@ -59,6 +60,7 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 	q = strtab_len(map->raw) - map->height;
 	m = (char **)malloc(sizeof(char *) * (map->height + 1));
 	m[map->height] = NULL;
+	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
 	printf("MAP FRAME : map width : %d\n", map->width);
 	while (i < map->height)
 	{
@@ -70,7 +72,8 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 		++i;
 	}
 	cub->map.m = m;
-	if (!wall_check(cub, &cub->map))
+	
+	if (!wall_check(cub, &cub->map, objx))
 		return (NULL);
 	return (cub);
 }

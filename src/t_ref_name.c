@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 17:52:29 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 22:40:30 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				meta_builder(cub, box, tex_name, &cub->objs);
 			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
 				j = xform_builder(cub, tex_name, tex_path, j);
-			else if (ft_in_set(tex_name[0], (const char *)MAP_NCHR) != -1)
+			else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
 				if (!dual_builder(cub, ft_in_set(tex_name[0],
-							(const char *)MAP_NCHR), tex_path))
+							(const char *)NCHR), tex_path))
 					return (NULL);
 		}
 	}
@@ -105,7 +105,7 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			++cub->box.meta;
 		if (ft_in_set(rawz[0], (const char *)MAP_UCHR) != -1)
 			cub->box.pset++;
-		if (ft_in_set(rawz[0], (const char *)MAP_NCHR) != -1)
+		if (ft_in_set(rawz[0], (const char *)NCHR) != -1)
 			cub->box.n_dual++;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;

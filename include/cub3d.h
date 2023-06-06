@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 20:41:46 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 22:40:26 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@
 
 # define MAP_CHARS "0AB@"
 # define MAP_LCHR "abcdefghijklmnopz"
-# define MAP_NCHR "0123456789"
+# define NCHR "0123456789"
 # define MAP_UCHR "ABCDEFGHIJ"
 # define MAP_MCHR "!+|-<>(){}_^=:;*#%@$&?"
 
@@ -561,8 +561,8 @@ void	print_map(t_map *map);
 
 /// MAP_CHECKER ///////////////
 //map_parse
-t_cub			*wall_check(t_cub *cub,t_map *map);
-t_cub		*mapx_alt_pos(t_map *m, t_cub *cub);
+t_cub			*wall_check(t_cub *cub,t_map *map, t_objx **objx);
+t_cub			*mapx_alt_pos(t_map *m, t_cub *cub, int p_box);
 
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);

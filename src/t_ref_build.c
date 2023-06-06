@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 20:43:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 21:31:21 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,6 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 		}
 		m->pos_y++;
 	}
-	mapx_alt_pos(m, cub);
+	mapx_alt_pos(m, cub, p_box);
 	return (cub);
 }

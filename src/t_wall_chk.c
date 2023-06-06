@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 20:45:00 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/05 22:41:04 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,16 @@ void	clr_legend_strct(t_cub *cub)
 		printf(":: MID EXIT ::DUAL[0] ::xwalls[%p]:: \n", cub->dual[0].xwalls[0]);
 	// chk gset		//box			// t_matrx 
 	// if (cub->objs.instances->gset[0])
-	// 	printf(":: MID EXIT ::OBJS ::instance gset[%p]:: \n", cub.objs.instances->gset[0]);
+	// 	printf(":: MID EXIT ::OBJS ::instance gset[%p]:: 
+		// \n", cub.objs.instances->gset[0]);
 	// chk objx
 	// if (cub->objs.instances)
 	// 	printf(":: MID EXIT ::OBJS ::instance[%d]:: \n", cub->box.xnum);
 		//	printf("portal ptr : %p\n", cub.objs.instances);
 }
 
-t_cub *mapx_alt_pos(t_map *m, t_cub *cub)
+t_cub *mapx_alt_pos(t_map *m, t_cub *cub, int p_box)
 {
-	int			p_box;
-
 	m->pos_y = 0;
 	while (m->pos_y < m->height)
 	{
@@ -59,13 +58,13 @@ t_cub *mapx_alt_pos(t_map *m, t_cub *cub)
 			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), MAP_MCHR);
 			if ( p_box > -1 || p_box == ((int)ft_strlen(cub->box.chrs) - 1))
 			{				
-				if (ft_in_set((m->m[m->pos_y][m->pos_x - 1]), MAP_NCHR) != -1)
+				if (ft_in_set((m->m[m->pos_y][m->pos_x - 1]), NCHR) != -1)
 					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x - 1];
-				else if (ft_in_set((m->m[m->pos_y + 1][m->pos_x]), MAP_NCHR) != -1)
+				else if (ft_in_set((m->m[m->pos_y + 1][m->pos_x]), NCHR) != -1)
 					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y + 1][m->pos_x];
-				else if (ft_in_set((m->m[m->pos_y - 1][m->pos_x]), MAP_NCHR) != -1)
+				else if (ft_in_set((m->m[m->pos_y - 1][m->pos_x]), NCHR) != -1)
 					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y - 1][m->pos_x];	
-				else if (ft_in_set((m->m[m->pos_y][m->pos_x + 1]), MAP_NCHR) != -1)
+				else if (ft_in_set((m->m[m->pos_y][m->pos_x + 1]), NCHR) != -1)
 					m->mx[m->pos_y][m->pos_x] =  m->mx[m->pos_y][m->pos_x + 1];	
 			}
 			m->pos_x++;
@@ -74,6 +73,7 @@ t_cub *mapx_alt_pos(t_map *m, t_cub *cub)
 	}
 	return (cub);
 }
+
 /// get_pos , not get_pos,and adress, and pedigree ... to be sub_div...
 t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 {
@@ -129,39 +129,30 @@ t_map	*check_hero_found(t_map *m)
 	return (m);
 }
 
-t_cub	*wall_check(t_cub *cub, t_map *m)
+t_cub	*wall_check(t_cub *cub, t_map *m, t_objx **objx)
 {
-	t_objx 	**objx;
 	int		o_cells;
 	int 	id;
 
-	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
 	id = -1;
 	o_cells = -1;
-	m->pos_y = 0;
-	while (m->pos_y < m->height)
+	m->pos_y = -1;
+	while (++m->pos_y < m->height)
 	{
-		m->pos_x = 0;
-		while (m->pos_x < m->width)
+		m->pos_x = -1;
+		while (++m->pos_x < m->width)
 		{
 			o_cells = ft_in_set((m->m[m->pos_y][m->pos_x]),
 					(const char *)cub->box.chrs);
+			if (o_cells == (int_strlen(cub->box.chrs) - 1))
+				m = check_hero_found(m);
 			if (o_cells < 0 && m->m[m->pos_y][m->pos_x] != '\0')
 				m->m[m->pos_y][m->pos_x] = 'A';
-			else if (o_cells == (int_strlen(cub->box.chrs) - 1))
-			{	
-				m = check_hero_found(m);
-				id++;
-				objx[id] = get_pos(cub, m, o_cells, id);
-			}
-			else if (o_cells < cub->box.meta - 1 && o_cells > -1)
-			{
-				id++;
-				objx[id] = get_pos(cub, m, o_cells, id);
-			}
-			m->pos_x++;
+			else if ((o_cells < cub->box.meta - 1 && o_cells > -1) 
+				|| o_cells == (int_strlen(cub->box.chrs) - 1))
+				if (++id < cub->box.chrs_len - 1)
+					objx[id] = get_pos(cub, m, o_cells, id);
 		}
-		m->pos_y++;
 	}
 	cub->box.objx = objx;
 	return (cub);
