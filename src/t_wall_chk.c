@@ -36,7 +36,7 @@ int	get_types(t_objx *objx, int head)
 			objx->o_type = OBJ_FIREPIT;
 		else if (head < 18)
 			objx->o_type = OBJ_FIREBALL;
-		else if (head < 21)
+		else if (head <	 21)
 			objx->o_type = OBJ_PLAYER;
 		else
 			objx->o_type = OBJ_FLAG;
