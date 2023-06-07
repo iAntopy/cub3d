@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:08:21 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 17:10:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:39:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ int	__obj_action_portal(t_oinst *obj, t_cub *cub)
 	float	dist;
 	t_oinst	*other;
 
-	if (!obj->isactive || !obj->relative)
-		return (-1);
-	if (obj->counter > 0)
+	if (!obj->isactive || !obj->relative || obj->counter > 0)
 		return (obj->counter--);
 	other = cub->objs.instances;
 	while (other)
