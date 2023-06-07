@@ -30,12 +30,23 @@ tex/ext/outer_floor.png
 tex/ext/lib_init.png
 tex/ext/lib_cap.png
 tex/ext/
-tex/ext/
 ///									NEW			SpellRoom
 tex/ext/outer_floor.png
 tex/ext/acid_ray.png
 tex/ext/outer_wall.png
 tex/ext/outer_sky_.png
+////								NEW			Space_Board
+tex/ext/horz_floor_.png
+tex/ext/vert_floor_.png
+tex/ext/s_floor.png
+tex/ext/space_Xwall.png
+tex/ext/s_ceilin_.png
+tex/ext/ult_wall.png
+tex/ext/travel_wall.png
+tex/ext/linear_wall.png
+tex/ext/path_celing.png
+tex/ext/
+
 ////								OLD 
 tex/ext/d_tex.png
 tex/ext/c_tex.png
