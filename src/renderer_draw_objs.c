@@ -6,540 +6,158 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 20:24:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/08 04:29:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	prtl_proj_init_single_vect(t_pdata *pd, t_rdata *rd, t_oinst *obj, t_oinst *link)
-{
-	pd->odist = obj->dist * (*pd->fwd_len);
-	pd->dist = pd->odist;
-	pd->px = *rd->px + pd->odist * (*rd->rx) + (link->px - obj->px);
-	pd->py = *rd->py + pd->odist * (*rd->ry) + (link->py - obj->py);
-	pd->cx = (int)(pd->px * rd->inv_cw);
-	pd->cy = (int)(pd->py * rd->inv_cw);
-	pd->b = pd->py - (rd->a * pd->px);
-	return (1);
-}
-
-static int	prtl_proj_probe(t_pdata *pd, float *axs, float *isct, float *dists)
-{
-	const t_rdata	*rd = pd->rdata;
-	float	ratio;
-	int		correction;
-
-	if (dists[0] < dists[1])
-	{
-		pd->dist += dists[0];
-		pd->hitx = isct[0];
-		pd->hity = axs[1];
-		pd->side = 1 + (rd->dy << 1);
-		ratio = isct[0] - axs[0];
-		correction = (*rd->rx < 0) != (*rd->ry < 0);
-	}
-	else
-	{
-		pd->dist += dists[1];
-		pd->hitx = axs[0];
-		pd->hity = isct[1];
-		pd->side = rd->dx << 1;
-		ratio = isct[1] - axs[1];
-		correction = (*rd->rx < 0) == (*rd->ry < 0);
-	}
-	if ((pd->side == W_SIDE) || (pd->side == S_SIDE))
-		ratio = -ratio;
-	pd->tex_ratio = correction + (ratio * rd->inv_cw);
-	pd->tex_height = (*rd->near_proj_factor) / pd->dist;
-	return (0);
-}
-
-static inline uint32_t	*init_proj_wcol(t_cub *cub, t_pdata *pd, t_rcol *rc, int *tshape, int max_h)//, int *start_x)
-{
-	mlx_texture_t	*tex;
-	int				tex_start_x;
-
-	tex = cub->map.mx[pd->cy][pd->cx]->xwalls[pd->side];
-//	tex = cub->tex.walls[rd->side];
-	tshape[0] = tex->width;
-	tshape[1] = tex->height;
-	rc->half_texh = (tex->height >> 1);
-	tex_start_x = (int)(pd->tex_ratio * tex->width);
-//	printf("tex_start_x : %d\n", tex_start_x);
-//	printf("tex_start_x : %d, tex ratio : %f\n", tex_start_x, pd->tex_ratio);
-	if (max_h > SCN_HEIGHT)
-		max_h = SCN_HEIGHT;
-	rc->scn_height = ft_clamp(pd->tex_height, 0, max_h);
-	rc->half_height = (rc->scn_height >> 1);
-	rc->ratio = (float)tex->height / (float)pd->tex_height;
-//	printf("tex->height: %d, pd->tex_height: %f, ratio: %f\n",
-//		tex->height, pd->tex_height, rc->ratio);
-	rc->scn_start_y = ((SCN_HEIGHT - rc->scn_height) >> 1);
-	rc->scn_end_y = ((SCN_HEIGHT + rc->scn_height) >> 1);
-	return ((uint32_t *)tex->pixels + tex_start_x);// + ((int)(rc->scn_start_y * rc->ratio) * tex->width));
-}
-
-// Pass the t_pdata * offset in array to the starting ray to cast from 0 <= i < SCN_WIDTH.
-// n is th nb of rays to cast from start (end - start).
-static int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int *pframe)//, int n)///int start, int end)
-{
-	t_rdata	*rd;
-	float	*axs;
-	float	isct[2];
-	float	dists[2];
-	int		width;
-	
-//	printf("Portal Projecting \n");
-	pd += pframe[0];
-	rd = pd->rdata;// - 1;
-	width = pframe[2] - pframe[0];
-	dists[0] = 0;
-	dists[1] = 0;
-	isct[0] = 0;
-	isct[1] = 0;
-	axs = NULL;
-	while (width--)
-	{
-		prtl_proj_init_single_vect(pd, pd->rdata, obj, obj->relative);
-		while (1)//!(is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0))
-		{
-			axs = map->grid_coords[pd->cy + rd->dy] + ((pd->cx + rd->dx) << 1);
-//			printf("axs : %p\n", axs);
-			isct[1] = rd->a * axs[0] + pd->b;
-			isct[0] = (axs[1] - pd->b) * rd->inv_a;
-			dists[0] = (isct[0] - pd->px) * (*rd->p_dirx)
-				+ (axs[1] - pd->py) * (*rd->p_diry);
-			dists[1] = (axs[0] - pd->px) * (*rd->p_dirx)
-				+ (isct[1] - pd->py) * (*rd->p_diry);
-			if (dists[0] < dists[1])
-				pd->cy += rd->cincr_y;
-			else
-				pd->cx += rd->cincr_x;
-			if (is_wall(map, pd->cx, pd->cy) && prtl_proj_probe(pd, axs, isct, dists) == 0)
-				break ;
-		}
-		++pd;
-		++rd;
-	}
-	return (0);
-}
-
-void	__render_proj_walls(t_cub *cub)
-{
-	const int		*pframe = cub->renderer.pframe;
-	const int		proj_height = pframe[3] - pframe[1];
-
-	int			i;
-	int			j;
-	t_pdata		*pd;
-	uint32_t	*pbuff;
-	float		*dpbuff;
-	uint32_t	*pb;
-	t_rcol		rc;
-	int			tex_shape[2];
-	float		tex_y;
-	uint32_t	*tex_buff;
-	char		*isproj;
-	
-	pbuff = (uint32_t *)cub->renderer.objs_layer->pixels;
-	i = pframe[0] - 1;
-	while (++i < pframe[2])
-	{
-		pd = cub->hero.rcast.pdata + i;
-//		++pbuff;
-		pb = pbuff + i;// - SCN_WIDTH;
-		
-//		dpbuff = cub->renderer.dpbuff + i - SCN_WIDTH;
-//		pb = pbuff + i;
-//		isproj = cub->renderer.isproj + i - SCN_WIDTH;// + i * SCN_HEIGHT - 1;
-//		dpbuff = cub->renderer.dpbuff + (i - 1) - SCN_WIDTH;// + i * SCN_HEIGHT - 1;
-		
-//		dbuff = cub->renderer.dbuff + scn_offx + (loffs[1] - 1) * SCN_WIDTH;// * SCN_HEIGHT - 1;
-//		isproj = cub->renderer.isproj + scn_offx + (loffs[1] - 1) * SCN_WIDTH;// - 1;
-		
-//		tex_buff = init_proj_wcol(cub, pd, &rc, tex_shape);//, pframe[2] - pframe[0]);
-		tex_buff = init_proj_wcol(cub, pd, &rc, tex_shape, proj_height);// + ((pframe[1] - 1) * SCN_WIDTH);
-	
-		j = rc.scn_start_y - 1;//pframe[1] - 1;
-		isproj = cub->renderer.isproj + i + cub->buff_offys[j + 1] - SCN_WIDTH;
-		dpbuff = cub->renderer.dpbuff + i + cub->buff_offys[j + 1] - SCN_WIDTH;
-//		printf("dpbuff init offset : x (i = %d) %d, y (j = %d) %d\n", i, i, j, cub->buff_offys[j]);
-//		pb = pbuff + i + cub->buff_offys[j] - SCN_WIDTH;
-		while (++j < rc.scn_end_y)//pframe[3])
-		{
-			isproj += SCN_WIDTH;
-			dpbuff += SCN_WIDTH;
-
-			if (!*isproj || (*dpbuff && *dpbuff < pd->dist))
-				continue ;
-			tex_y = (j - cub->scn_midy) * rc.ratio + rc.half_texh;//(int)(j_to_midy[j] * divergent_lens_ratio[j] * rc.ratio) + rc.half_texh;
-//			printf("(j - cub->scn_midy) (%d) * ratio (%f) + half_tex_h (%d) =  tex_y : %f, tex_shape w: %d \n",
-//				(j - cub->scn_midy), rc.ratio, rc.half_texh, tex_y, tex_shape[0]);
-		
-//			pb[j * SCN_WIDTH] = tex_col;
-//			pb[j_times_sw[j]] = //tex_buff[tex_y * tex_shape[0]];
-//			pb[cub->buff_offys[j]] = tex_col;
-//			pbuff[i + j * SCN_WIDTH] = tex_col;
-			pb[cub->buff_offys[j]] = tex_buff[(int)tex_y * tex_shape[0]] & TRANSPARENCY;//tex_col;
-//			pbuff[i + j * SCN_WIDTH] = tex_buff[(int)tex_y * tex_shape[0]] & TRANSPARENCY;
-//			*pb = tex_buff[(int)tex_y * tex_shape[0]];//tex_col;
-//			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j],
-//				tex_col);
-			*dpbuff = pd->dist;
-		}
-	}
-	(void)pb;
-}
-
-void	__render_proj_obj(t_cub *cub, float dist, mlx_texture_t *tex, t_pdata *pd, int *dims,
-		int *loffs, int *toffs, float *tex_incrs)//, int *end)
-{
-	int		toffs_y[SCN_HEIGHT];
-	int		loffs_y[SCN_HEIGHT];
-	float		*dbuff;
-	char		*isproj;
-	int			i;
-	int			j;
-	int			scn_offx;
-	int			tex_offx;
-	uint32_t	*pxls;
-	uint32_t	tex_col;
-
-	j = -1;
-	while (++j < dims[1])
-	{
-		toffs_y[j] = (int)((j + toffs[1]) * tex_incrs[1]) * tex->width;
-		loffs_y[j] = j + loffs[1];
-	}
-//	dbuff = cub->renderer.dbuff;
-	pxls = (uint32_t *)tex->pixels;
-	i = -1;
-	while (++i < dims[0])
-	{
-		if (pd[i + loffs[0]].dist < dist)
-			continue ;
-		scn_offx = i + loffs[0];
-		dbuff = cub->renderer.dpbuff + scn_offx + (loffs[1] - 1) * SCN_WIDTH;
-		isproj = cub->renderer.isproj + scn_offx + (loffs[1] - 1) * SCN_WIDTH;
-		tex_offx = (int)((i + toffs[0]) * tex_incrs[0]);
-
-		j = -1;
-		while (++j < dims[1])
-		{
-//			printf("RENDER PROJ OBJ !\n");
-			dbuff += SCN_WIDTH;
-			isproj += SCN_WIDTH;
-//			scn_offs[1] = j + loffs[1];
-			tex_col = pxls[tex_offx + toffs_y[j]];//(int)(toffs_y[j] * tex_incrs[1]) * tex->width];
-//			++dbuff;
-			if (!tex_col || !*isproj || (*dbuff && dist > *dbuff))
-				continue ;
-			cub_put_pixel(cub->renderer.objs_layer, scn_offx, loffs_y[j], tex_col);
-			*dbuff = dist;
-	//		dbuff[i + j * SCN_WIDTH] = dist;
-		}
-	}
-}
-/*
 // Assumes is_drawable == true, checked earlier.
-static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
-{
-	const float		rad_to_idx_ratio = 8.0f / M_TAU;
-	mlx_texture_t	*tex;
-	float			delta_ori;
-	int				idx;
-
-	printf("selecting texture, cub %p, obj %p, is oriented %d\n", cub, obj, obj->type->is_oriented);
-	printf("obj type : %d\n", obj->type->type_enum);
-	if (!obj)
-		return (NULL);
-	tex = NULL;
-	if (obj->type->is_oriented)
-	{
-		delta_ori = cub->hero.ply_obj->ori - obj->ori + FOV45_HF;
-		if (delta_ori < 0)
-			delta_ori += M_TAU;
-		else if (delta_ori > M_TAU)
-			delta_ori -= M_TAU;
-		idx = (int)(delta_ori * rad_to_idx_ratio);
-		printf("select text idx : %d, delta_ori : %f \n", idx, delta_ori);
-		tex = obj->gset->xwalls[idx];
-	}
-	else
-	{
-		tex = obj->gset->xwalls[obj->tex_idx];
-		printf("selected none oriented texture : %p\n", tex);
-	}
-	return (tex);
-}
-*/
-
-// Assumes is_drawable == true, checked earlier.
-static mlx_texture_t	*select_draw_texture(t_cub *cub, t_oinst *obj)
+inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj)
 {
 	const float		rad_to_idx_ratio = 8.0f * M_INV_TAU;
 	float			dpos[2];
 	float			rel_ori;
-	mlx_texture_t	*tex;
 	int				idx;
 
-//	printf("selecting texture, cub %p, obj %p, is oriented %d\n", cub, obj, obj->type->is_oriented);
-//	printf("obj type : %d\n", obj->type->type_enum);
 	if (!obj)
-		return (NULL);
-	tex = NULL;
+		return ;
+	od->tex = NULL;
 	if (obj->type->is_oriented)
 	{
-		dpos[0] = obj->px - cub->hero.ply_obj->px;
-		dpos[1] = obj->py - cub->hero.ply_obj->py;
-		rel_ori = atan2f(dpos[1], dpos[0]) - obj->ori + FOV45_HF;// + FOV45_HF;
-		while (rel_ori < 0)
-			rel_ori += M_TAU;
-//		if (rel_ori < 0)
-//		rel_ori = fmodf(rel_ori, M_TAU);
-		
-		idx = (int)(rel_ori * rad_to_idx_ratio) % 8;
-//		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
-		tex = obj->gset->xwalls[idx];
-	}
-	else
-	{
-		tex = obj->gset->xwalls[obj->tex_idx];
-//		printf("selected none oriented texture : %p\n", tex);
-	}
-	return (tex);
-}
-
-
-// Assumes is_drawable == true, checked earlier.
-static mlx_texture_t	*select_draw_proj_texture(t_oinst *obj, float *ppos)
-{
-	const float		rad_to_idx_ratio = 8.0f * M_INV_TAU;
-	float			dpos[2];
-	float			rel_ori;
-	mlx_texture_t	*tex;
-	int				idx;
-
-//	printf("selecting texture, cub %p, obj %p, is oriented %d\n", cub, obj, obj->type->is_oriented);
-//	printf("obj type : %d\n", obj->type->type_enum);
-	if (!obj)
-		return (NULL);
-	tex = NULL;
-	if (obj->type->is_oriented)
-	{
-		dpos[0] = obj->px - ppos[0];
-		dpos[1] = obj->py - ppos[1];
+		dpos[0] = obj->px - od->ppos[0];
+		dpos[1] = obj->py - od->ppos[1];
 		rel_ori = atan2f(dpos[1], dpos[0]) - obj->ori + FOV45_HF;
 		while (rel_ori < 0)
 			rel_ori += M_TAU;
-//		if (rel_ori < 0)
-//			rel_ori += M_TAU;
-//		rel_ori = fmodf(rel_ori, M_TAU);
-//		printf("rel_ori : between player and obj %d: %f\n", obj->_id, rel_ori);
 		idx = (int)(rel_ori * rad_to_idx_ratio) % 8;
-//		printf("atan2 : %f, idx : %d\n", rel_ori, idx);
-		tex = obj->gset->xwalls[idx];
+		od->tex = obj->gset->xwalls[idx];
 	}
 	else
-//	{
-		tex = obj->gset->xwalls[obj->tex_idx];
-//		printf("selected none oriented texture : %p\n", tex);
-//	}
-	return (tex);
+		od->tex = obj->gset->xwalls[obj->tex_idx];
+	od->pxls = (uint32_t *)(od->tex->pixels);
 }
 
-void	__render_proj_objects(t_cub *cub)//, t_oinst *prtl, t_pdata *pdata, int *pframe)
+inline void	__rdr_setup_draw_objects(t_cub *cub, t_objd *od, int *pframe, int offy)
 {
-	const int	*pframe = cub->renderer.pframe;
-	t_oinst		*obj;
-	t_oinst		*prtl;
-	t_oinst		*link;
-	float		ppos[2];
-	float		ov[2];
-	float		pv[2];
-	int			drawx;
-	float		ratio;
-	float		odist;
-	float		pdist;
-	mlx_texture_t	*tex;
-
-	int			loffs[4];
-	int			toffs[2];
-	float		tincrs[2];
-	int			dims[2];
-
-	obj = cub->objs.instances;
-	prtl = (t_oinst *)cub->renderer.portal;
-	link = (t_oinst *)cub->renderer.portal->relative;
-	ppos[0] = cub->hero.ply_obj->px + (link->px - prtl->px);
-	ppos[1] = cub->hero.ply_obj->py + (link->py - prtl->py);
-//	printf("\nlink id %d %p, (%.2f, %.2f)\n", link->_id, link, link->px, link->py);
-	while (obj)
+	od->tincrs[0] = (float)od->tex->width / (float)od->dims[0];
+	od->tincrs[1] = (float)od->tex->height / (float)od->dims[1];
+	*((size_t *)od->toffs) = 0;
+	od->loffs[0] = od->drawx - (od->dims[0] >> 1);
+	od->loffs[1] = cub->scn_midy - (od->dims[1] >> 1)
+		+ (int)(offy * od->ratio);
+	od->loffs[2] = od->loffs[0] + od->dims[0];
+	od->loffs[3] = od->loffs[1] + od->dims[1];
+	if (od->loffs[0] < pframe[0])
 	{
-		if ((!obj->type->is_drawable || !obj->gset) && next_obj(&obj))
-//		{
-//			obj = obj->next;
-			continue ;
-//		}
-//		printf("Rendering PROJECTED obj %d, type : %d\n", obj->_id, obj->type->type_enum);
-//		ov[0] = obj->px - link->px;
-//		ov[1] = obj->py - link->py;
-		ov[0] = obj->px - ppos[0];
-		ov[1] = obj->py - ppos[1];
-		pv[0] = link->px - ppos[0];
-		pv[1] = link->py - ppos[1];
-//		printf("obj id %d (%.2f, %.2f) to portal id %d (%.2f, %.2f)\n", obj->_id, obj->px, obj->py, link->_id, link->px, link->py);
-//		obj->ox = obj->px - cub->hero.px;
-//		obj->oy = obj->py - cub->hero.py;
-		
-		odist = (*cub->hero.dirx) * ov[0] + (*cub->hero.diry) * ov[1];
-		pdist = (*cub->hero.dirx) * pv[0] + (*cub->hero.diry) * pv[1];
-
-		ratio = cub->near_z / odist;
-		drawx = (int)(((*cub->hero.dirx) * ov[1] - (*cub->hero.diry) * ov[0])
-			* ratio) + cub->scn_midx;
-
-		dims[0] = (int)(ratio * obj->type->width);
-		dims[1] = (int)(ratio * obj->type->height);
-
-//		printf("pdist : %f, odist : %f\n", pdist, odist );
-		if ((pdist <= 0.0f || ((odist - 1.0f) <= pdist)
-			|| (drawx + (dims[0] >> 1)) < pframe[0]
-			|| pframe[2] <= (drawx - (dims[0] >> 1))) && next_obj(&obj))
-//		if ((obj == link || odist <= 0 || pframe[2] <= drawx || (drawx + dims[0])
-//			< pframe[0]) && next_obj(&obj))
-//		{
-//			obj = obj->next;
-			continue ;
-//		}
-		tex = select_draw_proj_texture(obj, ppos);
-//		tex = obj->type->gset->xwalls[obj->tex_idx];
-		tincrs[0] = (float)tex->width / (float)dims[0];
-		tincrs[1] = (float)tex->height / (float)dims[1];
-		toffs[0] = 0;
-		toffs[1] = 0;
-		
-		loffs[0] = drawx - (dims[0] >> 1);
-		loffs[1] = cub->scn_midy - (dims[1] >> 1) + (int)(obj->type->draw_offy * ratio);
-		loffs[2] = loffs[0] + dims[0];
-		loffs[3] = loffs[1] + dims[1];
-
-		if (loffs[0] < pframe[0])
-		{
-			toffs[0] = pframe[0] - loffs[0];
-			dims[0] -= toffs[0];
-			loffs[0] = pframe[0];
-		}
-		if (loffs[1] < pframe[1])
-		{
-			toffs[1] = pframe[1] - loffs[1];
-			dims[1] -= toffs[1];
-			loffs[1] = pframe[1];
-		}
-		if (loffs[2] > pframe[2])
-		{
-			dims[0] -= (loffs[2] - pframe[2]);
-			loffs[2] = pframe[2];
-		}
-		if (loffs[3] > pframe[3])
-		{
-			dims[1] -= (loffs[3] - pframe[3]);
-			loffs[3] = pframe[3];
-		}
-		__render_proj_obj(cub, odist, tex, cub->hero.rcast.pdata, dims, loffs, toffs, tincrs);
-		obj = obj->next;
+		od->toffs[0] = pframe[0] - od->loffs[0];
+		od->dims[0] -= od->toffs[0];
+		od->loffs[0] = pframe[0];
 	}
+	if (od->loffs[1] < pframe[1])
+	{
+		od->toffs[1] = od->pframe[1] - od->loffs[1];
+		od->dims[1] -= od->toffs[1];
+		od->loffs[1] = pframe[1];
+	}
+	if (od->loffs[2] > pframe[2])
+		od->dims[0] -= (od->loffs[2] - pframe[2]);
+	if (od->loffs[3] > pframe[3])
+		od->dims[1] -= (od->loffs[3] - pframe[3]);
+	od->loffs[2] = ft_clamp(od->loffs[2], pframe[0], pframe[2]);
+	od->loffs[3] = ft_clamp(od->loffs[3], pframe[1], pframe[3]);
 }
 
-void	__render_obj(t_cub *cub, float dist, mlx_texture_t *tex, t_rdata *rdata, int *dims,
-		int *loffs, int *toffs, float *tex_incrs)//, int *end)
+inline void	__rdr_obj_draw_check(t_cub *cub, t_objd *od)
 {
-	int			toffs_x[SCN_WIDTH];
-	int			pbuff_start_off;
-	int			pbuff_jump;
-	uint32_t	*tbuff;
+	od->dims[0] = 0;
+	if (!od->obj->type->is_drawable || !od->obj->gset)
+//		|| od->obj == cub->hero.ply_obj)
+		return ;
+	od->ov[0] = od->obj->px - od->ppos[0];//cub->hero.ply_obj->px;
+	od->ov[1] = od->obj->py - od->ppos[1];//cub->hero.ply_obj->py;
+	od->odist = (*cub->hero.dirx) * od->ov[0] + (*cub->hero.diry) * od->ov[1];
+	od->obj->dist = od->odist;
+//	od->tex = select_draw_texture(cub, od->obj);
+	od->ratio = cub->near_z / od->odist;
+	od->drawx = (int)(((*cub->hero.dirx) * od->ov[1] - (*cub->hero.diry)
+				* od->ov[0]) * od->ratio) + cub->scn_midx;
+	od->dims[0] = (int)(od->ratio * od->obj->type->width);
+	od->dims[1] = (int)(od->ratio * od->obj->type->height);
+	return ;
+}
+
+
+
+static inline void	adjust_draw_frame(t_cub *cub, t_objd *od)
+{
+	int	i;
+
+	od->rd = od->rdata + od->loffs[0];
+	i = 0;
+	while (i < od->dims[0] && od->rd[i].dist < od->odist)
+		++i;
+	od->toffs[0] += i;
+	od->dims[0] -= i;
+	od->loffs[0] += i;
+	od->rd += i;
+	od->x = -1;
+	while (++od->x < od->dims[0] && od->odist <= od->rd[od->x].dist)
+		od->tys[od->x] = (int)(od->x * od->tincrs[0]);
+	od->dims[0] = od->x;
+	if (od->x == 0)
+		return ;
+	od->loffs[2] = od->loffs[0] + od->x;
+	od->so = od->loffs[0] + od->loffs[1] * SCN_WIDTH - 1;
+	od->bincr = SCN_WIDTH - od->dims[0];
+//	od->pxls = ((uint32_t *)od->tex->pixels)
+	od->pxls += (int)(od->toffs[0] * od->tincrs[0])
+		+ ((int)(od->toffs[1] * od->tincrs[1]) * od->tex->width);
+	od->dbuff = ((float *)cub->renderer.dbuff) + od->so;
+	od->pbuff = ((uint32_t *)cub->renderer.objs_layer->pixels) + od->so;
+}
+
+void	__render_obj(t_cub *cub, t_objd *od)
+{
 	uint32_t	*tb;
-	uint32_t	*pbuff;
-	float		*dbuff;
 	int			i;
 	int			j;
-	uint32_t	tex_col;
 
-	rdata += loffs[0];
-	i = 0;
-	while (i < dims[0] && rdata[i].dist < dist)
-		++i;
-	toffs[0] += i;
-	dims[0] -= i;
-	rdata += i;
-	j = -1;
-	while (++j < dims[0] && dist <= rdata[j].dist)
-//	{
-		toffs_x[j] = (int)(j * tex_incrs[0]);
-	if (j == 0)
+	adjust_draw_frame(cub, od);
+	if (od->dims[0] == 0)
 		return ;
-	dims[0] = j;
-	loffs[0] += i;
-	loffs[2] = loffs[0] + j;
-	pbuff_start_off = loffs[0] + loffs[1] * SCN_WIDTH - 1;
-	pbuff_jump = SCN_WIDTH - dims[0];
-
-	tbuff = ((uint32_t *)tex->pixels) + (int)(toffs[0] * tex_incrs[0])
-				+ ((int)(toffs[1] * tex_incrs[1]) * tex->width);
-	dbuff = ((float *)cub->renderer.dbuff) + pbuff_start_off;// + (loffs[0]) + (loffs[1]) * SCN_WIDTH - 1;
-	pbuff = ((uint32_t *)cub->renderer.objs_layer->pixels) + pbuff_start_off;// + (loffs[0]) + (loffs[1]) * SCN_WIDTH - 1;
-//	if (obj->type->type_enum == OBJ_FIREBALL)
-//	printf("Trying to draw fireball 4. loffs : (%d, %d), dims: (%d, %d), toffs: (%d, %d)\n", 
-//		loffs[0], loffs[1], dims[0], dims[1], toffs[0], toffs[1]);
 	j = -1;
-	while (++j < dims[1])
+	while (++j < od->dims[1])
 	{
-		tb = tbuff + (int)(j * tex_incrs[1]) * tex->width;
-//		printf("tex_incrs[1] : %f, tex width : %d\n", tex_incrs[1], tex->width);
+		tb = od->pxls + (int)(j * od->tincrs[1]) * od->tex->width;
 		i = -1;
-		while (++i < dims[0])
+		while (++i < od->dims[0])
 		{
-			++dbuff;
-			++pbuff;
-			tex_col = tb[toffs_x[i]];
-//			printf("toffs_x[%d] : %d, dims[0] : %d\n", i, toffs_x[i], dims[0]);
-//			printf("try drawing col : %d, at scn coord (%d, %d), *dbuff : %f, dist : %f\n", tex_col, i, j, *dbuff, dist);
-			if (!tex_col || (*dbuff && (*dbuff < dist)))
+			++od->dbuff;
+			++od->pbuff;
+			od->cl = tb[od->tys[i]];
+			if (!od->cl || (*od->dbuff && (*od->dbuff < od->odist)))
 				continue ;
-//			printf("drawing pixel\n");
-			*pbuff = tex_col;
-			*dbuff = dist;
+			*od->pbuff = od->cl;
+			*od->dbuff = od->odist;
 		}
-
-		dbuff += pbuff_jump;		
-		pbuff += pbuff_jump;
+		od->dbuff += od->bincr;
+		od->pbuff += od->bincr;
 	}
 }
 
-void	__label_isproj(uint32_t *pbuff, char *isproj, int *pframe, int *pdims)
+static inline void	__label_isproj(uint32_t *pbuff, char *isproj, int *pframe, int *pdims)
 {
 	const int		start_offset = pframe[0] + (pframe[1] * SCN_WIDTH);
 	const int		buff_jump = SCN_WIDTH - pdims[0];
-//	char			*ip;
-//	uint32_t		*pb;
 	int		w;
 	int		h;
 
-//	pb = pbuff + start_offset - 1;
-//	ip = isproj + start_offset - 1;
 	pbuff += start_offset - 1;
 	isproj += start_offset - 1;
 	h = pdims[1];
-//	printf("label pframe [%d, %d], pdims [%d, %d]\n", pframe[0], pframe[1],
-//		pdims[0], pdims[1]);
 	while (h--)
 	{
-//		printf("h %d   - ", h);
-//		ft_deltatime_usec_note("start label row");
-//		printf("isproj off %zd, pbuff off %zd\n", (size_t)(ip - isproj),
-//			(size_t)(pb - pbuff));
-//		printf("isproj x : %zd\n", (ip - isproj) % SCN_WIDTH);
 		w = pdims[0];
 		while (w--)
 		{
@@ -547,136 +165,93 @@ void	__label_isproj(uint32_t *pbuff, char *isproj, int *pframe, int *pdims)
 			if (*(++pbuff) == PROJ_COLOR)
 				*isproj = 1;
 		}
-//		ft_deltatime_usec_note("end label row");
 		pbuff += buff_jump;
 		isproj += buff_jump;			
 	}
 }
 
+
+static inline void	init_draw_objects(t_cub *cub, t_objd *od)
+{
+	memset(cub->renderer.objs_layer->pixels, 0, sizeof(uint32_t)
+		* SCN_WIDTH * SCN_HEIGHT);
+	memset(cub->renderer.dbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
+	od->pframe = cub->renderer.pframe;
+//	od->pframe[0] = cub->renderer.bframe[0];
+//	od->pframe[1] = cub->renderer.bframe[1];
+//	od->pframe[2] = cub->renderer.bframe[2];
+//	od->pframe[3] = cub->renderer.bframe[3];
+	od->rdata = cub->hero.rcast.rdata;
+	od->pdata = cub->hero.rcast.pdata;
+	od->isproj = cub->renderer.isproj;
+	od->obj = cub->objs.instances;
+	od->ppos[0] = cub->hero.ply_obj->px;
+	od->ppos[1] = cub->hero.ply_obj->py;
+}
+
 void	render_objects(t_cub *cub)
 {
-	t_oinst			*obj;
-	mlx_texture_t	*tex;
-	int				drawx;
-	float			ratio;
-	int				loffs[4];
-	int				toffs[2];
-	float			tincrs[2];
-	int				dims[2];
+	t_objd	od;
 	
-	memset(cub->renderer.objs_layer->pixels, 0, sizeof(uint32_t) * SCN_WIDTH * SCN_HEIGHT);
-	memset(cub->renderer.dbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
-
-	obj = cub->objs.instances;
-	while (obj)
+	init_draw_objects(cub, &od);
+	while (od.obj)
 	{
-//		printf("obj->type : %p\n", obj->type);
-		if ((!obj->type->is_drawable || !obj->type->gsets[0]
-			 || obj == cub->hero.ply_obj) && next_obj(&obj))
-		{
-//			if (obj)
-//				printf("BYPASS OBJ DRAW : id %d, type ptr : %p, drawable : %d, gset ptr : %p\n",
-//					obj->_id, obj->type, obj->type->is_drawable, obj->type->gset);
-//			obj = obj->next;
+		if (od.obj == cub->hero.ply_obj && next_obj(&od.obj))
 			continue ;
-		}
-//		printf("obj draw init checks PASSED \n");
-		obj->ox = obj->px - cub->hero.ply_obj->px;
-		obj->oy = obj->py - cub->hero.ply_obj->py;
-//		printf("obj->px/y : (%f, %f), hero px, py : (%f, %f)\n", obj->px, obj->py,
-//			cub->hero.ply_obj->px, cub->hero.ply_obj->py);
-		obj->dist = (*cub->hero.dirx) * obj->ox + (*cub->hero.diry) * obj->oy;
-		tex = select_draw_texture(cub, obj);
-//		tex = obj->type->gset->xwalls[obj->tex_idx];
-		ratio = cub->near_z / obj->dist;
-//		printf("ratio : %f, hero dirx, diry : <%f, %f>\n", ratio, *cub->hero.dirx, *cub->hero.diry);
-		dims[0] = (int)(ratio * obj->type->width);
-		dims[1] = (int)(ratio * obj->type->height);
-		drawx = (int)(((*cub->hero.dirx) * obj->oy - (*cub->hero.diry) * obj->ox)
-			* ratio) + cub->scn_midx;
+		__rdr_obj_draw_check(cub, &od);
 
-//		printf("drawx : %d, dims : (%d, %d), type w, h : (%d, %d)\n", drawx, dims[0], dims[1],
-//			obj->type->width, obj->type->height);
-		if (((obj->dist <= 1) || (drawx + (dims[0] >> 1)) < 0
-			|| SCN_WIDTH <= (drawx - (dims[0] >> 1))) && next_obj(&obj))
-//		{
-//			obj = obj->next;
+		if ((!od.dims[0] || (od.odist <= 1.0f) || (od.drawx + (od.dims[0] >> 1)) < 0
+			|| SCN_WIDTH <= (od.drawx - (od.dims[0] >> 1))) && next_obj(&od.obj))
 			continue ;
-//		}
-		tincrs[0] = (float)tex->width / (float)dims[0];
-		tincrs[1] = (float)tex->height / (float)dims[1];
-		toffs[0] = 0;
-		toffs[1] = 0;
+
+		__rdr_select_draw_texture(&od, od.obj);
 		
-		loffs[0] = drawx - (dims[0] >> 1);
-		loffs[1] = cub->scn_midy - (dims[1] >> 1) + (int)(obj->type->draw_offy * ratio);
-		loffs[2] = loffs[0] + dims[0];
-		loffs[3] = loffs[1] + dims[1];
+		od.pframe[0] = cub->renderer.bframe[0];
+		od.pframe[1] = cub->renderer.bframe[1];
+		od.pframe[2] = cub->renderer.bframe[2];
+		od.pframe[3] = cub->renderer.bframe[3];
+		__rdr_setup_draw_objects(cub, &od, od.pframe, od.obj->type->offy);
+		__render_obj(cub, &od);
 
-		if (loffs[0] < 0)
-		{
-			toffs[0] = -loffs[0];
-			dims[0] += loffs[0];
-			loffs[0] = 0;
-		}
-		if (loffs[1] < 0)
-		{
-			toffs[1] = -loffs[1];
-			dims[1] += loffs[1];
-			loffs[1] = 0;
-		}
-		if (loffs[2] > SCN_WIDTH)
-		{
-			dims[0] -= (loffs[2] - SCN_WIDTH);
-			loffs[2] = SCN_WIDTH;
-		}
-		if (loffs[3] > SCN_HEIGHT)
-		{
-			dims[1] -= (loffs[3] - SCN_HEIGHT);
-			loffs[3] = SCN_HEIGHT;
-		}
 
-		if (obj_get_type(obj) == OBJ_PORTAL && obj->isactive)
+		if (obj_get_type(od.obj) == OBJ_PORTAL && od.obj->isactive)
 		{
-//			printf("RENDERING PORTAL OBJECT WITH PROJ! from start %d to end %d\n", loffs[0], loffs[2]);
-			
-			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
-			int	*pframe = cub->renderer.pframe;
-			int	pdims[2] = {(int)(obj->type->proj_width * ratio), (int)(obj->type->proj_height * ratio)};
+//			int	*pframe = cub->renderer.pframe;
+//			int	pdims[2] = {(int)(obj->type->proj_width * ratio), (int)(obj->type->proj_height * ratio)};
+			od.dims[0] = (int)(od.obj->type->proj_width * od.ratio);
+			od.dims[1] = (int)(od.obj->type->proj_height * od.ratio);
 
-			pframe[0] = drawx - (pdims[0] >> 1);
-			pframe[2] = ft_clamp(pframe[0] + pdims[0], 0, SCN_WIDTH);
-			pframe[0] = ft_clamp(pframe[0], 0, SCN_WIDTH);
+			od.pframe[0] = od.drawx - (od.dims[0] >> 1);
+			od.pframe[2] = ft_clamp(od.pframe[0] + od.dims[0], 0, SCN_WIDTH);
+			od.pframe[0] = ft_clamp(od.pframe[0], 0, SCN_WIDTH);
 
-			if ((pframe[0] == pframe[2]) && next_obj(&obj))
+			if ((od.pframe[0] == od.pframe[2]) && next_obj(&od.obj))
 			{
 				printf("BAILOUT ON PROJECTION !!\n");
-//				obj = obj->next;
 				continue ;
 			}
-			pframe[1] = cub->scn_midy - (pdims[1] >> 1)
-				+ (ratio * obj->type->draw_offy);
-			pframe[3] = ft_clamp(pframe[1] + pdims[1], 0, SCN_HEIGHT);
-			pframe[1] = ft_clamp(pframe[1], 0, SCN_HEIGHT);
-			pdims[0] = pframe[2] - pframe[0];
-			pdims[1] = pframe[3] - pframe[1];
-
+			od.pframe[1] = cub->scn_midy - (od.dims[1] >> 1)
+				+ (od.ratio * od.obj->type->offy);
+			od.pframe[3] = ft_clamp(od.pframe[1] + od.dims[1], 0, SCN_HEIGHT);
+			od.pframe[1] = ft_clamp(od.pframe[1], 0, SCN_HEIGHT);
+			od.dims[0] = od.pframe[2] - od.pframe[0];
+			od.dims[1] = od.pframe[3] - od.pframe[1];
+			
+			printf("pframe : [%d, %d, %d, %d], dims : [%d, %d]\n",
+				od.pframe[0], od.pframe[1], od.pframe[2], od.pframe[3],
+				od.dims[0], od.dims[1]);
 			memset(cub->renderer.dpbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
 			memset(cub->renderer.isproj, 0, sizeof(char) * SCN_WIDTH * SCN_HEIGHT);
 			
-			cub->renderer.portal = obj;
-//			ft_deltatime_usec_note(NULL);
-			__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels, cub->renderer.isproj, pframe, pdims);
-//			ft_deltatime_usec_note("__label_isproj time");
-			prtl_proj_vectors(cub->hero.rcast.pdata, &cub->map, obj, cub->renderer.pframe);
+			cub->renderer.portal = od.obj;
+			__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels,
+				od.isproj, od.pframe, od.dims);
+			prtl_proj_vectors(od.pdata + od.pframe[0] - 1,
+				&cub->map, od.obj, od.pframe[2] - od.pframe[0]);
 			order_draw_call(cub->draw_threads, 3, 6);
-//			__render_proj_objects(cub);//, obj, cub->hero.rcast.pdata, pframe);
-//			__render_proj_walls(cub);//, cub->hero.rcast.pdata, (uint32_t *)cub->renderer.objs_layer->pixels, pframe);
-//			__render_proj_floor(cub);
 		}
-		else
-			__render_obj(cub, obj->dist, tex, cub->hero.rcast.rdata, dims, loffs, toffs, tincrs);
-		obj = obj->next;
+
+		od.obj = od.obj->next;
 	}
 }
 

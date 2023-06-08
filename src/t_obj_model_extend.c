@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 00:02:51 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 00:50:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/07 22:37:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 	objs->fireball.is_oriented = 0;
 	objs->fireball.is_solid = 0;
 	objs->fireball.nb_texs = 4;
-	objs->fireball.draw_offy = 0;
+	objs->fireball.offy = 0;
 	objs->fireball.gsets[0] = gset_builder("tex/gset_fb/",
 			objs->fireball.nb_texs);
 	if (!objs->fireball.gsets[0])
@@ -52,7 +52,7 @@ t_omdl	*init_firepit_model(t_objs *objs)
 	objs->firepit.is_oriented = 0;
 	objs->firepit.is_solid = 1;
 	objs->firepit.nb_texs = 4;
-	objs->firepit.draw_offy = 20;
+	objs->firepit.offy = 20;
 	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
 		return (NULL);
 	objs->firepit.gsets[0] = gset_builder("tex/gset_firepit/",
@@ -81,7 +81,7 @@ t_omdl	*init_firepit_model(t_objs *objs)
 // 	objs->flag.is_oriented = 0;
 // 	objs->flag.is_solid = 1;
 // 	objs->flag.nb_texs = 8;
-// 	objs->flag.draw_offy = 20;
+// 	objs->flag.offy = 20;
 // 	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
 // 		return (NULL);
 // 	objs->flag.gsets[0] = gset_builder("tex/gset_flag/",

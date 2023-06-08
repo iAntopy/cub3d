@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 17:26:37 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/07 23:44:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	__setup_base_renderer_and_minimap_data(t_cub *cub)
 	cub->map.wld_map_y_rt = 1.0f / cub->map.map_wld_y_rt;
 	j = -1;
 	while (++j < SCN_HEIGHT)
-		cub->buff_offys[j] = j * SCN_WIDTH;
+		cub->yoffs[j] = j * SCN_WIDTH;
 	return (0);
 }
 
@@ -67,7 +67,7 @@ static int	__setup_base_renderer_and_minimap_data(t_cub *cub)
 int	init_renderer(t_cub *cub)
 {
 	cub->renderer.sky_layer = mlx_new_image(cub->mlx,
-			SCN_WIDTH, SCN_HEIGHT >> 1);
+		SCN_WIDTH, SCN_HEIGHT >> 1);
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.objs_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);

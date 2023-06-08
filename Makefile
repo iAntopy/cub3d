@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/06 21:36:21 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/07 20:28:55 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ SRC_FLS	:=		main.c 			\
 			renderer_draw_sky.c		\
 			renderer_draw_floor.c	\
 			renderer_draw_floor_proj.c	\
+			renderer_draw_walls_proj.c	\
 			renderer_draw_objs.c	\
+			renderer_draw_objs_proj.c	\
 			renderer_utils.c	\
 			player_controls.c	\
 			prebuilt_map_tools.c	\
