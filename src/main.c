@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 17:27:36 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/07 23:45:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ int	cub_init_core_data(t_cub *cub)
 	cub->inv_two_pi = 0.5f / M_PI;
 	cub->near_z = (float)cub->scn_midx / tanf(FOV_HF);
 	cub->near_proj_factor = CELL_WIDTH * cub->near_z;
+	cub->renderer.bframe[0] = 0;
+	cub->renderer.bframe[1] = 0;
+	cub->renderer.bframe[2] = SCN_WIDTH;
+	cub->renderer.bframe[3] = SCN_HEIGHT;
 	cub->renderer.requires_update = 1;
 	return (0);
 }

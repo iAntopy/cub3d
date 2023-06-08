@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 21:31:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/08 03:11:51 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 # define DEBUG 1
 
+/// SCN_WIDTH MUST BE > SCN_HEIGHT
 # define SCN_WIDTH  1024
 # define SCN_HEIGHT 780
 
@@ -94,7 +95,7 @@
 # define NB_OBJ_TYPES 5
 # define FIREPIT_SPAWN_TICKS 200
 
-# define MAX_PLAYERS 8
+# define MAX_PLAYERS 16
 
 enum	e_sides
 {
@@ -349,7 +350,7 @@ typedef struct s_object_model
 	int				half_h;
 	float				proj_width;
 	float				proj_height;
-	int				draw_offy;// to draw obj higher or lower
+	int				offy;// to draw obj higher or lower
 //	uint32_t		bypass_clr;// exterior color around the portal that should nor be drawn.
 
 	int				nb_texs;// Max nb of textures for this particular model.
@@ -483,6 +484,46 @@ typedef struct s_main_character_data
 	t_rcast		rcast;
 }	t_hero;
 
+typedef struct s_obj_intermediate_draw_data
+{
+	int				x;
+	int				y;
+	int				*pframe;
+	t_pdata			*pdata;
+	t_rdata			*rdata;
+	t_pdata			*pd;
+	t_rdata			*rd;
+
+	t_oinst			*prtl;
+	t_oinst			*link;
+	t_oinst			*obj;
+	float			*dbuff;
+	uint32_t		*pbuff;
+	char			*isproj;
+	char			*ip;
+	float			*dpbuff;
+	float			*dp;
+	float			ov[2];
+	float			ppos[2];
+	float			ratio;
+	float			odist;
+	float			pdist;
+	mlx_texture_t	*tex;
+	uint32_t		*pxls;
+	uint32_t		*tp;
+	uint32_t		cl;
+	int				drawx;
+	int				loffs[4];
+	int				toffs[2];
+	float			tincrs[2];
+	int				dims[2];
+	int				so;
+	int				to;
+	int				bincr;
+	int				tys[SCN_WIDTH];
+	int				lys[SCN_WIDTH];
+}	t_objd;
+
 typedef struct s_renderer
 {
 	mlx_image_t	*sky_layer;
@@ -504,6 +545,7 @@ typedef struct s_renderer
 //	int			*sky_toffs;
 
 	t_oinst		*portal;// pointer to portal currently being rendered
+	int			bframe[4];// base frame init as [0, 0, SCN_WIDTH, SCN_HEIGHT].
 	int			pframe[4];// min and max coords of projection frame for current portal.
 
 	float		flrw_to_cw;
@@ -537,7 +579,7 @@ typedef struct s_cub3d_core_data
 	float			inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
 	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
 	float			inv_two_pi;	// 1 / 2pi;
-	int				buff_offys[SCN_HEIGHT];//	indexable array of all j * SCN_WIDTH 
+	int				yoffs[SCN_HEIGHT];//	indexable array of all j * SCN_WIDTH 
 										//	offsets in y directions to optimize rendering.
 	/// FOV AND PROJECTION DATA ///////////////////////////////
 	float			fov;// = fov;// field of view
@@ -625,6 +667,15 @@ void			render_walls(t_cub *cub);//, t_rdata *rd);
 void			render_floor_sky(t_cub *cub);//, t_rdata *rd);
 void			render_objects(t_cub *cub);//, t_rdata *rd);
 void			__render_sky(t_cub *cub);
+
+extern void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
+extern void	__rdr_setup_draw_objects(t_cub *cub, t_objd *od, int *pframe, int offy);
+extern void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
+//extern inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
+//extern inline void	__rdr_setup_draw_obj(t_cub *cub, t_objd *od, int *pframe, int offy);
+//extern inline void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
+
+int			prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int n);//, int *pframe);
 void			__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe);
 void			__render_proj_walls(t_cub *cub);//, t_oinst *prtl, t_pdata *pdata, int *pframe)
 void			__render_proj_floor(t_cub *cub);//, uint32_t *pbuff, t_pdata *pd, int *pframe);

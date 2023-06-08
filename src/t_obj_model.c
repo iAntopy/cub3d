@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 01:05:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/07 22:37:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_omdl	*init_player_model(t_objs *objs)
 	objs->player.is_oriented = 1;
 	objs->player.is_solid = 1;
 	objs->player.nb_texs = 8;
-	objs->player.draw_offy = 20;
+	objs->player.offy = 20;
 	objs->player.gsets[0] = gset_builder("tex/gset_player/",
 			objs->player.nb_texs);
 	if (!objs->player.gsets[0])
@@ -52,7 +52,7 @@ t_omdl	*init_spawnpoint_model(t_objs *objs)
 	objs->spawnp.is_drawable = 0;
 	objs->spawnp.is_oriented = 0;
 	objs->spawnp.nb_texs = 0;
-	objs->spawnp.draw_offy = 0;
+	objs->spawnp.offy = 0;
 	objs->spawnp.width = CELL_WIDTH;
 	objs->spawnp.half_w = objs->spawnp.width >> 1;
 	objs->spawnp.height = CELL_WIDTH;
@@ -73,7 +73,7 @@ t_omdl	*init_portal_model(t_objs *objs)
 	objs->portal.is_oriented = 0;
 	objs->portal.is_solid = 0;
 	objs->portal.nb_texs = 4;
-	objs->portal.draw_offy = 0;
+	objs->portal.offy = 0;
 	objs->portal.gsets[0] = gset_builder("tex/gset_p/",
 			objs->portal.nb_texs);
 	if (!objs->portal.gsets[0])

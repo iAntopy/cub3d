@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 21:35:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/07 22:17:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static void	__init_flr_ceil_proj_data(t_cub *cub, t_flrp *fp)
 	fp->cl_p = (uint32_t *)cub->renderer.bg_layer->pixels
 		+ (SCN_WIDTH * (cub->scn_midy - 2)) - 1;
 	fp->dpbuff = cub->renderer.dpbuff;
-	fp->dpbuff_flr = fp->dpbuff + cub->buff_offys[fp->y];
-	fp->isproj = cub->renderer.isproj + cub->buff_offys[fp->y];
+	fp->dpbuff_flr = fp->dpbuff + cub->yoffs[fp->y];
+	fp->isproj = cub->renderer.isproj + cub->yoffs[fp->y];
 }
 
 static void	__init_flr_ceil_proj_row(t_cub *cub, t_flrp *fp)
 {
-	const int	y_offset = cub->buff_offys[fp->y];
+	const int	y_offset = cub->yoffs[fp->y];
 
 	fp->dpbuff_flr = cub->renderer.dpbuff + y_offset;
 	fp->isproj = cub->renderer.isproj + y_offset;
