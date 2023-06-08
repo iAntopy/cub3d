@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:43:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:27:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 	ft_free_p((void **)&cub->map.collision_map);
 	strtab_clear((char ***)&cub->map.grid_coords);
 	raycaster_clear(&cub->hero.rcast, EXIT_SUCCESS);
-	renderer_clear(cub);
+	renderer_clear(cub, 0);
 	clear_floorcaster(cub);
 	clear_obj_framework(cub);
 	if (cub->mlx)

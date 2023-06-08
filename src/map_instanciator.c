@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:36:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:37:29 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static t_objx	*find_relative(t_cub *cub, t_objx *ob, int nb_meta)
 	t_objx	*other;
 	int		i;
 
-	printf("Find relative entered with objx : %c. Searching for rel : %c\n", ob->name, ob->relativ);
 	if (!ob->relativ)
 		return (NULL);
 	i = -1;
@@ -35,7 +34,6 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 	t_objx	*o;
 	int		i;
 
-	printf("linking map insts\n");
 	i = -1;
 	while (++i < nb_meta)
 	{

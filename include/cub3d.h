@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:49:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:31:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -620,10 +620,12 @@ float			*get_grid_coords(t_map *map, int cx, int cy);
 /// RENDERER /////////////////
 int				init_renderer(t_cub *cub);
 void			init_rdata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd);
-int				renderer_clear(t_cub *cub);
+int				renderer_clear(t_cub *cub, int exit_status);
 void			render_walls(t_cub *cub);//, t_rdata *rd);
 void			render_floor_sky(t_cub *cub);//, t_rdata *rd);
 void			render_objects(t_cub *cub);//, t_rdata *rd);
+void			__render_sky(t_cub *cub);
+void			__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe);
 void			__render_proj_walls(t_cub *cub);//, t_oinst *prtl, t_pdata *pdata, int *pframe)
 void			__render_proj_floor(t_cub *cub);//, uint32_t *pbuff, t_pdata *pd, int *pframe);
 void			__render_proj_objects(t_cub *cub);//, t_oinst *prtl, t_pdata *pdata, int *pframe)

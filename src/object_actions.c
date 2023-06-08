@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_actions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 01:09:44 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:37:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,16 @@ int	__fball_hit_target(t_cub *cub, t_oinst *obj, t_oinst *other, t_oinst **tgt)
 		closest_dist = INFINITY;
 	find_vector_delta(&obj->px, &other->px, delta);
 	delta[2] = delta[0] * delta[0] + delta[1] * delta[1];
-	if (delta[2] < 300)
+	if (delta[2] < 300.0f)
 	{
-		respawn_player(other);
+		if (obj_get_type(other) == OBJ_PLAYER)
+			respawn_player(other);
+		else if (obj_get_type(other) == OBJ_FIREBALL)
+			delete_oinst_by_id(cub, other->_id);
 		return (delete_oinst_by_id(cub, obj->_id));
 	}
-	else if (obj->relative && delta[2] < closest_dist)
+	else if (obj_get_type(other) == OBJ_PLAYER
+		&& obj->relative && delta[2] < closest_dist)
 	{
 		closest_dist = delta[2];
 		obj->relative = other;
@@ -72,8 +76,9 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 	target = NULL;
 	while (other)
 	{
-		if ((obj_get_type(other) != OBJ_PLAYER || other->alleg == obj->alleg)
-			&& next_obj(&other))
+		if ((!(obj_get_type(other) == OBJ_PLAYER
+					|| obj_get_type(other) == OBJ_FIREBALL)
+				|| other->alleg == obj->alleg) && next_obj(&other))
 			continue ;
 		if (__fball_hit_target(cub, obj, other, &target))
 			return (1);
