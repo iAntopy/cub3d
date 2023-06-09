@@ -124,7 +124,7 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	if (cub->box.n_plyr > 0)
 		printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
 	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) *
-			box->xnum - 1);
+			box->xnum + 1);
 	if (!box->xform)
 		return (NULL);
 	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
