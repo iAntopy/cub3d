@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:28:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/08 04:19:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/08 23:04:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,6 @@ int	prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int n)
 
 	while (n-- && prtl_proj_init_vect(&pd, &rd, obj))
 	{
-//		printf("pd %p\n", pd);//, pd->rdata->idx);
-//		printf("rd %p\n", pd->rdata);
-//		printf("idx %d\n", pd->rdata->idx);
-//		printf("cell [%d, %d]\n", pd->cx, pd->cy);
-//		printf("rd %p, map %p, obj %p, n : %d\n", pd,
 		while (1)
 		{
 			axs = map->grid_coords[pd->cy + rd->dy] + ((pd->cx + rd->dx) << 1);
