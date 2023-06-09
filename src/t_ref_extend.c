@@ -19,11 +19,14 @@ void	clr_legend_strct(t_cub *cub)
 	{
 		if (cub->box.xform[cub->box.xnum])
 		{
+			printf("::OBJS ::instance gset[%p] xnum[%d]::\n",
+				cub->box.xform[cub->box.xnum], cub->box.xnum);
 			mlx_delete_texture(cub->box.xform[cub->box.xnum]);
 		}
-		free(cub->box.xform[cub->box.xnum]);
 		cub->box.xnum--;
 	}
+	free(cub->box.xform[cub->box.xnum]);
+	free(cub->box.xform);
 	if (*cub->box.xform)
 	{
 		free(*cub->box.xform);
