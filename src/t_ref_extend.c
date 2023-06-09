@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 00:57:24 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/09 15:54:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	clr_legend_strct(t_cub *cub)
 		{
 			mlx_delete_texture(cub->box.xform[cub->box.xnum]);
 		}
-		free(cub->box.xform[cub->box.xnum]);
 		cub->box.xnum--;
 	}
+	free(cub->box.xform[cub->box.xnum]);
 	if (*cub->box.xform)
 	{
 		free(*cub->box.xform);
