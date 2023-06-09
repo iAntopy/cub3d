@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/08 03:11:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/09 04:05:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef void				(*t_draw_func)(t_cub *cub);//t_cub *, t_rdata *);
 /// PARSING ///////////////////
 typedef struct s_matrx
 {
-	mlx_texture_t	*xwalls[4];
+	mlx_texture_t	*xwalls[8];
 }		t_matrx;
 
 typedef struct s_objx
@@ -152,7 +152,6 @@ typedef struct s_objx
 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
 	t_oinst			*wobj;		// world object instance
 }	t_objx;
-
 
 typedef struct s_box 
 {	
@@ -668,9 +667,11 @@ void			render_floor_sky(t_cub *cub);//, t_rdata *rd);
 void			render_objects(t_cub *cub);//, t_rdata *rd);
 void			__render_sky(t_cub *cub);
 
-extern void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
-extern void	__rdr_setup_draw_objects(t_cub *cub, t_objd *od, int *pframe, int offy);
-extern void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
+extern void		__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
+extern void		__rdr_setup_draw_objs(t_cub *cub, t_objd *od, int *pframe, int offy);
+extern void		__rdr_obj_draw_check(t_cub *cub, t_objd *od);
+extern int		__rdr_obj_out_of_frame(t_objd *od);
+extern void		__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims);
 //extern inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
 //extern inline void	__rdr_setup_draw_obj(t_cub *cub, t_objd *od, int *pframe, int offy);
 //extern inline void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
