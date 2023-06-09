@@ -6,83 +6,11 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/08 23:48:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/09 04:03:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// Assumes is_drawable == true, checked earlier.
-inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj)
-{
-	const float		rad_to_idx_ratio = 8.0f * M_INV_TAU;
-	float			dpos[2];
-	float			rel_ori;
-	int				idx;
-
-	if (!obj)
-		return ;
-	od->tex = NULL;
-	if (obj->type->is_oriented)
-	{
-		dpos[0] = obj->px - od->ppos[0];
-		dpos[1] = obj->py - od->ppos[1];
-		rel_ori = atan2f(dpos[1], dpos[0]) - obj->ori + FOV45_HF;
-		while (rel_ori < 0)
-			rel_ori += M_TAU;
-		idx = (int)(rel_ori * rad_to_idx_ratio) % 8;
-		od->tex = obj->gset->xwalls[idx];
-	}
-	else
-		od->tex = obj->gset->xwalls[obj->tex_idx];
-	od->pxls = (uint32_t *)(od->tex->pixels);
-}
-
-inline void	__rdr_setup_draw_objs(t_cub *cub, t_objd *od, int *pframe, int offy)
-{
-	od->tincrs[0] = (float)od->tex->width / (float)od->dims[0];
-	od->tincrs[1] = (float)od->tex->height / (float)od->dims[1];
-	*((size_t *)od->toffs) = 0;
-	od->loffs[0] = od->drawx - (od->dims[0] >> 1);
-	od->loffs[1] = cub->scn_midy - (od->dims[1] >> 1) + (int)(offy * od->ratio);
-	od->loffs[2] = od->loffs[0] + od->dims[0];
-	od->loffs[3] = od->loffs[1] + od->dims[1];
-	if (od->loffs[0] < pframe[0])
-	{
-		od->toffs[0] = pframe[0] - od->loffs[0];
-		od->dims[0] -= od->toffs[0];
-		od->loffs[0] = pframe[0];
-	}
-	if (od->loffs[1] < pframe[1])
-	{
-		od->toffs[1] = od->pframe[1] - od->loffs[1];
-		od->dims[1] -= od->toffs[1];
-		od->loffs[1] = pframe[1];
-	}
-	if (od->loffs[2] > pframe[2])
-		od->dims[0] -= (od->loffs[2] - pframe[2]);
-	if (od->loffs[3] > pframe[3])
-		od->dims[1] -= (od->loffs[3] - pframe[3]);
-	od->loffs[2] = ft_clamp(od->loffs[2], pframe[0], pframe[2]);
-	od->loffs[3] = ft_clamp(od->loffs[3], pframe[1], pframe[3]);
-}
-
-inline void	__rdr_obj_draw_check(t_cub *cub, t_objd *od)
-{
-	od->dims[0] = 0;
-	if (!od->obj->type->is_drawable || !od->obj->gset)
-		return ;
-	od->ov[0] = od->obj->px - od->ppos[0];
-	od->ov[1] = od->obj->py - od->ppos[1];
-	od->odist = (*cub->hero.dirx) * od->ov[0] + (*cub->hero.diry) * od->ov[1];
-	od->obj->dist = od->odist;
-	od->ratio = cub->near_z / od->odist;
-	od->drawx = (int)(((*cub->hero.dirx) * od->ov[1] - (*cub->hero.diry)
-				* od->ov[0]) * od->ratio) + cub->scn_midx;
-	od->dims[0] = (int)(od->ratio * od->obj->type->width);
-	od->dims[1] = (int)(od->ratio * od->obj->type->height);
-	return ;
-}
 
 static inline void	adjust_draw_frame(t_cub *cub, t_objd *od)
 {
@@ -139,7 +67,7 @@ void	__render_obj(t_cub *cub, t_objd *od)
 		od->pbuff += od->bincr;
 	}
 }
-
+/*
 static inline void	__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims)
 {
 	const int	start_offset = pf[0] + (pf[1] * SCN_WIDTH);
@@ -163,6 +91,7 @@ static inline void	__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims)
 		ip += buff_jump;
 	}
 }
+*/
 
 static inline void	init_draw_objects(t_cub *cub, t_objd *od)
 {
@@ -179,14 +108,32 @@ static inline void	init_draw_objects(t_cub *cub, t_objd *od)
 	od->ppos[0] = cub->hero.ply_obj->px;
 	od->ppos[1] = cub->hero.ply_obj->py;
 }
-/*
-//Checks weither the object to draw is in bounds
-inline int	__rdr_obj_inframe(t_objd *od)
+
+static inline void	__render_portal_projection(t_cub *cub, t_objd *od)
 {
-	return (od->drawx + (od->dims[0] >> 1)) < od->pframe[0]
-			|| od->pframe[2] <= (od->drawx - (od->dims[0] >> 1));
+	od->dims[0] = (int)(od->obj->type->proj_width * od->ratio);
+	od->dims[1] = (int)(od->obj->type->proj_height * od->ratio);
+	od->pframe[0] = od->drawx - (od->dims[0] >> 1);
+	od->pframe[2] = ft_clamp(od->pframe[0] + od->dims[0], 0, SCN_WIDTH);
+	od->pframe[0] = ft_clamp(od->pframe[0], 0, SCN_WIDTH);
+	if ((od->pframe[0] == od->pframe[2]) && next_obj(&od->obj))
+		return ;
+	od->pframe[1] = cub->scn_midy - (od->dims[1] >> 1)
+		+ (od->ratio * od->obj->type->offy);
+	od->pframe[3] = ft_clamp(od->pframe[1] + od->dims[1], 0, SCN_HEIGHT);
+	od->pframe[1] = ft_clamp(od->pframe[1], 0, SCN_HEIGHT);
+	od->dims[0] = od->pframe[2] - od->pframe[0];
+	od->dims[1] = od->pframe[3] - od->pframe[1];
+	memset(cub->renderer.dpbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
+	memset(cub->renderer.isproj, 0, sizeof(char) * SCN_WIDTH * SCN_HEIGHT);
+	cub->renderer.portal = od->obj;
+	__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels,
+		od->isproj, od->pframe, od->dims);
+	prtl_proj_vectors(od->pdata + od->pframe[0] - 1,
+		&cub->map, od->obj, od->pframe[2] - od->pframe[0]);
+	order_draw_call(cub->draw_threads, 3, 6);
 }
-*/
+
 void	render_objects(t_cub *cub)
 {
 	t_objd	od;
@@ -197,41 +144,19 @@ void	render_objects(t_cub *cub)
 		if (od.obj == cub->hero.ply_obj && next_obj(&od.obj))
 			continue ;
 		__rdr_obj_draw_check(cub, &od);
-		if ((!od.dims[0] || (od.odist <= 1.0f) || (od.drawx + (od.dims[0] >> 1)) < 0
-			|| SCN_WIDTH <= (od.drawx - (od.dims[0] >> 1)))
-			&& next_obj(&od.obj))
-			continue ;
-		__rdr_select_draw_texture(&od, od.obj);
 		od.pframe[0] = 0;
 		od.pframe[1] = 0;
 		od.pframe[2] = SCN_WIDTH;
 		od.pframe[3] = SCN_HEIGHT;
+		if ((!od.dims[0] || (od.odist <= 1.0f)
+				|| __rdr_obj_out_of_frame(&od))
+			&& next_obj(&od.obj))
+			continue ;
+		__rdr_select_draw_texture(&od, od.obj);
 		__rdr_setup_draw_objs(cub, &od, od.pframe, od.obj->type->offy);
 		__render_obj(cub, &od);
 		if (obj_get_type(od.obj) == OBJ_PORTAL && od.obj->isactive)
-		{
-			od.dims[0] = (int)(od.obj->type->proj_width * od.ratio);
-			od.dims[1] = (int)(od.obj->type->proj_height * od.ratio);
-			od.pframe[0] = od.drawx - (od.dims[0] >> 1);
-			od.pframe[2] = ft_clamp(od.pframe[0] + od.dims[0], 0, SCN_WIDTH);
-			od.pframe[0] = ft_clamp(od.pframe[0], 0, SCN_WIDTH);
-			if ((od.pframe[0] == od.pframe[2]) && next_obj(&od.obj))
-				continue ;
-			od.pframe[1] = cub->scn_midy - (od.dims[1] >> 1)
-				+ (od.ratio * od.obj->type->offy);
-			od.pframe[3] = ft_clamp(od.pframe[1] + od.dims[1], 0, SCN_HEIGHT);
-			od.pframe[1] = ft_clamp(od.pframe[1], 0, SCN_HEIGHT);
-			od.dims[0] = od.pframe[2] - od.pframe[0];
-			od.dims[1] = od.pframe[3] - od.pframe[1];
-			memset(cub->renderer.dpbuff, 0, sizeof(float) * SCN_WIDTH * SCN_HEIGHT);
-			memset(cub->renderer.isproj, 0, sizeof(char) * SCN_WIDTH * SCN_HEIGHT);
-			cub->renderer.portal = od.obj;
-			__label_isproj((uint32_t *)cub->renderer.objs_layer->pixels,
-				od.isproj, od.pframe, od.dims);
-			prtl_proj_vectors(od.pdata + od.pframe[0] - 1,
-				&cub->map, od.obj, od.pframe[2] - od.pframe[0]);
-			order_draw_call(cub->draw_threads, 3, 6);
-		}
+			__render_portal_projection(cub, &od);
 		od.obj = od.obj->next;
 	}
 }

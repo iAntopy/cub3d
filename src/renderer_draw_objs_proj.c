@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:26:50 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/08 23:51:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/09 03:55:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,8 @@ void	__render_proj_objects(t_cub *cub)
 	{
 		__rdr_obj_draw_check(cub, &od);
 		if ((!od.dims[0] || ((od.odist - 1.0f) <= od.pdist) || od.prtl == od.obj
-				|| (od.drawx + (od.dims[0] >> 1)) < od.pframe[0]
-				|| od.pframe[2] <= (od.drawx - (od.dims[0] >> 1)))
-				&& next_obj(&od.obj))
-				//|| !__rdr_obj_out_of_frame(&od)
+				|| __rdr_obj_out_of_frame(&od))
+			&& next_obj(&od.obj))
 			continue ;
 		__rdr_select_draw_texture(&od, od.obj);
 		__rdr_setup_draw_objs(cub, &od, od.pframe, od.obj->type->offy);

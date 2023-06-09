@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/08 23:45:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/09 04:05:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -671,6 +671,7 @@ extern void		__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
 extern void		__rdr_setup_draw_objs(t_cub *cub, t_objd *od, int *pframe, int offy);
 extern void		__rdr_obj_draw_check(t_cub *cub, t_objd *od);
 extern int		__rdr_obj_out_of_frame(t_objd *od);
+extern void		__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims);
 //extern inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
 //extern inline void	__rdr_setup_draw_obj(t_cub *cub, t_objd *od, int *pframe, int offy);
 //extern inline void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
