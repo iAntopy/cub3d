@@ -83,5 +83,6 @@ int	main(int argc, char **argv)
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub, report_err_strerror("mlx loop exit error")));
+	clr_legend_strct(&cub);
 	return (cub_clear(&cub, EXIT_SUCCESS));
 }

@@ -55,7 +55,6 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 	return (j);
 }
 
-/// link' too too wide ++ doing too many thing!
 t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 {
 	char	*tex_path;
@@ -79,6 +78,8 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				if (!dual_builder(cub, ft_in_set(tex_name[0],
 							(const char *)NCHR), tex_path))
 					return (NULL);
+			free(tex_name);
+			free(tex_path);
 		}
 	}
 	return (cub);
@@ -122,8 +123,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	printf("_dual[%d]", cub->box.n_dual);
 	if (cub->box.n_plyr > 0)
 		printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
-	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
-			box->xnum + 1);
+	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) *
+			box->xnum - 1);
 	if (!box->xform)
 		return (NULL);
 	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);

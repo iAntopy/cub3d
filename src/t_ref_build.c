@@ -32,6 +32,8 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(arr_name));
 		i++;
+		free(name);
+		free(arr_name);
 	}
 	return (gset);
 }
