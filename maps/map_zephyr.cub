@@ -1,41 +1,40 @@
-! 3/>
-< 3/>
-> 3/<
-$ 2/9
+! 1/<
+< 1/>
+> 1/<
+$ 1/9
 a tex/ext/travel_wall.png
 b tex/ext/ult_wall.png
 c tex/ext/linear_wall.png
 d tex/ext/path_celing.png
-e tex/ext/mars_floor.png
-f tex/ext/wall_mars_e.png
-g tex/ext/wall_mars_w.png
-z tex/ext/sky_mars.png
+e tex/ext/wall_mars_n.png
+f tex/ext/wall_mars_s.png
+z tex/ext/sky_mars3.png
 0 tex/ext/vert_floor.png tex/ext/space_Xwall_.png
 1 tex/ext/horz_floor.png tex/ext/travel_wall_.png
 2 tex/ext/horz_floor.png tex/ext/starry-night-sky_.png
 3 tex/ext/vert_floor.png tex/ext/starry-night-sky_.png
-4 tex/ext/mars_floor.png tex/ext/bay_window_.png
+4 tex/ext/mars_floor2.png tex/ext/bay_window_.png
 
 A ddcd
 B caba
 C dddd
 D dddd
-E ffgg
+E ffee
 
 AAAAAAAAAAAAAAAAAAAAACCCCCCCCCCCC
-A11>11111@11111111111111211!121$C
+A1111111@11111!111<1111112111211C
 AAAAAAAAAAAAAAD00000DCCCCCCCCCCCC
               D00000D
+              D00$00D
               D00000D
               D00000D
               D00000D
               D00000D
-              D00<00D
               D00000D
               D30303D
               B0BBBBB
-AAAAAAAAAAAAAAA4A
-A444444444444444A
-A444444444444444A
-A444444444444444A
-AAAAAAAAAAAAAAAAA
+EEEEEEEEEEEEEEE4E
+E444444444444444E
+E4444444444>4444E
+E444444444444444E
+EEEEEEEEEEEEEEEEE
