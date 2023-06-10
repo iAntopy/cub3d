@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/09 22:16:40 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/10 02:07:24 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 	while (len < cub->box.pset)
 	{
 		ref = raw[queue];
-		// printf("PSET:: CHAR>>(%c)", ref[0]);
-		// printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		printf("PSET:: CHAR>>(%c)", ref[0]);
+		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
+		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		if (!cub->pset)
 			return (NULL);
@@ -95,18 +95,3 @@ int	tex_parse(t_cub *cub, t_map *map)
 	return (0);
 }
 
-/* 
-	Start with 	: VER.3
-		: 	map->raw	-->	first lecture total len of the file
-		:		NCHR	-->	floor txtr legend	
-		:		LCHR	-->	wall  txtr legend
-		:		UCHR	-->	wall  txtr preset
-	Need to set	:
-		:		xnum	how many legend to build  (lower and num)
-		:		pset	how many preset to malloc	(uppercase)
-	Frame builder
-		:		FRAME one	: legend
-		:		xform = malloc(sizeof(mlx_texture_t *) * xnum)
-		:		FRAME two	: preset
-		:		xwalls = malloc(sizeof(void *) * 4)
-*/

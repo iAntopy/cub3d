@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 01:10:18 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/10 02:08:34 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 		m[i] = (char *)ft_calloc(sizeof(char), (map->width + 5));
 		spc_chk(cub, map, q);
 		ft_strlcpy(m[i], map->raw[q], ft_strlen(map->raw[q]) + 1);
-		printf("%s\n", map->raw[q]);
+		// printf("%s\n", map->raw[q]);
 		++q;
 		++i;
 	}
@@ -115,7 +115,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (error("Wrong file extention.", map));
 	if (read_whole_file(map, file) < 0 || tex_parse(cub, map) < 0)
 		return (-1);
-	map_offset = cub->box.xnum + cub->box.meta + cub->box.pset - 1;
+	map_offset = cub->box.xnum + cub->box.meta + cub->box.pset ;
 	map->m = map->raw + map_offset;
 	map->height = transcribe(map, map_offset);
 	map->mx = init_mx(map);
