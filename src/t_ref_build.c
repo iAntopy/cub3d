@@ -23,7 +23,7 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 	if (!gset)
 		return (NULL);
 	i = 0;
-	printf("GSET %d txtrs >>>> *%s Model >>> \n", txtr_nb, path);
+	printf("GSET    %d txtrs >>>> *%s Model >>> \n", txtr_nb, path);
 	while (i < txtr_nb)
 	{
 		name = ft_strjoin(path, ft_itoa(i));
@@ -50,13 +50,13 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
-		printf("DUAL [0] << %p >> [%d] >>> %s []\n", cub->dual[i].xwalls[0], i, tex_set[0]);
+		printf("DUAL [%d][0] << %p >> [%d] >>> %s []\n", i, cub->dual[i].xwalls[0], i, tex_set[0]);
 		if (tex_set[1])
 		{
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
-			printf("DUAL [1]<< %p >> [%d] >>> %s []\n", cub->dual[i].xwalls[1], i, tex_set[1]);
+			printf("DUAL [%d][1]<< %p >> [%d] >>> %s []\n", i, cub->dual[i].xwalls[1], i, tex_set[1]);
 		}
 		// cub->box.xnum--;
 	}

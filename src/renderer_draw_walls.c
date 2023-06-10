@@ -18,6 +18,7 @@ static inline uint32_t	*init_wcol(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 	int				tex_start_x;
 
 	tex = cub->map.mx[rd->cy][rd->cx]->xwalls[rd->side];
+	// printf("MAPX([%d],[%d])::xwalls[%d] <<%p>>\n", rd->cy, rd->cx, rd->side, cub->map.mx[rd->cy][rd->cx]->xwalls[rd->side]);
 	*tw = tex->width;
 	rc->half_texh = (tex->height >> 1);
 	tex_start_x = (int)(rd->tex_ratio * tex->width);

@@ -22,16 +22,17 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	id = 0;
 	fill = -1;
 	ref = raw[queue];
+	printf("pset ref ' {%s}\n", ref);
 	if (ft_in_set((const char)raw[queue][0], (const char *)UCHR) > -1)
 	{
 		while (++fill < 4)
 		{
 			id = ft_in_set((const char)ref[fill + 2], LCHR);
-			printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
+			printf("PSET ref[%d] = {%c}, (id: %d), (len: %d), \n", fill + 2, ref[fill + 2], id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			// printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
-			// printf(" cub->box.xform[%d]:: <<%p>> ::\n", id, cub->box.xform[id]);
+			printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
+			printf(" cub->box.xform[%d]:: <<%p>> ::\n", id, cub->box.xform[id]);
 		}
 	}
 	return (cub->pset);
@@ -41,16 +42,16 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 {
 	int		queue;
 	int		len;
-	// char	*ref;
+	char	*ref;
 
-	queue = (cub->box.xnum + cub->box.meta - 1);
+	queue = (cub->box.xnum + cub->box.meta);
 	len = 0;
 	while (len < cub->box.pset)
 	{
-		// ref = raw[queue];
-		// printf("PSET:: CHAR>>(%c)", ref[0]);
-		// printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		ref = raw[queue];
+		printf("PSET:: CHAR>>(%c) :: queue [%d]", ref[0], queue );
+		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
+		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		if (!cub->pset)
 			return (NULL);
