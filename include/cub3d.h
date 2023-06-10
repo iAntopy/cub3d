@@ -72,10 +72,10 @@
 # define TEX_FLOOR			5
 
 # define MAP_CHARS "0AB@"
-# define MAP_LCHR "abcdefghijklmnopz"
+# define LCHR "abcdefghijklmnopz"
 # define NCHR "0123456789"
-# define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "!+|-<>(){}_^=:;*#%@$&?"
+# define UCHR "ABCDEFGHIJ"
+# define MCHR "!+|-<>(){}_^=:;*#%@$&?"
 
 # define MOD_LEV "!+-"
 # define MOD_PORT "<>(){}_^"
@@ -668,11 +668,11 @@ void			render_floor_sky(t_cub *cub);//, t_rdata *rd);
 void			render_objects(t_cub *cub);//, t_rdata *rd);
 void			__render_sky(t_cub *cub);
 
-extern void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
-extern void	__rdr_setup_draw_objects(t_cub *cub, t_objd *od, int *pframe, int offy);
-extern void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
-extern int	__rdr_obj_out_of_frame(t_objd *od);
-extern void	__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims);
+extern void		__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
+extern void		__rdr_setup_draw_objs(t_cub *cub, t_objd *od, int *pframe, int offy);
+extern void		__rdr_obj_draw_check(t_cub *cub, t_objd *od);
+extern int		__rdr_obj_out_of_frame(t_objd *od);
+extern void		__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims);
 //extern inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
 //extern inline void	__rdr_setup_draw_obj(t_cub *cub, t_objd *od, int *pframe, int offy);
 //extern inline void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
