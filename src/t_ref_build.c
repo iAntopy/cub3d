@@ -19,7 +19,7 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 	char	*name;
 	int		i;
 
-	gset = (t_matrx *)malloc(sizeof(t_matrx));
+	gset = (t_matrx *)calloc(sizeof(t_matrx), 1);
 	if (!gset)
 		return (NULL);
 	i = 0;

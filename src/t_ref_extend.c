@@ -30,7 +30,7 @@ void	clr_legend_strct(t_cub *cub)
 	if (*cub->box.xform)
 	{
 		printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
-		free(*cub->box.xform);
+		// free(cub->box.xform);
 		cub->box.xform = NULL;
 	}
 	if (cub->pset[0].xwalls[0])
