@@ -127,7 +127,7 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	cub = e_mtrx_count(cub);
 	cub->box.xnum =  cub->box.xnum - cub->box.n_dual;
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
-	printf("_dual[%d]", cub->box.n_dual);
+	printf("_dual[%d]::\n", cub->box.n_dual);
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *), box->xnum + 1); 
 	if (!box->xform)
 		return (NULL);
