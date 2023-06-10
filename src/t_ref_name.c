@@ -86,7 +86,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					return (NULL);
 			free(tex_name);
 			free(tex_path);
-			printf("-- -- XFORM [j = %d]: Lines [i =%d]-- -- \n", j, i);
+			// printf("-- -- XFORM [j = %d]: Lines [i =%d]-- -- \n", j, i);
 		}
 	}
 	return (cub);

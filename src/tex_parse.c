@@ -18,7 +18,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	int		id;
 	char	*ref;
 
-	printf("\n\n PSET BUILDING!\n");
+	// printf("\n\n PSET BUILDING!\n");
 	id = 0;
 	fill = -1;
 	ref = raw[queue];
@@ -41,16 +41,16 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 {
 	int		queue;
 	int		len;
-	char	*ref;
+	// char	*ref;
 
 	queue = (cub->box.xnum + cub->box.meta - 1);
 	len = 0;
 	while (len < cub->box.pset)
 	{
-		ref = raw[queue];
-		printf("PSET:: CHAR>>(%c)", ref[0]);
-		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		// ref = raw[queue];
+		// printf("PSET:: CHAR>>(%c)", ref[0]);
+		// printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
+		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		if (!cub->pset)
 			return (NULL);
