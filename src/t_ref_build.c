@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/09 22:08:37 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/10 00:19:57 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 		gset->xwalls[i] = mlx_load_png(arr_name);
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(arr_name));
+		printf("GSET <<%p>> [%d] >>> %s []  \n", gset->xwalls[i], i, arr_name);
 		i++;
 		free(name);
 		free(arr_name);
@@ -56,7 +57,7 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 				return (report_mlx_tex_load_failed(tex_set[1]));
 		}
 		// cub->box.xnum--;
-		printf("DUAL [%d] >>>> %d XNUM  \n", i, cub->box.xnum);
+		printf("DUAL << %p >> [%d] >>> %s []\n", cub->dual[i].xwalls[0], i, tex_set[0]);
 	}
 	return (cub);
 }
@@ -118,8 +119,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 			if ((p_box >= grim && (p_box < (int)ft_strlen(chrs) - 1)))
 				m->mx[m->pos_y][m->pos_x] = &cub->pset[p_box - grim];
 			else if ((p_box < grim) && p_box > (grim - cub->box.n_dual - 1))
-				m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta
-					+ 1];
+				m->mx[m->pos_y][m->pos_x] = &cub->dual[p_box - cub->box.meta + 1];
 			m->pos_x++;
 		}
 		m->pos_y++;

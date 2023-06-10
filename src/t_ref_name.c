@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/09 22:22:44 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/10 00:21:48 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 		cub->box.sky = cub->box.xform[j];
 		if (!cub->box.sky)
 			return (-1);
-		printf("--  XFORM --<<%p>> [j = %d]:\n" ,cub->box.xform[j], j);
+		printf("XFORM <<%p>> [%d] >>>> %s ::\n" ,cub->box.xform[j], j, tex_path);
 		j++;
 	}
 	else
@@ -55,7 +55,7 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 		cub->box.xform[j] = mlx_load_png(tex_path);
 		if (!cub->box.xform[j])
 			return (-1);
-		printf("--  XFORM --<<%p>> [j = %d]:\n" ,cub->box.xform[j], j);
+		printf("XFORM <<%p>> [%d] >>>> %s ::\n" ,cub->box.xform[j], j, tex_path);
 		j++;
 	}
 	return (j);
