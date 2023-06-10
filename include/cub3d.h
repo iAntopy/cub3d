@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/09 04:05:34 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/09 22:16:38 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@
 # define TEX_FLOOR			5
 
 # define MAP_CHARS "0AB@"
-# define MAP_LCHR "abcdefghijklmnopz"
+# define LCHR "abcdefghijklmnopz"
 # define NCHR "0123456789"
-# define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "!+|-<>(){}_^=:;*#%@$&?"
+# define UCHR "ABCDEFGHIJ"
+# define MCHR "!+|-<>(){}_^=:;*#%@$&?"
 
 # define MOD_LEV "!+-"
 # define MOD_PORT "<>(){}_^"
@@ -158,16 +158,13 @@ typedef struct s_box
 	mlx_texture_t	**xform;
 	mlx_texture_t	*sky_tex;	
 	mlx_texture_t	*sky;	
-	int				pnum;
 	// // // // 
 	char 			*chrs;
 	int				chrs_len;
 	int				meta;	// ++chr
 	int 			xnum;	// ++total '.png'
-
-	int				n_dual;	// double tex_set floor/ ceil
 	int				pset;	// recette poor walls
-
+	int				n_dual;	// double tex_set floor/ ceil
 	int 			open_sky; // 1 = skymap
 	int				n_prts;
 	int				n_lvls;

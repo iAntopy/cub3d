@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 00:55:01 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/09 22:16:40 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,16 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	id = 0;
 	fill = -1;
 	ref = raw[queue];
-	if (ft_in_set((const char)raw[queue][0], (const char *)MAP_UCHR) > -1)
+	if (ft_in_set((const char)raw[queue][0], (const char *)UCHR) > -1)
 	{
 		while (++fill < 4)
 		{
-			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
+			id = ft_in_set((const char)ref[fill + 2], LCHR);
 			printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
+			// printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
+			// printf(" cub->box.xform[%d]:: <<%p>> ::\n", id, cub->box.xform[id]);
 		}
 	}
 	return (cub->pset);
@@ -47,9 +48,9 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 	while (len < cub->box.pset)
 	{
 		ref = raw[queue];
-		printf("PSET:: CHAR>>(%c)", ref[0]);
-		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
+		// printf("PSET:: CHAR>>(%c)", ref[0]);
+		// printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
+		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		if (!cub->pset)
 			return (NULL);
@@ -80,10 +81,9 @@ int	tex_parse(t_cub *cub, t_map *map)
 	nb = cub->box.xnum;
 	while (map->raw[nb] && map->raw[nb][0] != ' ')
 	{
-		id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
+		id = ft_in_set(map->raw[nb][0], (const char *)UCHR);
 		if (id < 0 || map->raw[nb][1] != ' ')
 			break ;
-		printf("PSET[%d]:: PNUM[%d]  \n", cub->box.pset, cub->box.pnum);
 		cub->box.pset++;
 		nb++;
 	}

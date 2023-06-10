@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 01:01:07 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:44:19 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	t_objx	*objx;
 
 	objx = init_objx(cub, o_cells, id);
-	head = (ft_in_set(objx->name, (const char *)MAP_MCHR));
+	head = (ft_in_set(objx->name, (const char *)MCHR));
 	if (head != -1)
 	{
 		objx->o_type = get_types(objx, head);

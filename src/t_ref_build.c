@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 21:31:21 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/09 22:08:37 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
 		}
+		// cub->box.xnum--;
+		printf("DUAL [%d] >>>> %d XNUM  \n", i, cub->box.xnum);
 	}
 	return (cub);
 }
@@ -63,7 +65,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
 	int	head;
 
-	head = ft_in_set(t_name[0], (const char *)MAP_MCHR);
+	head = ft_in_set(t_name[0], (const char *)MCHR);
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1
 		&& (box->n_lvls++ < 1))
 		init_lever_model(objs);
@@ -105,7 +107,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	const char	*chrs;
 
 	chrs = cub->box.chrs;
-	grim = ((int)ft_strlen(chrs) - 1) - cub->box.pnum - cub->box.pset;
+	grim = ((int)ft_strlen(chrs) - 1) - cub->box.pset;
 	m->pos_y = 0;
 	while (m->pos_y < m->height)
 	{

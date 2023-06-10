@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prebuilt_map_tools.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:52:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 23:04:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:45:09 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	build_collision_map(t_map *map)
 	{
 		j = -1;
 		while (++j < map->width)
-			colls[i * map->width + j] = !!ft_strchr(MAP_UCHR, map->m[i][j]);
+			colls[i * map->width + j] = !!ft_strchr(UCHR, map->m[i][j]);
 	}
 	map->collision_map = colls;
 	return (0);

@@ -190,3 +190,7 @@ and that should be enough, for sure we ( i ) need to clean/leak shit free
 // strjoin >> gset builder
 // load_png >> init_player_model
 // e_list_txtr
+
+// leaks -atExit -- ./cub3D maps/map_libros.cub
+// leaks -atExit -fullContent -- ./cub3D maps/map_libros.cub
+//  valgrind --leak-check=yes ./cub3D maps/map_amaze.cub

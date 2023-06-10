@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/05 23:48:27 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/09 22:22:44 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,21 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 {
 	if (tex_name[0] == 'z')
 	{
-		cub->box.sky = mlx_load_png(tex_path);
+		cub->box.xform[j] = mlx_load_png(tex_path);
+		if (!cub->box.xform[j])
+			return (-1);
+		cub->box.sky = cub->box.xform[j];
 		if (!cub->box.sky)
 			return (-1);
+		printf("--  XFORM --<<%p>> [j = %d]:\n" ,cub->box.xform[j], j);
+		j++;
 	}
 	else
 	{
 		cub->box.xform[j] = mlx_load_png(tex_path);
 		if (!cub->box.xform[j])
 			return (-1);
+		printf("--  XFORM --<<%p>> [j = %d]:\n" ,cub->box.xform[j], j);
 		j++;
 	}
 	return (j);
@@ -70,9 +76,9 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		{
 			tex_name = ft_substr(raw[i], 0, 1);
 			tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i]) - 2);
-			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
+			if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
 				meta_builder(cub, box, tex_name, &cub->objs);
-			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
+			else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
 				j = xform_builder(cub, tex_name, tex_path, j);
 			else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
 				if (!dual_builder(cub, ft_in_set(tex_name[0],
@@ -80,6 +86,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 					return (NULL);
 			free(tex_name);
 			free(tex_path);
+			printf("-- -- XFORM [j = %d]: Lines [i =%d]-- -- \n", j, i);
 		}
 	}
 	return (cub);
@@ -102,11 +109,11 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			++cub->box.chrs_len;
 		if (ft_in_set(rawz[0], (const char *)MOD_SPEC) != -1)
 			++cub->box.n_plyr;
-		if (ft_in_set(rawz[0], (const char *)MAP_MCHR) != -1)
+		else if (ft_in_set(rawz[0], (const char *)MCHR) != -1)
 			++cub->box.meta;
-		if (ft_in_set(rawz[0], (const char *)MAP_UCHR) != -1)
+		else if (ft_in_set(rawz[0], (const char *)UCHR) != -1)
 			cub->box.pset++;
-		if (ft_in_set(rawz[0], (const char *)NCHR) != -1)
+		else if (ft_in_set(rawz[0], (const char *)NCHR) != -1)
 			cub->box.n_dual++;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
@@ -117,14 +124,11 @@ t_cub	*e_mtrx_count(t_cub *cub)
 t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
 	box->xnum = 0;
-	box->pnum = 0;
 	cub = e_mtrx_count(cub);
+	cub->box.xnum =  cub->box.xnum - cub->box.n_dual;
 	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
 	printf("_dual[%d]", cub->box.n_dual);
-	if (cub->box.n_plyr > 0)
-		printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
-	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) *
-			box->xnum + 1);
+	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *), box->xnum + 1); 
 	if (!box->xform)
 		return (NULL);
 	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
