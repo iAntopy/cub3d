@@ -42,6 +42,8 @@ static void	clear_obj_model(t_omdl *mdl)
 				gset->xwalls[i] = NULL;
 			}
 		}
+		mdl->gsets[i] = NULL;
+		gset = NULL;
 	}
 }
 

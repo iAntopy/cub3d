@@ -67,7 +67,7 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 		m[i] = (char *)ft_calloc(sizeof(char), (map->width + 5));
 		spc_chk(cub, map, q);
 		ft_strlcpy(m[i], map->raw[q], ft_strlen(map->raw[q]) + 1);
-		// printf("%s\n", map->raw[q]);
+		// printf("%s\n", map->raw[q]);			// map_printer
 		++q;
 		++i;
 	}
@@ -106,9 +106,6 @@ int	read_whole_file(t_map *map, char *filepath)
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int	map_offset;
-	// t_matrx	**mx;
-
-	// mx = NULL;
 	
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))

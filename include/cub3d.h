@@ -810,6 +810,11 @@ t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 int			 	get_objx(t_objx **objx, char name, int num);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 void			clr_legend_strct(t_cub *cub);
+void		 	pset_flush(t_cub *cub);
+void		 	dual_flush(t_cub *cub);
+void		 	objx_flush(t_cub *cub);
+// void			clr_mapx(t_cub *cub);
+// void		 	instance_killer(t_cub *cub);
 
 void			minimap_set_pos(t_cub *cub);
 void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);

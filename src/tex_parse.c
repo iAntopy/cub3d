@@ -22,7 +22,7 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	id = 0;
 	fill = -1;
 	ref = raw[queue];
-	printf("pset ref ' {%s}\n", ref);
+	// printf("pset ref ' {%s}\n", ref);
 	if (ft_in_set((const char)raw[queue][0], (const char *)UCHR) > -1)
 	{
 		while (++fill < 4)
@@ -31,8 +31,8 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 			printf("PSET ref[%d] = {%c}, (id: %d), (len: %d), \n", fill + 2, ref[fill + 2], id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
-			printf(" cub->box.xform[%d]:: <<%p>> ::\n", id, cub->box.xform[id]);
+			// printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
+			// printf(" cub->box.xform[%d]:: <<%p>> ::\n", id, cub->box.xform[id]);
 		}
 	}
 	return (cub->pset);
