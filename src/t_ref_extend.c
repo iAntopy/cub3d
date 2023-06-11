@@ -70,7 +70,7 @@ void 	objx_flush(t_cub *cub)
 	int i;
 
 	i = 0;
-	while(cub->box.objx[i] && i <= cub->box.meta )
+	while(cub->box.objx[i] && i < cub->box.meta)
 	{
 		if (cub->box.objx[i])
 		{

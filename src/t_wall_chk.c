@@ -15,12 +15,13 @@
 t_objx	*init_objx(t_cub *cub, int o_cells, int id)
 {
 	t_objx	*objx;
-	char	idx;
+	char	*idx;
 
 	objx = (t_objx *)malloc(sizeof(t_objx) * 1);
-	idx = *ft_substr(cub->box.chrs, o_cells, 1);
+	idx = ft_substr(cub->box.chrs, o_cells, 1);
 	objx->obj_id = id;
-	objx->name = idx;
+	objx->name = *idx;
+	free(idx);
 	return (objx);
 }
 
