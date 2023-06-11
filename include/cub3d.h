@@ -165,17 +165,14 @@ typedef struct s_box
 	int				chrs_len;
 	int				meta;	// ++chr
 	int 			xnum;	// ++total '.png'
-
 	int				n_dual;	// double tex_set floor/ ceil
 	int				pset;	// recette poor walls
-
 	int 			open_sky; // 1 = skymap
 	int				n_prts;
 	int				n_lvls;
 	int				n_fbll;
 	int				n_fpit;
 	int 			n_plyr;
-
 	t_objx			**objx;
 	t_matrx			*gset; /// rely to model
 }	t_box;
@@ -562,7 +559,6 @@ typedef struct s_cub3d_core_data
 {
 	/// MLX42 DATA
 	mlx_t			*mlx;
-//	mlx_image_t		*imgz;	// maybe for mini_map
 	mlx_image_t		*color;
 
 	/// TEMP VARS FOR TESTING AND DEBUG ONLY ///////////////////
@@ -572,7 +568,6 @@ typedef struct s_cub3d_core_data
 	int				nb_players;
 	int				player_ids[MAX_PLAYERS];// ids to player obj instances
 
-//	int				tex_id;
 	/// CONSTANT VALUES ////////////////////////////////////////
 	int				scn_midx;	// mid screen x coordinate
 	int				scn_midy;	// mid screen y coordinate

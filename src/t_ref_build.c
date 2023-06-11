@@ -58,7 +58,10 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 				return (report_mlx_tex_load_failed(tex_set[1]));
 			printf("DUAL [%d][1]<< %p >> [%d] >>> %s []\n", i, cub->dual[i].xwalls[1], i, tex_set[1]);
 		}
-		// cub->box.xnum--;
+		if (tex_set[1])
+			tex_set[1] = NULL;//	free(tex_set[1]);
+		tex_set[0] = NULL;//free(tex_set[0]);
+		free(tex_set);
 	}
 	return (cub);
 }
