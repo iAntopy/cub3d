@@ -21,7 +21,7 @@ t_objx	*init_objx(t_cub *cub, int o_cells, int id)
 	idx = ft_substr(cub->box.chrs, o_cells, 1);
 	objx->obj_id = id;
 	objx->name = *idx;
-	free(idx);
+	free(idx)gi;
 	return (objx);
 }
 
