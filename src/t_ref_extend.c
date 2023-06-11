@@ -64,13 +64,13 @@ void 	dual_flush(t_cub *cub)
 }
 
 void 	objx_flush(t_cub *cub)
-{
+{	
 	if (cub->box.objx)
 		printf(":: INTO__:OBJX:: \n");
 	int i;
 
 	i = 0;
-	while(cub->box.objx[i] && i < cub->box.meta)
+	while(cub->box.objx[i] && i <= cub->box.meta )
 	{
 		if (cub->box.objx[i])
 		{
