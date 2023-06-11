@@ -194,3 +194,25 @@ and that should be enough, for sure we ( i ) need to clean/leak shit free
 // leaks -atExit -- ./cub3D maps/map_libros.cub
 // leaks -atExit -fullContent -- ./cub3D maps/map_libros.cub
 //  valgrind --leak-check=yes ./cub3D maps/map_amaze.cub
+
+DEBUD LOG: map_amaze.cub
+
+Indirect leak:
+	1 bloc / 24 bytes = xform / meta_builder (t_matrx)
+	2 bloc / 48 bytes = dual (t_matrx * 2)
+	3 bloc / 72 bytes = init_portal_model ... (why 3!?)
+	4 bloc / 96 bytes = init_player_model ... (why 4 , why not 8?!)
+	4 bloc / 192 bytes = init_objx (get_pos....)
+	6 bloc / 246 bytes = map.m[i] (6 lines height!)
+	13 bloc / 360 bytes = file.cub (without empty line!)
+	6 bloc / 1728 bytes = init_mx (mapx)
+	6 bloc / 549632 byte = ( loadpng decode memory :pas nous)
+	6 bloc / 131127784 bytes = ( decode generic : pas nous!)
+end of indirect leak 
+
+direct leak:
+	18 iter. 
+		from:	 (1 bloc of 2 bytes) 
+		to:		 (1 bloc of 408 bytes) biggest (but not us _XimOpen) 
+
+
