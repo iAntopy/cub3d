@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/11 22:36:30 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/12 11:12:01 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,8 +68,8 @@ SRC_FLS	:=		main.c 			\
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address -fno-omit-frame-pointer -Wno-format-security
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g
+# CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address -fno-omit-frame-pointer -Wno-format-security
+CFLAGS	:= -Wextra -Wall -Werror -pthread -g
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
 LDFLAGS	:= -fsanitize=address

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/10 00:21:48 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:35:31 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ char	*chrs_builder(t_cub *cub)
 
 int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 {
+
 	if (tex_name[0] == 'z')
 	{
+		printf(" PRE-SKY_XFORM  [%d] >>>> %s ::\n" , j, tex_path);
 		cub->box.xform[j] = mlx_load_png(tex_path);
 		if (!cub->box.xform[j])
 			return (-1);
@@ -70,7 +72,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 
 	i = -1;
 	j = 0;
-	while (++i < box->xnum + box->meta)
+	while (++i <= box->xnum + box->meta)
 	{
 		if (raw[i][0] > 32 && j != -1)
 		{
@@ -84,9 +86,10 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				if (!dual_builder(cub, ft_in_set(tex_name[0],
 							(const char *)NCHR), tex_path))
 					return (NULL);
+			// printf("-- -- XFORM [j = %d]: Lines [i =%d]-- -- \n", j, i);
+			// printf("-- -- XFORM :: tex_name{%s} :: tex_path -- %s -- \n", tex_name, tex_path);
 			free(tex_name);
 			free(tex_path);
-			// printf("-- -- XFORM [j = %d]: Lines [i =%d]-- -- \n", j, i);
 		}
 	}
 	return (cub);
