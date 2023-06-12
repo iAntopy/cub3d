@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_map_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/06 01:10:18 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 /// hole filler
 static char	*spc_chk(t_cub *cub, t_map *m, int j)

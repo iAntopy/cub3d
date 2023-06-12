@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_color_creat.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:44:08 by gehebert          #+#    #+#             */
-/*   Updated: 2023/03/29 12:44:11 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 int	create_trgb(unsigned char t, unsigned char r, unsigned char g,
 		unsigned char b)
