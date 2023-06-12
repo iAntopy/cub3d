@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 18:07:47 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:04:25 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,11 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	box->xnum = 0;
 	box->pnum = 0;
 	cub = e_mtrx_count(cub);
-	printf("_LIST__meta[%d] xnum[%d]", cub->box.meta, cub->box.xnum);
-	printf("_dual[%d]", cub->box.n_dual);
-	if (cub->box.n_plyr > 0)
-		printf("\n__PLYR[%d]__\n", cub->box.n_plyr + 1);
+	printf("__LIST::META[%d]::XNUM[%d]", cub->box.meta, cub->box.xnum);
+	printf("::_DUAL[%d]::PSET[%d]", cub->box.n_dual, cub->box.pset);
+	printf("__PLYR[%d]__\n", cub->box.n_plyr + 1);
 	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) *
-			box->xnum - 1);
+			box->xnum );
 	if (!box->xform)
 		return (NULL);
 	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);

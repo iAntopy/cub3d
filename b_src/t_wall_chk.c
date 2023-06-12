@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:21:46 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:17:03 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int	get_types(t_objx *objx, int head)
 {
 	if (head != -1)
 	{
-		if (head < 4)
+		if (head < 3)
 			objx->o_type = OBJ_LEVER;
-		else if (head < 12)
+		else if (head < 11)
 			objx->o_type = OBJ_PORTAL;
 		else if (head < 15)
 			objx->o_type = OBJ_FIREPIT;
-		else if (head < 18)
+		else if (head < 17)
 			objx->o_type = OBJ_FIREBALL;
 		else if (head <	 21)
 			objx->o_type = OBJ_PLAYER;
