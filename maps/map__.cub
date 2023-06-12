@@ -1,10 +1,10 @@
-E tex/e_side.png
-W tex/w_side.png
-S tex/s_side.png
-N tex/n_side.png
+S  tex/ext/wall_concret.png
+W  tex/ext/pink-flowers.png
+E  tex/ext/purple-flowers.png
+N  tex/ext/travertine-stone.png
 
-C 210,115,0
-F 53,107,194
+C 250,250,10
+F 130,180,180
 11111111111111111111111111111111111111111
-1000000000000000000000000000000000W1
+1000000000000000000000000W00000001
 111111111111111111111111111111111111

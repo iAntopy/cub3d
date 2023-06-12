@@ -1,7 +1,7 @@
-W  tex/d_tex_256.png
-N  tex/a_tex_256.png 
-E  tex/b_tex_256.png
-S  tex/c_tex_256.png
+W  tex/ext/wall_concret.png
+W  tex/ext/pink-flowers.png
+W  tex/ext/purple-flowers.png
+W  tex/ext/travertine-stone.png
 
 C 210,115,10
 F 55,55,55

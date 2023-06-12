@@ -1,11 +1,11 @@
 
-W  tex/ext/tree-dark.png
+W  tex/ext/hay-straw.png
 N  tex/ext/ivy-caper-leaves.png
-S  tex/ext/hedge-wall_a.png
+S  tex/ext/hedge-wall.png
 E  tex/ext/grass-clover.png
 
-C 220,110,0
-F 25,105,195
+C 215,115,55
+F 25,105,95
 
 111111111
 100000001
