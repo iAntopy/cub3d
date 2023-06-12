@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/04/17 19:30:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/04/18 22:20:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 
 static int	error_clr(char *err, t_map *map)
 {
-	if (map->txtr)
-		strtab_clear(&map->txtr);
-	return (error(err, map));
+	strtab_clear(&map->raw);
+	strtab_clear(&map->txtr);
+	if (err && err[0])
+		return (error(err, map));
+	return (-1);
 }
 
 int	tex_parse(t_cub *cub, t_map *map)
@@ -88,7 +90,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		if (id < 0 || map->raw[nb][1] != ' ')
 			return (error_clr("Invalid config label found!\n", map));
 		else if (id < 4 && !get_tex_by_id(cub, id, map->raw[nb]))
-			return (error_clr("Texture load error!\n", map));
+			return (error_clr(NULL, map));
 		else if (id == 4 || id == 5)
 			if (!color_split(map->raw[nb], cub->tex.color + (id - 4)))
 				return (-1);

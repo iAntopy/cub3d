@@ -1,10 +1,10 @@
-W  tex/w_side.png
-N  tex/n_side.png 
-E  tex/e_side.png
-S  tex/s_side.png
+W  tex/d_tex_256.png
+N  tex/a_tex_256.png 
+E  tex/b_tex_256.png
+S  tex/c_tex_256.png
 
-C 210,115,0
-F 53,107,194
+C 210,115,10
+F 55,55,55
 
      111111111111
      100011000001
