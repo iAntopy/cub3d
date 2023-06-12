@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:16:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:20:26 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 /// hole filler
 static char	*spc_chk(t_cub *cub, t_map *m, int j)

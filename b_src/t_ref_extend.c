@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:17:25 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:21:43 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 void	clr_legend_strct(t_cub *cub)
 {
@@ -64,7 +64,7 @@ t_cub	*mapx_alt_pos(t_map *m, t_cub *cub, int p_box)
 		m->pos_x = -1;
 		while (++m->pos_x < m->width)
 		{
-			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), MAP_MCHR);
+			p_box = ft_in_set((m->m[m->pos_y][m->pos_x]), MCHR);
 			if (p_box > -1 || p_box == ((int)ft_strlen(cub->box.chrs) - 1))
 			{
 				if (ft_in_set((m->m[m->pos_y][m->pos_x - 1]), NCHR) != -1)

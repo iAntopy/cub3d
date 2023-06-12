@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:17:17 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:21:41 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 t_matrx	*gset_builder(const char *path, int txtr_nb)
 {
@@ -63,7 +63,7 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 {
 	int	head;
 
-	head = ft_in_set(t_name[0], (const char *)MAP_MCHR);
+	head = ft_in_set(t_name[0], (const char *)MCHR);
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1
 		&& (box->n_lvls++ < 1))
 		init_lever_model(objs);

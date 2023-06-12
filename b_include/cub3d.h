@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 17:16:36 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:22:42 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@
 # define TEX_FLOOR			5
 
 # define MAP_CHARS "0AB@"
-# define MAP_LCHR "abcdefghijklmnopz"
+# define LCHR "abcdefghijklmnopz"
 # define NCHR "0123456789"
-# define MAP_UCHR "ABCDEFGHIJ"
-# define MAP_MCHR "!+|-<>(){}_^=:;*#%@$&?"
+# define UCHR "ABCDEFGHIJ"
+# define MCHR "!+|-<>(){}_^=:;*#%@$&?"
 
 # define MOD_LEV "!+-"
 # define MOD_PORT "<>(){}_^"

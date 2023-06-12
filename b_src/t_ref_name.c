@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:17:30 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:22:45 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 char	*chrs_builder(t_cub *cub)
 {
@@ -70,9 +70,9 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		{
 			tex_name = ft_substr(raw[i], 0, 1);
 			tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i]) - 2);
-			if ((ft_in_set(tex_name[0], (const char *)MAP_MCHR) != -1))
+			if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
 				meta_builder(cub, box, tex_name, &cub->objs);
-			else if (ft_in_set(tex_name[0], (const char *)MAP_LCHR) != -1)
+			else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
 				j = xform_builder(cub, tex_name, tex_path, j);
 			else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
 				if (!dual_builder(cub, ft_in_set(tex_name[0],
@@ -102,9 +102,9 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			++cub->box.chrs_len;
 		if (ft_in_set(rawz[0], (const char *)MOD_SPEC) != -1)
 			++cub->box.n_plyr;
-		if (ft_in_set(rawz[0], (const char *)MAP_MCHR) != -1)
+		if (ft_in_set(rawz[0], (const char *)MCHR) != -1)
 			++cub->box.meta;
-		if (ft_in_set(rawz[0], (const char *)MAP_UCHR) != -1)
+		if (ft_in_set(rawz[0], (const char *)UCHR) != -1)
 			cub->box.pset++;
 		if (ft_in_set(rawz[0], (const char *)NCHR) != -1)
 			cub->box.n_dual++;

@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:17:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:46:45 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "cub3d.h"
 
 t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 {
@@ -18,19 +18,17 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 	int		id;
 	char	*ref;
 
-	printf("\n\n PSET BUILDING!\n");
 	id = 0;
 	fill = -1;
 	ref = raw[queue];
-	if (ft_in_set((const char)raw[queue][0], (const char *)MAP_UCHR) > -1)
+	if (ft_in_set((const char)raw[queue][0], (const char *)UCHR) > -1)
 	{
 		while (++fill < 4)
 		{
-			id = ft_in_set((const char)ref[fill + 2], MAP_LCHR);
-			printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
+			id = ft_in_set((const char)ref[fill + 2], LCHR);
+			// printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
-			printf(" cub->pset.Xwals<<%p>> ::\n", cub->pset[len].xwalls[fill]);
 		}
 	}
 	return (cub->pset);
@@ -80,7 +78,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 	nb = cub->box.xnum;
 	while (map->raw[nb] && map->raw[nb][0] != ' ')
 	{
-		id = ft_in_set(map->raw[nb][0], (const char *)MAP_UCHR);
+		id = ft_in_set(map->raw[nb][0], (const char *)UCHR);
 		if (id < 0 || map->raw[nb][1] != ' ')
 			break ;
 		printf("PSET[%d]:: PNUM[%d]  \n", cub->box.pset, cub->box.pnum);
@@ -95,18 +93,3 @@ int	tex_parse(t_cub *cub, t_map *map)
 	return (0);
 }
 
-/* 
-	Start with 	: VER.3
-		: 	map->raw	-->	first lecture total len of the file
-		:		NCHR	-->	floor txtr legend	
-		:		LCHR	-->	wall  txtr legend
-		:		UCHR	-->	wall  txtr preset
-	Need to set	:
-		:		xnum	how many legend to build  (lower and num)
-		:		pset	how many preset to malloc	(uppercase)
-	Frame builder
-		:		FRAME one	: legend
-		:		xform = malloc(sizeof(mlx_texture_t *) * xnum)
-		:		FRAME two	: preset
-		:		xwalls = malloc(sizeof(void *) * 4)
-*/
