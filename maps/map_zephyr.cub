@@ -1,9 +1,9 @@
 ! 1/<
-< 1/>
 > 1/<
+< 1/>
 + 2/^
-^ 2/_
 _ 2/^
+^ 2/_
 $ 1/9
 & 2/9
 a tex/ext/travel_wall.png
@@ -20,7 +20,7 @@ z tex/ext/sky_mars3.png
 4 tex/ext/mars_floor2.png tex/ext/bay_window_.png
 
 A ddcd
-B caba
+B baba
 C cbcb
 D dddd
 E ffee
@@ -32,18 +32,18 @@ AAAAAAAAAAAAAAD00000DDDDDDDDDDDDDDDD
               D00000D
               D00$00D
               D00000D
-              D00000DAAAAAD
-              D00000DA3131D
-              D00000&11_11D
-              D00000DA3131D
-              D3B3B3DAAAAAD
+              D00000DABBBBB
+              D00000BB3131B
+              D00000&11_11B
+              D00000BB3131B
+              D3B3B3DABBBBB
               BACACAB
 EEEEEEEFFFEEEEEEEEEEEE
 E44444444444444444444E
-EFFF44444444444444444E
+EFFF4444+444444444444E
 E44^4444444>444444444E
 E44444444444444444444E
 EE4444444444444444444E
-E44+44EF444444E444444E
+E44444EF444444E444444E
 E444444F444444E444444E
 EEEEEEEEFFFEEEEEEEFFFE
