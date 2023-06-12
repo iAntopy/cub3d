@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/07 20:28:55 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/09 04:06:00 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRC_FLS	:=		main.c 			\
 			renderer_draw_walls_proj.c	\
 			renderer_draw_objs.c	\
 			renderer_draw_objs_proj.c	\
+			renderer_draw_objs_utils.c	\
 			renderer_utils.c	\
 			player_controls.c	\
 			prebuilt_map_tools.c	\
@@ -67,7 +68,7 @@ SRC_FLS	:=		main.c 			\
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address
+#CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address
 CFLAGS	:= -Wextra -Wall -Werror -pthread -g
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
