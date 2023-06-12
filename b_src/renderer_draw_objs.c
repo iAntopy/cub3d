@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_draw_objs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/09 04:03:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:01:36 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,31 +67,6 @@ void	__render_obj(t_cub *cub, t_objd *od)
 		od->pbuff += od->bincr;
 	}
 }
-/*
-static inline void	__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims)
-{
-	const int	start_offset = pf[0] + (pf[1] * SCN_WIDTH);
-	const int	buff_jump = SCN_WIDTH - pdims[0];
-	int			w;
-	int			h;
-
-	pb += start_offset - 1;
-	ip += start_offset - 1;
-	h = pdims[1];
-	while (h--)
-	{
-		w = pdims[0];
-		while (w--)
-		{
-			++ip;
-			if (*(++pb) == PROJ_COLOR)
-				*ip = 1;
-		}
-		pb += buff_jump;
-		ip += buff_jump;
-	}
-}
-*/
 
 static inline void	init_draw_objects(t_cub *cub, t_objd *od)
 {
