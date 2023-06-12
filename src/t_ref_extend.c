@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/09 21:53:42 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/11 22:12:45 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void 	pset_flush(t_cub *cub)
 	int j;
 
 	j = 0;
+	i = 0;
 	while(cub->pset[j].xwalls[i] && j < cub->box.pset)
 	{
 		i = 0;
@@ -43,6 +44,7 @@ void 	dual_flush(t_cub *cub)
 	int j;
 
 	j = 0;
+	i = 0;
 	while(cub->dual[j].xwalls[i] && j < cub->box.n_dual)
 	{
 		i = 0;
