@@ -87,35 +87,35 @@ void 	objx_flush(t_cub *cub)
 	cub->box.objx = NULL;	
 }
 
-// void 	instance_killer(t_cub *cub)
-	// {
-	// 	int i;
-	// 	int j;
+void 	instance_killer(t_cub *cub)
+	{
+		int i;
+		int j;
 
-	// 	i = 0;
-	// 	j = 0;
-	// 	printf(":: PRE-FREE__ ::OBJS [%d]::instance gset[%p]:: \n", i,
-	// 		&cub->objs.instances->gset[i]);
-	// 	while(&cub->objs.instances->gset[i] && i < cub->box.meta)
-	// 	{
-	// 		j = 0;
-	// 		while (cub->objs.instances->gset[i].xwalls[j])
-	// 		{
-	// 			printf(":: POST-FREE__ ::OBJS [%d]::instance gset[%d].xwalls[%p]::\n", i, j,
-	// 				&cub->objs.instances->gset[i].xwalls[j]);
-	// 			if (cub->objs.instances->gset[i].xwalls[j])
-	// 				cub->objs.instances->gset[i].xwalls[j] = NULL;
-	// 			j++;
-	// 		}
-	// 		// free(*cub->objs.instances->gset[i].xwalls);
-	// 		*cub->objs.instances->gset[i].xwalls = NULL;
-	// 		// free(&cub->objs.instances->gset[i]);
-	// 		// *cub->objs.instances->gset[i] = NULL;
-	// 		i++;
-	// 	}
-	// 	// free(cub->objs.instances->gset);
-	// 	cub->objs.instances->gset = NULL;
-// }
+		i = 0;
+		j = 0;
+		printf(":: PRE-FREE__ ::OBJS [%d]::instance gset[%p]:: \n", i,
+			&cub->objs.instances->gset[i]);
+		while(&cub->objs.instances->gset[i] && i < cub->box.meta)
+		{
+			j = 0;
+			while (cub->objs.instances->gset[i].xwalls[j])
+			{
+				printf(":: POST-FREE__ ::OBJS [%d]::instance gset[%d].xwalls[%p]::\n", i, j,
+					&cub->objs.instances->gset[i].xwalls[j]);
+				if (cub->objs.instances->gset[i].xwalls[j])
+					cub->objs.instances->gset[i].xwalls[j] = NULL;
+				j++;
+			}
+			// free(*cub->objs.instances->gset[i].xwalls);
+			*cub->objs.instances->gset[i].xwalls = NULL;
+			// free(&cub->objs.instances->gset[i]);
+			// *cub->objs.instances->gset[i] = NULL;
+			i++;
+		}
+		// free(cub->objs.instances->gset);
+		cub->objs.instances->gset = NULL;
+}
 
 // mapx = ***ptr_pos, **line_len, *nb_line
 	// void	clr_mapx(t_cub *cub)

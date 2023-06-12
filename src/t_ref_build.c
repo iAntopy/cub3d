@@ -34,6 +34,7 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 		printf("GSET <<%p>> [%d] >>> %s []  \n", gset->xwalls[i], i, arr_name);
 		i++;
 		free(name);
+		name = NULL;
 		free(arr_name);
 	}
 	return (gset);
@@ -115,6 +116,7 @@ t_cub	*mapx_builder(t_map *m, t_cub *cub)
 	int			grim;
 	const char	*chrs;
 
+	p_box = -1;
 	chrs = cub->box.chrs;
 	grim = ((int)ft_strlen(chrs) - 1) - cub->box.pset;
 	m->pos_y = 0;

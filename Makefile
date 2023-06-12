@@ -68,8 +68,8 @@ SRC_FLS	:=		main.c 			\
 SRCS	:= $(addprefix src/, $(SRC_FLS))
 
 OBJS	:= $(SRCS:.c=.o)
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address -fno-omit-frame-pointer -Wno-format-security
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g
+# CFLAGS	:= -Wextra -Wall -Werror -pthread -O1 -g -fsanitize=address -fno-omit-frame-pointer
+CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
 LDFLAGS	:= -fsanitize=address
