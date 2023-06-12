@@ -6,11 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 16:38:57 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:07:12 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../b_include/cub3d.h"
+#include "cub3d.h"
 
 int	renderer_clear(t_cub *cub, int exit_status)
 {

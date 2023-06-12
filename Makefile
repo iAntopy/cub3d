@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/12 16:51:23 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/12 17:07:59 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,7 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address
+#CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address
 CFLAGS	:= -Wextra -Wall -Werror -pthread -g
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
@@ -181,7 +181,7 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 
-re: clean all
+re: fclean bonus
 
 .PHONY: all, clean, fclean, re, libmlx
 

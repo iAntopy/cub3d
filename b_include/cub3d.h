@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 17:00:25 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:06:27 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef void				(*t_draw_func)(t_cub *cub);//t_cub *, t_rdata *);
 /// PARSING ///////////////////
 typedef struct s_matrx
 {
-	mlx_texture_t	*xwalls[4];
+	mlx_texture_t	*xwalls[8];
 }		t_matrx;
 
 typedef struct s_objx
@@ -152,7 +152,6 @@ typedef struct s_objx
 	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
 	t_oinst			*wobj;		// world object instance
 }	t_objx;
-
 
 typedef struct s_box 
 {	
