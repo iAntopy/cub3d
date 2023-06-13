@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:21:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 20:16:52 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	clr_legend_strct(t_cub *cub)
 {
-	printf(":: MID EXIT :: \n\n\n");
+	printf(":: MID EXIT :: \n\n");
 	while (cub->box.xform[cub->box.xnum])
 	{
 		if (cub->box.xform[cub->box.xnum])
@@ -22,11 +22,13 @@ void	clr_legend_strct(t_cub *cub)
 			mlx_delete_texture(cub->box.xform[cub->box.xnum]);
 		}
 		free(cub->box.xform[cub->box.xnum]);
+		cub->box.xform[cub->box.xnum] = NULL;
 		cub->box.xnum--;
 	}
 	if (*cub->box.xform)
 	{
 		free(*cub->box.xform);
+		*cub->box.xform = NULL;
 		printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
 	}
 	if (cub->pset[0].xwalls[0])
