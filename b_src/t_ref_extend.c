@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 21:08:52 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:13:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,18 +147,24 @@ void 	instance_killer(t_cub *cub)
 
 void	clr_legend_strct(t_cub *cub)
 {
-	printf("\t:: MID EXIT :: \n\n");
-	while (&cub->box.xform[cub->box.xnum] && cub->box.xnum-- > 0)
+	printf(":: MID EXIT :: \n\n");
+	while (cub->box.xform[cub->box.xnum])
 	{
 		if (cub->box.xform[cub->box.xnum])
 		{
 			mlx_delete_texture(cub->box.xform[cub->box.xnum]);
 			cub->box.xform[cub->box.xnum] = NULL;
 		}
+		free(cub->box.xform[cub->box.xnum]);
+		cub->box.xform[cub->box.xnum] = NULL;
+		cub->box.xnum--;
 	}
-	free(cub->box.xform);
-	cub->box.xform = NULL;
-
+	if (*cub->box.xform)
+	{
+		free(*cub->box.xform);
+		*cub->box.xform = NULL;
+		printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
+	}
 	if (cub->pset[0].xwalls[0])
 		pset_flush(cub);
 	if (cub->dual[0].xwalls[0])

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 17:22:42 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:15:43 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@
 # define LCHR "abcdefghijklmnopz"
 # define NCHR "0123456789"
 # define UCHR "ABCDEFGHIJ"
-# define MCHR "!+|-<>(){}_^=:;*#%@$&?"
+# define MCHR "!+-<>(){}_^=:;*#%@$&?"
 
 # define MOD_LEV "!+-"
 # define MOD_PORT "<>(){}_^"
