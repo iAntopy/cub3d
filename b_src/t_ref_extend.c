@@ -87,35 +87,35 @@ void 	objx_flush(t_cub *cub)
 	cub->box.objx = NULL;	
 }
 
-void 	instance_killer(t_cub *cub)
-	{
-		int i;
-		int j;
+// void 	instance_killer(t_cub *cub)
+	// 	{
+	// 		int i;
+	// 		int j;
 
-		i = 0;
-		j = 0;
-		printf(":: PRE-FREE__ ::OBJS [%d]::instance gset[%p]:: \n", i,
-			&cub->objs.instances->gset[i]);
-		while(&cub->objs.instances->gset[i] && i < cub->box.meta)
-		{
-			j = 0;
-			while (cub->objs.instances->gset[i].xwalls[j])
-			{
-				printf(":: POST-FREE__ ::OBJS [%d]::instance gset[%d].xwalls[%p]::\n", i, j,
-					&cub->objs.instances->gset[i].xwalls[j]);
-				if (cub->objs.instances->gset[i].xwalls[j])
-					cub->objs.instances->gset[i].xwalls[j] = NULL;
-				j++;
-			}
-			// free(*cub->objs.instances->gset[i].xwalls);
-			*cub->objs.instances->gset[i].xwalls = NULL;
-			// free(&cub->objs.instances->gset[i]);
-			// *cub->objs.instances->gset[i] = NULL;
-			i++;
-		}
-		// free(cub->objs.instances->gset);
-		cub->objs.instances->gset = NULL;
-}
+	// 		i = 0;
+	// 		j = 0;
+	// 		printf(":: PRE-FREE__ ::OBJS [%d]::instance gset[%p]:: \n", i,
+	// 			&cub->objs.instances->gset[i]);
+	// 		while(&cub->objs.instances->gset[i] && i < cub->box.meta)
+	// 		{
+	// 			j = 0;
+	// 			while (cub->objs.instances->gset[i].xwalls[j])
+	// 			{
+	// 				printf(":: POST-FREE__ ::OBJS [%d]::instance gset[%d].xwalls[%p]::\n", i, j,
+	// 					&cub->objs.instances->gset[i].xwalls[j]);
+	// 				if (cub->objs.instances->gset[i].xwalls[j])
+	// 					cub->objs.instances->gset[i].xwalls[j] = NULL;
+	// 				j++;
+	// 			}
+	// 			// free(*cub->objs.instances->gset[i].xwalls);
+	// 			*cub->objs.instances->gset[i].xwalls = NULL;
+	// 			// free(&cub->objs.instances->gset[i]);
+	// 			// *cub->objs.instances->gset[i] = NULL;
+	// 			i++;
+	// 		}
+	// 		// free(cub->objs.instances->gset);
+	// 			cub->objs.instances->gset = NULL;
+// }
 
 // mapx = ***ptr_pos, **line_len, *nb_line
 	// void	clr_mapx(t_cub *cub)
@@ -147,23 +147,32 @@ void 	instance_killer(t_cub *cub)
 
 void	clr_legend_strct(t_cub *cub)
 {
+	int xf;
+	xf = -1;
 	printf(":: MID EXIT :: \n\n");
-	while (cub->box.xform[cub->box.xnum])
+	cub->box.xnum -= (cub->box.n_dual);
+	while (cub->box.xform[cub->box.xnum] && xf++ < cub->box.xnum - 1)
 	{
-		if (cub->box.xform[cub->box.xnum])
+		if (cub->box.xform[xf])//cub->box.xnum])
 		{
-			mlx_delete_texture(cub->box.xform[cub->box.xnum]);
-			cub->box.xform[cub->box.xnum] = NULL;
+			// printf(":: Del_txtr {[%d] <<%p>>}:: \n", cub->box.xnum, cub->box.xform[cub->box.xnum]);
+			printf(":: Del_txtr {[%d] <<%p>>}:: \n", xf, cub->box.xform[xf]);
+			mlx_delete_texture(cub->box.xform[xf]);
+			cub->box.xform[xf] = NULL;
+			// mlx_delete_texture(cub->box.xform[cub->box.xnum]);
+			// cub->box.xform[cub->box.xnum] = NULL;
 		}
-		free(cub->box.xform[cub->box.xnum]);
-		cub->box.xform[cub->box.xnum] = NULL;
-		cub->box.xnum--;
+		free(cub->box.xform[xf]);
+		cub->box.xform[xf] = NULL;
+		// free(cub->box.xform[cub->box.xnum]);
+		// cub->box.xform[cub->box.xnum] = NULL;
+		// cub->box.xnum--;
 	}
-	if (*cub->box.xform)
+	if (cub->box.xform)
 	{
-		free(*cub->box.xform);
-		*cub->box.xform = NULL;
-		printf(":: MID EXIT ::XFORM ::xnum[%d]:: \n", cub->box.xnum);
+		free(cub->box.xform);
+		cub->box.xform = NULL;
+		printf(":: MID EXIT ::XFORM ::xf[%d]:: \n", xf);//cub->box.xnum);
 	}
 	if (cub->pset[0].xwalls[0])
 		pset_flush(cub);

@@ -1,0 +1,15 @@
+==93639== Memcheck, a memory error detector
+==93639== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==93639== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==93639== Command: ./cub3D maps/map_amaze.cub
+==93639== Parent PID: 61277
+==93639== 
+==93639== 
+==93639== HEAP SUMMARY:
+==93639==     in use at exit: 0 bytes in 0 blocks
+==93639==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==93639== 
+==93639== All heap blocks were freed -- no leaks are possible
+==93639== 
+==93639== For lists of detected and suppressed errors, rerun with: -s
+==93639== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

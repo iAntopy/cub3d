@@ -39,22 +39,19 @@ char	*chrs_builder(t_cub *cub)
 
 int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 {
-	printf(" INIT_XFORM  [%d] >>>> %s ::\n" , j, tex_path);
+	printf(" INIT_XFORM [%d] ", j);
+	cub->box.xform[j] = mlx_load_png(tex_path);
+	if (!cub->box.xform[j])
+		return (-1);
 	if (tex_name[0] == 'z')
 	{
-		cub->box.sky = mlx_load_png(tex_path);
-		printf("XFORM <<%p>> [%d] >>>> %s ::\n" ,cub->box.xform[j], j, tex_path);
+		cub->box.sky = cub->box.xform[j];
 		if (!cub->box.sky)
 			return (-1);
+		printf(":: Z >>");
 	}
-	else
-	{
-		cub->box.xform[j] = mlx_load_png(tex_path);
-		printf("XFORM <<%p>> [%d] >>>> %s ::\n" ,cub->box.xform[j], j, tex_path);
-		if (!cub->box.xform[j])
-			return (-1);
-		j++;
-	}
+	printf(":: X <<%p>> { %s }::\n" ,cub->box.xform[j], tex_path);
+	j++;
 	return (j);
 }
 

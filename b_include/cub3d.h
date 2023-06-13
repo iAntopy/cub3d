@@ -13,6 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# define CAN_SANITIZE_LEAKS 1
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>

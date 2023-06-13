@@ -33,9 +33,9 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 			return (report_mlx_tex_load_failed(arr_name));
 		i++;
 		free(name);
-		name = NULL;
 		free(arr_name);
 	}
+	
 	return (gset);
 }
 
@@ -50,12 +50,20 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
 			return (report_mlx_tex_load_failed(tex_set[0]));
+		printf("DUAL-0 %d txtrs %s <<< %p >>> \n", i, tex_set[0], cub->dual[i].xwalls[0]);
 		if (tex_set[1])
 		{
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
 				return (report_mlx_tex_load_failed(tex_set[1]));
+			printf("DUAL-1 %d txtrs %s <<< %p >>> \n", i, tex_set[1],cub->dual[i].xwalls[1]);
+			free(tex_set[1]);
+			tex_set[1] = NULL;
 		}
+		free(tex_set[0]);
+		tex_set[0] = NULL;
+		free(tex_set);
+		tex_set = NULL;
 	}
 	return (cub);
 }
