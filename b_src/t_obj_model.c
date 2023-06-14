@@ -106,7 +106,7 @@ t_omdl	*init_lever_model(t_objs *objs)
 	tex = objs->lever.gsets[0]->xwalls[0];
 	objs->lever.width = CELL_WIDTH;
 	objs->lever.half_w = objs->lever.width >> 1;
-	objs->lever.height = (int)(objs->lever.width * (tex->height
+	objs->lever.height = (int)(objs->lever.width * (tex->heightexit
 				/ (float)tex->width));
 	objs->lever.half_h = objs->lever.height >> 1;
 	return (&objs->lever);
