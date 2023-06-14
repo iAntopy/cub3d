@@ -29,27 +29,6 @@ int	get_is_cell_within_bounds(t_map *map, int cx, int cy)
 	return ((0 <= cx) && (cx < map->width) && (0 <= cy) && (cy < map->height));
 }
 
-// DO NOT include in release
-void	print_collision_map(t_map *map)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < map->height)
-	{
-		j = -1;
-		while (++j < map->width)
-		{
-			if (is_wall(map, j, i))
-				printf("1");
-			else
-				printf("0");
-		}
-		printf("\n");
-	}
-}
-
 int	build_collision_map(t_map *map)
 {
 	char	*colls;

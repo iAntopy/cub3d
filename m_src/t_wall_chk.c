@@ -64,7 +64,7 @@ static int	check_hero_found(t_map *m)
 		report_err("No player charater found in map.");
 		return (1);
 	}
-	return (0);	
+	return (0);
 }
 
 t_map	*wall_check(t_map *m)
