@@ -108,7 +108,6 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
 		|| build_collision_map(map) < 0)
 		return (-1);
-	print_collision_map(map);
 	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
 	return (0);
 }

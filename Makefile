@@ -86,11 +86,11 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
-CFLAGS	:= -Wextra -Wall -Werror -pthread -O1 -g  -fsanitize=leak
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g -O1
+CFLAGS	:= -Wextra -Wall -Werror -pthread  -g -O1 -fsanitize=leak
+# CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
-LDFLAGS	:= -fsanitize=address
+LDFLAGS	:= -fsanitize=address 
 
 
 #CC		:= clang
