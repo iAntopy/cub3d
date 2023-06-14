@@ -106,10 +106,7 @@ int	read_whole_file(t_map *map, char *filepath)
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	int	map_offset;
-	// t_matrx	**mx;
 
-	// mx = NULL;
-	
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
 		return (error("Wrong file extention.", map));
@@ -129,5 +126,5 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	printf("Instanciate DONE\n");
 	return (0);
 }
-	// print_collision_map(map);
-	/* clr_legend_strct(cub); */
+// print_collision_map(map);
+/* clr_legend_strct(cub); */

@@ -67,7 +67,7 @@ static int	__setup_base_renderer_and_minimap_data(t_cub *cub)
 int	init_renderer(t_cub *cub)
 {
 	cub->renderer.sky_layer = mlx_new_image(cub->mlx,
-		SCN_WIDTH, SCN_HEIGHT >> 1);
+			SCN_WIDTH, SCN_HEIGHT >> 1);
 	cub->renderer.bg_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.walls_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.objs_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);

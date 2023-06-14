@@ -26,7 +26,6 @@ t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 		while (++fill < 4)
 		{
 			id = ft_in_set((const char)ref[fill + 2], LCHR);
-			// printf("PSET FILLING %d, id : %d, len : %d\n", fill, id, len);
 			if (id != -1)
 				cub->pset[len].xwalls[fill] = cub->box.xform[id];
 		}
@@ -47,7 +46,6 @@ t_box	*xwalls_builder(t_cub *cub, char **raw)
 		ref = raw[queue];
 		printf("PSET:: CHAR>>(%c)", ref[0]);
 		printf(" :: <<%d of %d>> \n", len + 1, cub->box.pset);
-		// printf("START RAW NB[%d]=> REF %c \n", len, raw[queue][0]);
 		cub->pset = pset_maker(cub, raw, queue, len);
 		if (!cub->pset)
 			return (NULL);
@@ -92,4 +90,3 @@ int	tex_parse(t_cub *cub, t_map *map)
 		return (error_clr(NULL, map));
 	return (0);
 }
-

@@ -25,7 +25,7 @@ static char	*spc_chk(t_map *map, int j)
 	return (line);
 }
 
-static	int	transcribe(t_map *map)
+static int	transcribe(t_map *map)
 {
 	char	**tmp;
 	int		len;

@@ -37,7 +37,7 @@ int	get_types(t_objx *objx, int head)
 			objx->o_type = OBJ_FIREPIT;
 		else if (head < 17)
 			objx->o_type = OBJ_FIREBALL;
-		else if (head <	 21)
+		else if (head < 21)
 			objx->o_type = OBJ_PLAYER;
 		else
 			objx->o_type = OBJ_FLAG;
@@ -62,11 +62,6 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 		objx->alleg = m->raw[o_cells][2] - 48;
 		if (objx->o_type == OBJ_PLAYER)
 			objx->alleg = ALI_TORRENT;
-		printf("META_ID[%d]_typ[%d]_name{%c}__",
-					objx->obj_id, objx->o_type, objx->name);
-		printf("Alg[%d]__Rel{%c}__",  objx->alleg, objx->relativ);
-		printf("(x[%d],y[%d])((head:%d))\n\n", objx->opos[0],
-			objx->opos[1], head);	
 	}
 	if (m->pos_x <= 0 || m->pos_y <= 0)
 	{
@@ -76,9 +71,9 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	return (objx);
 }
 
-		// printf("get_pos: objx type attribution : head %d\n", head);  
-		// printf("get_pos: objx type attribution : type %d\n", objx->o_type); 
-		
+// printf("get_pos: objx type attribution : head %d\n", head);
+// printf("get_pos: objx type attribution : type %d\n", objx->o_type);
+
 t_map	*check_hero_found(t_map *m)
 {
 	if (m->pos_x <= 0 || m->pos_y <= 0)

@@ -39,7 +39,6 @@ char	*chrs_builder(t_cub *cub)
 
 int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 {
-	printf(" INIT_XFORM [%d] ", j);
 	cub->box.xform[j] = mlx_load_png(tex_path);
 	if (!cub->box.xform[j])
 		return (-1);
@@ -50,7 +49,6 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 			return (-1);
 		printf(":: Z >>");
 	}
-	printf(":: X <<%p>> { %s }::\n" ,cub->box.xform[j], tex_path);
 	j++;
 	return (j);
 }
@@ -66,21 +64,18 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	j = 0;
 	while (++i < box->xnum + box->meta)
 	{
-		if (raw[i][0] > 32 && j != -1)
-		{
-			tex_name = ft_substr(raw[i], 0, 1);
-			tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i]) - 2);
-			if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
-				meta_builder(cub, box, tex_name, &cub->objs);
-			else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
-				j = xform_builder(cub, tex_name, tex_path, j);
-			else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
-				if (!dual_builder(cub, ft_in_set(tex_name[0],
-							(const char *)NCHR), tex_path))
-					return (NULL);
-			free(tex_name);
-			free(tex_path);
-		}
+		tex_name = ft_substr(raw[i], 0, 1);
+		tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i]) - 2);
+		if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
+			meta_builder(cub, box, tex_name, &cub->objs);
+		else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
+			j = xform_builder(cub, tex_name, tex_path, j);
+		else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
+			if (!dual_builder(cub, ft_in_set(tex_name[0],
+						(const char *)NCHR), tex_path))
+				return (NULL);
+		free(tex_name);
+		free(tex_path);
 	}
 	return (cub);
 }
@@ -119,11 +114,7 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	box->xnum = 0;
 	box->pnum = 0;
 	cub = e_mtrx_count(cub);
-	printf("__LIST::META[%d]::XNUM[%d]", cub->box.meta, cub->box.xnum);
-	printf("::_DUAL[%d]::PSET[%d]", cub->box.n_dual, cub->box.pset);
-	printf("__PLYR[%d]__\n", cub->box.n_plyr + 1);
-	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) *
-			box->xnum );
+	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
 	if (!box->xform)
 		return (NULL);
 	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
@@ -135,4 +126,3 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	cub->box.chrs = chrs_builder(cub);
 	return (cub);
 }
-/*//else		//quick_exit // return (-1); */
