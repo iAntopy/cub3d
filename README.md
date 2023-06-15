@@ -40,4 +40,20 @@
 
 <img width="256" alt="Another World" src="https://github.com/iAntopy/cub3d/assets/88173405/4b700c21-6b18-4bd3-9914-0ca2bee781a2">
 
+<img width="256" alt="Screen Shot 2023-06-08 at 7 54 33 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/b2287f1a-f1db-4dc0-b24a-0aa66bca4222">
+
+<img width="256" alt="Screen Shot 2023-06-06 at 1 31 22 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/43f10513-4c53-4064-bc8a-fbe8e9ad8678">
+
+#### Making of
+
+<img width="256" alt="Screen Shot 2023-06-06 at 1 14 12 AM" src="https://github.com/iAntopy/cub3d/assets/88173405/c0c61912-bcba-4e22-a191-dddbb95d401c">
+
+<img width="256" alt="Screen Shot 2023-05-15 at 3 22 16 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/f995be1d-3547-45ce-9b75-fa4efd4868ff">
+
+<img width="256" alt="Screenshot from 2023-03-09 15-57-44]" src="https://github.com/iAntopy/cub3d/assets/88173405/bd7ab69e-d638-4190-93fd-9268f2515025">
+
+<img width="256" alt="Screenshot 2023-05-13 192735]" src="https://github.com/iAntopy/cub3d/assets/88173405/843a9588-8300-4038-adf8-771e97aee45d">
+
+<img width="256" alt="last of them" src="https://github.com/iAntopy/cub3d/assets/88173405/85a10ac3-68fd-4f74-ad39-b20a76f9355b">
+
 
