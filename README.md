@@ -33,3 +33,12 @@
 
 -           should lead to an descriptive "Error\n" Message
 
+  
+<img width="256" alt="Mars Screen Shot" src="https://github.com/iAntopy/cub3d/assets/88173405/229b4b88-532a-4115-8e12-f50161422f98">
+
+<img width="256" alt="Field by night" src="https://github.com/iAntopy/cub3d/assets/88173405/3970b4db-5f0d-4cba-8685-55edaa9ba406">
+
+<img width="256" alt="Another World" src="https://github.com/iAntopy/cub3d/assets/88173405/4b700c21-6b18-4bd3-9914-0ca2bee781a2">
+
+
+
