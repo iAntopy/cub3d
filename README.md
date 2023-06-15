@@ -43,7 +43,7 @@
 
 <img width="256" alt="Screen Shot 2023-06-08 at 7 54 33 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/b2287f1a-f1db-4dc0-b24a-0aa66bca4222">
 
-<img width="1127" alt="Screen Shot 2023-06-06 at 1 31 22 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/43f10513-4c53-4064-bc8a-fbe8e9ad8678">
+<img width="256" alt="Screen Shot 2023-06-06 at 1 31 22 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/43f10513-4c53-4064-bc8a-fbe8e9ad8678">
 
 #### Making of
 
