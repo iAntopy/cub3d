@@ -1,4 +1,4 @@
-# CUB3d
+ CUB3d
 -   Reproduce a mimic of a Icon Game : WOFLSTEIN 3D
 
 ## Mandatory Part
@@ -39,6 +39,5 @@
 <img width="256" alt="Field by night" src="https://github.com/iAntopy/cub3d/assets/88173405/3970b4db-5f0d-4cba-8685-55edaa9ba406">
 
 <img width="256" alt="Another World" src="https://github.com/iAntopy/cub3d/assets/88173405/4b700c21-6b18-4bd3-9914-0ca2bee781a2">
-
 
 

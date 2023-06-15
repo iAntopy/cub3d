@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/14 20:27:53 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_omdl	*init_lever_model(t_objs *objs)
 	tex = objs->lever.gsets[0]->xwalls[0];
 	objs->lever.width = CELL_WIDTH;
 	objs->lever.half_w = objs->lever.width >> 1;
-	objs->lever.height = (int)(objs->lever.width * (tex->heightexit
+	objs->lever.height = (int)(objs->lever.width * (tex->height
 				/ (float)tex->width));
 	objs->lever.half_h = objs->lever.height >> 1;
 	return (&objs->lever);

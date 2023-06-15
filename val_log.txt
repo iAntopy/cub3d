@@ -1,15 +1,64 @@
-==106730== Memcheck, a memory error detector
-==106730== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==106730== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==106730== Command: ./cub3D maps/map_amaze.cub
-==106730== Parent PID: 61277
-==106730== 
-==106730== 
-==106730== HEAP SUMMARY:
-==106730==     in use at exit: 0 bytes in 0 blocks
-==106730==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
-==106730== 
-==106730== All heap blocks were freed -- no leaks are possible
-==106730== 
-==106730== For lists of detected and suppressed errors, rerun with: -s
-==106730== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==42668== Memcheck, a memory error detector
+==42668== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==42668== Using Valgrind-3.21.0.GIT-lbmacos and LibVEX; rerun with -h for copyright info
+==42668== Command: ./cub3D maps/map_amaze.cub
+==42668== Parent PID: 38933
+==42668== 
+--42668-- run: /usr/bin/dsymutil "./cub3D"
+--42668-- UNKNOWN task message [id 3453, to mach_task_self(), reply 0x707]
+==42668== Warning: set address range perms: large range [0xffffffff000, 0x120000000000) (defined)
+==42668== Warning: set address range perms: large range [0x140000000000, 0x200000000000) (defined)
+==42668== Warning: set address range perms: large range [0x120000000000, 0x140000000000) (noaccess)
+==42668== Warning: set address range perms: large range [0x600000000000, 0x640000003000) (noaccess)
+==42668== Invalid read of size 1
+==42668==    at 0x1002E9B98: __asan::asan_malloc_usable_size(void const*, unsigned long, unsigned long) (in /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==42668==    by 0x10032C32A: __asan_unpoison_stack_memory (in /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==42668==    by 0x103EF2663: _NXMapRehash(_NXMapTable*) (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103EF257C: NXMapInsert (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103EF223D: _mapStrHash(_NXMapTable*, void const*) (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103EF1FFC: _getObjc2ProtocolList(header_info const*, unsigned long*) (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103EF096E: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103F012D0: unmap_image (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x1000A1667: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==42668==    by 0x1000A1808: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==42668==    by 0x1040CBAD0: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==42668==    by 0x103EEFDAF: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==42668==  Address 0x112e001a0 is 16 bytes before a block of size 24 alloc'd
+==42668==    at 0x1001B0D61: malloc_zone_calloc (in /Users/gehebert/.brew/Cellar/valgrind/HEAD-6812b46/libexec/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==42668==    by 0x103EF2541: NXMapInsert (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103EF223D: _mapStrHash(_NXMapTable*, void const*) (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103EF1FFC: _getObjc2ProtocolList(header_info const*, unsigned long*) (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103EF096E: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x103F012D0: unmap_image (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x1000A1667: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==42668==    by 0x1000A1808: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==42668==    by 0x1040CBAD0: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==42668==    by 0x103EEFDAF: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x10404DF38: _os_object_init (in /usr/lib/system/libdispatch.dylib)
+==42668==    by 0x10405A0E7: libdispatch_init (in /usr/lib/system/libdispatch.dylib)
+==42668== 
+==42668== Warning: invalid file descriptor -1 in syscall close()
+==42668== Warning: invalid file descriptor -1 in syscall close()
+==42668== Warning: invalid file descriptor -1 in syscall close()
+==42668== Warning: invalid file descriptor -1 in syscall close()
+==42668== Warning: invalid file descriptor -1 in syscall close()
+==42668== Invalid read of size 4
+==42668==    at 0x103F02F3C: lockAndFinishInitializing(objc_class*, objc_class*) (in /usr/lib/libobjc.A.dylib)
+==42668==    by 0x10404DFEC: _os_object_alloc_realized (in /usr/lib/system/libdispatch.dylib)
+==42668==    by 0x104C8D7D7: xpc_dictionary_create (in /usr/lib/system/libxpc.dylib)
+==42668==    by 0x104C93E2A: _bootstrap_create_request (in /usr/lib/system/libxpc.dylib)
+==42668==    by 0x104C93C7B: bootstrap_look_up3 (in /usr/lib/system/libxpc.dylib)
+==42668==    by 0x104C93B19: bootstrap_look_up2 (in /usr/lib/system/libxpc.dylib)
+==42668==    by 0x104BA9301: _notify_fork_child (in /usr/lib/system/libsystem_notify.dylib)
+==42668==    by 0x10404E657: _dispatch_client_callout (in /usr/lib/system/libdispatch.dylib)
+==42668==    by 0x10404F7DD: _dispatch_once_callout (in /usr/lib/system/libdispatch.dylib)
+==42668==    by 0x104BA929D: _notify_fork_child (in /usr/lib/system/libsystem_notify.dylib)
+==42668==    by 0x104BA7597: notify_monitor_file (in /usr/lib/system/libsystem_notify.dylib)
+==42668==    by 0x104BA47E5: notify_register_check (in /usr/lib/system/libsystem_notify.dylib)
+==42668==  Address 0x10 is not stack'd, malloc'd or (recently) free'd
+==42668== 
+==42668== 
+==42668== HEAP SUMMARY:
+==42668==     in use at exit: 208 bytes in 7 blocks
+==42668==   total heap usage: 7 allocs, 0 frees, 208 bytes allocated
+==42668== 
