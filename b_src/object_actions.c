@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 18:25:58 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:13:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	__obj_action_spawnpoint(t_oinst *obj, t_cub *cub)
 	return (0);
 }
 
-int	__fball_hit_target(t_cub *cub, t_oinst *obj, t_oinst *other, t_oinst **tgt)
+int	__fball_hit_target(t_oinst *obj, t_oinst *other, t_oinst **tgt)
 {
 	static float	closest_dist;
 	float			delta[3];
@@ -49,8 +49,8 @@ int	__fball_hit_target(t_cub *cub, t_oinst *obj, t_oinst *other, t_oinst **tgt)
 		if (obj_get_type(other) == OBJ_PLAYER)
 			respawn_player(other);
 		else if (obj_get_type(other) == OBJ_FIREBALL)
-			delete_oinst_by_id(cub, other->_id);
-		return (delete_oinst_by_id(cub, obj->_id));
+			obj_schedule_for_deletion(other);
+		return (obj_schedule_for_deletion(obj));
 	}
 	else if (obj_get_type(other) == OBJ_PLAYER
 		&& obj->relative && delta[2] < closest_dist)
@@ -71,7 +71,7 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 		return (-1);
 	if (is_wall(&cub->map, (obj->px + obj->dx * 10.0f) * cub->inv_cw,
 			(obj->py + obj->dy * 10.0f) * cub->inv_cw))
-		return (delete_oinst_by_id(cub, obj->_id));
+		return (obj_schedule_for_deletion(obj));
 	other = cub->objs.instances;
 	target = NULL;
 	while (other)
@@ -80,7 +80,7 @@ int	__obj_action_fireball(t_oinst *obj, t_cub *cub)
 					|| obj_get_type(other) == OBJ_FIREBALL)
 				|| other->alleg == obj->alleg) && next_obj(&other))
 			continue ;
-		if (__fball_hit_target(cub, obj, other, &target))
+		if (__fball_hit_target(obj, other, &target))
 			return (1);
 		other = other->next;
 	}
@@ -124,4 +124,5 @@ void	commit_all_obj_actions(t_cub *cub)
 			obj->action(obj, cub);
 		obj = obj->next;
 	}
+	delete_all_scheduled_for_deletion(cub);
 }

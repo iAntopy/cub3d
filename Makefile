@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/19 19:20:12 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/19 19:23:44 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,8 @@ BSRC_FLS	:=		main.c 			\
 				map_instanciator_utils.c	\
 				draw_threads.c		\
 				object_framework_manager.c		\
-				object_deleters_and_getter.c	\
+				object_deleters_and_getters.c	\
+				object_deleters_and_getters2.c	\
 				object_controls.c	\
 				object_controls2.c	\
 				object_activators.c	\
