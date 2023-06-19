@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 19:04:25 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 17:52:45 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 	cub->box.xform[j] = mlx_load_png(tex_path);
 	if (!cub->box.xform[j])
 		return (-1);
+	printf(":: txtr {%s} >> OK \n", tex_path);
 	if (tex_name[0] == 'z')
 	{
 		cub->box.sky = cub->box.xform[j];
@@ -76,6 +77,8 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 				return (NULL);
 		free(tex_name);
 		free(tex_path);
+		if (j == -1)
+			return (NULL);
 	}
 	return (cub);
 }

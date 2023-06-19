@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 19:15:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:49:55 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -814,7 +814,7 @@ t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 
 int			 	get_objx(t_objx **objx, char name, int num);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
-void			clr_legend_strct(t_cub *cub);
+int			clr_legend_strct(t_cub *cub);
 
 void			minimap_set_pos(t_cub *cub);
 void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);

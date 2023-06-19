@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 21:13:08 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:12:55 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,15 @@ void	dual_flush(t_cub *cub)
 		{
 			while (i < 2)
 			{
-				printf(":: FLUSH__:DUAL[%d]:: xwalls[%d]:: <<%p>> \n", j, i,
-					cub->dual[j].xwalls[i]);
+				printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
+				printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
 				free(cub->dual[j].xwalls[i]);
 				cub->dual[j].xwalls[i] = NULL;
 				i++;
 			}
 		}
+		else 
+			break ;
 		j++;
 	}
 	printf(":: END__:DUAL:: \n");
@@ -89,32 +91,43 @@ void	objx_flush(t_cub *cub)
 	cub->box.objx = NULL;
 }
 
-void	clr_legend_strct(t_cub *cub)
+int	clr_legend_strct(t_cub *cub)
 {
 	int	xf;
 
-	xf = -1;
+	xf = 0;
 	cub->box.xnum -= (cub->box.n_dual);
-	while (cub->box.xform[cub->box.xnum] && xf++ < cub->box.xnum - 1)
+	if (cub->box.xform[0])
 	{
-		if (cub->box.xform[xf])
+		while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
 		{
-			mlx_delete_texture(cub->box.xform[xf]);
+			if (cub->box.xform[xf])
+			{
+				printf("FLUSH:XFORM[%d]", xf);
+				printf(" <<%p>>\n", cub->box.xform[xf]);
+				mlx_delete_texture(cub->box.xform[xf]);
+				cub->box.xform[xf] = NULL;
+			}
+			free(cub->box.xform[xf]);
 			cub->box.xform[xf] = NULL;
+			xf++;
 		}
-		free(cub->box.xform[xf]);
-		cub->box.xform[xf] = NULL;
 	}
-	if (cub->box.xform)
-		free(cub->box.xform);
-	if (cub->pset[0].xwalls[0])
-		pset_flush(cub);
-	if (cub->dual[0].xwalls[0])
-		dual_flush(cub);
-	if (*cub->box.objx)
-		objx_flush(cub);
+	// if (cub->box.xform)
+	// 	free(cub->box.xform);
+	// else 
+	// 	return (0);
+	// if (cub->pset)
+	// 	pset_flush(cub);
+	// else 
+	// 	return (0);
+	// if (cub->dual)
+	// 	dual_flush(cub);
+	// if (cub->box.objx)
+	// 	objx_flush(cub);
 	strtab_clear(&cub->map.raw);
 	strtab_clear(&cub->map.m);
+	return (0);
 }
 
 t_cub	*mapx_alt_pos(t_map *m, t_cub *cub, int p_box)

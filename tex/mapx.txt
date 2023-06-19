@@ -196,6 +196,7 @@ and that should be enough, for sure we ( i ) need to clean/leak shit free
 //  valgrind --leak-check=yes --track-origins=yes ./cub3D maps/map_amaze.cub
 
 // valgrind --leak-check=yes --show-reachable=summary ./cub3D maps/map_amaze.cub
+
 // --show-reachable=yes 
 // --show-reachable=summary 
 // --tool=memcheck
