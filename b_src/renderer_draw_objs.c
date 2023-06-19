@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 15:33:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:17:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static inline void	__render_portal_projection(t_cub *cub, t_objd *od)
 	od->pframe[0] = od->drawx - (od->dims[0] >> 1);
 	od->pframe[2] = ft_clamp(od->pframe[0] + od->dims[0], 0, SCN_WIDTH);
 	od->pframe[0] = ft_clamp(od->pframe[0], 0, SCN_WIDTH);
-	if (od->pframe[0] == od->pframe[2])// && next_obj(&od->obj))
+	if (od->pframe[0] == od->pframe[2])
 		return ;
 	od->pframe[1] = cub->scn_midy - (od->dims[1] >> 1)
 		+ (od->ratio * od->obj->type->offy);
