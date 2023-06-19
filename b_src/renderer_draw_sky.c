@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 21:28:15 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 21:35:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 15:47:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	__render_sky(t_cub *cub)
 	pxls = (uint32_t *)cub->renderer.sky_layer->pixels;
 	tofs[1] = cub->renderer.sky_yoffsets - 1;
 	y = -1;
-	while (++y < cub->scn_midy)
+	while (++y < (cub->scn_midy - 1))
 	{
 		tofs[0] = texture_xoffsets - 1;
 		++tofs[1];

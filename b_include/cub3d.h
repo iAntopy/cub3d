@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 19:15:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:31:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,6 +398,7 @@ typedef struct s_objects_list_elem
 	float		dist;//	distance from player
 
 	int			isactive;
+	int			scheduled_for_deletion;
 	int			counter;
 	
 	// PORTAL SPECIFIC
@@ -723,6 +724,8 @@ int				create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *param)
 int				delete_oinst_by_id(t_cub *cub, int id);
 int				delete_oinst_by_type(t_cub *cub, int type_enum);
 void			delete_all_obj_instances(t_cub *cub);
+void			delete_all_scheduled_for_deletion(t_cub *cub);
+int				obj_schedule_for_deletion(t_oinst *obj);
 
 int				link_portal_instances(t_oinst *prtl1, t_oinst *prtl2);
 int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);

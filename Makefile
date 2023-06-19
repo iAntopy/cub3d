@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/14 20:27:03 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/19 19:16:13 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,7 +66,8 @@ BSRC_FLS	:=		main.c 			\
 				map_instanciator_utils.c	\
 				draw_threads.c		\
 				object_framework_manager.c		\
-				object_deleters_and_getter.c	\
+				object_deleters_and_getters.c	\
+				object_deleters_and_getters2.c	\
 				object_controls.c	\
 				object_controls2.c	\
 				object_activators.c	\
@@ -86,8 +87,8 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
-# CFLAGS	:= -Wextra -Wall -Werror -pthread  -g -O1 -fsanitize=leak
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
+CFLAGS	:= -Wextra -Wall -Werror -pthread  -g -fsanitize=address
+# CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
 LDFLAGS	:= -fsanitize=address 
