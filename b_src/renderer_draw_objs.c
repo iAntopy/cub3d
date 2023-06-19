@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 17:07:21 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 15:51:49 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	render_objects(t_cub *cub)
 		__render_obj(cub, &od);
 		if (obj_get_type(od.obj) == OBJ_PORTAL && od.obj->isactive)
 			__render_portal_projection(cub, &od);
+		// printf("DEBUG : OBJ <<%p>> OBJ->NEXT <<%p>> \n", od.obj, od.obj->next);
 		od.obj = od.obj->next;
 	}
 }
