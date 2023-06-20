@@ -6,45 +6,19 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 19:13:31 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:49:52 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <dirent.h>
-/*
-t_matrx	*gset_builder(const char *path, int txtr_nb)
-{
-	t_matrx	*gset;
-	char	*arr_name;
-	char	*name;
-	int		i;
 
-	gset = (t_matrx *)malloc(sizeof(t_matrx));
-	if (!gset)
-		return (NULL);
-	i = 0;
-	printf("GSET %d txtrs >>>> *%s Model >>> \n", txtr_nb, path);
-	while (i < txtr_nb)
-	{
-		name = ft_strjoin(path, ft_itoa(i));
-		arr_name = ft_strjoin((const char *)name, ".png");
-		gset->xwalls[i] = mlx_load_png(arr_name);
-		if (!gset->xwalls[i])
-			return (report_mlx_tex_load_failed(arr_name));
-		i++;
-		free(name);
-		free(arr_name);
-	}
-	return (gset);
-}
-*/
 t_matrx	*gset_builder(const char *dirpath, int nb_txtr)
 {
 	char		filepath[256];
-	int		boff;
+	int			boff;
 	t_matrx		*gset;
-	int		i;
+	int			i;
 
 	printf("start gset_builder dirpath : %s\n", dirpath);
 	gset = NULL;

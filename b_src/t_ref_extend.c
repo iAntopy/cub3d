@@ -6,47 +6,41 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 19:14:22 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:44:21 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/*
-void	pset_flush(t_cub *cub)
+int	xform_flush(t_cub *cub)
 {
-	int	i;
-	int	j;
+	int	xf;
 
-	j = 0;
-	i = 0;
-	while (j < cub->box.pset && cub->pset[j].xwalls[i])
+	if (!cub->box.xform)
+		return (0);
+	xf = 0;
+	cub->box.xnum -= (cub->box.n_dual);
+	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
 	{
-		i = 0;
-		if (cub->pset[j].xwalls[i])
+		while (xf < cub->box.xnum)
 		{
-			while (i < 4)
+			if (cub->box.xform[xf])
 			{
-				printf(":: FLUSH__:PSET[%d]:: xwalls[%d]:: <<%p>> \n", j, i,
-					cub->pset[j].xwalls[i]);
-				cub->pset[j].xwalls[i] = NULL;
-				i++;
+				mlx_delete_texture(cub->box.xform[xf]);
+				cub->box.xform[xf] = NULL;
 			}
+			xf++;
 		}
-		j++;
+		xf++;
 	}
-	printf(":: END__:PSET\n");
-	free(cub->pset);
-	cub->pset = NULL;
+	return (0);
 }
-*/
 
 void	dual_flush(t_cub *cub)
 {
 	int	i;
 	int	j;
 
-	printf("DUAL FLUSH START :: dual ptr %p :: n_dual = %d\n", cub->dual, cub->box.n_dual);
 	j = 0;
 	i = 0;
 	while (j < cub->box.n_dual)
@@ -92,41 +86,13 @@ void	objx_flush(t_cub *cub)
 
 int	clr_legend_strct(t_cub *cub)
 {
-	int	xf;
-
-	if (!cub->box.xform)
-		return (0);
-	xf = 0;
-	cub->box.xnum -= (cub->box.n_dual);
-	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
+	if (cub->box.xform)
 	{
-		//while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum)// - 1)
-		while (xf < cub->box.xnum)// - 1)
-		{
-			if (cub->box.xform[xf])
-			{
-				printf("FLUSH:XFORM[%d]", xf);
-				printf(" <<%p>>\n", cub->box.xform[xf]);
-				mlx_delete_texture(cub->box.xform[xf]);
-				cub->box.xform[xf] = NULL;
-			}
-			//free(cub->box.xform[xf]);
-			//cub->box.xform[xf] = NULL;
-			xf++;
-		}
-		xf++;
+		xform_flush(cub);
+		ft_free_p((void **)&cub->box.xform);
 	}
-	ft_free_p((void **)&cub->box.xform);
-	// if (cub->box.xform)
-	//	free(cub->box.xform);
-	// else 
-	// 	return (0);
 	if (cub->dual)
 		dual_flush(cub);
-//	if (cub->pset)
-//		pset_flush(cub);
-	// else 
-	// 	return (0);
 	if (cub->box.objx)
 		objx_flush(cub);
 	ft_free_p((void **)&cub->pset);
