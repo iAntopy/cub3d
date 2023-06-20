@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
+#    By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/19 19:24:57 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/19 21:31:20 by ghebert          ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 MSRC_FLS	:=		main.c 			\
 					event_handlers.c	\
@@ -88,11 +88,11 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=leak -O1
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g  
+CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
+# CFLAGS	:= -Wextra -Wall -Werror -pthread -g  
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
-LDFLAGS	:= -fsanitize=address 
+# LDFLAGS	:= -fsanitize=address 
 
 
 #CC		:= clang
