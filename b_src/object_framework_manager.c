@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_framework_manager.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 17:49:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:57:36 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	clear_obj_model(t_omdl *mdl)
 	while (++i < 4)
 	{
 		gset = mdl->gsets[i];
-		printf("Freeing mdl %s, gset idx %d, gset ptr %p\n", mdl->model_name, i, gset);
 		if (!gset)
 			continue ;
 		j = -1;
@@ -45,8 +44,6 @@ static void	clear_obj_model(t_omdl *mdl)
 			}
 		}
 		ft_free_p((void **)&mdl->gsets[i]);
-		//mdl->gsets[i] = NULL;
-		//gset = NULL;
 	}
 }
 
@@ -55,7 +52,7 @@ static void	clear_obj_model(t_omdl *mdl)
 static void	clear_player_model(t_omdl *mdl)
 {
 	t_matrx	*gset;
-	int	i;
+	int		i;
 
 	if (!mdl || !mdl->gsets[0])
 		return ;
@@ -80,7 +77,6 @@ void	clear_obj_framework(t_cub *cub)
 {
 	printf("Clearing objects framework\n");
 	delete_all_obj_instances(cub);
-	//clear_obj_model(&cub->objs.player);
 	clear_player_model(&cub->objs.player);
 	clear_obj_model(&cub->objs.lever);
 	clear_obj_model(&cub->objs.portal);
@@ -100,16 +96,16 @@ void	clear_obj_framework(t_cub *cub)
 // 	return (0);
 // }
 
-// Add new obj to front of list. 
-// param is an instance creation type specific argument. 
+// Add new obj to front of list.
+// param is an instance creation type specific argument.
 //	ex: portal instance can take an instance of 2nd portal as argument.
 //	the param portal will now link to the new instance created and the
 //	new portal will loop back to param by default. If a third portal is created
 //	linking to the 2nd one, it will create a chain (1 -> 2 -> 3 -> 2).
 //	By changing the link manually of portal 3 to portal 1, it will create a
 //	loop (1 -> 2 -> 3 -> 1). If pairs of portals are created where the first
-//	one is without param and 2nd links to the 1st it will create pairs of 
-//	linking portals (1 <-> 2, 3 <-> 4, ...). A portal without link always 
+//	one is without param and 2nd links to the 1st it will create pairs of
+//	linking portals (1 <-> 2, 3 <-> 4, ...). A portal without link always
 //	show the empty portal texture.
 //	The pos variable index 0-1 are x, y position coords. It can also be a larger
 //	array in case of fireballs with indexes 2-3 being direction information.

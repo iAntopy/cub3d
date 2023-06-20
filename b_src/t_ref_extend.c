@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 19:44:21 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:54:38 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	clr_legend_strct(t_cub *cub)
 	strtab_clear(&cub->map.raw);
 	strtab_clear(&cub->map.m);
 	strtab_clear((char ***)&cub->map.mx);
-	free(cub->box.chrs);
+	// free(cub->box.chrs);
 	return (0);
 }
 
