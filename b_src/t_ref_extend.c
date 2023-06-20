@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_extend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 17:20:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:24:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/*
 void	pset_flush(t_cub *cub)
 {
 	int	i;
@@ -19,7 +20,7 @@ void	pset_flush(t_cub *cub)
 
 	j = 0;
 	i = 0;
-	while (cub->pset[j].xwalls[i] && j < cub->box.pset)
+	while (j < cub->box.pset && cub->pset[j].xwalls[i])
 	{
 		i = 0;
 		if (cub->pset[j].xwalls[i])
@@ -38,13 +39,14 @@ void	pset_flush(t_cub *cub)
 	free(cub->pset);
 	cub->pset = NULL;
 }
+*/
 
 void	dual_flush(t_cub *cub)
 {
 	int	i;
 	int	j;
 
-	printf("DUAL FLUSH START :: n_dual = %d\n", cub->box.n_dual);
+	printf("DUAL FLUSH START :: dual ptr %p :: n_dual = %d\n", cub->dual, cub->box.n_dual);
 	j = 0;
 	i = 0;
 	while (j < cub->box.n_dual)
@@ -81,7 +83,7 @@ void	objx_flush(t_cub *cub)
 	if (cub->box.objx)
 		printf(":: INTO__:OBJX:: \n");
 	i = 0;
-	while (cub->box.objx[i] && i < cub->box.meta)
+	while (i < cub->box.meta && cub->box.objx[i])
 	{
 		if (cub->box.objx[i])
 		{
@@ -126,14 +128,15 @@ int	clr_legend_strct(t_cub *cub)
 	//	free(cub->box.xform);
 	// else 
 	// 	return (0);
-	if (cub->pset)
-		pset_flush(cub);
+//	if (cub->pset)
+//		pset_flush(cub);
 	// else 
 	// 	return (0);
 	if (cub->dual)
 		dual_flush(cub);
 	if (cub->box.objx)
 		objx_flush(cub);
+	ft_free_p((void **)&cub->pset);
 	strtab_clear(&cub->map.raw);
 	strtab_clear(&cub->map.m);
 	strtab_clear((char ***)&cub->map.mx);

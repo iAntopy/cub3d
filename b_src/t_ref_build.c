@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 16:10:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:14:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,10 @@ t_matrx	***init_mx(t_map *m)
 	int	k;
 
 	k = -1;
-	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
+	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height + 1);
 	while (++k < m->height)
 		m->mx[k] = (t_matrx **)calloc(sizeof(t_matrx *), m->width);
+	m->mx[m->height] = NULL;
 	return (m->mx);
 }
 

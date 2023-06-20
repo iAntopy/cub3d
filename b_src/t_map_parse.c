@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_map_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 17:20:26 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:05:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_cub	*map_frame(t_map *map, t_cub *cub)
 	q = strtab_len(map->raw) - map->height;
 	m = (char **)malloc(sizeof(char *) * (map->height + 1));
 	m[map->height] = NULL;
-	objx = (t_objx **)malloc(sizeof(t_objx *) * cub->box.meta + 1);
+	objx = (t_objx **)calloc(sizeof(t_objx *), cub->box.meta + 2);
 	printf("MAP FRAME : map width : %d\n", map->width);
 	while (i < map->height)
 	{

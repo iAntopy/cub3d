@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 17:04:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:49:02 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static void	clear_player_model(t_omdl *mdl)
 	mdl->gsets[2] = NULL;
 	mdl->gsets[3] = NULL;
 }
-
 
 // Destroy all object instances AND free all object models.
 void	clear_obj_framework(t_cub *cub)
