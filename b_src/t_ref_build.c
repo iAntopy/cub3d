@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 18:14:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:13:31 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ t_cub	*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs)
 	int	head;
 
 	head = ft_in_set(t_name[0], (const char *)MCHR);
-	printf("META  {%c} ::: REF[%d] \n", t_name[0], head);
+	if (head == -1)
+		return (NULL);
 	if (ft_in_set(t_name[0], (const char *)MOD_LEV) != -1
 		&& (box->n_lvls++ < 1))
 		init_lever_model(objs);

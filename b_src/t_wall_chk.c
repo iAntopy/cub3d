@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/19 20:30:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 22:39:13 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ t_objx	*get_pos(t_cub *cub, t_map *m, int o_cells, int id)
 	}
 	return (objx);
 }
-
-// printf("get_pos: objx type attribution : head %d\n", head);
-// printf("get_pos: objx type attribution : type %d\n", objx->o_type);
 
 t_map	*check_hero_found(t_map *m)
 {

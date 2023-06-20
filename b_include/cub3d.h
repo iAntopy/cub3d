@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 22:25:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:13:23 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 /// SCN_WIDTH MUST BE > SCN_HEIGHT
 # define SCN_WIDTH  1024
 # define SCN_HEIGHT 780
+// # define SCN_WIDTH  1980
+// # define SCN_HEIGHT 1080
 
 # define MMP_WIDTH  150
 # define MMP_HEIGHT 150

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_extend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 18:50:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:14:22 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	clr_legend_strct(t_cub *cub)
 		return (0);
 	xf = 0;
 	cub->box.xnum -= (cub->box.n_dual);
-	if (cub->box.xform[0])
+	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
 	{
 		//while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum)// - 1)
 		while (xf < cub->box.xnum)// - 1)
@@ -114,6 +114,7 @@ int	clr_legend_strct(t_cub *cub)
 			//cub->box.xform[xf] = NULL;
 			xf++;
 		}
+		xf++;
 	}
 	ft_free_p((void **)&cub->box.xform);
 	// if (cub->box.xform)
