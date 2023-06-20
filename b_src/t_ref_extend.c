@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 18:24:46 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:50:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,17 @@ void	dual_flush(t_cub *cub)
 	j = 0;
 	i = 0;
 	while (j < cub->box.n_dual)
-	//while (cub->dual[j] && j < cub->box.n_dual)
 	{
 		i = 0;
-
 		printf("dual flush idx j %d, i %d\n", j, i);
-//		if (cub->dual[j].xwalls[i])
-//		{
-		while (cub->dual[j].xwalls[i] && i < 2)
+		while (i < 2 && cub->dual[j].xwalls[i])
 		{
 			printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
 			printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
 			mlx_delete_texture(cub->dual[j].xwalls[i]);
-			//free(cub->dual[j].xwalls[i]);
 			cub->dual[j].xwalls[i] = NULL;
 			i++;
 		}
-//		}
-//		else 
-//			break ;
 		j++;
 	}
 	printf(":: END__:DUAL:: \n");
@@ -128,12 +120,12 @@ int	clr_legend_strct(t_cub *cub)
 	//	free(cub->box.xform);
 	// else 
 	// 	return (0);
+	if (cub->dual)
+		dual_flush(cub);
 //	if (cub->pset)
 //		pset_flush(cub);
 	// else 
 	// 	return (0);
-	if (cub->dual)
-		dual_flush(cub);
 	if (cub->box.objx)
 		objx_flush(cub);
 	ft_free_p((void **)&cub->pset);
