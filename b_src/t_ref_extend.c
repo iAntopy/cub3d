@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/19 19:12:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 17:20:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,29 @@ void	dual_flush(t_cub *cub)
 	int	i;
 	int	j;
 
+	printf("DUAL FLUSH START :: n_dual = %d\n", cub->box.n_dual);
 	j = 0;
 	i = 0;
-	while (cub->dual[j].xwalls[i] && j < cub->box.n_dual)
+	while (j < cub->box.n_dual)
+	//while (cub->dual[j] && j < cub->box.n_dual)
 	{
 		i = 0;
-		if (cub->dual[j].xwalls[i])
+
+		printf("dual flush idx j %d, i %d\n", j, i);
+//		if (cub->dual[j].xwalls[i])
+//		{
+		while (cub->dual[j].xwalls[i] && i < 2)
 		{
-			while (i < 2)
-			{
-				printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
-				printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
-				free(cub->dual[j].xwalls[i]);
-				cub->dual[j].xwalls[i] = NULL;
-				i++;
-			}
+			printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
+			printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
+			mlx_delete_texture(cub->dual[j].xwalls[i]);
+			//free(cub->dual[j].xwalls[i]);
+			cub->dual[j].xwalls[i] = NULL;
+			i++;
 		}
-		else 
-			break ;
+//		}
+//		else 
+//			break ;
 		j++;
 	}
 	printf(":: END__:DUAL:: \n");
@@ -95,11 +100,14 @@ int	clr_legend_strct(t_cub *cub)
 {
 	int	xf;
 
+	if (!cub->box.xform)
+		return (0);
 	xf = 0;
 	cub->box.xnum -= (cub->box.n_dual);
 	if (cub->box.xform[0])
 	{
-		while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
+		//while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum)// - 1)
+		while (xf < cub->box.xnum)// - 1)
 		{
 			if (cub->box.xform[xf])
 			{
@@ -108,25 +116,28 @@ int	clr_legend_strct(t_cub *cub)
 				mlx_delete_texture(cub->box.xform[xf]);
 				cub->box.xform[xf] = NULL;
 			}
-			free(cub->box.xform[xf]);
-			cub->box.xform[xf] = NULL;
+			//free(cub->box.xform[xf]);
+			//cub->box.xform[xf] = NULL;
 			xf++;
 		}
 	}
+	ft_free_p((void **)&cub->box.xform);
 	// if (cub->box.xform)
-	// 	free(cub->box.xform);
+	//	free(cub->box.xform);
 	// else 
 	// 	return (0);
-	// if (cub->pset)
-	// 	pset_flush(cub);
+	if (cub->pset)
+		pset_flush(cub);
 	// else 
 	// 	return (0);
-	// if (cub->dual)
-	// 	dual_flush(cub);
-	// if (cub->box.objx)
-	// 	objx_flush(cub);
+	if (cub->dual)
+		dual_flush(cub);
+	if (cub->box.objx)
+		objx_flush(cub);
 	strtab_clear(&cub->map.raw);
 	strtab_clear(&cub->map.m);
+	strtab_clear((char ***)&cub->map.mx);
+	free(cub->box.chrs);
 	return (0);
 }
 

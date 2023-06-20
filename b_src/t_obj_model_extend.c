@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 00:02:51 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:58:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_omdl	*init_fireball_model(t_objs *objs)
 t_omdl	*init_firepit_model(t_objs *objs)
 {
 	mlx_texture_t	*tex;
-	t_matrx			*gset;
+//	t_matrx			*gset;
 
 	if (objs->firepit.type_enum)
 		return (NULL);
@@ -53,8 +53,8 @@ t_omdl	*init_firepit_model(t_objs *objs)
 	objs->firepit.is_solid = 1;
 	objs->firepit.nb_texs = 4;
 	objs->firepit.offy = 20;
-	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
-		return (NULL);
+//	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
+//		return (NULL);
 	objs->firepit.gsets[0] = gset_builder("tex/gset_firepit/",
 			objs->firepit.nb_texs);
 	if (!objs->firepit.gsets[0])

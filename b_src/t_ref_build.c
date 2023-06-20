@@ -6,12 +6,13 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 19:12:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:10:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+#include <dirent.h>
+/*
 t_matrx	*gset_builder(const char *path, int txtr_nb)
 {
 	t_matrx	*gset;
@@ -34,6 +35,32 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 		i++;
 		free(name);
 		free(arr_name);
+	}
+	return (gset);
+}
+*/
+t_matrx	*gset_builder(const char *dirpath, int nb_txtr)
+{
+	char		filepath[256];
+	int		boff;
+	t_matrx		*gset;
+	int		i;
+
+	printf("start gset_builder dirpath : %s\n", dirpath);
+	gset = NULL;
+	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
+		return (NULL);
+	i = 0;
+	while (i < nb_txtr)
+	{
+		boff = ft_strlcpy(filepath, dirpath, 256);
+		ft_putnbr_buff(filepath + boff, i);
+		ft_strlcat(filepath, ".png", 256);
+		printf("Loading file path : %s\n", filepath);
+		gset->xwalls[i] = mlx_load_png(filepath);
+		if (!gset->xwalls[i])
+			return (report_mlx_tex_load_failed(filepath));
+		i++;
 	}
 	return (gset);
 }
