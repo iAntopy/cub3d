@@ -20,7 +20,7 @@ e tex/ext/outer_wall.png
 f tex/ext/acid_ray.png
 z tex/ext/skymap3.png
 0 tex/ext/floortile4.png tex/ext/tile_ceiling_.png
-1 tex/ext/grass-floor.png tex/ext/bay_window_.png
+1 tex/ext/grass-floor.png
 2 tex/ext/outer_floor.png tex/ext/outer_sky_.png
 
 A abab

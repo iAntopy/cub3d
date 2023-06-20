@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/06 21:29:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:58:20 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ static void	__floor_ceil_draw_pixel(t_flrd *fd, t_rdata *rd, int *c, float *t)
 			t[0] * fd->tex_arr[0]->width * inv_cw,
 			t[1] * fd->tex_arr[0]->height * inv_cw);
 	if (!fd->tex_arr[1])
-		return ;
-	*fd->cl_p = get_tex_pixel(fd->tex_arr[1],
-			t[0] * fd->tex_arr[1]->width * inv_cw,
-			t[1] * fd->tex_arr[1]->height * inv_cw);
+		*fd->cl_p = 0x0;
+	else
+		*fd->cl_p = get_tex_pixel(fd->tex_arr[1],
+				t[0] * fd->tex_arr[1]->width * inv_cw,
+				t[1] * fd->tex_arr[1]->height * inv_cw);
 }
 
 static int	__isvalid_floor_intersect(t_flrd *fd, float *p, int *c)

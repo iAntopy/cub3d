@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_linkers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 20:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 15:50:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:42:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	link_fireball_to_target(t_oinst *fball, t_oinst *target)
 	if (!fball || !target || fball->relative == target
 		|| (obj_get_type(fball) != OBJ_FIREBALL))
 		return (report_err("fball is not a OBJ_FIREBALL.\n"));
-	// if (fball->alleg == target->alleg)
-	// 	return (report_err("Cannot link fireball to player of same team.\n"));
+	if (fball->alleg == target->alleg)
+		return (report_err("Cannot target fireball to player of same team.\n"));
 	fball->relative = target;
 	fball->isactive = 1;
 	return (0);
@@ -54,8 +54,8 @@ int	link_firepit_to_target(t_oinst *fpit, t_oinst *target)
 	if (!fpit || !target
 		|| (obj_get_type(fpit) != OBJ_FIREPIT))
 		return (report_err("fpit is not a OBJ_FIREPIT.\n"));
-	// if (fpit->alleg == target->alleg)
-	// 	return (report_err("Cannot link firepit to player of same team.\n"));
+	if (fpit->alleg == target->alleg)
+		return (report_err("Cannot target firepit to player of same team.\n"));
 	fpit->relative = target;
 	fpit->isactive = 1;
 	return (0);

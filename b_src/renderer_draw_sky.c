@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 21:28:15 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 15:47:25 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 22:36:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,21 @@ typedef struct s_sky_proj_data
 	int			toffs_x[SCN_WIDTH];
 }	t_skyp;
 
-static void	__init_sky_proj_data(t_cub *cub, t_skyp *sp, int start, int end)
+static void	__fill_sky_x_tex_offsets(t_cub *cub, int *tofs, int start, int end)
 {
-	int	x;
+	int		x;
+	float	tmp_offx;
 
-	sp->tpx = (uint32_t *)cub->tex.skymap->pixels;
-	sp->twidth = cub->tex.skymap->width;
 	x = start - 1;
+	tofs += x;
 	while (++x < end)
-		sp->toffs_x[x] = (int)((x - cub->scn_midx) * cub->inv_sw
-				* cub->renderer.sky_fov_to_tex
-				+ cub->renderer.sky_ori_offset) % cub->tex.skymap->width;
+	{
+		tmp_offx = (x - cub->scn_midx) * cub->inv_sw
+			* cub->renderer.sky_fov_to_tex + cub->renderer.sky_ori_offset;
+		if (tmp_offx < 0.0)
+			tmp_offx += cub->tex.skymap->width;
+		*(++tofs) = (int)fmodf(tmp_offx, cub->tex.skymap->width);
+	}
 }
 
 void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)
@@ -43,7 +47,7 @@ void	__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe)
 	int			x;
 	int			y;
 
-	__init_sky_proj_data(cub, &sp, pframe[0], pframe[2]);
+	__fill_sky_x_tex_offsets(cub, sp.toffs_x, pframe[0], pframe[2]);
 	y = pframe[1] - 1;
 	while (++y < cub->scn_midy)
 	{
@@ -72,12 +76,7 @@ void	__render_sky(t_cub *cub)
 	int			x;
 	int			y;
 
-	tofs[0] = texture_xoffsets - 1;
-	x = -1;
-	while (++x < SCN_WIDTH)
-		*(++tofs[0]) = (int)((x - cub->scn_midx) * cub->inv_sw
-				* cub->renderer.sky_fov_to_tex
-				+ cub->renderer.sky_ori_offset) % cub->tex.skymap->width;
+	__fill_sky_x_tex_offsets(cub, texture_xoffsets, 0, SCN_WIDTH);
 	pxls = (uint32_t *)cub->renderer.sky_layer->pixels;
 	tofs[1] = cub->renderer.sky_yoffsets - 1;
 	y = -1;
