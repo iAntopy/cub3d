@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/19 23:36:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:46:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,11 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	box->xnum = 0;
 	box->pnum = 0;
 	cub = e_mtrx_count(cub);
-	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
+	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
+		box->xnum + 1);
 	if (!box->xform)
 		return (NULL);
-	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
+	cub->dual = (t_matrx *)calloc(sizeof(t_matrx), cub->box.n_dual + 1);
 	if (!cub->dual)
 		return (NULL);
 	cub = e_mtrx_link(cub, box, map->raw);
