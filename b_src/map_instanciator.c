@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:41:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static int	link_all_map_instances(t_objx **ob, int nb_meta)
 			link_lever_to_portal(o->wobj, o->rel_ref->wobj);
 		else if (o->o_type == OBJ_FIREBALL)
 		{
-			if (o->rel_ref && o->rel_ref->wobj)
+			if (o->rel_ref && o->rel_ref->wobj && o->alleg != o->rel_ref->alleg)
 				link_fireball_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
 			activate_fireball(o->wobj, 1, NULL);
 		}
 		else if (o->o_type == OBJ_FIREPIT)
 		{
-			if (o->rel_ref && o->rel_ref->wobj)
+			if (o->rel_ref && o->rel_ref->wobj && o->alleg != o->rel_ref->alleg)
 				link_firepit_to_target(o->wobj, (t_oinst *)o->rel_ref->wobj);
 			activate_firepit(o->wobj, 1, NULL);
 		}

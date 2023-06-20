@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/19 20:49:31 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 22:39:13 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_objx	*init_objx(t_cub *cub, int o_cells, int id)
 	t_objx	*objx;
 	char	*idx;
 
-	objx = (t_objx *)malloc(sizeof(t_objx) * 1);
+	objx = (t_objx *)calloc(sizeof(t_objx), 1);
 	idx = ft_substr(cub->box.chrs, o_cells, 1);
 	objx->obj_id = id;
 	objx->name = idx[0];

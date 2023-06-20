@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 17:07:12 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:49:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ int	init_renderer(t_cub *cub)
 	cub->renderer.objs_layer = mlx_new_image(cub->mlx, SCN_WIDTH, SCN_HEIGHT);
 	cub->renderer.mmap_layer = mlx_new_image(cub->mlx, MMP_WIDTH, MMP_HEIGHT);
 	if (!cub->renderer.bg_layer || !cub->renderer.walls_layer
-		|| !cub->renderer.objs_layer
-		|| !cub->renderer.mmap_layer)
+		|| !cub->renderer.objs_layer || !cub->renderer.mmap_layer)
 		return (renderer_clear(cub, report_err_strerror("Renderer init fail")));
 	if (__setup_base_renderer_and_minimap_data(cub) < 0)
 		return (renderer_clear(cub, report_malloc_error()));

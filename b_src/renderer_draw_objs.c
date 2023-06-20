@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_draw_objs.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:21:23 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 15:57:30 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:41:54 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static inline void	__render_portal_projection(t_cub *cub, t_objd *od)
 	od->pframe[0] = od->drawx - (od->dims[0] >> 1);
 	od->pframe[2] = ft_clamp(od->pframe[0] + od->dims[0], 0, SCN_WIDTH);
 	od->pframe[0] = ft_clamp(od->pframe[0], 0, SCN_WIDTH);
-	if (od->pframe[0] == od->pframe[2])// && next_obj(&od->obj))
+	if (od->pframe[0] == od->pframe[2])
 		return ;
 	od->pframe[1] = cub->scn_midy - (od->dims[1] >> 1)
 		+ (od->ratio * od->obj->type->offy);
@@ -132,7 +132,6 @@ void	render_objects(t_cub *cub)
 		__render_obj(cub, &od);
 		if (obj_get_type(od.obj) == OBJ_PORTAL && od.obj->isactive)
 			__render_portal_projection(cub, &od);
-		// printf("DEBUG : OBJ <<%p>> OBJ->NEXT <<%p>> \n", od.obj, od.obj->next);
 		od.obj = od.obj->next;
 	}
 }

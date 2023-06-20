@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:26:50 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/09 03:55:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/19 21:55:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,17 @@ static inline void	setup_tex_and_layer_offsets(t_objd *od)
 	}
 }
 
+static inline void	__setup_draw_proj_column(t_cub *cub, t_objd *od, int i)
+{
+	int	buff_offset;
+
+	od->so = i + od->loffs[0];
+	od->to = (int)((i + od->toffs[0]) * od->tincrs[0]);
+	buff_offset = od->so + (od->loffs[1] - 1) * SCN_WIDTH;
+	od->dp = cub->renderer.dpbuff + buff_offset;
+	od->ip = cub->renderer.isproj + buff_offset;
+}
+
 void	__render_proj_obj(t_cub *cub, t_objd *od)
 {
 	int			i;
@@ -35,10 +46,7 @@ void	__render_proj_obj(t_cub *cub, t_objd *od)
 	{
 		if (od->pdata[i + od->loffs[0]].dist < od->odist)
 			continue ;
-		od->so = i + od->loffs[0];
-		od->to = (int)((i + od->toffs[0]) * od->tincrs[0]);
-		od->dp = cub->renderer.dpbuff + od->so + (od->loffs[1] - 1) * SCN_WIDTH;
-		od->ip = cub->renderer.isproj + od->so + (od->loffs[1] - 1) * SCN_WIDTH;
+		__setup_draw_proj_column(cub, od, i);
 		j = -1;
 		while (++j < od->dims[1])
 		{
@@ -47,7 +55,8 @@ void	__render_proj_obj(t_cub *cub, t_objd *od)
 			od->cl = od->pxls[od->to + od->tys[j]];
 			if (!od->cl || !*od->ip || (*od->dp && od->odist > *od->dp))
 				continue ;
-			cub_put_pixel(cub->renderer.objs_layer, od->so, od->lys[j], od->cl);
+			cub_put_pixel(cub->renderer.objs_layer, od->so, od->lys[j],
+				od->cl & TRANSPARENCY);
 			*od->dp = od->odist;
 		}
 	}
