@@ -1,14 +1,16 @@
 $ 1/2
-! 1/(
+! 1/>
 ( 1/)
 ) 1/(
-+ 2/<
++ 2/)
 < 2/>
 > 2/<
 - 3/_
 _ 3/^
 ^ 3/_
 : 3/9
+; 1/2
+= 2/0
 a tex/ext/old-wood-planks.png
 b tex/ext/tree-bark.png
 c tex/ext/tree-branch.png
@@ -25,10 +27,10 @@ B cdcd
 C efef
 
                AAAAAAAA
-               A000000A
+               A@00000A
                A000000A
     AAAAAAAAAAAA000(00AAAAAAAAAAAA
-    A0000000000000000000000000000A
+    A0;000000000000000000000000=0A
     A0AAAAAAAAAAAAAAAAAAAAAAAAAA0A
     A0A                        A0A
     A0A                        A0A

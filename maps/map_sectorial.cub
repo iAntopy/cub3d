@@ -1,0 +1,31 @@
+! 1/<
+< 1/>
+> 1/<
++ 1/(
+) 1/(
+( 1/)
+- 1/_
+^ 1/_
+_ 1/^
+a tex/ext/travertine-stone.png
+b tex/ext/dark-metal.png
+c tex/ext/white-marble.png
+z tex/ext/skymap3.png
+0 tex/ext/grass-floor.png tex/ext/semi_blurry_glass_.png
+1 tex/ext/smooth-sand-dunes.png tex/ext/starry-night-sky_.png
+
+A aaaa
+B bbbb
+C cccc
+
+  AAA                 BBB
+ AA0AA               BB0BB
+A0@!0<A             B0>+00B
+ AA_AA               BB(BB
+  AAA                 BBB
+
+         CCC   CCC
+        CC^CCCCC)CC
+       C11111-11111C
+        CC1CCCCC1CC
+         CCC   CCC

@@ -10,7 +10,11 @@ tex/ext/s_side.png
 ///                                 sky
 tex/ext/sky_star.png
 tex/ext/skymap3.png
+tex/ext/outer_sky.png
 ///									ceiling
+tex/ext/semi_blurry_glass_.png
+tex/ext/bay_window_.png
+tex/ext/tile_ceiling_.png
 tex/ext/mountain_crack_.png
 tex/ext/grunge-rock_.png
 tex/ext/starry-night-sky_.png
@@ -19,6 +23,35 @@ tex/ext/red-mountain-rock_.png
 tex/ext/floortile4.png
 tex/ext/floor.png
 tex/ext/grass-floor.png
+tex/ext/smooth-sand-dunes.png
+tex/ext/outer_floor.png
+///									NEW			LIBROS
+
+tex/ext/lib_init.png
+tex/ext/lib_cap.png
+tex/ext/
+///									NEW			SpellRoom
+tex/ext/outer_floor.png
+tex/ext/acid_ray.png
+tex/ext/outer_wall.png
+tex/ext/outer_sky_.png
+////								NEW			Space_Board
+tex/ext/horz_floor_.png
+tex/ext/vert_floor_.png
+tex/ext/s_floor.png
+tex/ext/space_Xwall.png
+tex/ext/s_ceilin_.png
+tex/ext/ult_wall.png
+tex/ext/travel_wall.png
+tex/ext/linear_wall.png
+tex/ext/path_celing.png
+tex/ext/
+
+////								OLD 
+tex/ext/d_tex.png
+tex/ext/c_tex.png
+tex/ext/b_tex.png
+tex/ext/a_tex.png
 
 ///                                 object
 tex/ext/Portal1.png
@@ -93,7 +126,7 @@ $  : portal
 ////////
 
 -	map_checker						-- file type check
-	-	read_whole_file				-- map->raw ++ map_len
+	-	read_whole_file				-- map->raw ++ map_len						
 	//
 	-	tex_parse					-- parse header file
 		-	e_list_txtr					-- list all txtr input
@@ -118,17 +151,77 @@ $  : portal
 	-	build_grid ++ build_collis (Ian)
 
 sur la planche de travail.
-	- multi-playr directional,
-	- lever-link : portal, firepit.
-	- fireball directional :
-	- static / hunt trigger
--	pet defender...
-- 	respawn hit
-	- switch body!?!
-	-visual directional feed-back
--	player body textures alleg.
--	map making, fun gathering
- 	- ambiant improved for gameplay
--	flag model/txtr/behave
+	- multi-playr directional, 		OK
+	- lever-link : portal, firepit. OK
+	- fireball directional : 		OK 
+	- static / hunt trigger 		OK
+-	pet defender...					Gold
+- 	respawn hit						OK
+	- switch body!?!        		ok...
+	-visual directional feed-back 	OK 
+-	player body textures alleg. 	-not
+-	map making, fun gathering 		OK
+ 	- ambiant improved for gameplay  mid_ok
+-	flag model/txtr/behave			OK
 and that should be enough, for sure we ( i ) need to clean/leak shit free
+
+--	list data to be free :
+		-- read_whole 	==>> 	map->raw
+
+%%		-- e_link 		==>>	box->xform, cub->dual, ... tex_name,tex_path;
+			-- meta_builder :: remove printf set plyr_init_model...
+			-- dual_builder :: cub->dual[].xwalls[]
+		-- tex_parse	==>>	cub->pset[].xwalls[]
+	*** tex_parse error_clr ->> clr map->raw	
+
+--	map_frame ==>> map.m 
+	-- wall_chk	=> map.m 
+	-- get_pos	=> objx,
+
+
+//	quick_exit 
+// 	mid_exit
+// 	end_exit
+//
+// ft_split >> read_whole
+// ft_substr >> e_mtrx_link
+// map_frame 
+// init_mx
+// strjoin >> gset builder
+// load_png >> init_player_model
+// e_list_txtr
+
+// leaks -atExit -- ./cub3D maps/map_libros.cub
+// leaks -atExit -fullContent -- ./cub3D maps/map_libros.cub
+//  valgrind --leak-check=yes --track-origins=yes ./cub3D maps/map_amaze.cub
+
+// valgrind --leak-check=yes --show-reachable=summary ./cub3D maps/map_amaze.cub
+
+// --show-reachable=yes 
+// --show-reachable=summary 
+// --tool=memcheck
+// --leak-resolution=low 
+// --log-file=val_log.txt
+
+// valgrind --leak-check=summary --leak-resolution=low --log-file=val_log.txt
+DEBUD LOG: map_amaze.cub
+
+Indirect leak:
+	1 bloc / 24 bytes = xform / meta_builder (t_matrx)
+	2 bloc / 48 bytes = dual (t_matrx * 2)
+	3 bloc / 72 bytes = init_portal_model ... (why 3!?)
+	4 bloc / 96 bytes = init_player_model ... (why 4 , why not 8?!)
+	4 bloc / 192 bytes = init_objx (get_pos....)
+	6 bloc / 246 bytes = map.m[i] (6 lines height!)
+	13 bloc / 360 bytes = file.cub (without empty line!)
+	6 bloc / 1728 bytes = init_mx (mapx)
+	6 bloc / 549632 byte = ( loadpng decode memory :pas nous)
+	6 bloc / 131127784 bytes = ( decode generic : pas nous!)
+end of indirect leak 
+
+direct leak:
+	18 iter. 
+		from:	 (1 bloc of 2 bytes) 
+		to:		 (1 bloc of 408 bytes) biggest (but not us _XimOpen) 
+
 

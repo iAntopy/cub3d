@@ -16,7 +16,7 @@ d tex/ext/hedge-wall.png
 e tex/ext/purple-flowers.png
 f tex/ext/pink-flowers.png
 z tex/ext/skymap3.png
-0 tex/ext/beach_sand.png
+0 tex/ext/beach_sand.png tex/ext/semi_blurry_glass_.png
 1 tex/ext/floortile4.png tex/ext/tile_ceiling_.png
 2 tex/ext/grass-floor.png tex/ext/starry-night-sky_.png
 
@@ -36,8 +36,8 @@ B1111111111111111111111111111111111B
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 CCCCCCCCCCCCCCCCCCCCCCC
 C222222222222222222222C
-C2222222<2222222222222C
+C2222222<2222222222=22C
 C22222222222+222222222C
-C22222$222222222222)22C
+C2222)22222222222$2222C
 C222222222222222222222C
 CCCCCCCCCCCCCCCCCCCCCCC
