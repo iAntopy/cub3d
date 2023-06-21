@@ -6,7 +6,7 @@
 #    By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/20 16:12:11 by ghebert          ###   ########.fr        #
+#    Updated: 2023/06/20 20:14:36 by ghebert          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -93,7 +93,6 @@ CFLAGS	:= -Wextra -Wall -Werror -pthread -g
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
 LDFLAGS	:= -fsanitize=address 
-
 
 #CC		:= clang
 CC		:= gcc
