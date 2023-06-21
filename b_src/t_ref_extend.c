@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 13:18:54 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 14:04:10 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	xform_flush(t_cub *cub)
 			if (cub->box.xform[xf])
 			{
 				mlx_delete_texture(cub->box.xform[xf]);
+				free (cub->box.xform[xf]);
 				cub->box.xform[xf] = NULL;
 			}
 			xf++;
