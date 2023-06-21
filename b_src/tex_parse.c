@@ -6,11 +6,26 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 19:05:23 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:42:47 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int chrs_checker(char *tex_name)
+{
+	int chk;
+
+	chk = 0;
+	if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
+		chk++;			
+	else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
+		chk++;
+	else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
+		chk++;
+	return (chk);
+
+}
 
 t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 {

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 17:02:29 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:58:32 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,29 +70,29 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	j = 0;
 	while (++i < box->xnum + box->meta)
 	{
+		
 		tex_name = ft_substr(raw[i], 0, 1);
 		tex_path = ft_substr(raw[i], 2, ft_strlen(raw[i]) - 2);
-		if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
-			cub = meta_builder(cub, box, tex_name, &cub->objs);
-		else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
-			j = xform_builder(cub, tex_name, tex_path, j);
-		else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
-			if (!dual_builder(cub, ft_in_set(tex_name[0], (const char *)NCHR),
-					tex_path))
+		if (chrs_checker(tex_name) != 0)
+		{
+			if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
+				meta_builder(cub, box, tex_name, &cub->objs);
+			else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
+				j = xform_builder(cub, tex_name, tex_path, j);
+			else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
+				if (!dual_builder(cub, ft_in_set(tex_name[0],
+			 			(const char *)NCHR), tex_path))
 				return (NULL);
-		if (((ft_in_set(tex_name[0], (const char *)MCHR) == -1)
-				&& i < cub->box.meta - 1) || j == -1)
-			flg = 1;//return (NULL);
-		free(tex_name);
-		free(tex_path);
-		if (flg == 1)
+		}
+		if (j == -1 && i < (cub->box.xnum + cub->box.meta))
 		{
 			free(tex_name);
 			free(tex_path);
 			return (NULL);
 		}
+		free(tex_name);
+		free(tex_path);
 	}
-	printf("<<<j = %d\n", j);
 	return (cub);
 }
 
