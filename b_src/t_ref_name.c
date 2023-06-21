@@ -6,7 +6,7 @@
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 08:54:45 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/21 10:19:10 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -95,7 +95,7 @@ t_cub	*e_mtrx_count(t_cub *cub)
 		rawz = cub->map.raw[i];
 		if (rawz[1] != ' ')
 			break ;
-		if (rawz[0] > 32 && rawz[0] < 97 && rawz[1] == 32)
+		if (rawz[0] >= 32 && rawz[0] < 97 && rawz[1] == 32)
 			++cub->box.chrs_len;
 		if (ft_in_set(rawz[0], (const char *)MOD_SPEC) != -1)
 			++cub->box.n_plyr;
@@ -116,10 +116,11 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	box->xnum = 0;
 	box->pnum = 0;
 	cub = e_mtrx_count(cub);
-	box->xform = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * box->xnum);
+	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
+			box->xnum + 1);
 	if (!box->xform)
 		return (NULL);
-	cub->dual = (t_matrx *)malloc(sizeof(t_matrx) * cub->box.n_dual);
+	cub->dual = (t_matrx *)calloc(sizeof(t_matrx), cub->box.n_dual + 1);
 	if (!cub->dual)
 		return (NULL);
 	cub = e_mtrx_link(cub, box, map->raw);

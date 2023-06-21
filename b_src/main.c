@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 18:01:23 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 21:23:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	cub_clear(t_cub *cub, int exit_status)
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
 	clr_legend_strct(cub);
-	printf("exit with status : %d\n", exit_status);
 	return (exit_status);
 }
 
@@ -84,6 +83,5 @@ int	main(int argc, char **argv)
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub, report_err_strerror("mlx loop exit error")));
-	clr_legend_strct(&cub);
 	return (cub_clear(&cub, EXIT_SUCCESS));
 }

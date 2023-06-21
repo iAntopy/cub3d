@@ -6,34 +6,35 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/19 20:49:04 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:49:52 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <dirent.h>
 
-t_matrx	*gset_builder(const char *path, int txtr_nb)
+t_matrx	*gset_builder(const char *dirpath, int nb_txtr)
 {
-	t_matrx	*gset;
-	char	*arr_name;
-	char	*name;
-	int		i;
+	char		filepath[256];
+	int			boff;
+	t_matrx		*gset;
+	int			i;
 
-	gset = (t_matrx *)malloc(sizeof(t_matrx));
-	if (!gset)
+	printf("start gset_builder dirpath : %s\n", dirpath);
+	gset = NULL;
+	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
 		return (NULL);
 	i = 0;
-	printf("GSET %d txtrs >>>> *%s Model >>> \n", txtr_nb, path);
-	while (i < txtr_nb)
+	while (i < nb_txtr)
 	{
-		name = ft_strjoin(path, ft_itoa(i));
-		arr_name = ft_strjoin((const char *)name, ".png");
-		gset->xwalls[i] = mlx_load_png(arr_name);
+		boff = ft_strlcpy(filepath, dirpath, 256);
+		ft_putnbr_buff(filepath + boff, i);
+		ft_strlcat(filepath, ".png", 256);
+		printf("Loading file path : %s\n", filepath);
+		gset->xwalls[i] = mlx_load_png(filepath);
 		if (!gset->xwalls[i])
-			return (report_mlx_tex_load_failed(arr_name));
+			return (report_mlx_tex_load_failed(filepath));
 		i++;
-		free(name);
-		free(arr_name);
 	}
 	return (gset);
 }
@@ -99,9 +100,10 @@ t_matrx	***init_mx(t_map *m)
 	int	k;
 
 	k = -1;
-	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height);
+	m->mx = (t_matrx ***)calloc(sizeof(t_matrx **), m->height + 1);
 	while (++k < m->height)
 		m->mx[k] = (t_matrx **)calloc(sizeof(t_matrx *), m->width);
+	m->mx[m->height] = NULL;
 	return (m->mx);
 }
 

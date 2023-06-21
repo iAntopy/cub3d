@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 19:58:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:45:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ static int	__isvalid_floor_intersect(t_flrd *fd, float *p, int *c)
 	if (*fd->wl_p || p[0] < 0.0f || p[1] < 0.0f)
 		return (-1);
 	get_cell(p[0], p[1], c, c + 1);
-	if (c[0] >= fd->cub->map.width || c[1] >= fd->cub->map.height)
+	if (c[0] < 0 || c[1] < 0
+		|| c[0] >= fd->cub->map.width || c[1] >= fd->cub->map.height)
 		return (-1);
 	return (0);
 }
@@ -93,19 +94,27 @@ void	render_floor_sky(t_cub *cub)
 	float			t[2];
 
 	__render_sky(cub);
+	printf("Draw floor start\n");
 	__init_flr_ceil_render_data(cub, &fd);
+	//printf("__init_flr_ceil_render_data PASSED\n");
 	while (++fd.y < cub->scn_midy)
 	{
 		fd.rd = cub->hero.rcast.rdata - 1;
 		fd.x = -1;
+		//printf("y : %d\n", fd.y);
 		while (++fd.x < SCN_WIDTH)
 		{
 			__render_flr_cil_incr(&fd);
+			//printf("__render_flr_cil_incr PASSED\n");
 			if (__isvalid_floor_intersect(&fd, p, c) < 0)
 				continue ;
+			//printf("__isvalid_floor_intersect PASSED. cell (%d, %d)\n", c[0], c[1]);
 			find_vector_delta(get_grid_coords(&cub->map, c[0], c[1]), p, t);
+			//printf("find_vector_delta PASSED\n");
 			__floor_ceil_draw_pixel(&fd, fd.rd, c, t);
+			//printf("__floor_ceil_draw_pixel PASSED\n");
 		}
 		fd.cl_p -= 2 * SCN_WIDTH;
 	}
+	printf("Draw floor end\n");
 }

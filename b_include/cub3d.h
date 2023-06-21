@@ -6,14 +6,13 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 22:42:29 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 21:30:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define CAN_SANITIZE_LEAKS 1
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -819,7 +818,8 @@ t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
 
 int			 	get_objx(t_objx **objx, char name, int num);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
-int			clr_legend_strct(t_cub *cub);
+int				clr_legend_strct(t_cub *cub);
+int				xform_flush(t_cub *cub);
 
 void			minimap_set_pos(t_cub *cub);
 void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);
