@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_name.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 22:55:58 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 13:30:17 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*chrs_builder(t_cub *cub)
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[i] && j < cub->box.chrs_len)
 	{
-		if (rawz[i][0] >= 32 && rawz[i][0] < 97 && rawz[i][1] == 32)
+		if (rawz[i][0] > 32 && rawz[i][0] < 97 && rawz[i][1] == 32)
 		{
 			cub->box.chrs[j] = rawz[i][0];
 			++j;

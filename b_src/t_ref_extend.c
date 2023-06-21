@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_extend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 22:52:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 13:18:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	clr_legend_strct(t_cub *cub)
 	strtab_clear(&cub->map.m);
 	strtab_clear((char ***)&cub->map.mx);
 	free(cub->box.chrs);
+	printf("CIAO!\n");
 	return (0);
 }
 
