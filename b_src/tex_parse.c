@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 17:42:47 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 18:18:01 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int chrs_checker(char *tex_name)
 		chk++;
 	else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
 		chk++;
+	printf("XXX %d XXX\n", chk);
 	return (chk);
 
 }

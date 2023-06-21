@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 17:58:32 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 18:22:17 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,11 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			 			(const char *)NCHR), tex_path))
 				return (NULL);
 		}
-		if (j == -1 && i < (cub->box.xnum + cub->box.meta))
+		else if (i < box->xnum + box->meta - 1)
+			flg = -1;
+		if (j == -1 || flg == -1)
 		{
+			printf("XXX j&flg :%d on %d\n", i, box->xnum + box->meta );
 			free(tex_name);
 			free(tex_path);
 			return (NULL);
