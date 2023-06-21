@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 18:22:17 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 18:41:23 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
 				j = xform_builder(cub, tex_name, tex_path, j);
 			else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
-				if (!dual_builder(cub, ft_in_set(tex_name[0],
-			 			(const char *)NCHR), tex_path))
-				return (NULL);
+				cub = dual_builder(cub, ft_in_set(tex_name[0],
+			 			(const char *)NCHR), tex_path);
+			if (!cub)
+				flg = -1;//return (NULL);
 		}
 		else if (i < box->xnum + box->meta - 1)
 			flg = -1;

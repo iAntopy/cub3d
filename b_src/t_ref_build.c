@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 16:59:37 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 18:40:15 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,26 @@ t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 		cub->dual[i].xwalls[1] = NULL;
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
-			return (report_mlx_tex_load_failed(tex_set[0]));
+		{
+			free(tex_set[0]);
+			tex_set[0] = NULL;
+			free(tex_set);
+			tex_set = NULL;
+			// return (report_mlx_tex_load_failed(tex_set[0]));
+			return (NULL);
+		}
 		if (tex_set[1])
 		{
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
-				return (report_mlx_tex_load_failed(tex_set[1]));
+			{
+				free(tex_set[0]);
+				tex_set[0] = NULL;
+				free(tex_set);
+				tex_set = NULL;
+				// return (report_mlx_tex_load_failed(tex_set[1]));
+				return (NULL);
+			}
 			free(tex_set[1]);
 			tex_set[1] = NULL;
 		}
