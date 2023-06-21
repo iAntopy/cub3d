@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 16:15:17 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 16:30:07 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
 			if (!dual_builder(cub, ft_in_set(tex_name[0], (const char *)NCHR),
 					tex_path))
-				return (NULL);
+				flg = 1;//	return (NULL);
 		if (j == -1 )
 			flg = 1;
 		if ((ft_in_set(tex_name[0], (const char *)MCHR) == -1)
 				&& i < cub->box.meta - 1)
-				return (NULL);
+			flg = 1;//return (NULL);
 		free(tex_name);
 		free(tex_path);
 	}
@@ -123,6 +123,8 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			cub->box.n_dual++;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
+		if (ft_in_set(rawz[0], (const char *)MCHR) == -1)
+			return (NULL);
 	}
 	return (cub);
 }
@@ -132,6 +134,8 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	box->xnum = 0;
 	box->pnum = 0;
 	cub = e_mtrx_count(cub);
+	if (!cub)
+		return (NULL);
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
 			box->xnum + 1);
 	if (!box->xform)
