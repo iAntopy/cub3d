@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:42:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:43:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	*__draw_thread_routine(t_thdraw *th)
 		th->isidle = 0;
 		if (th->stop_request)
 			break ;
-		th->draw_func(th->cub);
+		if (th->draw_func)
+			th->draw_func(th->cub);
 		pthread_mutex_unlock(&th->start_lock);
 		th->isidle = 1;
 	}
@@ -121,8 +122,11 @@ int	init_draw_threads(t_cub *cub, t_thdraw *threads)
 		threads[i].cub = cub;
 	}
 	threads[0].draw_func = render_walls;
+	//threads[0].draw_func = NULL;
 	threads[1].draw_func = render_floor_sky;
+	//threads[1].draw_func = NULL;
 	threads[2].draw_func = render_objects;
+	//threads[2].draw_func = NULL;
 	threads[3].draw_func = __render_proj_objects;
 	threads[4].draw_func = __render_proj_walls;
 	threads[5].draw_func = __render_proj_floor;

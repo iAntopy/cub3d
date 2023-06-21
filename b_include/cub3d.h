@@ -6,14 +6,13 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 19:39:43 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 21:30:05 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define CAN_SANITIZE_LEAKS 1
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
