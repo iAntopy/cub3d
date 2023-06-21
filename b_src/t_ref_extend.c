@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 14:04:10 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 14:31:36 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ int	xform_flush(t_cub *cub)
 		return (0);
 	xf = 0;
 	cub->box.xnum -= (cub->box.n_dual);
-	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
+	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum)
 	{
 		while (xf < cub->box.xnum)
 		{
 			if (cub->box.xform[xf])
 			{
+				printf("<<>>DBL_CHEK xf:[%d],xnum:[%d]\n", xf, cub->box.xnum);
 				mlx_delete_texture(cub->box.xform[xf]);
 				free (cub->box.xform[xf]);
 				cub->box.xform[xf] = NULL;
