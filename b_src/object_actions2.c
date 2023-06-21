@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:08:21 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:59:12 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #define PORTAL_TRIGGER_DIST_SQ 400.0f
 #define NPC_TWICH_TIMER 100
+#define LEVER_RESET_TIMER 400
 
 // target is resulting target coord as vect2
 static void	find_proper_npc_dest(t_cub *cub, t_oinst *npc)
@@ -111,7 +112,7 @@ int	__obj_action_lever(t_oinst *obj, t_cub *cub)
 		prtl = (t_oinst *)obj->relative;
 		if (!prtl)
 			return (-1);
-		if (obj->counter > 800)
+		if (obj->counter > LEVER_RESET_TIMER)
 		{
 			activate_portal((t_oinst *)obj->relative, 0);
 			obj->isactive = 0;

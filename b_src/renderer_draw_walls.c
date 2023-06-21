@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   renderer_draw_funcs.c                              :+:      :+:    :+:   */
+/*   renderer_draw_walls.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 23:11:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:55:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,17 @@ void	render_walls(t_cub *cub)
 	uint32_t	*pxls;
 	int			tex_width;
 
+	printf("draw walls start\n");
 	clear_image_buffer(cub->renderer.walls_layer);
-	i = -1;
-	while (++i < SCN_WIDTH)
+	i = 0;
+	while (++i < (SCN_WIDTH - 1))
 	{
 		pxls = init_wcol(cub, cub->hero.rcast.rdata + i, &rc, &tex_width);
-		j = -1;
+		j = 0;
 		while (++j < rc.scn_height)
 			cub_put_pixel(cub->renderer.walls_layer, i, rc.scn_start_y + j,
 				pxls[(int)(((j - rc.half_height) * rc.ratio)
 					+ rc.half_texh) *tex_width]);
 	}
+	printf("draw walls end\n");
 }

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 19:58:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:54:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ static int	__isvalid_floor_intersect(t_flrd *fd, float *p, int *c)
 	if (*fd->wl_p || p[0] < 0.0f || p[1] < 0.0f)
 		return (-1);
 	get_cell(p[0], p[1], c, c + 1);
-	if (c[0] >= fd->cub->map.width || c[1] >= fd->cub->map.height)
+	if (c[0] < 0 || c[1] < 0
+		|| c[0] >= fd->cub->map.width || c[1] >= fd->cub->map.height)
 		return (-1);
 	return (0);
 }
@@ -93,6 +94,7 @@ void	render_floor_sky(t_cub *cub)
 	float			t[2];
 
 	__render_sky(cub);
+	printf("Draw floor start\n");
 	__init_flr_ceil_render_data(cub, &fd);
 	while (++fd.y < cub->scn_midy)
 	{
@@ -108,4 +110,5 @@ void	render_floor_sky(t_cub *cub)
 		}
 		fd.cl_p -= 2 * SCN_WIDTH;
 	}
+	printf("Draw floor end\n");
 }

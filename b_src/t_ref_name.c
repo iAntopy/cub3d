@@ -6,7 +6,7 @@
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 20:15:01 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/21 09:35:17 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -24,7 +24,7 @@ char	*chrs_builder(t_cub *cub)
 	cub->box.chrs = (char *)malloc(sizeof(char) * cub->box.chrs_len + 2);
 	while (*cub->map.raw && cub->map.raw[i] && j < cub->box.chrs_len)
 	{
-		if (rawz[i][0] > 32 && rawz[i][0] < 97 && rawz[i][1] == 32)
+		if (rawz[i][0] >= 32 && rawz[i][0] < 97 && rawz[i][1] == 32)
 		{
 			cub->box.chrs[j] = rawz[i][0];
 			++j;
@@ -47,7 +47,10 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 	{
 		cub->box.sky = cub->box.xform[j];
 		if (!cub->box.sky)
+		{
+			printf("Exit without sky\n");
 			return (-1);
+		}
 		printf(":: Z >>");
 	}
 	j++;
@@ -78,6 +81,8 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		if (j == -1 || ((ft_in_set(tex_name[0], (const char *)MCHR) == -1)
 				&& i < cub->box.meta - 1))
 			return (NULL);
+		free(tex_name);
+		free(tex_path);
 	}
 	return (cub);
 }
@@ -127,5 +132,7 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	if (!cub)
 		return (NULL);
 	cub->box.chrs = chrs_builder(cub);
+	if (!cub->box.chrs)
+		return (NULL);
 	return (cub);
 }

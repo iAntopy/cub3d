@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/17 21:42:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:51:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	*__draw_thread_routine(t_thdraw *th)
 		th->isidle = 0;
 		if (th->stop_request)
 			break ;
-		th->draw_func(th->cub);
+		if (th->draw_func)
+			th->draw_func(th->cub);
 		pthread_mutex_unlock(&th->start_lock);
 		th->isidle = 1;
 	}
