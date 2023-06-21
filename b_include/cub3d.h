@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 21:30:05 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 11:04:21 by ghebert          ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -83,6 +83,8 @@
 # define MOD_PORT "<>(){}_^"
 # define MOD_FIRE "=:;*#%"
 # define MOD_SPEC "@$&?"
+
+# define ITOA "0123456789"
 
 # define CUBMAP_BUFMAX 100000
 
@@ -836,4 +838,6 @@ void			find_vector_delta(float *from_, float *to_, float *res);
 /// MINIMAP FUNCS
 void			update_minimap(t_cub *cub);
 //void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
+char	*t_itoa(int n);
+
 #endif
