@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 20:47:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:52:11 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,14 @@ static void	on_update_keypressed(t_cub *cub)
 
 void	on_update(t_cub *cub)
 {
-	//printf("ON UPDATE\n");
 	commit_all_obj_actions(cub);
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
 		if (DEBUG)
 			ft_deltatime_usec_note(NULL);
-		//printf("ON UPDATE 2\n");
 		update_minimap(cub);
-		//printf("ON UPDATE minimap drawn\n");
 		order_draw_call(cub->draw_threads, 0, 3);
-		//printf("ON UPDATE draw DONE\n");
 		if (DEBUG)
 			ft_deltatime_usec_note("this == bananas");
 		cub->renderer.requires_update = 0;

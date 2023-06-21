@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 03:31:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 20:43:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:51:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,8 @@ int	init_draw_threads(t_cub *cub, t_thdraw *threads)
 		threads[i].cub = cub;
 	}
 	threads[0].draw_func = render_walls;
-	//threads[0].draw_func = NULL;
 	threads[1].draw_func = render_floor_sky;
-	//threads[1].draw_func = NULL;
 	threads[2].draw_func = render_objects;
-	//threads[2].draw_func = NULL;
 	threads[3].draw_func = __render_proj_objects;
 	threads[4].draw_func = __render_proj_walls;
 	threads[5].draw_func = __render_proj_floor;

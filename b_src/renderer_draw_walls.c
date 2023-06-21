@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 20:24:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:55:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	render_walls(t_cub *cub)
 
 	printf("draw walls start\n");
 	clear_image_buffer(cub->renderer.walls_layer);
-	i = 0;//-1;
+	i = 0;
 	while (++i < (SCN_WIDTH - 1))
 	{
 		pxls = init_wcol(cub, cub->hero.rcast.rdata + i, &rc, &tex_width);
-		j = 0;//-1;
+		j = 0;
 		while (++j < rc.scn_height)
 			cub_put_pixel(cub->renderer.walls_layer, i, rc.scn_start_y + j,
 				pxls[(int)(((j - rc.half_height) * rc.ratio)
