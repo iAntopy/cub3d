@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 14:31:36 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 15:29:42 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	dual_flush(t_cub *cub)
 			printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
 			printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
 			mlx_delete_texture(cub->dual[j].xwalls[i]);
+			free(cub->dual[j].xwalls[i]);
 			cub->dual[j].xwalls[i] = NULL;
 			i++;
 		}
@@ -91,6 +92,8 @@ int	clr_legend_strct(t_cub *cub)
 	if (cub->box.xform)
 	{
 		xform_flush(cub);
+		free(cub->box.xform);
+		cub->box.xform = NULL;
 		ft_free_p((void **)&cub->box.xform);
 	}
 	if (cub->dual)
