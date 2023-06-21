@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/20 19:48:20 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:16:31 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,10 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 			if (!dual_builder(cub, ft_in_set(tex_name[0], (const char *)NCHR),
 					tex_path))
 				return (NULL);
-		if (j == -1 || ((ft_in_set(tex_name[0], (const char *)MCHR) == -1)
-				&& i < cub->box.meta - 1))
+		if (j == -1 || ((ft_in_set(tex_name[0], (const char *)MCHR) == -1)))
 			return (NULL);
+		free(tex_name);
+		free(tex_path);
 	}
 	return (cub);
 }
