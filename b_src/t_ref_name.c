@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 16:30:07 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 16:36:06 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
 			if (!dual_builder(cub, ft_in_set(tex_name[0], (const char *)NCHR),
 					tex_path))
-				flg = 1;//	return (NULL);
+				return (NULL);
 		if (j == -1 )
 			flg = 1;
 		if ((ft_in_set(tex_name[0], (const char *)MCHR) == -1)
 				&& i < cub->box.meta - 1)
-			flg = 1;//return (NULL);
+			return (NULL);
 		free(tex_name);
 		free(tex_path);
 	}
@@ -112,6 +112,10 @@ t_cub	*e_mtrx_count(t_cub *cub)
 		if (rawz[1] != ' ')
 			break ;
 		if (rawz[0] >= 32 && rawz[0] < 97 && rawz[1] == 32)
+		{
+			if (ft_in_set(rawz[0], (const char *)MCHR) == -1)
+				return (NULL);
+		}
 			++cub->box.chrs_len;
 		if (ft_in_set(rawz[0], (const char *)MOD_SPEC) != -1)
 			++cub->box.n_plyr;
@@ -123,8 +127,6 @@ t_cub	*e_mtrx_count(t_cub *cub)
 			cub->box.n_dual++;
 		if (ft_strchr_set(rawz, ".png") != NULL)
 			++cub->box.xnum;
-		if (ft_in_set(rawz[0], (const char *)MCHR) == -1)
-			return (NULL);
 	}
 	return (cub);
 }
