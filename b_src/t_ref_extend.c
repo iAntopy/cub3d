@@ -6,7 +6,7 @@
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 09:34:04 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/21 09:38:11 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -86,15 +86,15 @@ void	objx_flush(t_cub *cub)
 
 int	clr_legend_strct(t_cub *cub)
 {
-	int	xf;
+	// int	xf;
 
-	xf = 0;
-	cub->box.xnum -= (cub->box.n_dual);
-	while (cub->box.xform[cub->box.xnum] )
-	{
-		xform_flush(cub);
-		ft_free_p((void **)&cub->box.xform);
-	}
+	// xf = 0;
+	// cub->box.xnum -= (cub->box.n_dual);
+	// while (cub->box.xform[cub->box.xnum] )
+	// {
+	// 	xform_flush(cub);
+	// 	ft_free_p((void **)&cub->box.xform);
+	// }
 	if (cub->dual)
 		dual_flush(cub);
 	if (cub->box.objx)
