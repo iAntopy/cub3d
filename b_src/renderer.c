@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 16:30:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/20 21:23:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	renderer_clear(t_cub *cub, int exit_status)
 {
-	printf("RENDERER CLEAR \n");
 	if (cub->renderer.bg_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
 	if (cub->renderer.sky_layer)
