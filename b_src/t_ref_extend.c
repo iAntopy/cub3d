@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 15:58:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:21:28 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	objx_flush(t_cub *cub)
 	if (cub->box.objx)
 		printf(":: INTO__:OBJX:: \n");
 	i = 0;
-	while (i < cub->box.meta && cub->box.objx[i])
+	while (i < cub->box.nb_objx && cub->box.objx[i])
 	{
 		if (cub->box.objx[i])
 		{
