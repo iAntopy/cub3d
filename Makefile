@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/21 19:38:47 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/22 00:31:03 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -171,11 +171,11 @@ $(LIBMTX):
 $(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(MOBJS)
 	echo $(MOBJS)
 	@echo "Linking executable"
-	$(CC) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
 
 bonus: $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
 	@echo "Linking executable"
-	$(CC) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
 
 clean:
 	@rm -f $(MOBJS) $(BOBJS)
