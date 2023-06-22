@@ -111,7 +111,9 @@
 >>-      Fifth  Char[4]   : South side Lowercase ref. Txtr
 >> - - - - 
 >>  ## Map
->>>
+>>
+![header](https://github.com/iAntopy/cub3d/assets/88173405/ba4d94a5-b775-46f7-b957-b2758ebf1208)
+![map1](https://github.com/iAntopy/cub3d/assets/88173405/23581384-2504-4ef1-9847-ab4721d8191f)
 >> - - - -
 >>>
 >> - - - - 
