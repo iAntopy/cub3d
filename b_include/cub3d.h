@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 17:42:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:07:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ typedef struct s_box
 	int				n_fbll;
 	int				n_fpit;
 	int 			n_plyr;
+	int				nb_objx;
 
 	t_objx			**objx;
 	t_matrx			*gset; /// rely to model

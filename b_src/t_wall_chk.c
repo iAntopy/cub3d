@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/19 22:39:13 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:14:00 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ t_cub	*wall_check(t_cub *cub, t_map *m, t_objx **objx)
 					objx[id] = get_pos(cub, m, o_cells, id);
 		}
 	}
+	cub->box.nb_objx = id + 1;
 	cub->box.objx = objx;
 	return (cub);
 }
