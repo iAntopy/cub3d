@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 09:38:11 by ghebert          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/06/22 10:13:46 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
+
 
 #include "cub3d.h"
 
@@ -16,20 +17,21 @@ int	xform_flush(t_cub *cub)
 {
 	int	xf;
 
+	printf("xform_flush : start\n");
 	if (!cub->box.xform)
 		return (0);
+	printf("xform_flush : check passed\n");
 	xf = 0;
 	cub->box.xnum -= (cub->box.n_dual);
-	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
+	printf("xform_flush : cub->box.xnum : %d\n", cub->box.xnum);
+	while (xf < cub->box.xnum && cub->box.xform[xf])
 	{
-		while (xf < cub->box.xnum)
+		printf("xform_flush : xnum : %d\n", xf);
+		if (cub->box.xform[xf])
 		{
-			if (cub->box.xform[xf])
-			{
-				mlx_delete_texture(cub->box.xform[xf]);
-				cub->box.xform[xf] = NULL;
-			}
-			xf++;
+			printf("<<>>DBL_CHEK xf:[%d],xnum:[%d]\n", xf, cub->box.xnum);
+			mlx_delete_texture(cub->box.xform[xf]);
+			cub->box.xform[xf] = NULL;
 		}
 		xf++;
 	}
@@ -69,7 +71,7 @@ void	objx_flush(t_cub *cub)
 	if (cub->box.objx)
 		printf(":: INTO__:OBJX:: \n");
 	i = 0;
-	while (i < cub->box.meta && cub->box.objx[i])
+	while (i < cub->box.nb_objx && cub->box.objx[i])
 	{
 		if (cub->box.objx[i])
 		{
@@ -86,15 +88,13 @@ void	objx_flush(t_cub *cub)
 
 int	clr_legend_strct(t_cub *cub)
 {
-	// int	xf;
-
-	// xf = 0;
-	// cub->box.xnum -= (cub->box.n_dual);
-	// while (cub->box.xform[cub->box.xnum] )
-	// {
-	// 	xform_flush(cub);
-	// 	ft_free_p((void **)&cub->box.xform);
-	// }
+	if (cub->box.xform)
+	{
+		xform_flush(cub);
+		free(cub->box.xform);
+		cub->box.xform = NULL;
+		ft_free_p((void **)&cub->box.xform);
+	}
 	if (cub->dual)
 		dual_flush(cub);
 	if (cub->box.objx)
@@ -104,6 +104,7 @@ int	clr_legend_strct(t_cub *cub)
 	strtab_clear(&cub->map.m);
 	strtab_clear((char ***)&cub->map.mx);
 	free(cub->box.chrs);
+	printf("CIAO!\n");
 	return (0);
 }
 

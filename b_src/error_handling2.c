@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:37:48 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 22:49:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:48:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	report_threads_err(t_thdraw *threads, char *err, int print_strerr)
 
 int	report_obj_err(t_oinst *obj, char *msg)
 {
-	ft_eprintf("ERROR with obj %s <id %d, ptr %p> : %s\n",
+	ft_eprintf("Error\n\t - Error with obj %s <id %d, ptr %p> : %s\n",
 		obj->type->model_name, obj->_id, obj, msg);
 	return (-1);
 }

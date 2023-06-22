@@ -6,7 +6,7 @@
 #    By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/21 09:37:24 by ghebert          ###   ########.fr        #
+#    Updated: 2023/06/22 10:14:01 by ghebert          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -62,6 +62,7 @@ BSRC_FLS	:=		main.c 			\
 				tex_parse.c			\
 				t_ref_name.c		\
 				t_ref_extend.c		\
+				t_overload.c 		\
 				map_instanciator.c	\
 				map_instanciator_utils.c	\
 				draw_threads.c		\
@@ -170,11 +171,11 @@ $(LIBMTX):
 $(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(MOBJS)
 	echo $(MOBJS)
 	@echo "Linking executable"
-	$(CC) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
 
 bonus: $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
 	@echo "Linking executable"
-	$(CC) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
 
 clean:
 	@rm -f $(MOBJS) $(BOBJS)

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 21:30:05 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:47:53 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "../lib/libft/libft.h"
 # include "../lib/mtxlib/includes/mtxlib.h"
 
-# define DEBUG 1
+# define DEBUG 0
 
 /// SCN_WIDTH MUST BE > SCN_HEIGHT
 # define SCN_WIDTH  1024
@@ -176,6 +176,7 @@ typedef struct s_box
 	int				n_fbll;
 	int				n_fpit;
 	int 			n_plyr;
+	int				nb_objx;
 
 	t_objx			**objx;
 	t_matrx			*gset; /// rely to model
@@ -836,4 +837,8 @@ void			find_vector_delta(float *from_, float *to_, float *res);
 /// MINIMAP FUNCS
 void			update_minimap(t_cub *cub);
 //void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
+int				chrs_checker(t_cub *cub, int j, char *tex_name, char *tex_path);
+char			**name_builder(const char *path, int txtr_nb);
+void			for_free(char **test);
+void			solo_free(char *test);
 #endif
