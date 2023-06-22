@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 15:20:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:18:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,6 @@
 
 int	renderer_clear(t_cub *cub, int exit_status)
 {
-	// if (cub->renderer.bg_layer)
-	// 	mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
-	// if (cub->renderer.sky_layer)
-	// 	mlx_delete_image(cub->mlx, cub->renderer.sky_layer);
-	// if (cub->renderer.walls_layer)
-	// 	mlx_delete_image(cub->mlx, cub->renderer.walls_layer);
-	// if (cub->renderer.objs_layer)
-	// 	mlx_delete_image(cub->mlx, cub->renderer.objs_layer);
-	// if (cub->renderer.mmap_layer)
-	// 	mlx_delete_image(cub->mlx, cub->renderer.mmap_layer);
 	if (cub->renderer.dbuff)
 		ft_free_p((void **)&cub->renderer.dbuff);
 	if (cub->renderer.dpbuff)

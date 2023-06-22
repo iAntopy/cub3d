@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_obj_model.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 09:30:18 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/14 20:27:53 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:49:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ t_omdl	*init_spawnpoint_model(t_objs *objs)
 		return (NULL);
 	objs->spawnp.model_name = "spawnpoint";
 	objs->spawnp.type_enum = OBJ_SPAWNPOINT;
-	printf("INIT OBJ_SPAWNPOINT type struct with spawnp.type_enum = %d\n",
-		objs->spawnp.type_enum);
 	objs->spawnp.is_drawable = 0;
 	objs->spawnp.is_oriented = 0;
 	objs->spawnp.nb_texs = 0;
@@ -57,7 +55,6 @@ t_omdl	*init_spawnpoint_model(t_objs *objs)
 	objs->spawnp.half_w = objs->spawnp.width >> 1;
 	objs->spawnp.height = CELL_WIDTH;
 	objs->spawnp.half_h = objs->spawnp.height >> 1;
-	printf("player enum at init spawnpoint end: %d\n", objs->player.type_enum);
 	return (&objs->spawnp);
 }
 

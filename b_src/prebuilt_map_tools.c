@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prebuilt_map_tools.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:52:56 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/09 21:45:09 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:43:40 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	build_grid_coords_map(t_map *map)
 	int		j;
 	float	**gcoords;
 
-	printf("build_grid_coords_map started \n");
 	gcoords = NULL;
 	if (!ft_calloc_p(sizeof(float *) * (map->height + 1), (void **)&gcoords))
 		return (-1);
