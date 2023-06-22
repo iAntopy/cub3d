@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_framework_manager.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 19:57:36 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:11:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	clear_obj_model(t_omdl *mdl)
 		{
 			if (gset->xwalls[j])
 			{
-				printf(" - deleting texture %d : %p\n", j, gset->xwalls[j]);
 				mlx_delete_texture(gset->xwalls[j]);
 				gset->xwalls[j] = NULL;
 			}
@@ -82,19 +81,7 @@ void	clear_obj_framework(t_cub *cub)
 	clear_obj_model(&cub->objs.portal);
 	clear_obj_model(&cub->objs.fireball);
 	clear_obj_model(&cub->objs.firepit);
-	printf("Clearing objects framework SUCCESS\n");
 }
-
-// If more drawable models should exist, initiaize their models here.
-// Add more init model func calls as needed.
-// int	init_obj_framework(t_cub *cub)
-// {
-// 	if (!init_portal_model(&cub->objs))
-// 		return (-1);
-// 	// ADD more models for extra fun.
-// 	// ...
-// 	return (0);
-// }
 
 // Add new obj to front of list.
 // param is an instance creation type specific argument.
@@ -120,7 +107,7 @@ int	create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *arg)
 	cell[0] = (int)(pos[0] * cub->inv_cw);
 	cell[1] = (int)(pos[1] * cub->inv_cw);
 	if (is_wall(&cub->map, cell[0], cell[1]))
-		return (report_err("ERROR : Trying to create object in wall.\n"));
+		return (report_err("Error\n\t - Trying to create object in wall.\n"));
 	if (type_alleg[0] == OBJ_PLAYER)
 		obj_id = create_player_instance(cub, pos, type_alleg[1], arg);
 	else if (type_alleg[0] == OBJ_SPAWNPOINT)
@@ -134,6 +121,6 @@ int	create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *arg)
 	else if (type_alleg[0] == OBJ_FIREPIT)
 		obj_id = create_firepit_instance(cub, pos, type_alleg[1], arg);
 	else
-		return (ft_eprintf("Error : Invalid obj type\n"));
+		return (ft_eprintf("Error\n\t - Invalid obj type\n"));
 	return (obj_id);
 }

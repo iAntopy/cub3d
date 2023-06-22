@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 20:07:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:12:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "../lib/libft/libft.h"
 # include "../lib/mtxlib/includes/mtxlib.h"
 
-# define DEBUG 1
+# define DEBUG 0
 
 /// SCN_WIDTH MUST BE > SCN_HEIGHT
 # define SCN_WIDTH  1024
