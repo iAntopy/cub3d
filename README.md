@@ -69,7 +69,9 @@
 >>![map1](https://github.com/iAntopy/cub3d/assets/88173405/23581384-2504-4ef1-9847-ab4721d8191f)
 >>
 >></p>
+
 >> - - - - 
+>>
 >>    **FILE HEADERS**
 >>    ### Object
 >>      Meta-Char-Part   
