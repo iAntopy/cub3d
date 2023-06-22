@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_instanciator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/19 20:41:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/22 00:12:50 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,19 +103,18 @@ static t_oinst	*instanciate_specific_obj(t_cub *cub, t_objx *ob, int nb_meta)
 
 int	instanciate_map_objects(t_cub *cub)
 {
-	int	nb_meta;
 	int	i;
 
 	if (!cub || !cub->box.objx)
 		return (-1);
-	nb_meta = cub->box.meta;
+	cub->box.nb_objx += 1;
 	i = -1;
-	while (++i < nb_meta)
+	while (++i < cub->box.nb_objx && cub->box.objx[i])
 	{
-		instanciate_specific_obj(cub, cub->box.objx[i], nb_meta);
+		instanciate_specific_obj(cub, cub->box.objx[i], cub->box.nb_objx);
 		if (cub->box.objx[i]->name == '@')
 			set_playable_obj(cub, cub->box.objx[i]->wobj);
 	}
-	link_all_map_instances(cub->box.objx, nb_meta);
+	link_all_map_instances(cub->box.objx, cub->box.nb_objx);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/22 13:50:08 by ghebert          ###   ########.fr        #
+#    Updated: 2023/06/22 13:54:01 by ghebert          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -63,6 +63,7 @@ BSRC_FLS	:=		main.c 			\
 				tex_parse.c			\
 				t_ref_name.c		\
 				t_ref_extend.c		\
+				t_overload.c 		\
 				map_instanciator.c	\
 				map_instanciator_utils.c	\
 				draw_threads.c		\
@@ -89,12 +90,12 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g #-fsanitize=address
+CFLAGS	:= -Wextra -Wall -Werror -pthread -g# -fsanitize=address
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 #CFLAGS	:= -Wextra -Wall -Werror -pthread -g  
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
-# LDFLAGS	:= -fsanitize=address
+#LDFLAGS	:= -fsanitize=address
 
 #CC		:= clang
 CC		:= gcc
@@ -171,11 +172,11 @@ $(LIBMTX):
 $(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(MOBJS)
 	echo $(MOBJS)
 	@echo "Linking executable"
-	$(CC) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
 
 bonus: $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
 	@echo "Linking executable"
-	$(CC) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
 
 clean:
 	@rm -f $(MOBJS) $(BOBJS)

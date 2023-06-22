@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 19:03:24 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 22:55:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:44:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	render_walls(t_cub *cub)
 	uint32_t	*pxls;
 	int			tex_width;
 
-	printf("draw walls start\n");
 	clear_image_buffer(cub->renderer.walls_layer);
 	i = 0;
 	while (++i < (SCN_WIDTH - 1))
@@ -49,5 +48,4 @@ void	render_walls(t_cub *cub)
 				pxls[(int)(((j - rc.half_height) * rc.ratio)
 					+ rc.half_texh) *tex_width]);
 	}
-	printf("draw walls end\n");
 }

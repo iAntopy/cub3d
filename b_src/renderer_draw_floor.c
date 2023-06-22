@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/20 22:54:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:43:58 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	render_floor_sky(t_cub *cub)
 	float			t[2];
 
 	__render_sky(cub);
-	printf("Draw floor start\n");
 	__init_flr_ceil_render_data(cub, &fd);
 	while (++fd.y < cub->scn_midy)
 	{
@@ -110,5 +109,4 @@ void	render_floor_sky(t_cub *cub)
 		}
 		fd.cl_p -= 2 * SCN_WIDTH;
 	}
-	printf("Draw floor end\n");
 }

@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/22 13:50:22 by ghebert          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/06/22 13:54:22 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
+
 
 #include "cub3d.h"
 
@@ -16,22 +17,21 @@ int	xform_flush(t_cub *cub)
 {
 	int	xf;
 
+	printf("xform_flush : start\n");
 	if (!cub->box.xform)
 		return (0);
+	printf("xform_flush : check passed\n");
 	xf = 0;
 	cub->box.xnum -= (cub->box.n_dual);
-	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum)
+	printf("xform_flush : cub->box.xnum : %d\n", cub->box.xnum);
+	while (xf < cub->box.xnum && cub->box.xform[xf])
 	{
-		while (xf < cub->box.xnum)
+		printf("xform_flush : xnum : %d\n", xf);
+		if (cub->box.xform[xf])
 		{
-			if (cub->box.xform[xf])
-			{
-				printf("<<>>DBL_CHEK xf:[%d],xnum:[%d]\n", xf, cub->box.xnum);
-				mlx_delete_texture(cub->box.xform[xf]);
-				free (cub->box.xform[xf]);
-				cub->box.xform[xf] = NULL;
-			}
-			xf++;
+			printf("<<>>DBL_CHEK xf:[%d],xnum:[%d]\n", xf, cub->box.xnum);
+			mlx_delete_texture(cub->box.xform[xf]);
+			cub->box.xform[xf] = NULL;
 		}
 		xf++;
 	}
@@ -54,7 +54,6 @@ void	dual_flush(t_cub *cub)
 			printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
 			printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
 			mlx_delete_texture(cub->dual[j].xwalls[i]);
-			free(cub->dual[j].xwalls[i]);
 			cub->dual[j].xwalls[i] = NULL;
 			i++;
 		}
@@ -72,7 +71,7 @@ void	objx_flush(t_cub *cub)
 	if (cub->box.objx)
 		printf(":: INTO__:OBJX:: \n");
 	i = 0;
-	while (i < cub->box.meta && cub->box.objx[i])
+	while (i < cub->box.nb_objx && cub->box.objx[i])
 	{
 		if (cub->box.objx[i])
 		{
