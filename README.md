@@ -35,7 +35,7 @@
 
   
 - - - - 
-# Bonus Parsing
+# Bonus 
 - - - -
 ## IMG
 <p align="center">
@@ -60,7 +60,7 @@
 <img align="center" width="180" alt="last of them" src="https://github.com/iAntopy/cub3d/assets/88173405/85a10ac3-68fd-4f74-ad39-b20a76f9355b">
 
 - - - - - -
-
+## Parsing
 >>
 >>    **FILE HEADERS**
 >> - - - - 
