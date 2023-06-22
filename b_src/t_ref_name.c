@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 22:22:56 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 23:59:15 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ int	chrs_checker(t_cub *cub, int j, char *tex_name, char *tex_path)
 		if (!dual_builder(cub, ft_in_set(tex_name[0], (const char *)NCHR),
 				tex_path))
 			chk = -1;
-	chk = j;
 	printf("___chk %d \n", chk);
+	if (chk == 0)
+		chk = j;
 	return (chk);
 }
 
@@ -115,7 +116,7 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	box->xnum = 0;
 	box->pnum = 0;
 	cub = e_mtrx_count(cub);
-	if (!cub)
+	if (!cub || cub->box.pset == 0)
 		return (NULL);
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
 			box->xnum + 1);

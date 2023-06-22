@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 20:14:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/22 00:14:11 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,8 @@ t_map	*check_hero_found(t_map *m)
 t_cub	*wall_check(t_cub *cub, t_map *m, t_objx **objx)
 {
 	int	o_cells;
-	int	id;
 
-	id = -1;
+	cub->box.nb_objx = -1;
 	o_cells = -1;
 	m->pos_y = -1;
 	while (++m->pos_y < m->height)
@@ -106,11 +105,11 @@ t_cub	*wall_check(t_cub *cub, t_map *m, t_objx **objx)
 				m->m[m->pos_y][m->pos_x] = 'A';
 			else if ((o_cells < cub->box.meta - 1 && o_cells > -1)
 				|| o_cells == (int_strlen(cub->box.chrs) - 1))
-				if (++id < cub->box.chrs_len - 1)
-					objx[id] = get_pos(cub, m, o_cells, id);
+				if (cub->box.nb_objx++ < cub->box.chrs_len - 1)
+					objx[cub->box.nb_objx] = get_pos(cub, m, o_cells,
+							cub->box.nb_objx);
 		}
 	}
-	cub->box.nb_objx = id + 1;
 	cub->box.objx = objx;
 	return (cub);
 }

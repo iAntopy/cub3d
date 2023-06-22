@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_instanciator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 06:25:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 20:17:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/22 00:12:50 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	instanciate_map_objects(t_cub *cub)
 
 	if (!cub || !cub->box.objx)
 		return (-1);
+	cub->box.nb_objx += 1;
 	i = -1;
 	while (++i < cub->box.nb_objx && cub->box.objx[i])
 	{
