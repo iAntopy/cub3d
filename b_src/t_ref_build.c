@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 18:40:15 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:45:38 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,54 +34,37 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(name));
 		free(name);
-		free(arr_name[i]);
-		arr_name[i] = NULL;
 		i++;
 	}
-	while (i < 8)
-		free(arr_name[i++]);
-	free(arr_name);
-	arr_name = NULL;
+	for_free(arr_name);
 	return (gset);
 }
 
 t_cub	*dual_builder(t_cub *cub, int i, char *t_name)
 {
 	char	**tex_set;
+	int		flag;
 
+	flag = -1;
 	if (cub->box.n_dual > i)
 	{
 		tex_set = ft_split_space(t_name);
 		cub->dual[i].xwalls[1] = NULL;
 		cub->dual[i].xwalls[0] = mlx_load_png(tex_set[0]);
 		if (!cub->dual[i].xwalls[0])
-		{
-			free(tex_set[0]);
-			tex_set[0] = NULL;
-			free(tex_set);
-			tex_set = NULL;
-			// return (report_mlx_tex_load_failed(tex_set[0]));
-			return (NULL);
-		}
+			flag = 0;
+		solo_free(tex_set[0]);
 		if (tex_set[1])
 		{
 			cub->dual[i].xwalls[1] = mlx_load_png(tex_set[1]);
 			if (!cub->dual[i].xwalls[1])
-			{
-				free(tex_set[0]);
-				tex_set[0] = NULL;
-				free(tex_set);
-				tex_set = NULL;
-				// return (report_mlx_tex_load_failed(tex_set[1]));
-				return (NULL);
-			}
-			free(tex_set[1]);
-			tex_set[1] = NULL;
+				flag = 1;
+			solo_free(tex_set[1]);
 		}
-		free(tex_set[0]);
-		tex_set[0] = NULL;
 		free(tex_set);
 		tex_set = NULL;
+		if (flag > -1)
+			return (NULL);
 	}
 	return (cub);
 }

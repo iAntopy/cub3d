@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/21 15:29:46 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/21 19:38:47 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,7 @@ BSRC_FLS	:=		main.c 			\
 				tex_parse.c			\
 				t_ref_name.c		\
 				t_ref_extend.c		\
+				t_overload.c 		\
 				map_instanciator.c	\
 				map_instanciator_utils.c	\
 				draw_threads.c		\

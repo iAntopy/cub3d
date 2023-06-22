@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_extend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 15:58:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:48:15 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,10 @@ int	xform_flush(t_cub *cub)
 		{
 			printf("<<>>DBL_CHEK xf:[%d],xnum:[%d]\n", xf, cub->box.xnum);
 			mlx_delete_texture(cub->box.xform[xf]);
-			//free (cub->box.xform[xf]);
 			cub->box.xform[xf] = NULL;
 		}
 		xf++;
 	}
-	/*
-	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum)
-	{
-		printf("xform_flush : loop\n");
-		while (xf < cub->box.xnum)
-		{
-			printf("xform_flush : xnum : %d\n", xf);
-			if (cub->box.xform[xf])
-			{
-				printf("<<>>DBL_CHEK xf:[%d],xnum:[%d]\n", xf, cub->box.xnum);
-				mlx_delete_texture(cub->box.xform[xf]);
-				free (cub->box.xform[xf]);
-				cub->box.xform[xf] = NULL;
-			}
-			xf++;
-		}
-		xf++;
-	}
-	*/
 	return (0);
 }
 
@@ -73,7 +53,6 @@ void	dual_flush(t_cub *cub)
 			printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
 			printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
 			mlx_delete_texture(cub->dual[j].xwalls[i]);
-			//free(cub->dual[j].xwalls[i]);
 			cub->dual[j].xwalls[i] = NULL;
 			i++;
 		}

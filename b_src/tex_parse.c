@@ -6,27 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 18:18:01 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:45:58 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int chrs_checker(char *tex_name)
-{
-	int chk;
-
-	chk = 0;
-	if ((ft_in_set(tex_name[0], (const char *)MCHR) != -1))
-		chk++;			
-	else if (ft_in_set(tex_name[0], (const char *)LCHR) != -1)
-		chk++;
-	else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
-		chk++;
-	printf("XXX %d XXX\n", chk);
-	return (chk);
-
-}
 
 t_matrx	*pset_maker(t_cub *cub, char **raw, int queue, int len)
 {
@@ -83,20 +67,20 @@ int	tex_parse(t_cub *cub, t_map *map)
 {
 	int	id;
 	int	nb;
+	int	i;
 
+	i = 0;
 	printf("Tex_parse...\n\n");
 	cub->box.n_dual = 0;
 	cub->box.pset = 0;
 	if (!e_list_txtr(cub, &cub->box, map))
 		return (-1);
-	nb = cub->box.xnum;
-	while (map->raw[nb] && map->raw[nb][0] != ' ')
+	nb = cub->box.xnum + cub->box.meta - 1;
+	while (map->raw[nb] && map->raw[nb][0] != ' ' && i++ < cub->box.pset)
 	{
 		id = ft_in_set(map->raw[nb][0], (const char *)UCHR);
 		if (id < 0 || map->raw[nb][1] != ' ')
-			break ;
-		printf("PSET[%d]:: PNUM[%d]  \n", cub->box.pset, cub->box.pnum);
-		cub->box.pset++;
+			return (-1);
 		nb++;
 	}
 	cub->pset = (t_matrx *)calloc(sizeof(t_matrx), cub->box.pset);

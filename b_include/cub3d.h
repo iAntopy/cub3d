@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 17:42:55 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:00:38 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -836,5 +836,8 @@ void			find_vector_delta(float *from_, float *to_, float *res);
 /// MINIMAP FUNCS
 void			update_minimap(t_cub *cub);
 //void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
-int chrs_checker(char *tex_name);
+int				chrs_checker(t_cub *cub, int j, char *tex_name, char *tex_path);
+char			**name_builder(const char *path, int txtr_nb);
+void			for_free(char **test);
+void			solo_free(char *test);
 #endif
