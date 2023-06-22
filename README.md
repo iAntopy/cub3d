@@ -57,3 +57,21 @@
 <img width="256" alt="last of them" src="https://github.com/iAntopy/cub3d/assets/88173405/85a10ac3-68fd-4f74-ad39-b20a76f9355b">
 
 
+## Bonus Parsing
+
+### File Headers
+    first 'char[0]' 
+        Ref. Char.  follow by space.
+    Second 'char[2]' 
+        Alleg. Num. follow by slash.
+    Third 'char[4]'
+        Relativ. Char. ... or *directional.
+    
+
+> meta-char family  MCHR
+    -   Lever   : (+,!,)
+    -   Portal  : (<,>,_,^)
+    -   Firpit  : (=,;,:)
+    -   Fireball: (*,#,%)
+    -   Player  : (@,$, &)
+    -   Spec    : (?)
