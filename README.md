@@ -1,7 +1,7 @@
  CUB3d
 -   Reproduce a mimic of a Icon Game : WOFLSTEIN 3D
 
-## Mandatory Part
+# Mandatory Part
 
 -    __Made Using Codam MLX 42__
 
@@ -35,6 +35,8 @@
 
   
 - - - - 
+# Bonus Parsing
+- - - -
 ## IMG
 <p align="center">
 <img width="256" alt="Screenshot 2023-05-13 192735]" src="https://github.com/iAntopy/cub3d/assets/88173405/843a9588-8300-4038-adf8-771e97aee45d">
@@ -59,7 +61,6 @@
 
 - - - - - -
 
-    ## Bonus Parsing
 >>
 >>    **FILE HEADERS**
 >> - - - - 
