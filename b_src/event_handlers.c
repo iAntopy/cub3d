@@ -6,7 +6,7 @@
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 10:20:29 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:52:02 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -88,18 +88,16 @@ static void	on_update_keypressed(t_cub *cub)
 
 void	on_update(t_cub *cub)
 {
-	//printf("ON UPDATE\n");
 	commit_all_obj_actions(cub);
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
-		// if (DEBUG)
-		// 	ft_deltatime_usec_note(NULL);
+		if (DEBUG)
+			ft_deltatime_usec_note(NULL);
 		update_minimap(cub);
-		//printf("ON UPDATE minimap drawn\n");
 		order_draw_call(cub->draw_threads, 0, 3);
-		// if (DEBUG)
-		// 	ft_deltatime_usec_note("this == bananas");
+		if (DEBUG)
+			ft_deltatime_usec_note("this == bananas");
 		cub->renderer.requires_update = 0;
 	}
 }

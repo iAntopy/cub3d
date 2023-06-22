@@ -6,38 +6,12 @@
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 12:31:28 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:49:28 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "cub3d.h"
 #include <dirent.h>
-
-// t_matrx	*gset_builder(const char *dirpath, int nb_txtr)
-// {
-// 	char		filepath[256];
-// 	int			boff;
-// 	t_matrx		*gset;
-// 	int			i;
-
-// 	printf("start gset_builder dirpath : %s\n", dirpath);
-// 	gset = NULL;
-// 	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
-// 		return (NULL);
-// 	i = 0;
-// 	while (i < nb_txtr)
-// 	{
-// 		boff = ft_strlcpy(filepath, dirpath, 256);
-// 		ft_putnbr_buff(filepath + boff, i);
-// 		ft_strlcat(filepath, ".png", 256);
-// 		printf("Loading file path : %s\n", filepath);
-// 		gset->xwalls[i] = mlx_load_png(filepath);
-// 		if (!gset->xwalls[i])
-// 			return (report_mlx_tex_load_failed(filepath));
-// 		i++;
-// 	}
-// 	return (gset);
-// }
 
 t_matrx	*gset_builder(const char *path, int txtr_nb)
 {
@@ -46,10 +20,9 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 	char	*sub_name;
 	char	*name;
 	int		i;
-	
+
 	sub_name = "0.png 1.png 2.png 3.png 4.png 5.png 6.png 7.png";
 	arr_name = ft_split_space(sub_name);
-	
 	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
 		return (NULL);
 		
@@ -58,8 +31,6 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 	while (i < txtr_nb)
 	{
 		name = ft_strjoin(path, arr_name[i]);
-		// arr_name = ft_strjoin((const char *)name, ".png");
-		printf(">>> name  {%s}\n", name);
 		gset->xwalls[i] = mlx_load_png(name);
 		if (!gset->xwalls[i])
 			return (report_mlx_tex_load_failed(name));
@@ -68,7 +39,8 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 		arr_name[i] = NULL;
 		i++;
 	}
-
+	while (i < 8)
+		free(arr_name[i++]);
 	free(arr_name);
 	arr_name = NULL;
 	return (gset);

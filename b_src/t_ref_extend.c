@@ -6,7 +6,7 @@
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 10:37:32 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:50:22 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,13 +20,15 @@ int	xform_flush(t_cub *cub)
 		return (0);
 	xf = 0;
 	cub->box.xnum -= (cub->box.n_dual);
-	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum - 1)
+	while (cub->box.xform[cub->box.xnum] && xf < cub->box.xnum)
 	{
 		while (xf < cub->box.xnum)
 		{
 			if (cub->box.xform[xf])
 			{
+				printf("<<>>DBL_CHEK xf:[%d],xnum:[%d]\n", xf, cub->box.xnum);
 				mlx_delete_texture(cub->box.xform[xf]);
+				free (cub->box.xform[xf]);
 				cub->box.xform[xf] = NULL;
 			}
 			xf++;
@@ -52,6 +54,7 @@ void	dual_flush(t_cub *cub)
 			printf("FLUSH:DUAL[%d]::xwalls[%d]", j, i);
 			printf(" <<%p>>\n", cub->dual[j].xwalls[i]);
 			mlx_delete_texture(cub->dual[j].xwalls[i]);
+			free(cub->dual[j].xwalls[i]);
 			cub->dual[j].xwalls[i] = NULL;
 			i++;
 		}
@@ -89,6 +92,8 @@ int	clr_legend_strct(t_cub *cub)
 	if (cub->box.xform)
 	{
 		xform_flush(cub);
+		free(cub->box.xform);
+		cub->box.xform = NULL;
 		ft_free_p((void **)&cub->box.xform);
 	}
 	if (cub->dual)
@@ -100,6 +105,7 @@ int	clr_legend_strct(t_cub *cub)
 	strtab_clear(&cub->map.m);
 	strtab_clear((char ***)&cub->map.mx);
 	free(cub->box.chrs);
+	printf("CIAO!\n");
 	return (0);
 }
 

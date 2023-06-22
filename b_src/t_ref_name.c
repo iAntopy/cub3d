@@ -6,7 +6,7 @@
 /*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/21 10:34:46 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:49:42 by ghebert          ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -47,8 +47,10 @@ int	xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j)
 	{
 		cub->box.sky = cub->box.xform[j];
 		if (!cub->box.sky)
+		{
+			printf("Exit without sky\n");
 			return (-1);
-		printf(":: Z >>");
+		}
 	}
 	j++;
 	return (j);
@@ -60,6 +62,9 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	char	*tex_name;
 	int		i;
 	int		j;
+	int 	flg;
+
+	flg = 0;
 
 	i = -1;
 	j = 0;
@@ -74,13 +79,20 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 		else if (ft_in_set(tex_name[0], (const char *)NCHR) != -1)
 			if (!dual_builder(cub, ft_in_set(tex_name[0], (const char *)NCHR),
 					tex_path))
-				return (NULL);
+				flg = 1;//return (NULL);
 		if (j == -1 || ((ft_in_set(tex_name[0], (const char *)MCHR) == -1)
 				&& i < cub->box.meta - 1))
-			return (NULL);
+			flg = 1;//return (NULL);
 		free(tex_name);
 		free(tex_path);
 	}
+	if (flg == 1)
+	{
+		free(tex_name);
+		free(tex_path);
+		return (NULL);
+	}
+	printf("<<<j = %d\n", j);
 	return (cub);
 }
 
@@ -129,5 +141,7 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	if (!cub)
 		return (NULL);
 	cub->box.chrs = chrs_builder(cub);
+	if (!cub->box.chrs)
+		return (NULL);
 	return (cub);
 }
