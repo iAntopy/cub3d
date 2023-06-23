@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   event_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 09:33:28 by ghebert          ###   ########.fr       */
+/*   Updated: 2023/06/23 19:08:47 by gehebert         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -92,12 +92,12 @@ void	on_update(t_cub *cub)
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
-		// if (DEBUG)
-		// 	ft_deltatime_usec_note(NULL);
+		if (DEBUG)
+			ft_deltatime_usec_note(NULL);
 		update_minimap(cub);
 		order_draw_call(cub->draw_threads, 0, 3);
-		// if (DEBUG)
-		// 	ft_deltatime_usec_note("this == bananas");
+		if (DEBUG)
+			ft_deltatime_usec_note("this == bananas");
 		cub->renderer.requires_update = 0;
 	}
 }
