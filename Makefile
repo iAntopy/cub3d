@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
+#    By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/22 00:31:03 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/23 15:34:33 by iamongeo         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 MSRC_FLS	:=		main.c 			\
 					event_handlers.c	\
@@ -29,6 +29,7 @@ MSRC_FLS	:=		main.c 			\
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
 BSRC_FLS	:=		main.c 			\
+				t_itoa.c 			\
 				event_handlers.c	\
 				event_handlers2.c	\
 				error_handling.c 	\
@@ -89,10 +90,10 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g# -fsanitize=address
+#CFLAGS	:= -Wextra -Wall -Werror -pthread -g# -fsanitize=address
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 #CFLAGS	:= -Wextra -Wall -Werror -pthread -g  
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
+CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
 #LDFLAGS	:= -fsanitize=address
 

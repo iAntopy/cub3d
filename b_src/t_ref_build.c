@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   t_ref_build.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ghebert <ghebert@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 21:34:03 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/22 01:11:59 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/22 13:55:35 by ghebert          ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 #include <dirent.h>
@@ -25,6 +25,7 @@ t_matrx	*gset_builder(const char *path, int txtr_nb)
 	arr_name = ft_split_space(sub_name);
 	if (!ft_malloc_p(sizeof(t_matrx), (void **)&gset))
 		return (NULL);
+		
 	i = 0;
 	printf("GSET %d txtrs >>>> *%s Model >>> \n", txtr_nb, path);
 	while (i < txtr_nb)
