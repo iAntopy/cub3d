@@ -67,7 +67,8 @@
 >>
 >>![header](https://github.com/iAntopy/cub3d/assets/88173405/ba4d94a5-b775-46f7-b957-b2758ebf1208)
 >>![map1](https://github.com/iAntopy/cub3d/assets/88173405/23581384-2504-4ef1-9847-ab4721d8191f)
->>
+>><img width="256" alt="Screen Shot 2023-06-23 at 2 58 57 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/0721e3e3-e9ab-4791-9d2e-2808bfb39093">
+
 >></p>
 
 >> - - - - 
