@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 15:03:24 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/23 19:30:51 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -431,28 +431,14 @@ typedef struct s_drawable_objects
 	t_omdl	spawnp;//	Spawnpoint for player object model;
 	t_omdl	lever;		//	Switch object model;
 	t_omdl	portal;//	Portal object model;
-	t_omdl	fireball;//	Fireball object model;
-	t_omdl	firepit;//	Fireball generator obj;
-	t_omdl	firepet;//	Fireball generator obj;
-	t_omdl	flag;//		Flag generator obj;
+	t_omdl	fireball;
+	t_omdl	firepit;
+	t_omdl	firepet;
+	t_omdl	flag;
 	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
-	//t_oclct	*collectibles;
-	//t_oenmi	*ennemies;
 	t_oinst	*instances;
 }	t_objs;
 
-/*
-typedef void				(*t_delayed_act)(t_cub *cub, void *arg1, void *arg2);
-
-typedef struct s_delayed_action
-{
-	ssize_t	start_time;
-	ssize_t	delay_ms;
-
-
-
-}	t_act;
-*/
 // struct of parameters used by render_walls()
 typedef struct s_renderer_column_params
 {
@@ -470,20 +456,13 @@ typedef struct s_renderer_column_params
 
 typedef struct s_main_character_data
 {
-	// int		cell_x;
-	// int		cell_y;
-	// float	px;
-	// float	py;
-	// float	ori;//	player orientation in radian
-	// int		allegiance;
 	t_oinst		*ply_obj;
-
-	float		*dirx;	// ptr to rays[0][SCN_WIDTH / 2], the x part of the player's directional vector.
-	float		*diry;	// ptr to rays[1][SCN_WIDTH / 2], the y part of the player's directional vector.
-	float		*fov_lx;// left most fov ray x
-	float		*fov_ly;// left most fov ray y 
-	float		*fov_rx;// right most fov ray x 
-	float		*fov_ry;// right most fov ray y
+	float		*dirx;	
+	float		*diry;	
+	float		*fov_lx;
+	float		*fov_ly;
+	float		*fov_rx;
+	float		*fov_ry;
 	t_rcast		rcast;
 }	t_hero;
 
@@ -535,27 +514,20 @@ typedef struct s_renderer
 	mlx_image_t	*proj_layer;
 	mlx_image_t	*objs_layer;
 	mlx_image_t	*mmap_layer;
-	float		*dbuff;//	 depth buffer for drawable world entities. 
-	float		*dpbuff;//	 depth buffer for portal projection entities. 
-	char		*isproj;//	 bool buffer SCN_WIDTH x SCN_HEIGHT indicating if pxl is portal projection
-	float		*near_z_dists;// Array of distances to every column of the projected
-				// plane (near_z). See floorcaster. 
-	float		*floor_factors;// Pre-calc parametric multipliers for all pixels
-			// below scn_midy. Every drawn pixels on screen 
-			// is mapped to a multiplier (see floor_caster.c)
-			// that stretches rx and ry to find the floor pixel it hits.
-//	int			*sky_base_toffs;
-//	int			*sky_toffs;
-
-	t_oinst		*portal;// pointer to portal currently being rendered
-	int			bframe[4];// base frame init as [0, 0, SCN_WIDTH, SCN_HEIGHT].
-	int			pframe[4];// min and max coords of projection frame for current portal.
+	float		*dbuff;
+	float		*dpbuff;
+	char		*isproj;
+	float		*near_z_dists;
+	float		*floor_factors;
+	t_oinst		*portal;
+	int			bframe[4];
+	int			pframe[4];
 
 	float		flrw_to_cw;
 	float		flrh_to_cw;
-	float		sky_radial_width;	// const sky texture width * inv_two_pi
-	float		sky_fov_to_tex;// FOV60 * sky_radial_width;
-	float		sky_ht_to_midy;//	tex_height / (SCN_HEIGHT / 2)
+	float		sky_radial_width;
+	float		sky_fov_to_tex;
+	float		sky_ht_to_midy;
 	int			sky_yoffsets[SCN_HEIGHT >> 1];
 	int			sky_ori_offset;
 	int			requires_update;
@@ -565,30 +537,23 @@ typedef struct s_cub3d_core_data
 {
 	/// MLX42 DATA
 	mlx_t			*mlx;
-//	mlx_image_t		*imgz;	// maybe for mini_map
 	mlx_image_t		*color;
-
 	/// TEMP VARS FOR TESTING AND DEBUG ONLY ///////////////////
-//	mlx_texture_t	*floor_tex;
-//	mlx_texture_t	*sky_tex;
-
 	int				nb_players;
-	int				player_ids[MAX_PLAYERS];// ids to player obj instances
-
-//	int				tex_id;
+	int				player_ids[MAX_PLAYERS];
 	/// CONSTANT VALUES ////////////////////////////////////////
-	int				scn_midx;	// mid screen x coordinate
-	int				scn_midy;	// mid screen y coordinate
-	float			inv_cw;		// inverse CELL_WIDTH. precalc const division for optimisation
-	float			inv_sw;		// inverse SCN_WIDTH. precalc const used for skymap rendering.
-	float			inv_two_pi;	// 1 / 2pi;
-	int				yoffs[SCN_HEIGHT];//	indexable array of all j * SCN_WIDTH 
-										//	offsets in y directions to optimize rendering.
+	int				scn_midx;	
+	int				scn_midy;	
+	float			inv_cw;	
+	float			inv_sw;	
+	float			inv_two_pi;	
+	int				yoffs[SCN_HEIGHT];
+										
 	/// FOV AND PROJECTION DATA ///////////////////////////////
-	float			fov;// = fov;// field of view
-	float			hfov;// = fov * 0.5f;// half fov
-	float			near_z;// = (0.5f * (float)SCN_WIDTH) / tanf(cub->hfov);
-	float			near_proj_factor;// = CELL_WIDTH * cub->near_z;
+	float			fov;
+	float			hfov;
+	float			near_z;
+	float			near_proj_factor;
 	/// SUBSECTIONS ////////////////////////////////////////////
 	t_map			map;
 	t_tex			tex;
@@ -601,7 +566,7 @@ typedef struct s_cub3d_core_data
 	t_box			box;
 }	t_cub;
 
-//int	load_map(t_cub *cub, char *map_file);
+
 int				build_collision_map(t_map *map);
 void			print_collision_map(t_map *map);
 int				build_grid_coords_map(t_map *map);
@@ -618,7 +583,6 @@ t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map);
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
-//int				is_empty_line(char *line);
 //map_tool
 void			flush_empty_lines(char **raw);
 int				error(char *error, t_map *map);
@@ -660,38 +624,31 @@ int				update_fov(t_cub *cub, float fov);
 int				is_wall(t_map *map, int cx, int cy);
 int				get_is_cell_within_bounds(t_map *map, int cx, int cy);
 float			*get_grid_coords(t_map *map, int cx, int cy);
-//float	*get_grid_coords(t_map *map, int cx, int cy);
 
 /// RENDERER /////////////////
 int				init_renderer(t_cub *cub);
 void			init_rdata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd);
 int				renderer_clear(t_cub *cub, int exit_status);
-void			render_walls(t_cub *cub);//, t_rdata *rd);
-void			render_floor_sky(t_cub *cub);//, t_rdata *rd);
-void			render_objects(t_cub *cub);//, t_rdata *rd);
+void			render_walls(t_cub *cub);
+void			render_floor_sky(t_cub *cub);
+void			render_objects(t_cub *cub);
 void			__render_sky(t_cub *cub);
-
 extern void		__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
 extern void		__rdr_setup_draw_objs(t_cub *cub, t_objd *od, int *pframe, int offy);
 extern void		__rdr_obj_draw_check(t_cub *cub, t_objd *od);
 extern int		__rdr_obj_out_of_frame(t_objd *od);
 extern void		__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims);
-//extern inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
-//extern inline void	__rdr_setup_draw_obj(t_cub *cub, t_objd *od, int *pframe, int offy);
-//extern inline void	__rdr_obj_draw_check(t_cub *cub, t_objd *od);
-
-int			prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int n);//, int *pframe);
+int				prtl_proj_vectors(t_pdata *pd, t_map *map, t_oinst *obj, int n);
 void			__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe);
-void			__render_proj_walls(t_cub *cub);//, t_oinst *prtl, t_pdata *pdata, int *pframe)
-void			__render_proj_floor(t_cub *cub);//, uint32_t *pbuff, t_pdata *pd, int *pframe);
-void			__render_proj_objects(t_cub *cub);//, t_oinst *prtl, t_pdata *pdata, int *pframe)
-//void			render_sky(t_cub *cub, t_rdata *rd);
+void			__render_proj_walls(t_cub *cub);
+void			__render_proj_floor(t_cub *cub);
+void			__render_proj_objects(t_cub *cub);
 void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
 void			mlx_draw_square(mlx_image_t *img, int pos[2], int side, uint32_t col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
 uint32_t		get_tex_pixel(mlx_texture_t *tex, int x, int y);
-//void			render_scene(t_cub *cub);
+
 
 /// FLOORCASTING ///////////////
 int				init_floorcaster(t_cub *cub);
@@ -809,15 +766,13 @@ int				xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j);
 t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_cub			*e_mtrx_count(t_cub *cub);
-void		 	p_list_objx(t_objx **objx, int id, int num);
-
+void			p_list_objx(t_objx **objx, int id, int num);
 char			*chrs_builder(t_cub *cub);
 t_objx			*objx_init(t_objx *objx);
 t_objx			*data_objx(t_cub *cub, t_box *box, char meta);
 t_objx			*get_pos(t_cub *cub, t_map *m, int o_cells, int id);
 t_objx			*get_ref(t_cub *cub, t_objx *objx, int id);
-
-int			 	get_objx(t_objx **objx, char name, int num);
+int				get_objx(t_objx **objx, char name, int num);
 t_cub			*mx_struct(t_map *m, t_cub *cub);
 int				clr_legend_strct(t_cub *cub);
 int				xform_flush(t_cub *cub);
@@ -825,7 +780,7 @@ int				xform_flush(t_cub *cub);
 void			minimap_set_pos(t_cub *cub);
 void			minimap_surround(t_cub *cub, int pos[2], int mmax[2]);
 void			mlx_draw_mmap(t_cub *cub);
-void			mlx_draw_player(t_cub * cub, t_map *map);
+void			mlx_draw_player(t_cub *cub, t_map *map);
 void			mlx_update_mmap(t_cub *cub, t_map *m);
 
 /// UTILS
@@ -836,7 +791,6 @@ void			find_vector_delta(float *from_, float *to_, float *res);
 
 /// MINIMAP FUNCS
 void			update_minimap(t_cub *cub);
-//void			mlx_draw_line(mlx_image_t *img, int start[2], int end[2], int col);
 int				chrs_checker(t_cub *cub, int j, char *tex_name, char *tex_path);
 char			**name_builder(const char *path, int txtr_nb);
 void			for_free(char **test);
