@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/17 18:55:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:35:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	on_close(void *param)
 	t_cub	*cub;
 
 	cub = (t_cub *)param;
-	printf("CLOSE REQUEST RECEIVED !\n");
 	mlx_close_window(cub->mlx);
 }
 
@@ -91,9 +90,5 @@ void	on_update(t_cub *cub)
 	if (d_walk || d_strafe)
 		cub_player_move(cub, d_walk, d_strafe);
 	if (cub->renderer.requires_update)
-	{
-		ft_deltatime_usec_note(NULL);
 		render_walls(cub, cub->hero.rcast.rdata);
-		ft_deltatime_usec_note("this shit == bananas");
-	}
 }

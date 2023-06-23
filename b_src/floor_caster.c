@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 03:58:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 20:18:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:39:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	update_floorcaster_params(t_cub *cub)
 
 	if (!cub->renderer.floor_factors)
 		init_floorcaster(cub);
-	printf("UPDATE FLOORCASTER\n");
 	update_near_z_dists(cub);
 	ps = cub->renderer.floor_factors;
 	i = 0;
@@ -71,7 +70,6 @@ void	update_floorcaster_params(t_cub *cub)
 
 int	init_floorcaster(t_cub *cub)
 {
-	printf("INIT FLOORCASTER \n");
 	if (cub->renderer.floor_factors)
 		return (0);
 	if (!ft_malloc_p(sizeof(float) * SCN_WIDTH * cub->scn_midy,

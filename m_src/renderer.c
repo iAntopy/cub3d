@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:36:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	renderer_clear(t_cub *cub)
 {
-	printf("renderer clear entered \n");
 	if (cub->renderer.bg_layer)
 		mlx_delete_image(cub->mlx, cub->renderer.bg_layer);
 	if (cub->renderer.walls_layer)

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:36:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static t_map	*map_frame(t_map *map)
 	}
 	strtab_clear(&map->raw);
 	map = wall_check(map);
-	printf("wall_chk returned with flg_chk == 1\n");
 	if (map->flg_chk == 1)
 		return (NULL);
 	return (map);
@@ -108,6 +107,5 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 	if (!map->tab || !map_frame(map) || build_grid_coords_map(map) < 0
 		|| build_collision_map(map) < 0)
 		return (-1);
-	printf("map (width, height) : (%d, %d)\n", map->width, map->height);
 	return (0);
 }
