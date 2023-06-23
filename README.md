@@ -54,6 +54,7 @@
 - - - - 
 #### Making of
 
+>><img width="256" alt="Screen Shot 2023-06-23 at 2 58 57 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/0721e3e3-e9ab-4791-9d2e-2808bfb39093">
 <img align="left" width="256" alt="Screenshot from 2023-03-09 15-57-44]" src="https://github.com/iAntopy/cub3d/assets/88173405/bd7ab69e-d638-4190-93fd-9268f2515025">
 <img align="center" width="210" alt="Screen Shot 2023-05-15 at 3 22 16 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/f995be1d-3547-45ce-9b75-fa4efd4868ff">
 <img align="center" width="220" alt="Screen Shot 2023-06-06 at 1 14 12 AM" src="https://github.com/iAntopy/cub3d/assets/88173405/c0c61912-bcba-4e22-a191-dddbb95d401c">
@@ -67,7 +68,6 @@
 >>
 >>![header](https://github.com/iAntopy/cub3d/assets/88173405/ba4d94a5-b775-46f7-b957-b2758ebf1208)
 >>![map1](https://github.com/iAntopy/cub3d/assets/88173405/23581384-2504-4ef1-9847-ab4721d8191f)
->><img width="256" alt="Screen Shot 2023-06-23 at 2 58 57 PM" src="https://github.com/iAntopy/cub3d/assets/88173405/0721e3e3-e9ab-4791-9d2e-2808bfb39093">
 
 >></p>
 
