@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/23 19:04:15 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 19:04:19 by iamongeo         ###   ########.fr       */
+/*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
+/*   Updated: 2023/06/23 19:14:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ void	on_update(t_cub *cub)
 	on_update_keypressed(cub);
 	if (cub->renderer.requires_update)
 	{
-		// if (DEBUG)
-		// 	ft_deltatime_usec_note(NULL);
+		if (DEBUG)
+			ft_deltatime_usec_note(NULL);
 		update_minimap(cub);
 		order_draw_call(cub->draw_threads, 0, 3);
-		// if (DEBUG)
-		// 	ft_deltatime_usec_note("this == bananas");
+		if (DEBUG)
+			ft_deltatime_usec_note("this == bananas");
 		cub->renderer.requires_update = 0;
 	}
 }
