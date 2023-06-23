@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/22 00:31:03 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/23 15:25:57 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,10 +89,10 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g# -fsanitize=address
+#CFLAGS	:= -Wextra -Wall -Werror -pthread -g# -fsanitize=address
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 #CFLAGS	:= -Wextra -Wall -Werror -pthread -g  
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
+ CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
 #LDFLAGS	:= -fsanitize=address
 
