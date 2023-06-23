@@ -1,0 +1,49 @@
+$ 1/9
+& 2/9
+! 1/<
+> 1/<
+< 1/>
++ 2/^
+_ 3/^
+^ 3/_
+a tex/ext/travel_wall.png
+b tex/ext/ult_wall.png
+c tex/ext/linear_wall.png
+d tex/ext/path_celing.png
+e tex/ext/wall_mars_n.png
+f tex/ext/wall_mars_s.png
+z tex/ext/sky_mars3.png
+0 tex/ext/vert_floor.png tex/ext/space_Xwall_.png
+1 tex/ext/horz_floor.png tex/ext/travel_wall_.png
+2 tex/ext/horz_floor.png tex/ext/starry-night-sky_.png
+3 tex/ext/vert_floor.png tex/ext/starry-night-sky_.png
+4 tex/ext/mars_floor2.png tex/ext/bay_window_.png
+
+A ddcd
+B baba
+C cbcb
+D dddd
+E ffee
+F eeff
+
+AAAAAAAAAAAAAAAAAAAAADDDDDDDDDDDDDDD
+A1111111<11111111!1111111211$121112D
+AAAAAAAAAAAAAAD00000DDDDDDDDDDDDDDDD
+              D00000D
+              D00@00D
+              D00000D
+              D00000DBBBBBB
+              D00000B13131B
+              D00000&11_11B
+              D00000B13131B
+              D3B3B3DBBBBBB
+              BACACAB
+EEEEEEEFFFEEEEEEEEEEEE
+E44444444444444444444E
+EFFF4444+444444444444E
+E44^4444444>444444444E
+E44444444444444444444E
+EE4444444444444444444E
+E44444EF444444E444444E
+E444444F444444E444444E
+EEEEEEEEFFFEEEEEEEFFFE

@@ -1,0 +1,18 @@
+W  tex/ext/white-marble.png
+N  tex/ext/travertine-stone.png 
+E  tex/ext/rock2.png
+S  tex/ext/red-sand-ground.png
+
+C 55,55,55
+
+F 155,155,155
+
+111   111
+101   1S11111
+101   10000011
+101   10111001
+1011 1101 1101
+10011100111001
+11001000000011
+ 110001111111
+  11111
