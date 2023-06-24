@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_ref_extend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/06/23 20:36:57 by iamongeo         ###   ########.fr       */
+/*   Created: 2023/06/05 23:18:50 by gehebert          #+#    #+#             */
+/*   Updated: 2023/06/23 19:07:25 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
