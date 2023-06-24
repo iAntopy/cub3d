@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 16:07:08 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:10:31 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 			m->flg_chk = 1;
 		if (ft_in_set(m->tab[m->pos_y][m->pos_x + 1], (const char *)MAP_CHARS) == -1)
 			m->flg_chk = 1;
-		printf("SHOULD HAVE POP OUT CLEARLY [%d] frm t_o_cell", m->flg_chk);
-		printf("m->x[%d] m->y[%d] \n", m->pos_x, m->pos_y);
 	}
 	else
 	{
+		printf("SHOULD HAVE POP OUT CLEARLY [%d] frm t_o_cell", m->flg_chk);
+		printf("m->x[%d] m->y[%d] \n", m->pos_x, m->pos_y);
 		report_err("Found floor or player on edge of map !\n");
 		m->flg_chk = 1;
 	}
@@ -78,8 +78,7 @@ t_map	*wall_check(t_map *m)
 		m->pos_x = 0;
 		while (m->pos_x < m->width && m->flg_chk == 0)
 		{
-			o_cells = ft_in_set((m->tab[m->pos_y][m->pos_x]), \
-					(const char *)MAP_CHARS);
+			o_cells = ft_in_set((m->tab[m->pos_y][m->pos_x]), (const char *)MAP_CHARS);
 			if (o_cells == 0 || o_cells > 1)
 			{
 				m = t_o_cell(m, m->pos_x, m->pos_y);
