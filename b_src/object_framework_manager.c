@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:47:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 22:11:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:41:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static void	clear_player_model(t_omdl *mdl)
 // Destroy all object instances AND free all object models.
 void	clear_obj_framework(t_cub *cub)
 {
-	printf("Clearing objects framework\n");
 	delete_all_obj_instances(cub);
 	clear_player_model(&cub->objs.player);
 	clear_obj_model(&cub->objs.lever);
@@ -107,7 +106,7 @@ int	create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *arg)
 	cell[0] = (int)(pos[0] * cub->inv_cw);
 	cell[1] = (int)(pos[1] * cub->inv_cw);
 	if (is_wall(&cub->map, cell[0], cell[1]))
-		return (report_err("Error\n\t - Trying to create object in wall.\n"));
+		return (report_err("Trying to create object in wall."));
 	if (type_alleg[0] == OBJ_PLAYER)
 		obj_id = create_player_instance(cub, pos, type_alleg[1], arg);
 	else if (type_alleg[0] == OBJ_SPAWNPOINT)
@@ -121,6 +120,6 @@ int	create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *arg)
 	else if (type_alleg[0] == OBJ_FIREPIT)
 		obj_id = create_firepit_instance(cub, pos, type_alleg[1], arg);
 	else
-		return (ft_eprintf("Error\n\t - Invalid obj type\n"));
+		return (report_err("Trying to create object with invalid obj type"));
 	return (obj_id);
 }

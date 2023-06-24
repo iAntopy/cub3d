@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:38:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	error_color(char *err_str, char ***split_color)
 {
 	strtab_clear(split_color);
-	ft_eprintf("Error: Failed to parse this color string from file : %s\n",
+	ft_eprintf("Error\n\t- Failed to parse this color string from file : %s\n",
 		err_str);
 	return (0);
 }
@@ -44,7 +44,6 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 {
 	char	*t;
 
-	printf("______ HERE GET_BY_ID__[%d]___name{%s}\n", id, tex_str);
 	if (id < 0 || id > 3)
 		return (NULL);
 	if (!cub->tex.walls[id])

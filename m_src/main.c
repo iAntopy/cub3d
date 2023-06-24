@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:34:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 {
 	int	i;
 
-	printf("CUB CLEAR AT EXIT\n");
+	ft_printf("CUB CLEANUP AT EXIT\n");
 	i = -1;
 	while (++i < 4)
 		if (cub->tex.walls[i])
@@ -28,7 +28,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 	renderer_clear(cub);
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
-	printf("exit with status : %d\n", exit_status);
+	ft_printf("Good Bye !\n");
 	return (exit_status);
 }
 
@@ -39,7 +39,6 @@ int	cub_init_core_data(t_cub *cub)
 	cub->inv_cw = 1.0f / (float)CELL_WIDTH;
 	cub->inv_sw = 1.0f / (float)SCN_WIDTH;
 	cub->inv_two_pi = 0.5f / M_PI ;
-	printf("MAIN : inverse CELL_WIDTH : %.10f\n", cub->inv_cw);
 	return (0);
 }
 
@@ -47,7 +46,7 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 {
 	printf("Player (x, y) : (%d, %d)\n", x, y);
 	if (is_wall(&cub->map, x, y))
-		return (printf("ERROR hero can't be placed in wall."));
+		return (ft_eprintf("Error\n\t - hero can't be placed in wall.\n"));
 	cub->hero.cell_x = x;
 	cub->hero.cell_y = y;
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
@@ -59,7 +58,6 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 
 void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 {
-	printf("Setting up hooks and focus\n");
 	mlx_focus(cub->mlx);
 	mlx_set_cursor_mode(cub->mlx, MLX_MOUSE_HIDDEN);
 	mlx_cursor_hook(cub->mlx, on_cursor_move, cub);
@@ -79,21 +77,16 @@ int	main(int argc, char **argv)
 	cub_init_core_data(&cub);
 	if (map_checker(&cub, &cub.map, argv[1]) != 0
 		|| set_player_cell_pos(&cub, cub.map.hero_x, cub.map.hero_y) != 0)
-	{
-		ft_eprintf("WOWOW map checker failed HARD !\n");
 		return (cub_clear(&cub, EXIT_FAILURE));
-	}
-	printf("Initializing MLX42 context.\n");
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
-	printf("MLX42 context initialized successfully !\n");
 	if (init_renderer(&cub) < 0 || init_raycaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	cub_setup_mlx_hooks_and_settings(&cub);
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub,
-				report_err_strerror("mlx loop stopped with ERROR ! : %s ")));
+				report_err_strerror("mlx loop stopped with ERROR ! : %s")));
 	return (cub_clear(&cub, EXIT_SUCCESS));
 }

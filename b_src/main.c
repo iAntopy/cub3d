@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/21 21:42:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:32:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	cub_clear(t_cub *cub, int exit_status)
 {
-	printf("CUB CLEAR AT EXIT\n");
+	ft_printf("CUB CLEANUP AT EXIT\n");
 	stop_draw_threads(cub->draw_threads);
 	ft_free_p((void **)&cub->map.collision_map);
 	strtab_clear((char ***)&cub->map.grid_coords);
@@ -25,6 +25,7 @@ int	cub_clear(t_cub *cub, int exit_status)
 	if (cub->mlx)
 		mlx_terminate(cub->mlx);
 	clr_legend_strct(cub);
+	ft_printf("Good Bye !\n");
 	return (exit_status);
 }
 
@@ -72,13 +73,11 @@ int	main(int argc, char **argv)
 	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
-	printf("MLX42 context initialized successfully !\n");
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
 		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
 	cub_setup_mlx_hooks_and_settings(&cub);
-	printf("Party time babyyyyy !\n");
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub, report_err_strerror("mlx loop exit error")));

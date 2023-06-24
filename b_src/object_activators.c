@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 22:11:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:40:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	activate_portal(t_oinst *obj, unsigned int new_state)
 	else if (!obj->isactive && new_state == 1)
 	{
 		if (!link)
-			return (ft_eprintf("Cannot activate portal without a link\n"), -1);
+			return (report_err("Cannot activate portal without a link"), -1);
 		obj->isactive = 1;
 		obj->tex_idx = obj->alleg;
 		activate_portal(link, 1);
