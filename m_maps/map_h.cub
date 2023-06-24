@@ -1,7 +1,7 @@
-W  tex/ext/d_tex_256.png
-N  tex/ext/a_tex_256.png 
-E  tex/ext/b_tex_256.png
-S  tex/ext/c_tex_256.png
+W  tex/ext/d_tex.png
+N  tex/ext/a_tex.png 
+E  tex/ext/b_tex.png
+S  tex/ext/c_tex.png
 
 C 210,115,10
 F 55,55,55

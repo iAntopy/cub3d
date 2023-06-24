@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 19:30:51 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/23 20:06:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@
 # include "../lib/mtxlib/includes/mtxlib.h"
 
 # define DEBUG 0
+# define HD 0
 
 /// SCN_WIDTH MUST BE > SCN_HEIGHT
-# define SCN_WIDTH  1024
-# define SCN_HEIGHT 780
-// # define SCN_WIDTH  1980
-// # define SCN_HEIGHT 1080
+# if HD
+#  define SCN_WIDTH  1980
+#  define SCN_HEIGHT 1080
+# else
+#  define SCN_WIDTH  1024
+#  define SCN_HEIGHT 780
+# endif
 
 # define MMP_WIDTH  150
 # define MMP_HEIGHT 150
@@ -55,7 +59,6 @@
 
 # define FOV45 0.785398163397448f
 # define FOV45_HF 0.39269908169872414f
-//# define INV_45 1.27323954474f
 
 # define FOV20 0.349065850398865915f
 # define FOV20_HF 0.17453292519943295f
@@ -92,7 +95,6 @@
 
 # define PROJ_COLOR 0xffbcbbb0
 # define TRANSPARENCY 0xafffffff
-
 
 # define NB_OBJ_TYPES 5
 # define FIREPIT_SPAWN_TICKS 200
@@ -134,8 +136,7 @@ typedef struct s_raycaster_data		t_rcast;
 typedef struct s_cub3d_core_data	t_cub;
 typedef struct s_ray_collision_data	t_rdata;
 typedef struct s_objects_list_elem	t_oinst;
-typedef void				(*t_draw_func)(t_cub *cub);//t_cub *, t_rdata *);
-
+typedef void						(*t_draw_func)(t_cub *cub);
 
 /// PARSING ///////////////////
 typedef struct s_matrx
@@ -145,41 +146,41 @@ typedef struct s_matrx
 
 typedef struct s_objx
 {
-	char 			name;		// '#' 
-	int				obj_id;		 // enrg. id	
-	int 			opos[2];	// relativ pos (reltv. obj_id)
-	int				o_type;		// model_type	
-	int 			alleg;		// allegence _txtr
-	char			relativ;	// char obj_id
-	struct s_objx	*rel_ref;	 // ptr to its relative's objx ptr;
-	t_oinst			*wobj;		// world object instance
+	char			name;
+	int				obj_id;
+	int				opos[2];
+	int				o_type;
+	int				alleg;
+	char			relativ;
+	struct s_objx	*rel_ref;
+	t_oinst			*wobj;
 }	t_objx;
 
-typedef struct s_box 
+typedef struct s_box
 {	
 	mlx_texture_t	**xform;
-	mlx_texture_t	*sky_tex;	
-	mlx_texture_t	*sky;	
+	mlx_texture_t	*sky_tex;
+	mlx_texture_t	*sky;
 	int				pnum;
-	// // // // 
-	char 			*chrs;
+
+	char			*chrs;
 	int				chrs_len;
-	int				meta;	// ++chr
-	int 			xnum;	// ++total '.png'
+	int				meta;
+	int				xnum;
 
-	int				n_dual;	// double tex_set floor/ ceil
-	int				pset;	// recette poor walls
+	int				n_dual;
+	int				pset;
 
-	int 			open_sky; // 1 = skymap
+	int				open_sky;
 	int				n_prts;
 	int				n_lvls;
 	int				n_fbll;
 	int				n_fpit;
-	int 			n_plyr;
+	int				n_plyr;
 	int				nb_objx;
 
 	t_objx			**objx;
-	t_matrx			*gset; /// rely to model
+	t_matrx			*gset;
 }	t_box;
 
 // collision_map : 1D array map where 1 is solid wall otherwise 0.
@@ -200,8 +201,7 @@ typedef struct s_map_data
 	int		total_area;
 	char	*collision_map;
 	float	**grid_coords;
-	
-	// minimap data
+
 	int		mmp_mid[2];
 	int		mmp_ply_off[2];
 	float	map_wld_x_rt;
@@ -209,11 +209,9 @@ typedef struct s_map_data
 	float	map_wld_y_rt;
 	float	wld_map_y_rt;
 
-	// Germain specific Stuff
-
 	t_matrx	***mx;
 	char	**raw;
-	char	**m;	// test mapping map
+	char	**m;
 	int		pos_x;
 	int		pos_y;
 	int		lines_to_map;
@@ -223,103 +221,77 @@ typedef struct s_map_data
 	int		flg_chk;
 }	t_map;
 
-// All 4 elem arrays of textures in order W, N, E, S.
-// walls : array of mlx_texture_t ptr foreach side.
 typedef struct s_texture_data
 {
-	int				color[2];
-	
-	mlx_texture_t	*skymap;	
-	//	mlx_texture_t	*walls[4];
-	//	mlx_texture_t	*sky_tex;	// yessss
-	// t_matrx			*gset;		// model_txtr
-	// t_matrx			*dual;		// floor & ceiling
-	// // // //
-	//	mlx_texture_t	*floor;		
-	//	char			**rgbx;
-	//	int				open_sky;// DEPRECATED !!
+	mlx_texture_t	*skymap;
 }	t_tex;
 
 typedef struct s_ray_collision_data
 {
-//	External ref
-//	t_rcast	*rcast;
-
-//	Struct constants;
 	int		idx;
 	float	inv_cw;
 	float	*near_proj_factor;
-	int		*pcx;//	hero cell position in x
-	int		*pcy;// hero cell position in y
-	float	*px;// hero position x; Pointer to cub->hero.px.
-	float	*py;// hero position y;
-	float	*p_dirx;// player's directional vector in x;
-	float	*p_diry;// player's directional vector in y;
-	float	*rx;// ray vector direction in x for specific ray; Pointer to rcast->rays[0] at rays idx.
-	float	*ry;// ray vector direction in y for specific ray; Pointer to rcast->rays[1] at rays idx.
+	int		*pcx;
+	int		*pcy;
+	float	*px;
+	float	*py;
+	float	*p_dirx;
+	float	*p_diry;
+	float	*rx;
+	float	*ry;
 
-//	Init data
-	int		dx;//	x offset of cell to check in collision map
-	int		dy;//	y offset of cell to check in collision map
-	int		cincr_x;//	direction of cell move for vertical axis collision. Either 1 or -1.
-	int		cincr_y;//	direction of cell move for horizontal axis collision. Either 1 or -1.
-	float	a;//	ray slope
-	float	inv_a;//a inverse == 1/a;
-	float	b;//	ray y offset
+	int		dx;
+	int		dy;
+	int		cincr_x;
+	int		cincr_y;
+	float	a;
+	float	inv_a;
+	float	b;
 
-//	Tracked data (final value is resulting data)
-	int		cx;// tracked collision cell x; Init to hero.cell_x. Final value is collision cell x.
-	int		cy;// tracked collision cell y; Init to hero.cell_y. Final value is collision cell y.
-	
-//	Resulting data
-	int		side;// collision side. Can be compared to side enums.
-	float	hitx;// collision world coord x;
-	float	hity;// collision world coord y;
-	float	dist;// collision distance to projection plane.
-	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
-	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
+	int		cx;
+	int		cy;
+
+	int		side;
+	float	hitx;
+	float	hity;
+	float	dist;
+	float	tex_ratio;
+	float	tex_height;
 
 }	t_rdata;
 
 typedef struct s_portal_projection_data
 {
 	t_rdata	*rdata;
-	
-//	Struct const
-	float	*fwd_len;// sin(theta offset for this ray). used in portal projection to find ray collision on obj
 
-//	Init data;
-	float	px;//	init as player px, switches to ray intersect with obj, offset to link portal during proj
-	float	py;//	init as player py, switches to ray intersect with obj, offset to link portal during proj
-	int		cx;//	init as player cx, switches to cell x of px, offset to link portal during proj
-	int		cy;//	init as player cy, switches to cell y of px, offset to link portal during proj
+	float	*fwd_len;
 
-//	int		tgt_px;//	x coord ray collision with object
-//	int		tgt_py;//	y coord ray collision with object
-//	int		tgt_cx;//	cell x of collision with object
-//	int		tgt_cy;//	cell y of collision with object
-	float	b;//	ray y offset
-	
-//	Resulting data
-	int		side;// collision side. Can be compared to side enums.
-	float	hitx;// collision world coord x;
-	float	hity;// collision world coord y;
-	float	dist;// collision distance to projection plane.
-	float	odist;// ray distance to portal.
-	float	tex_ratio;// ratio of hit on wall from left to right. Used to find drawn texture column.
-	float	tex_height;// texture height on projection screen. Can be greater then SCN_HEIGHT.
+	float	px;
+	float	py;
+	int		cx;
+	int		cy;
+
+	float	b;
+
+	int		side;
+	float	hitx;
+	float	hity;
+	float	dist;
+	float	odist;
+	float	tex_ratio;
+	float	tex_height;
 }	t_pdata;
 
 typedef struct s_raycaster_data
 {
 	t_cub		*cub;
 	t_map		*map;
-	t_mtx		*theta_offs;// Angle offsets for each angle from 0. Malloced mtx.
-	t_mtx		*ray_thetas;// Angles for each ray. Malloced mtx.
-	t_mtx		*fwd_rayspan;// sin of all theta_offs. updated in update_fov.
-	t_mtx		*rays[2];// X, Y part for each ray vector. index 0 are Xs, 1 are Ys Malloced mtx.
-	t_rdata		*rdata;//	malloced array of struct with collision data. len SCR_WIDTH
-	t_pdata		*pdata;//	idem but used excusively for raycasting portal projections
+	t_mtx		*theta_offs;
+	t_mtx		*ray_thetas;
+	t_mtx		*fwd_rayspan;
+	t_mtx		*rays[2];
+	t_rdata		*rdata;
+	t_pdata		*pdata;
 }	t_rcast;
 
 typedef struct s_draw_thread_profil
@@ -336,78 +308,69 @@ typedef struct s_draw_thread_profil
 }	t_thdraw;
 
 //	Models are initialised only once at start. A pointer to a model is required
-//	for each drawable object created. They are a constante definition of a model type.
-//	eg.: a flying bullet, ennemy grunt ... They don't hold particular instance data such as position
-//	or distance. Only generic global information about a model type.
+//	for each drawable object created. They are a constante definition of a model
+//  type. eg.: a flying bullet, ennemy grunt ... They don't hold particular
+//  instance data such as position or distance. Only generic global information
+//  about a model type.
 typedef struct s_object_model
 {
-	char			*model_name;//	For debug info and logging purposes.
+	char			*model_name;
 	int				type_enum;
 	int				is_drawable;
 	int				is_oriented;
 	int				is_solid;
-	int				width;// Width of object in world coords.
+	int				width;
 	int				half_w;
-	int				height;// Height of object in world coords (set auto).
+	int				height;
 	int				half_h;
-	float				proj_width;
-	float				proj_height;
-	int				offy;// to draw obj higher or lower
-//	uint32_t		bypass_clr;// exterior color around the portal that should nor be drawn.
+	float			proj_width;
+	float			proj_height;
+	int				offy;
 
-	int				nb_texs;// Max nb of textures for this particular model.
-						// Multi textures used for animation or to simulate object orientation.
-//	mlx_texture_t	*texs[8];//	Array of pointers to model textures. Max 8 textures for animation if necessary.
-	// // // 	
-	t_matrx			*gsets[4];//	All sets of textures for this model. 4 possible
-								// sets based on the allegiances or NEUTRAL (0). Oriented objs 
-								// will load 1 sets of 8 textures for each allegiance.
-	// // //
-	/// OPTIONAL FIELDS //////
-	float			speed;//	moveing speed when applicable.
+	int				nb_texs;
+	t_matrx			*gsets[4];
+
+	float			speed;
 	int				dmg;
 }	t_omdl;
 
 // returns 0 if possible and successful, otherwise -1.
-typedef int (* t_obj_act)(t_oinst *, t_cub *);
+typedef int							(*t_obj_act)(t_oinst *, t_cub *);
 
 typedef struct s_objects_list_elem
 {
-	t_omdl		*type;
-	int			_id;//	unique obj id. Objects are deletable by id.
+	t_omdl						*type;
+	int							_id;
 
-	int			tex_idx;
-	int			alleg;
-	t_oinst		*spawnpoint;
-	t_matrx		*gset; /// rely to model
-	
-	float		px;//	Position X
-	float		py;//	Position Y
-	int			cx;//	Current cell X
-	int			cy;//	Current cell Y
-	float		dx;//	obj direction X
-	float		dy;//	obj direction Y
-	float		ori;//	object orientation when applicable
-	
-	float		target[2];// optional target coord
-	float		speed;//	moving speed when applicable.
+	int							tex_idx;
+	int							alleg;
+	t_oinst						*spawnpoint;
+	t_matrx						*gset;
 
-	t_obj_act	action;
+	float						px;
+	float						py;
+	int							cx;
+	int							cy;
+	float						dx;
+	float						dy;
+	float						ori;
 
-	/// VARS SET AT RENDER TIME ////////////
-	float		ox;//	obj delta x from player
-	float		oy;//	obj delta y from player
-	float		dist;//	distance from player
+	float						target[2];
+	float						speed;
 
-	int			isactive;
-	int			scheduled_for_deletion;
-	int			counter;
-	
-	// PORTAL SPECIFIC
-//	int			rel_type_enum;
-	void		*relative;
-	
-	t_matrx		special_gset;// currently used for lever/pressure plate to have unique pset for floortile
+	t_obj_act					action;
+
+	float						ox;
+	float						oy;
+	float						dist;
+
+	int							isactive;
+	int							scheduled_for_deletion;
+	int							counter;
+
+	void						*relative;
+
+	t_matrx						special_gset;
 
 	struct s_objects_list_elem	*next;
 }	t_oinst;
@@ -417,25 +380,26 @@ typedef struct s_objects_list_elem
 //	go through each list and draw the objects on screen in any order 
 //	and check weither it is in FOV first. If true, will check for each screen 
 //	column it occupies (depending on object width and distance) if the object's 
-//	distance to screen is smaller then the rays distance (depth buffer, cub.hero.rcast.rdata[<column idx>].dist, length = SCN_WIDTH).
+//	distance to screen is smaller then the rays distance
+//	(depth buffer, cub.hero.rcast.rdata[<column idx>].dist, length = SCN_WIDTH).
 //	If true, draw object's texture column on screen and update the distance in 
-//	depth buffer (rdata[i].dist). Each subsequant texture column being drawn checks 
-//	weither something has already been drawn in front of it. 
-//	Objects from this list should be able to be added to their list and removed and free
+//	depth buffer (rdata[i].dist). Each subsequant texture column being drawn
+//	checks weither something has already been drawn in front of it. 
+//	Objects from this list should be able to be added to their list and removed
+//	and free.
 //	
-//	There should be a MAX_OBJ_DIST defined to bailout of a draw early if obj is to far.
+//	There should be a MAX_OBJ_DIST defined to bailout of a draw early
+//	if obj is to far.
 typedef struct s_drawable_objects
 {
-	/// OBJECT MODELS (constant) /////////////////////////
-	t_omdl	player;//	Player object model;
-	t_omdl	spawnp;//	Spawnpoint for player object model;
-	t_omdl	lever;		//	Switch object model;
-	t_omdl	portal;//	Portal object model;
+	t_omdl	player;
+	t_omdl	spawnp;
+	t_omdl	lever;
+	t_omdl	portal;
 	t_omdl	fireball;
 	t_omdl	firepit;
 	t_omdl	firepet;
 	t_omdl	flag;
-	/// MUTABLE LINKED LISTS OF DRAWABLE OBJECT INSTANCES ///////
 	t_oinst	*instances;
 }	t_objs;
 
@@ -444,14 +408,12 @@ typedef struct s_renderer_column_params
 {
 	mlx_image_t		*layer;
 	mlx_texture_t	*tex;
-	//	uint32_t		*init_pxls;// strat 2
-	int				half_texh;// strat 1
+	int				half_texh;
 	int				scn_height;
-	int				half_height;// strat 1
+	int				half_height;
 	int				scn_start_y;
 	int				scn_end_y;
 	float			ratio;
-//	int			px_incry;
 }	t_rcol;
 
 typedef struct s_main_character_data
@@ -535,26 +497,22 @@ typedef struct s_renderer
 
 typedef struct s_cub3d_core_data
 {
-	/// MLX42 DATA
 	mlx_t			*mlx;
 	mlx_image_t		*color;
-	/// TEMP VARS FOR TESTING AND DEBUG ONLY ///////////////////
 	int				nb_players;
 	int				player_ids[MAX_PLAYERS];
-	/// CONSTANT VALUES ////////////////////////////////////////
 	int				scn_midx;	
 	int				scn_midy;	
 	float			inv_cw;	
 	float			inv_sw;	
 	float			inv_two_pi;	
 	int				yoffs[SCN_HEIGHT];
-										
-	/// FOV AND PROJECTION DATA ///////////////////////////////
+
 	float			fov;
 	float			hfov;
 	float			near_z;
 	float			near_proj_factor;
-	/// SUBSECTIONS ////////////////////////////////////////////
+
 	t_map			map;
 	t_tex			tex;
 	t_hero			hero;
@@ -566,17 +524,15 @@ typedef struct s_cub3d_core_data
 	t_box			box;
 }	t_cub;
 
-
 int				build_collision_map(t_map *map);
 void			print_collision_map(t_map *map);
 int				build_grid_coords_map(t_map *map);
 void			print_map(t_map *map);
 
 /// MAP_CHECKER ///////////////
-//map_parse
-t_cub			*wall_check(t_cub *cub,t_map *map, t_objx **objx);
+t_cub			*wall_check(t_cub *cub, t_map *map, t_objx **objx);
 t_cub			*mapx_alt_pos(t_map *m, t_cub *cub, int p_box);
-t_objx 			*init_objx(t_cub *cub, int o_cells, int id);
+t_objx			*init_objx(t_cub *cub, int o_cells, int id);
 int				get_types(t_objx *objx, int head);
 
 t_map			*init_map(t_map *map);
@@ -627,14 +583,16 @@ float			*get_grid_coords(t_map *map, int cx, int cy);
 
 /// RENDERER /////////////////
 int				init_renderer(t_cub *cub);
-void			init_rdata_consts(t_cub *cub, t_rcast *rc, t_rdata *rd, t_pdata *pd);
+void			init_rdata_consts(t_cub *cub, t_rcast *rc, \
+t_rdata *rd, t_pdata *pd);
 int				renderer_clear(t_cub *cub, int exit_status);
 void			render_walls(t_cub *cub);
 void			render_floor_sky(t_cub *cub);
 void			render_objects(t_cub *cub);
 void			__render_sky(t_cub *cub);
 extern void		__rdr_select_draw_texture(t_objd *od, t_oinst *obj);
-extern void		__rdr_setup_draw_objs(t_cub *cub, t_objd *od, int *pframe, int offy);
+extern void		__rdr_setup_draw_objs(t_cub *cub, t_objd *od, \
+int *pframe, int offy);
 extern void		__rdr_obj_draw_check(t_cub *cub, t_objd *od);
 extern int		__rdr_obj_out_of_frame(t_objd *od);
 extern void		__label_isproj(uint32_t *pb, char *ip, int *pf, int *pdims);
@@ -643,12 +601,11 @@ void			__render_proj_sky(t_cub *cub, uint32_t *pbuff, int *pframe);
 void			__render_proj_walls(t_cub *cub);
 void			__render_proj_floor(t_cub *cub);
 void			__render_proj_objects(t_cub *cub);
-void			mlx_set_color_in_rows(mlx_image_t *img, int start, int end, int col);
-void			mlx_draw_square(mlx_image_t *img, int pos[2], int side, uint32_t col);
+void			mlx_set_color_in_rows(mlx_image_t *im, int st, int ed, int col);
+void			mlx_draw_square(mlx_image_t *im, int p[2], int s, uint32_t col);
 void			cub_put_pixel(mlx_image_t *img, int x, int y, int col);
 void			clear_image_buffer(mlx_image_t *img);
 uint32_t		get_tex_pixel(mlx_texture_t *tex, int x, int y);
-
 
 /// FLOORCASTING ///////////////
 int				init_floorcaster(t_cub *cub);
@@ -658,11 +615,6 @@ int				clear_floorcaster(t_cub *cub);
 
 /// SKYCASTING //////////////
 int				init_skycaster(t_cub *cub);
-/*
-void			update_sky_base_toffs(t_cub *cub, int *base_toffs, int *toffs);
-void			update_sky_toffs(t_cub *cub, int *base_toffs, int *toffs);
-int				clear_skycaster(t_cub *cub);
-*/
 
 /// DRAW THREADS API
 int				init_draw_threads(t_cub *cub, t_thdraw *threads);
@@ -672,14 +624,14 @@ void			stop_draw_threads(t_thdraw *threads);
 /// OBJECT MANAGEMENT SYSTEM ////////
 int				get_new_obj_id(void);
 int				obj_get_type(t_oinst *obj);
-int 			obj_get_width(t_oinst *obj);
+int				obj_get_width(t_oinst *obj);
 int				obj_get_issolid(t_oinst *obj);
 int				obj_get_isactive(t_oinst *obj);
 t_oinst			*get_obj(t_cub *cub, int id);
-int 			*obj_type_alleg(int type, int alleg);
-//int				init_obj_framework(t_cub *cub);
+int				*obj_type_alleg(int type, int alleg);
 void			clear_obj_framework(t_cub *cub);
-int				create_obj_instance(t_cub *cub, float *pos, int *type_alleg, void *param);
+int				create_obj_instance(t_cub *cub, float *pos, int *type_alleg, \
+void *param);
 int				delete_oinst_by_id(t_cub *cub, int id);
 int				delete_oinst_by_type(t_cub *cub, int type_enum);
 void			delete_all_obj_instances(t_cub *cub);
@@ -691,28 +643,31 @@ int				link_lever_to_portal(t_oinst *lever, t_oinst *prtl);
 int				link_fireball_to_target(t_oinst *fball, t_oinst *target);
 int				link_firepit_to_target(t_oinst *fball, t_oinst *target);
 
-
 /// OBJECT INSTANCIATOR (DO NOT USE DIRECTELY ! USE create_obj_instance())
-int				create_spawnp_instance(t_cub *cub, float *pos, int allegiance);
-int				create_player_instance(t_cub *cub, float *pos, int allegiance, t_oinst *spawnp);
-int				create_lever_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
-int				create_portal_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
-int				create_fireball_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
-int				create_firepit_instance(t_cub *cub, float *pos, int allegiance, t_oinst *link);
+int				create_spawnp_instance(t_cub *cub, float *pos, int alleg);
+int				create_player_instance(t_cub *cub, float *pos, int alleg, \
+t_oinst *spawnp);
+int				create_lever_instance(t_cub *cub, float *pos, int alleg, \
+t_oinst *link);
+int				create_portal_instance(t_cub *cub, float *pos, int alleg, \
+t_oinst *link);
+int				create_fireball_instance(t_cub *cub, float *pos, int alleg, \
+t_oinst *link);
+int				create_firepit_instance(t_cub *cub, float *pos, int alleg, \
+t_oinst *link);
 
 /// OBJECT CONTROLS
-void			obj_move_rel(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe);
-void			obj_move_abs(t_cub *cub, t_oinst *obj, float d_walk, float d_strafe);
+void			obj_move_rel(t_cub *cub, t_oinst *obj, float walk, float straf);
+void			obj_move_abs(t_cub *cub, t_oinst *obj, float walk, float straf);
 void			obj_rotate(t_cub *cub, t_oinst *obj, float rot);
 void			obj_set_orientation(t_cub *cub, t_oinst *obj, float ori);
-void		    obj_set_position(t_cub *cub, t_oinst *obj, float px, float py);
-void   			obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy);
+void			obj_set_position(t_cub *cub, t_oinst *obj, float px, float py);
+void			obj_set_direction(t_cub *cub, t_oinst *obj, float dx, float dy);
 void			obj_look_at(t_oinst *obj, t_oinst *target);
 void			manage_collisions(t_cub *cub, t_oinst *ply, float *mv);
 
-
 /// OBJECT ACTIVATION FUNCS /////////
-void		    commit_all_obj_actions(t_cub *cub);
+void			commit_all_obj_actions(t_cub *cub);
 int				activate_portal(t_oinst *obj, unsigned int new_status);
 int				activate_fireball(t_oinst *obj, int new_state, t_oinst *target);
 int				activate_firepit(t_oinst *obj, int new_state, t_oinst *target);
@@ -753,17 +708,16 @@ t_omdl			*init_flag_model(t_objs *objs);
 
 /// TESTING TXTR_DICT
 t_matrx			*pset_maker(t_cub *cub, char **raw, int queue, int len);
-t_box 			*xwalls_builder(t_cub *cub, char **raw);
-//
+t_box			*xwalls_builder(t_cub *cub, char **raw);
+
 t_matrx			***init_mx(t_map *m);
 t_matrx			*gset_builder(const char *path, int txtr_nb);
 t_cub			*dual_builder(t_cub *cub, int i, char *t_name);
-t_cub			*meta_builder(t_cub *cub, t_box *box, char *t_name, t_objs *objs);
+t_cub			*meta_builder(t_cub *cub, t_box *box, char *name, t_objs *objs);
 t_cub			*mapx_builder(t_map *m, t_cub *cub);
-//
 
-int				xform_builder(t_cub *cub, char *tex_name, char *tex_path, int j);
-t_cub	 		*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
+int				xform_builder(t_cub *cub, char *t_name, char *t_path, int j);
+t_cub			*e_mtrx_link(t_cub *cub, t_box *box, char **raw);
 t_cub			*e_list_txtr(t_cub *cub, t_box *box, t_map *map);
 t_cub			*e_mtrx_count(t_cub *cub);
 void			p_list_objx(t_objx **objx, int id, int num);
