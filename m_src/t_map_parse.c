@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 09:55:28 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/24 10:00:21 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -21,7 +21,7 @@ static char	*spc_chk(t_map *map, int j)
 	i = -1;
 	while (++i < map->width)
 		if (!ft_strchr(MAP_CHARS, line[i]))
-			if(-ft_strchr(" ", line[i]))
+			if(ft_strchr(" ", line[i]))
 				line[i] = '1';
 	return (line);
 }
