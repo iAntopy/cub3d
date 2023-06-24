@@ -3,7 +3,7 @@ W  tex/ext/tree-old.png
 S  tex/ext/tree-bark.png
 N  tex/ext/tree-branch.png
 
-C 220               ,110,              0
+C 220               ,110,             -1 
 F 60,60,80
 
 111111111111
