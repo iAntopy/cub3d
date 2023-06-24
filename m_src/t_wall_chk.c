@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/24 10:10:23 by gehebert         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
@@ -20,18 +20,16 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 	if ((0 < m->pos_x && m->pos_x < (m->width - 1))
 		&& (0 < m->pos_y && m->pos_y < (m->height - 1)))
 	{
-		if (ft_in_set(m->tab[m->pos_y - 1][m->pos_x],
-			(const char *)MAP_CHARS) == -1)
+		if (ft_in_set(m->tab[m->pos_y - 1][m->pos_x], (const char *)MAP_CHARS) == -1)
 			m->flg_chk = 1;
-		if (ft_in_set(m->tab[m->pos_y + 1][m->pos_x],
-			(const char *)MAP_CHARS) == -1)
+		if (ft_in_set(m->tab[m->pos_y + 1][m->pos_x], (const char *)MAP_CHARS) == -1)
 			m->flg_chk = 1;
-		if (ft_in_set(m->tab[m->pos_y][m->pos_x - 1],
-			(const char *)MAP_CHARS) == -1)
+		if (ft_in_set(m->tab[m->pos_y][m->pos_x - 1], (const char *)MAP_CHARS) == -1)
 			m->flg_chk = 1;
-		if (ft_in_set(m->tab[m->pos_y][m->pos_x + 1],
-			(const char *)MAP_CHARS) == -1)
+		if (ft_in_set(m->tab[m->pos_y][m->pos_x + 1], (const char *)MAP_CHARS) == -1)
 			m->flg_chk = 1;
+		printf("SHOULD HAVE POP OUT CLEARLY [%d] frm t_o_cell", m->flg_chk);
+		printf("m->x[%d] m->y[%d] \n", m->pos_x, m->pos_y);
 	}
 	else
 	{
@@ -40,6 +38,8 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 	}
 	return (m);
 }
+
+
 
 static t_map	*t_hero_cell(t_map *m, int m_x, int m_y)
 {

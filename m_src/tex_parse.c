@@ -1,40 +1,53 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tex_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/23 16:38:35 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/24 10:22:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "cub3d.h"
 
-static int	error_color(char *err_str, char ***split_color)
+static int	error_color(t_map *map, char ***split_color)
 {
 	strtab_clear(split_color);
-	ft_eprintf("Error\n\t- Failed to parse this color string from file : %s\n",
-		err_str);
-	return (0);
+	return (error("Failed to parse a color argument from file", map));
 }
 
-static int	color_split(char *col_str, int *ret_col)
+static int	colors_are_all_digits(char **split_col)
+{
+	const char	*s;
+
+	while (split_col)
+	{
+		s = *split_col - 1;
+		while (*(++s))
+			if (!ft_isdigit(*s))
+				return (0);
+		split_col++;
+	}
+	return (1);
+}
+
+static int	color_split(t_map *map, char *col_str, int *ret_col)
 {
 	char		**color;
 	int			rgb[3];
 
 	*ret_col = 0;
 	color = ft_split_set(col_str + 1, ", ");
-	if (strtab_len(color) != 3)
-		return (error_color(col_str, &color));
+	if (strtab_len(color) != 3 || !colors_are_all_digits(color))
+		return (error_color(map, &color));
 	rgb[0] = ft_atoi(color[0]);
 	rgb[1] = ft_atoi(color[1]);
 	rgb[2] = ft_atoi(color[2]);
 	if (strtab_len(color) != 3 || (rgb[0] < 0 || rgb[0] > 255)
 		|| (rgb[1] < 0 || rgb[1] > 255) || (rgb[2] < 0 || rgb[2] > 255))
-		return (error_color(col_str, &color));
+		return (error_color(map, &color));
 	*ret_col = str_to_color(rgb[0], rgb[1], rgb[2], 0xff);
 	strtab_clear(&color);
 	return (*ret_col);
@@ -91,7 +104,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		else if (id < 4 && !get_tex_by_id(cub, id, map->raw[nb]))
 			return (error_clr(NULL, map));
 		else if (id == 4 || id == 5)
-			if (!color_split(map->raw[nb], cub->tex.color + (id - 4)))
+			if (color_split(map, map->raw[nb], cub->tex.color + (id - 4)) < 0)
 				return (-1);
 		nb++;
 	}

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 20:06:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/23 20:37:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@
 # define MOD_PORT "<>(){}_^"
 # define MOD_FIRE "=:;*#%"
 # define MOD_SPEC "@$&?"
+
+# define ITOA "0123456789"
 
 # define CUBMAP_BUFMAX 100000
 
