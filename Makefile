@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/23 20:39:13 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/23 21:06:11 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ MSRC_FLS	:=		main.c 			\
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
 BSRC_FLS	:=		main.c 			\
-				t_itoa.c 			\
 				event_handlers.c	\
 				event_handlers2.c	\
 				error_handling.c 	\
