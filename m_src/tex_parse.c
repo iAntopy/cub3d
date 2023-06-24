@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tex_parse.c                                        :+:      :+:    :+:   */
@@ -6,15 +6,16 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 10:22:08 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/24 14:53:26 by gehebert         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
 static int	error_color(t_map *map, char ***split_color)
 {
-	strtab_clear(split_color);
+	printf(" REALLY!!! { %s  } ERROR__ \n",  **split_color);
+	// strtab_clear(split_color);
 	return (error("Failed to parse a color argument from file", map));
 }
 
@@ -26,10 +27,17 @@ static int	colors_are_all_digits(char **split_col)
 	{
 		s = *split_col - 1;
 		while (*(++s))
+		{
 			if (!ft_isdigit(*s))
+			{
+				printf(" REALLY!!! { %s [%c] } !ft_isdigit ret[0] \n", *split_col, *s);
 				return (0);
-		split_col++;
+			}
+			printf(" color digit ?? CHECKED  {__[%s]__} \n", *split_col);	
+			split_col++;
+		}
 	}
+	printf(" REALLY!!!  C_all_Dgt {__%s__} ret[1]\n", *split_col);
 	return (1);
 }
 
@@ -40,6 +48,7 @@ static int	color_split(t_map *map, char *col_str, int *ret_col)
 
 	*ret_col = 0;
 	color = ft_split_set(col_str + 1, ", ");
+	printf(" REALLY!!!  Color_split {__%s__} \n", *color);
 	if (strtab_len(color) != 3 || !colors_are_all_digits(color))
 		return (error_color(map, &color));
 	rgb[0] = ft_atoi(color[0]);
