@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 00:36:48 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/25 00:38:13 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -129,6 +129,4 @@ int	tex_parse(t_cub *cub, t_map *map)
 	}
 	if (cub->tex_id != 3)
 		return (error_clr("Missing textures, was not loaded\n", map));
-	return (0);
-}
-
+	ret
