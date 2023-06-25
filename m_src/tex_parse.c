@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 01:34:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/25 02:03:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -87,12 +87,26 @@ static int	error_clr(char *err, t_map *map)
 	strtab_clear(&map->txtr);
 	return (error(err, map));
 }
+/*
+static int	all_header_flags_present(char *header_flgs)
+{
+	int	i;
+
+	i = -1;
+	while (++i < 6)
+		if (!header_flgs[i])
+			return (0);
+	return (1);
+}
+*/
 
 int	tex_parse(t_cub *cub, t_map *map)
 {
 	int		nb;
 	int		id;
+	char		header_flgs[7];
 
+	ft_memclear(header_flgs, sizeof(char) * 7);
 	nb = 0;
 	while (nb < 6 && map->raw[nb])
 	{
@@ -105,10 +119,14 @@ int	tex_parse(t_cub *cub, t_map *map)
 		else if (id == 4 || id == 5)
 			if (color_split(map, map->raw[nb], cub->tex.color + (id - 4)) < 0)
 				return (-1);
+		header_flgs[id] = 1;
 		nb++;
 	}
-	if (cub->tex_id != 3)
-		return (error_clr("Missing textures. \
-			At least one wall texture was not loaded\n", map));
+//	if (cub->tex_id != 3)
+//		return (error_clr("Missing textures.
+//			At least one wall texture was not loaded\n", map));
+	//if (!all_header_flags_present(header_flgs))
+	if (ft_strlen(header_flgs) < 6)
+		return (error_clr("At least one config flag missing", map));
 	return (0);
 }
