@@ -1,10 +1,10 @@
 E tex/ext/e_side.png
 W tex/ext/w_side.png
 S tex/ext/s_side.png
-N  tex/ext/n_side.png
+N tex/ext/n_side.png
 
-F 219,115,22
-C 53,107,-194
+F 219,115,2e2
+C 53,107,194
 
 11111111111111111111111111111111111111111
 1000000000000000000000000000000W1

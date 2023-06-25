@@ -211,3 +211,6 @@ SEG.FAULT LOG:
 -	libros: ,champs near green firepit look at portal a reculons...
 HOW COME ???
 -	omega : twice object instance 'lever' ... no seg.fault
+
+ valgrind --leak-check=yes --track-origins=yes 
+ valgrind --tool=memcheck --leak-resolution=low --log-file=val_log.txt  ./cub3D

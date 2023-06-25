@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,9 +6,9 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/24 14:26:57 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/25 00:06:19 by gehebert         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 MSRC_FLS	:=		main.c 			\
 					event_handlers.c	\
@@ -89,7 +89,7 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address
+# CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address -O1
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 CFLAGS	:= -Wextra -Wall -Werror -pthread -g  
 #CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
