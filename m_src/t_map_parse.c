@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 04:31:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/25 06:23:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -27,6 +27,22 @@ static char	*spc_chk(t_map *map, int j)
 	return (line);
 }
 */
+
+static void	wall_fill(t_map *m)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < m->height)
+	{
+		j = -1;
+		while (++j < m->width)
+			if (m->tab[i][j] == '\0' || m->tab[i][j] == ' ')
+				m->tab[i][j] = '1';
+	}
+}
+
 static int	transcribe(t_map *map)
 {
 	char	**tmp;
@@ -65,6 +81,8 @@ static t_map	*map_frame(t_map *map)
 	map = wall_check(map);
 	if (map->flg_chk == 1)
 		return (NULL);
+	wall_fill(map);
+	strtab_print(map->tab);
 	return (map);
 }
 
@@ -85,8 +103,6 @@ static int	read_whole_file(t_map *map, char *filepath)
 		return (error("Could not read file or buffer maxout", map));
 	}
 	map->raw = ft_split_dup(buffer, '\n');
-//	strtab_print(map->raw);
-//	map->raw = NULL;
 	if (!map->raw)
 		return (report_malloc_error());
 //	flush_empty_lines(map->raw);
