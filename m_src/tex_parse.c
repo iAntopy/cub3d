@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 10:22:08 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/25 01:08:36 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,15 +20,16 @@ static int	error_color(t_map *map, char ***split_color)
 
 static int	colors_are_all_digits(char **split_col)
 {
+	int		i;
 	const char	*s;
-
-	while (split_col)
+	
+	i = -1;
+	while (split_col[++i])
 	{
-		s = *split_col - 1;
+		s = split_col[i] - 1;
 		while (*(++s))
 			if (!ft_isdigit(*s))
 				return (0);
-		split_col++;
 	}
 	return (1);
 }
@@ -40,7 +41,7 @@ static int	color_split(t_map *map, char *col_str, int *ret_col)
 
 	*ret_col = 0;
 	color = ft_split_set(col_str + 1, ", ");
-	if (strtab_len(color) != 3 || !colors_are_all_digits(color))
+	if (!color || strtab_len(color) != 3 || !colors_are_all_digits(color))
 		return (error_color(map, &color));
 	rgb[0] = ft_atoi(color[0]);
 	rgb[1] = ft_atoi(color[1]);
@@ -50,7 +51,7 @@ static int	color_split(t_map *map, char *col_str, int *ret_col)
 		return (error_color(map, &color));
 	*ret_col = str_to_color(rgb[0], rgb[1], rgb[2], 0xff);
 	strtab_clear(&color);
-	return (*ret_col);
+	return (0);
 }
 
 t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
@@ -102,7 +103,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 		if (id < 0 || map->raw[nb][1] != ' ')
 			return (error_clr("Invalid config label found!\n", map));
 		else if (id < 4 && !get_tex_by_id(cub, id, map->raw[nb]))
-			return (error_clr(NULL, map));
+			return (error_clr("Failed to load texture", map));
 		else if (id == 4 || id == 5)
 			if (color_split(map, map->raw[nb], cub->tex.color + (id - 4)) < 0)
 				return (-1);
