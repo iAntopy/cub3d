@@ -6,12 +6,14 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 05:51:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/25 06:02:20 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "cub3d.h"
 
+// Border validated separatly from middle cells to prevent the + pattern checks
+// to index out of bound cells.
 static int	validate_borders(t_map *m)
 {
 	int	i;
@@ -71,10 +73,10 @@ static int	t_o_cell(t_map *m, int pos_x, int pos_y)
 	if (m->pos_x == 0 || m->pos_x == (m->width - 1)
 		|| m->pos_y == 0 || m->pos_y == (m->height - 1))
 		return (0);
-	c[0] = (m->tab[m->pos_y - 1][m->pos_x]);
-	c[1] = (m->tab[m->pos_y + 1][m->pos_x]);
-	c[2] = (m->tab[m->pos_y][m->pos_x - 1]);
-	c[3] = (m->tab[m->pos_y][m->pos_x + 1]);
+	c[0] = m->tab[m->pos_y - 1][m->pos_x];
+	c[1] = m->tab[m->pos_y + 1][m->pos_x];
+	c[2] = m->tab[m->pos_y][m->pos_x - 1];
+	c[3] = m->tab[m->pos_y][m->pos_x + 1];
 	if (c[0] == ' ' || c[0] == '\0'
 		|| c[1] == ' ' || c[1] == '\0'
 		|| c[2] == ' ' || c[2] == '\0'
