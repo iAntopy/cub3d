@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_map_tool.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 22:02:25 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:11:22 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	error(char *error, t_map *map)
 {
+	printf(" &&&&&\n");
 	strtab_clear(&map->raw);
 	strtab_clear(&map->m);
 	return (report_err(error));

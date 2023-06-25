@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 19:10:31 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:35:54 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
 	{
 		printf("SHOULD HAVE POP OUT CLEARLY [%d] frm t_o_cell", m->flg_chk);
 		printf("m->x[%d] m->y[%d] \n", m->pos_x, m->pos_y);
-		report_err("Found floor or player on edge of map !\n");
 		m->flg_chk = 1;
+		report_err("Found floor or player on edge of map !\n");
 	}
 	return (m);
 }
