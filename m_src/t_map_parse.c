@@ -6,12 +6,13 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 10:15:57 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/25 04:31:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "cub3d.h"
 
+/*
 static char	*spc_chk(t_map *map, int j)
 {
 	char	*line;
@@ -25,7 +26,7 @@ static char	*spc_chk(t_map *map, int j)
 				line[i] = '1';
 	return (line);
 }
-
+*/
 static int	transcribe(t_map *map)
 {
 	char	**tmp;
@@ -57,7 +58,7 @@ static t_map	*map_frame(t_map *map)
 	{
 		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
 		ft_strlcpy(map->tab[i], m[i], map->width + 1);
-		map->tab[i] = spc_chk(map, i);
+//		map->tab[i] = spc_chk(map, i);
 		i++;
 	}
 	strtab_clear(&map->raw);
@@ -83,10 +84,12 @@ static int	read_whole_file(t_map *map, char *filepath)
 		close(fd);
 		return (error("Could not read file or buffer maxout", map));
 	}
-	map->raw = ft_split(buffer, '\n');
+	map->raw = ft_split_dup(buffer, '\n');
+//	strtab_print(map->raw);
+//	map->raw = NULL;
 	if (!map->raw)
 		return (report_malloc_error());
-	flush_empty_lines(map->raw);
+//	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
 		return (error("Missing info in config file.", map));

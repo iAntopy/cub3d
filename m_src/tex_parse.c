@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 02:03:42 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/25 04:05:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -87,18 +87,46 @@ static int	error_clr(char *err, t_map *map)
 	strtab_clear(&map->txtr);
 	return (error(err, map));
 }
-/*
-static int	all_header_flags_present(char *header_flgs)
+
+int	is_empty_line(char *line)
+{
+	int	j;
+
+	j = 0;
+	while (line[j] && ft_isspace(line[j]))
+		j++;
+	return (!line[j]);
+}
+
+// nb_lines is the nb of lines from beginning of file to last header flag
+// including empty lines.
+void	flush_map_header_empty_lines(t_map *map, int nb_lines)
 {
 	int	i;
+//	int	j;
+	int	nb_cut;
+	size_t	len;
 
+	printf("map raw [nb_lines] : %s\n", map->raw[nb_lines]);
+	while (map->raw[nb_lines] && is_empty_line(map->raw[nb_lines]))
+		nb_lines++;
+	nb_cut = 0;
 	i = -1;
-	while (++i < 6)
-		if (!header_flgs[i])
-			return (0);
-	return (1);
+	while (map->raw[++i] && (i + nb_cut) < nb_lines)
+	{
+//		j = 0;
+//		while (map->raw[i][j] && is_empty_line(map->raw[i]))//ft_isspace(map->raw[i][j]))
+//			j++;
+		if (!is_empty_line(map->raw[i]))//map->raw[i][j])
+			continue ;
+		len = strtab_len(map->raw + i + 1);
+		free(map->raw[i]);
+		ft_memmove(map->raw + i, map->raw + i + 1,
+			sizeof(char *) * (len + 1));
+		nb_cut++;
+		i--;
+	}
 }
-*/
 
 int	tex_parse(t_cub *cub, t_map *map)
 {
@@ -108,11 +136,17 @@ int	tex_parse(t_cub *cub, t_map *map)
 
 	ft_memclear(header_flgs, sizeof(char) * 7);
 	nb = 0;
-	while (nb < 6 && map->raw[nb])
+	//while (nb < 6 && map->raw[nb])
+	while (map->raw[nb] && ft_strlen(header_flgs) < 6)
 	{
+		if (map->raw[nb][0] == '\0')
+		{
+			nb++;
+			continue ;
+		}
 		id = ft_in_set(map->raw[nb][0], (const char *)"WNESCF");
 		printf("id for tag %c : %d\n", map->raw[nb][0], id);
-		if (id < 0 || map->raw[nb][1] != ' ')
+		if (id < 0 || map->raw[nb][1] != ' ' || header_flgs[id])
 			return (error_clr("Invalid config label found!\n", map));
 		else if (id < 4 && !get_tex_by_id(cub, id, map->raw[nb]))
 			return (error_clr(NULL, map));
@@ -128,5 +162,9 @@ int	tex_parse(t_cub *cub, t_map *map)
 	//if (!all_header_flags_present(header_flgs))
 	if (ft_strlen(header_flgs) < 6)
 		return (error_clr("At least one config flag missing", map));
+	strtab_print(map->raw);
+	printf("lines to end of header %d\n", nb);
+	flush_map_header_empty_lines(map, nb);
+	strtab_print(map->raw);
 	return (0);
 }
