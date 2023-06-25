@@ -6,17 +6,36 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 19:24:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/24 21:37:02 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static void	flush_split_color(char ***split_color)
+{
+	printf("Flush [error_color] \n");//{::%s::} ERROR__ \n",  **split_color);
+	strtab_clear(split_color);
+}
+
+static int	error_clr(char *err, t_map *map)
+{
+	if (map->raw)
+		strtab_clear(&map->raw);
+	if (map->txtr)
+		strtab_clear(&map->txtr);
+	printf(" Error:Code[%s]\n", err);
+	if (err && err[0])
+		return (error(err, map));
+	return (-1);
+}
+
 static int	error_color(t_map *map, char ***split_color)
 {
-	strtab_clear(split_color);
-	return (error("Failed to parse a color argument from file", map));
+		flush_split_color(split_color);	// strtab_clear(split_color);
+		return (error_clr("Failed to parse: 'error_color'.", map));
 }
+
 
 static int	colors_are_all_digits(char **split_col)
 {
@@ -26,13 +45,11 @@ static int	colors_are_all_digits(char **split_col)
 		{
 			if (!*split_col)
 				break;
-			// printf(" color digit ?? INIT_CHECKED  {__[%s]__} ?? \n", *split_col);	
 			s = *split_col - 1;
 			while (*(++s))
 			{
 				if (!ft_isdigit(*s))
 				{
-					// printf(" REALLY!!! { %s [%c] } !ft_isdigit ret[0] \n", *split_col, *s);
 					printf(" END AT ZERO\n");
 					return (0);
 				}
@@ -50,12 +67,13 @@ static int	color_split(t_map *map, char *col_str, int *ret_col)
 	char		**color;
 	int			rgb[3];
 
-	*ret_col = 0;
+	// *ret_col = 0;
 	color = ft_split_set(col_str + 1, ", ");
-	if (strtab_len(color) != 3 )
+	if (strtab_len(color) != 3 || !colors_are_all_digits(color) || *ret_col != 0)
+	{
+		strtab_clear(&color);
 		return (error_color(map, &color));
-	if (!colors_are_all_digits(color))
-		return (error_color(map, &color));
+	}
 	rgb[0] = ft_atoi(color[0]);
 	rgb[1] = ft_atoi(color[1]);
 	rgb[2] = ft_atoi(color[2]);
@@ -95,14 +113,7 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 	return (cub);
 }
 
-static int	error_clr(char *err, t_map *map)
-{
-	strtab_clear(&map->raw);
-	strtab_clear(&map->txtr);
-	if (err && err[0])
-		return (error(err, map));
-	return (-1);
-}
+
 
 int	tex_parse(t_cub *cub, t_map *map)
 {
@@ -122,7 +133,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 			return (error_clr("Invalid Texture found!\n", map));
 		else if (id == 4 || id == 5)
 			if (!color_split(map,map->raw[nb], cub->tex.color + (id - 4)))
-				return (-1);
+				return (error_clr("Missing Parsing textures.", map)); // return (-1);
 		nb++;
 	}
 	if (cub->tex_id != 3)
@@ -130,17 +141,8 @@ int	tex_parse(t_cub *cub, t_map *map)
 	return (0);
 }
 
-// static int	error_clr(char *err, t_map *map)
-	// {
-	// 	printf("[error_clr] {::%s::} ERROR__ \n",  err);
-	// 	if (map->raw)
-	// 		strtab_clear(&map->raw);
-	// 	if (map->txtr)
-	// 		strtab_clear(&map->txtr);
-	// 	// if (err && err[0])
-	// 	// 	return (error(err, map));
-	// 	return (-1);
-	// }
+
+	
 // static int	error_color(t_map *map, char ***split_color)
 	// {
 	// 	printf("Call-Flush [error_color] \n");
@@ -149,6 +151,9 @@ int	tex_parse(t_cub *cub, t_map *map)
 	// 		// return (error("Failed to parse a color argument from file", map));
 	// 	return (error_clr("Failed to parse: 'error_color'.", map));
 	// }
+	
+
+
 // static int	colors_are_all_digits(char **split_col)
 	// {
 	// 	const char	*s;
@@ -162,14 +167,6 @@ int	tex_parse(t_cub *cub, t_map *map)
 	// 		split_col++;
 	// 	}
 	// 	return (1);
-	// }
-
-// static void	flush_split_color(char ***split_color)
-	// {
-	// 	printf("Flush [error_color] \n");//{::%s::} ERROR__ \n",  **split_color);
-	// 	strtab_clear(split_color);
-	// 		// return (error_clr("Failed to parse a color argument from file", map));
-	// 		// return (error("Failed to parse a color argument from file", map));
 	// }
 // static int	color_split(t_map *map, char *col_str, int *ret_col)
 	// {
