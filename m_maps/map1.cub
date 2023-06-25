@@ -1,13 +1,12 @@
 E  tex/ext/tree-dark.png
 W  tex/ext/tree-old.png                   
-O  tex/ext/tree-bark.png
-N  tex/ext/tree-branch.png
+S  tex/ext/tree-bark.png
 N  tex/ext/tree-branch.png
 
-C 220               ,110,             12
+C 220               110            123 
 F 60,60,80
 
-111111111111
+  111111111111
 1000010000S1
 100001000001
 100000000001
