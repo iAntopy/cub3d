@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   t_map_parse.c                                      :+:      :+:    :+:   */
@@ -6,27 +6,11 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 06:23:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 00:55:08 by gehebert         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
-
-/*
-static char	*spc_chk(t_map *map, int j)
-{
-	char	*line;
-	int		i;
-
-	line = map->tab[j];
-	i = -1;
-	while (++i < map->width)
-		if (!ft_strchr(MAP_CHARS, line[i]))
-			if(ft_strchr(" ", line[i]))
-				line[i] = '1';
-	return (line);
-}
-*/
 
 static void	wall_fill(t_map *m)
 {
@@ -105,7 +89,6 @@ static int	read_whole_file(t_map *map, char *filepath)
 	map->raw = ft_split_dup(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
-//	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
 		return (error("Missing info in config file.", map));
