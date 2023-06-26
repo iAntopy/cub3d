@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/26 01:02:50 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:51:35 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,11 @@ static t_map	*map_frame(t_map *map)
 	{
 		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
 		ft_strlcpy(map->tab[i], m[i], map->width + 1);
-//		map->tab[i] = spc_chk(map, i);
 		i++;
 	}
 	strtab_clear(&map->raw);
-	map = wall_check(map);
-	if (map->flg_chk == 1)
+	if (validate_borders(map) < 0 || map_contains_valid_chars(map) < 0 \
+			|| wall_check(map) < 0)
 		return (NULL);
 	wall_fill(map);
 	strtab_print(map->tab);

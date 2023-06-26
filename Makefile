@@ -6,7 +6,7 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/26 01:01:56 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/26 01:37:41 by gehebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ MSRC_FLS	:=		main.c 			\
 					t_map_tool.c 		\
 					t_wall_chk.c		\
 					t_empty_line.c		\
-					tex_parse.c
+					tex_parse.c			\
+					t_xtend_parse.c
 
 # Ajouter tous les .c dans source ici ligne par ligne suivi d'un backslash
 BSRC_FLS	:=		main.c 			\

@@ -6,7 +6,7 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/26 01:02:19 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:32:53 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // Border validated separatly from middle cells to prevent the + pattern checks
 // to index out of bound cells.
-static int	validate_borders(t_map *m)
+int	validate_borders(t_map *m)
 {
 	int	i;
 
@@ -32,37 +32,25 @@ static int	validate_borders(t_map *m)
 			return (report_err("Map has an open border"));
 	return (0);
 }
-/*
-static t_map	*t_o_cell(t_map *m, int pos_x, int pos_y)
-{
-	char	c[4];
 
-	strtab_print(m->tab);
-	m->pos_x = pos_x;
-	m->pos_y = pos_y;
-	m->flg_chk = 0;
-	if ((0 < m->pos_x && m->pos_x < (m->width - 1))
-		&& (0 < m->pos_y && m->pos_y < (m->height - 1)))
+int	map_contains_valid_chars(t_map *m)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < m->height)
 	{
-		if (ft_in_set(m->tab[m->pos_y - 1][m->pos_x], (const char *)MAP_CHARS) == -1)
-			m->flg_chk = 1;
-		if (ft_in_set(m->tab[m->pos_y + 1][m->pos_x], (const char *)MAP_CHARS) == -1)
-			m->flg_chk = 1;
-		if (ft_in_set(m->tab[m->pos_y][m->pos_x - 1], (const char *)MAP_CHARS) == -1)
-			m->flg_chk = 1;
-		if (ft_in_set(m->tab[m->pos_y][m->pos_x + 1], (const char *)MAP_CHARS) == -1)
-			m->flg_chk = 1;
+		j = -1;
+		while (++j < m->width)
+			if (!(m->tab[i][j] == '\0' || m->tab[i][j] == ' '
+				|| ft_strchr((const char *)MAP_CHARS, m->tab[i][j])))
+				return (report_err("Map contains at least \
+				 	one invalid character."));
 	}
-	else
-	{
-		printf("SHOULD HAVE POP OUT CLEARLY [%d] frm t_o_cell", m->flg_chk);
-		printf("m->x[%d] m->y[%d] \n", m->pos_x, m->pos_y);
-		m->flg_chk = 1;
-		report_err("Found floor or player on edge of map !\n");
-	}
-	return (m);
+	return (0);
 }
-*/
+
 static int	t_o_cell(t_map *m, int pos_x, int pos_y)
 {
 	char	c[4];
@@ -85,25 +73,6 @@ static int	t_o_cell(t_map *m, int pos_x, int pos_y)
 	return (0);
 }
 
-static t_map	*t_hero_cell(t_map *m, int m_x, int m_y)
-{
-	int	o_cells;
-
-	o_cells = ft_in_set(m->tab[m_y][m_x], (const char *)MAP_CHARS);
-	if (o_cells > 5 || m->hero_x > 0 || m->hero_y > 0)
-	{
-		m->flg_chk = 1;
-		report_err("Found multiple hero characters in map.");
-	}
-	else
-	{
-		m->hero_side = o_cells - 2;
-		m->hero_x = m->pos_x;
-		m->hero_y = m->pos_y;
-	}
-	return (m);
-}
-
 static int	check_hero_found(t_map *m)
 {
 	if (m->flg_chk)
@@ -116,32 +85,10 @@ static int	check_hero_found(t_map *m)
 	return (0);
 }
 
-static int	map_contains_valid_chars(t_map *m)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < m->height)
-	{
-		j = -1;
-		while (++j < m->width)
-			if (!(m->tab[i][j] == '\0' || m->tab[i][j] == ' '
-				|| ft_strchr((const char *)MAP_CHARS, m->tab[i][j])))
-				return (report_err("Map contains at least one invalid character."));
-	}
-	return (0);
-}
-
-t_map	*wall_check(t_map *m)
+int	wall_check(t_map *m)
 {
 	int	o_cells;
 
-	if (validate_borders(m) < 0 || map_contains_valid_chars(m) < 0)
-	{
-		m->flg_chk = 1;
-		return (m);
-	}
 	o_cells = -1;
 	m->pos_y = 0;
 	while (m->pos_y < m->height && m->flg_chk == 0)
@@ -149,10 +96,10 @@ t_map	*wall_check(t_map *m)
 		m->pos_x = 0;
 		while (m->pos_x < m->width && m->flg_chk == 0)
 		{
-			o_cells = ft_in_set((m->tab[m->pos_y][m->pos_x]), (const char *)MAP_CHARS);
+			o_cells = ft_in_set((m->tab[m->pos_y][m->pos_x]),
+					(const char *)MAP_CHARS);
 			if (o_cells == 0 || o_cells > 1)
 			{
-				//m = t_o_cell(m, m->pos_x, m->pos_y);
 				m->flg_chk = t_o_cell(m, m->pos_x, m->pos_y);
 				if (m->flg_chk == 0 && o_cells > 1)
 					m = t_hero_cell(m, m->pos_x, m->pos_y);
@@ -161,6 +108,5 @@ t_map	*wall_check(t_map *m)
 		}
 		m->pos_y++;
 	}
-	m->flg_chk = check_hero_found(m);
-	return (m);
+	return (check_hero_found(m));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 19:34:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:45:34 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,9 +233,17 @@ void			print_map(t_map *map);
 t_map			*init_map(t_map *map);
 int				map_checker(t_cub *cub, t_map *map, char *file);
 int				tex_parse(t_cub *cub, t_map *map);
-t_map			*wall_check(t_map *map);
+///
+t_cub			*get_tex_by_id(t_cub *cub, int id, char *tex_str);
+t_map			*t_hero_cell(t_map *m, int m_x, int m_y);
+int				t_parse_check(t_map *map, int nb, char *header_flgs);
+int				map_contains_valid_chars(t_map *m);
+int				validate_borders(t_map *m);
+int				wall_check(t_map *m);
+///
 char			*skip_file_lines(t_map *map, int fd, int nb_lines);
 void			flush_empty_lines(char **raw);
+void			flush_map_header_empty_lines(t_map *map, int nb_lines);
 int				error(char *error, t_map *map);
 int				int_strlen(const char *s);
 int				ft_in_set(char const c, char const *set);
@@ -294,4 +302,5 @@ int				report_mlx_init_error(void);
 void			*report_mlx_tex_load_failed(char *tex);
 int				report_malloc_error(void);
 
+int				error_clr(char *err, t_map *map);
 #endif
