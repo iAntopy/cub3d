@@ -6,24 +6,25 @@
 /*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/24 16:07:11 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/26 01:02:50 by gehebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static char	*spc_chk(t_map *map, int j)
+static void	wall_fill(t_map *m)
 {
-	char	*line;
-	int		i;
+	int	i;
+	int	j;
 
-	line = map->tab[j];
 	i = -1;
-	while (++i < map->width)
-		if (!ft_strchr(MAP_CHARS, line[i]))
-			if(ft_strchr(" ", line[i]))
-				line[i] = '1';
-	return (line);
+	while (++i < m->height)
+	{
+		j = -1;
+		while (++j < m->width)
+			if (m->tab[i][j] == '\0' || m->tab[i][j] == ' ')
+				m->tab[i][j] = '1';
+	}
 }
 
 static int	transcribe(t_map *map)
@@ -57,13 +58,15 @@ static t_map	*map_frame(t_map *map)
 	{
 		map->tab[i] = (char *)ft_calloc(sizeof(char *), (map->width + 1));
 		ft_strlcpy(map->tab[i], m[i], map->width + 1);
-		map->tab[i] = spc_chk(map, i);
+//		map->tab[i] = spc_chk(map, i);
 		i++;
 	}
 	strtab_clear(&map->raw);
 	map = wall_check(map);
 	if (map->flg_chk == 1)
 		return (NULL);
+	wall_fill(map);
+	strtab_print(map->tab);
 	return (map);
 }
 
@@ -83,10 +86,9 @@ static int	read_whole_file(t_map *map, char *filepath)
 		close(fd);
 		return (error("Could not read file or buffer maxout", map));
 	}
-	map->raw = ft_split(buffer, '\n');
+	map->raw = ft_split_dup(buffer, '\n');
 	if (!map->raw)
 		return (report_malloc_error());
-	flush_empty_lines(map->raw);
 	close(fd);
 	if (strtab_len(map->raw) < 6)
 		return (error("Missing info in config file.", map));

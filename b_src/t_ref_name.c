@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/23 20:36:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/25 01:10:57 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@ t_cub	*e_mtrx_link(t_cub *cub, t_box *box, char **raw)
 	char	*tex_name;
 	int		i;
 	int		j;
-	int		flg;
 
-	flg = 0;
 	i = -1;
 	j = 0;
 	while (++i < box->xnum + box->meta)
