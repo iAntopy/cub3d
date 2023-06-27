@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/26 20:15:08 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 21:05:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ typedef struct s_objx
 }	t_objx;
 
 typedef struct s_box
-{	
+{
 	mlx_texture_t	**xform;
 	mlx_texture_t	*sky_tex;
 	mlx_texture_t	*sky;

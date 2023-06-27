@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/26 20:15:01 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:45:31 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,7 @@ int				tex_parse(t_cub *cub, t_map *map);
 t_cub			*get_tex_by_id(t_cub *cub, int id, char *tex_str);
 t_map			*t_hero_cell(t_map *m, int m_x, int m_y);
 int				t_parse_check(t_map *map, int nb, char *header_flgs);
+int				is_empty_line(char *line);
 int				map_contains_valid_chars(t_map *m);
 int				validate_borders(t_map *m);
 int				wall_check(t_map *m);

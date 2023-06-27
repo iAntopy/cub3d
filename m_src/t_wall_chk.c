@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/26 20:14:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:59:25 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	map_contains_valid_chars(t_map *m)
 			if (!(m->tab[i][j] == '\0' || m->tab[i][j] == ' '
 				|| ft_strchr((const char *)MAP_CHARS, m->tab[i][j])))
 				return (report_err("Map contains at least \
-				 	one invalid character."));
+one invalid character."));
 	}
 	return (0);
 }
@@ -76,11 +76,11 @@ static int	t_o_cell(t_map *m, int pos_x, int pos_y)
 static int	check_hero_found(t_map *m)
 {
 	if (m->flg_chk)
-		return (1);
+		return (-1);
 	if (m->hero_x <= 0 || m->hero_y <= 0)
 	{
-		report_err("No player charater found in map.");
-		return (1);
+		report_err("No player character found in map.");
+		return (-1);
 	}
 	return (0);
 }

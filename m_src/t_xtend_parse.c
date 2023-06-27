@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_xtend_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 01:22:01 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/26 02:42:14 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/26 21:04:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 		while (*(++tex_str) && ft_isspace(*tex_str))
 			continue ;
 		t = tex_str;
-		while (*tex_str && !ft_isspace(*tex_str))
-			tex_str++ ;
-		*tex_str = '\0';
-		cub->tex.walls[id] = mlx_load_png(t);
+		while (*t && !ft_isspace(*t))
+			t++ ;
+		*t = '\0';
+		if (!ft_strrchr(tex_str, '.')
+			|| ft_strncmp(ft_strrchr(tex_str, '.'), ".png", 4) != 0)
+			return (report_err("Filepath with missing/wrong extension"), NULL);
+		cub->tex.walls[id] = mlx_load_png(tex_str);
 		if (!cub->tex.walls[id])
-			return (report_mlx_tex_load_failed(t));
+			return (report_mlx_tex_load_failed(tex_str));
 		cub->tex_id++;
 	}
 	else
-	{
-		ft_eprintf("Error\n\t- Trying to load texture id %d twice.\n", id);
-		return (NULL);
-	}	
+		return (report_err("Trying to load a texture twice."), NULL);
 	return (cub);
 }
 
@@ -63,21 +63,8 @@ int	t_parse_check(t_map *map, int nb, char *header_flgs)
 {
 	if (ft_strlen(header_flgs) < 6)
 		return (error_clr("At least one config flag missing", map));
-	strtab_print(map->raw);
-	printf("lines to end of header %d\n", nb);
 	flush_map_header_empty_lines(map, nb);
-	strtab_print(map->raw);
 	return (0);
-}
-
-int	is_empty_line(char *line)
-{
-	int	j;
-
-	j = 0;
-	while (line[j] && ft_isspace(line[j]))
-		j++;
-	return (!line[j]);
 }
 
 // nb_lines is the nb of lines from beginning of file to last header flag
@@ -88,7 +75,6 @@ void	flush_map_header_empty_lines(t_map *map, int nb_lines)
 	int		nb_cut;
 	size_t	len;
 
-	printf("map raw [nb_lines] : %s\n", map->raw[nb_lines]);
 	while (map->raw[nb_lines] && is_empty_line(map->raw[nb_lines]))
 		nb_lines++;
 	nb_cut = 0;

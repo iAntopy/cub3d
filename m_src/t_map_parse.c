@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/26 20:14:33 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:36:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static t_map	*map_frame(t_map *map)
 			|| wall_check(map) < 0)
 		return (NULL);
 	wall_fill(map);
-	strtab_print(map->tab);
 	return (map);
 }
 

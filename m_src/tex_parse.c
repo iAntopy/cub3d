@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/26 20:19:34 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:46:37 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,38 +54,7 @@ static int	color_split(t_map *map, char *col_str, int *ret_col)
 	return (0);
 }
 
-t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
-{
-	char	*t;
-
-	if (id < 0 || id > 3)
-		return (NULL);
-	if (!cub->tex.walls[id])
-	{
-		while (*(++tex_str) && ft_isspace(*tex_str))
-			continue ;
-		t = tex_str;
-		while (*t && !ft_isspace(*t))
-			t++ ;
-		*t = '\0';
-		if (!ft_strrchr(tex_str, '.')
-			|| ft_strncmp(ft_strrchr(tex_str, '.'), ".png", 4) != 0)
-			return (report_err("Filepath with missing/wrong extension"), NULL);
-		cub->tex.walls[id] = mlx_load_png(tex_str);
-		if (!cub->tex.walls[id])
-			return (report_mlx_tex_load_failed(tex_str));
-		cub->tex_id++;
-	}
-	else
-		return (report_err("Trying to load a texture twice."), NULL);
-//	{
-//		ft_eprintf("Error\n\t- Trying to load texture id %d twice.\n", id);
-//		return (NULL);
-//	}	
-	return (cub);
-}
-
-static int	error_clr(char *err, t_map *map)
+int	error_clr(char *err, t_map *map)
 {
 	strtab_clear(&map->raw);
 	strtab_clear(&map->txtr);
@@ -102,7 +71,7 @@ int	tex_parse(t_cub *cub, t_map *map)
 	nb = 0;
 	while (map->raw[nb] && ft_strlen(header_flgs) < 6)
 	{
-		if (map->raw[nb][0] == '\0')
+		if (is_empty_line(map->raw[nb]))
 		{
 			nb++;
 			continue ;

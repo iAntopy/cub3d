@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/26 20:18:00 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/26 20:40:48 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,12 +90,9 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 
-#CFLAGS	:= -Wextra -Wall -Werror -pthread -g# -fsanitize=address
+#CFLAGS	:= -Wextra -Wall -Werror -g -fsanitize=address
 CFLAGS	:= -Wextra -Wall -Werror -g
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address
-# CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
-CFLAGS	:= -Wextra -Wall -Werror -pthread  -g  
-#CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
+#CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
 
 # LDFLAGS	:= -fsanitize=address
 
@@ -117,12 +114,12 @@ MTXDIR	:= lib/mtxlib
 LIBMTX	:= $(MTXDIR)/libmtx.a
 
 SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src $(LFTDIR)/libft.h $(MTXDIR)/src
-EXT_INCL := -I $(MLXDIR)/include -I $(GLFWDIR)/include -pthread 
+EXT_INCL := -I $(MLXDIR)/include -I $(GLFWDIR)/include
 
 INCL	:= -I $(LFTDIR) -I $(MTXDIR)/includes $(EXT_INCL)
 
 $(MOBJS):	SPEC_INCL := -I m_include/
-$(BOBJS):	SPEC_INCL := -I b_include/
+$(BOBJS):	SPEC_INCL := -I b_include/ -pthread
 
 BASE_LIBS := -ldl -lm
 PROJ_LIBS := $(LIBMTX) $(LIBMLX) $(LIBGLFW) $(LIBFT)
@@ -135,6 +132,8 @@ endif
 
 NAME	:= cub3D
 BAME	:= bonus_cub3D
+
+all:	$(NAME)
 
 $(SUBMOD_SRC):
 	@echo "Submodule init"
@@ -171,10 +170,7 @@ $(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(MOBJS)
 $(BAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
 	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(BAME)
 
-
 bonus:	$(BAME)
-
-all:	$(NAME)
 
 clean:
 	@rm -f $(MOBJS) $(BOBJS)
@@ -186,6 +182,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all, clean, fclean, re, libmlx libmtx libglfw3 libft
-.PHONY: all, bonus, clean, fclean, re, libmlx
-
+.PHONY: all bonus clean, fclean, re, libmlx libmtx libglfw3 libft

@@ -6,13 +6,13 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:05:30 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/23 16:36:25 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:48:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	is_empty_line(char *line)
+int	is_empty_line(char *line)
 {
 	if (!line)
 		return (0);
