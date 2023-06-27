@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_map_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/26 02:51:35 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:14:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static int	read_whole_file(t_map *map, char *filepath)
 int	map_checker(t_cub *cub, t_map *map, char *file)
 {
 	if (ft_strfcmp(".cub", file, 4))
-		return (error("Wrong file extention.", map));
+		return (error("Wrong file extension.", map));
 	if (read_whole_file(map, file) < 0)
 		return (-1);
 	cub->tex_id = -1;

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/24 00:57:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 19:33:53 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 	cub->hero.px = x * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.py = y * CELL_WIDTH + (CELL_WIDTH / 2.0f);
 	cub->hero.ori = M_PI + (M_PI / 2) * cub->map.hero_side;
+	cub->track_mouse = 1;
 	cub->renderer.requires_update = 1;
 	return (0);
 }
@@ -79,12 +80,12 @@ int	main(int argc, char **argv)
 	if (map_checker(&cub, &cub.map, argv[1]) != 0
 		|| set_player_cell_pos(&cub, cub.map.hero_x, cub.map.hero_y) != 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
+	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "cub3D", 0);
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
+	cub_setup_mlx_hooks_and_settings(&cub);
 	if (init_renderer(&cub) < 0 || init_raycaster(&cub) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	cub_setup_mlx_hooks_and_settings(&cub);
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub,

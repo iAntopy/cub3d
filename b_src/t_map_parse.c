@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 21:39:58 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/23 21:20:31 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 19:59:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 
 	printf("Map_chker...\n");
 	if (ft_strfcmp(".cub", file, 4))
-		return (error("Wrong file extention.", map));
+		return (error("Wrong file extension.", map));
 	if (read_whole_file(map, file) < 0 || tex_parse(cub, map) < 0)
 		return (-1);
 	map_offset = cub->box.xnum + cub->box.meta + cub->box.pset - 1;
@@ -120,7 +120,7 @@ int	map_checker(t_cub *cub, t_map *map, char *file)
 		return (-1);
 	if (build_grid_coords_map(map) < 0 || build_collision_map(map) < 0)
 		return (-1);
-	printf("Collisiont check DONE\n");
+	printf("Collision check DONE\n");
 	if (instanciate_map_objects(cub) < 0)
 		return (-1);
 	printf("Instanciate DONE\n");

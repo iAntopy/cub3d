@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 16:32:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 19:38:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	cub_init_core_data(t_cub *cub)
 	cub->renderer.bframe[1] = 0;
 	cub->renderer.bframe[2] = SCN_WIDTH;
 	cub->renderer.bframe[3] = SCN_HEIGHT;
+	cub->track_mouse = 1;
 	cub->renderer.requires_update = 1;
 	return (0);
 }
@@ -51,6 +52,7 @@ void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 	cub->map.width_px = cub->map.width * CELL_WIDTH;
 	cub->map.height_px = cub->map.height * CELL_WIDTH;
 	mlx_focus(cub->mlx);
+	mlx_set_mouse_pos(cub->mlx, cub->scn_midx, cub->scn_midy);
 	mlx_set_cursor_mode(cub->mlx, MLX_MOUSE_HIDDEN);
 	mlx_cursor_hook(cub->mlx, on_cursor_move, cub);
 	mlx_key_hook(cub->mlx,
@@ -70,14 +72,14 @@ int	main(int argc, char **argv)
 	cub_init_core_data(&cub);
 	if (map_checker(&cub, &cub.map, argv[1]) != 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "(cub)^3.D", 0);
+	cub.mlx = mlx_init(SCN_WIDTH, SCN_HEIGHT, "cub3D", 0);
 	if (!cub.mlx)
 		return (cub_clear(&cub, report_mlx_init_error()));
+	cub_setup_mlx_hooks_and_settings(&cub);
 	if (init_renderer(&cub) < 0 || init_floorcaster(&cub) < 0
 		|| init_raycaster(&cub) < 0 || init_skycaster(&cub) < 0
 		|| init_draw_threads(&cub, cub.draw_threads) < 0)
 		return (cub_clear(&cub, EXIT_FAILURE));
-	cub_setup_mlx_hooks_and_settings(&cub);
 	mlx_loop(cub.mlx);
 	if (mlx_errno)
 		return (cub_clear(&cub, report_err_strerror("mlx loop exit error")));

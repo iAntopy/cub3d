@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/26 01:53:17 by gehebert         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:15:08 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -501,6 +501,9 @@ typedef struct s_cub3d_core_data
 {
 	mlx_t			*mlx;
 	mlx_image_t		*color;
+
+	bool			track_mouse;
+
 	int				nb_players;
 	int				player_ids[MAX_PLAYERS];
 	int				scn_midx;	
