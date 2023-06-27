@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/26 19:38:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 01:42:42 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int argc, char **argv)
 	t_cub	cub;
 
 	if (argc != 2)
-		return (EXIT_FAILURE);
+		return (report_err("Must one .cub map argument."), EXIT_FAILURE);
 	ft_memclear(&cub, sizeof(cub));
 	cub_init_core_data(&cub);
 	if (map_checker(&cub, &cub.map, argv[1]) != 0)

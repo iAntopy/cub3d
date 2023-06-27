@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 03:54:32 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/09 04:00:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 01:38:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ inline void	__rdr_setup_draw_objs(t_cub *cub, t_objd *od, int *pframe, int offy)
 {
 	od->tincrs[0] = (float)od->tex->width / (float)od->dims[0];
 	od->tincrs[1] = (float)od->tex->height / (float)od->dims[1];
-	*((size_t *)od->toffs) = 0;
+	memset(od->toffs, 0, sizeof(int) * 2);
 	od->loffs[0] = od->drawx - (od->dims[0] >> 1);
 	od->loffs[1] = cub->scn_midy - (od->dims[1] >> 1) + (int)(offy * od->ratio);
 	od->loffs[2] = od->loffs[0] + od->dims[0];

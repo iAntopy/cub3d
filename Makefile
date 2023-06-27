@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/26 20:40:48 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/27 01:34:52 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,10 +91,10 @@ MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 
 #CFLAGS	:= -Wextra -Wall -Werror -g -fsanitize=address
-CFLAGS	:= -Wextra -Wall -Werror -g
-#CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
+#CFLAGS	:= -Wextra -Wall -Werror -g
+CFLAGS	:= -Wextra -Wall -Werror -ffast-math -O3
 
-# LDFLAGS	:= -fsanitize=address
+#LDFLAGS	:= -fsanitize=address
 
 #CC		:= clang
 CC		:= gcc
@@ -114,12 +114,12 @@ MTXDIR	:= lib/mtxlib
 LIBMTX	:= $(MTXDIR)/libmtx.a
 
 SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src $(LFTDIR)/libft.h $(MTXDIR)/src
-EXT_INCL := -I $(MLXDIR)/include -I $(GLFWDIR)/include
+EXT_INCL := -I $(MLXDIR)/include -I $(GLFWDIR)/include -pthread
 
 INCL	:= -I $(LFTDIR) -I $(MTXDIR)/includes $(EXT_INCL)
 
 $(MOBJS):	SPEC_INCL := -I m_include/
-$(BOBJS):	SPEC_INCL := -I b_include/ -pthread
+$(BOBJS):	SPEC_INCL := -I b_include/
 
 BASE_LIBS := -ldl -lm
 PROJ_LIBS := $(LIBMTX) $(LIBMLX) $(LIBGLFW) $(LIBFT)
