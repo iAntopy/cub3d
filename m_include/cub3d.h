@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 19:34:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:36:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,8 @@ typedef struct s_cub3d_core_data
 {
 	mlx_t			*mlx;
 	mlx_image_t		*color;
+
+	bool			track_mouse;
 
 	int				tex_id;
 	int				scn_midx;

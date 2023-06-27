@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tex_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 08:03:53 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 04:05:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 19:44:45 by iamongeo         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -65,19 +65,23 @@ t_cub	*get_tex_by_id(t_cub *cub, int id, char *tex_str)
 		while (*(++tex_str) && ft_isspace(*tex_str))
 			continue ;
 		t = tex_str;
-		while (*tex_str && !ft_isspace(*tex_str))
-			tex_str++ ;
-		*tex_str = '\0';
-		cub->tex.walls[id] = mlx_load_png(t);
+		while (*t && !ft_isspace(*t))
+			t++ ;
+		*t = '\0';
+		if (!ft_strrchr(tex_str, '.')
+			|| ft_strncmp(ft_strrchr(tex_str, '.'), ".png", 4) != 0)
+			return (report_err("Filepath with missing/wrong extension"), NULL);
+		cub->tex.walls[id] = mlx_load_png(tex_str);
 		if (!cub->tex.walls[id])
-			return (report_mlx_tex_load_failed(t));
+			return (report_mlx_tex_load_failed(tex_str));
 		cub->tex_id++;
 	}
 	else
-	{
-		ft_eprintf("Error\n\t- Trying to load texture id %d twice.\n", id);
-		return (NULL);
-	}	
+		return (report_err("Trying to load a texture twice."), NULL);
+//	{
+//		ft_eprintf("Error\n\t- Trying to load texture id %d twice.\n", id);
+//		return (NULL);
+//	}	
 	return (cub);
 }
 

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 18:22:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 20:37:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:53:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	on_keypress(mlx_key_data_t event, void *param)
 	}
 	if (event.key == MLX_KEY_ESCAPE)
 		on_close(param);
+	else if (event.key == MLX_KEY_BACKSPACE)
+		cub->track_mouse = !cub->track_mouse;
 	else if (event.key == MLX_KEY_LEFT)
 		cub_player_rotate(cub, -10.0f * ROT_FACTOR);
 	else if (event.key == MLX_KEY_RIGHT)
@@ -46,6 +48,8 @@ void	on_cursor_move(double xpos, double ypos, void *param)
 
 	(void)ypos;
 	cub = (t_cub *)param;
+	if (!cub->track_mouse)
+		return ;
 	dx = (float)(xpos - cub->scn_midx);
 	if (init == 0)
 	{

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   t_wall_chk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:23:11 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 06:02:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:12:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -23,13 +23,13 @@ static int	validate_borders(t_map *m)
 		if (!(m->tab[0][i] == '\0' || ft_strchr(" 1", m->tab[0][i]))
 			|| (!(m->tab[m->height - 1][i] == '\0'
 			|| ft_strchr(" 1", m->tab[m->height - 1][i]))))
-			return (report_err("Map has an open border"));
+			return (report_err("Map is not closed !"));
 	i = -1;
 	while (++i < m->height)
 		if (!(m->tab[i][0] == '\0' || ft_strchr(" 1", m->tab[i][0]))
 			|| (!(m->tab[i][m->width - 1] == '\0'
 			|| ft_strchr(" 1", m->tab[i][m->width - 1]))))
-			return (report_err("Map has an open border"));
+			return (report_err("Map is not closed !"));
 	return (0);
 }
 /*

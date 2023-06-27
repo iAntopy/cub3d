@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/24 00:05:10 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/26 19:38:24 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,12 +89,13 @@ BSRCS	:= $(addprefix b_src/, $(BSRC_FLS))
 MOBJS	:= $(MSRCS:.c=.o)
 BOBJS	:= $(BSRCS:.c=.o)
 
-CFLAGS	:= -Wextra -Wall -Werror -pthread -g -fsanitize=address
+#CFLAGS	:= -Wextra -Wall -Werror -pthread -g# -fsanitize=address
+CFLAGS	:= -Wextra -Wall -Werror -g
 # CFLAGS	:= -Wextra -Wall -Werror -pthread -g 
 #CFLAGS	:= -Wextra -Wall -Werror -pthread -g  
 #CFLAGS	:= -Wextra -Wall -Werror -pthread -ffast-math -O3
 
-LDFLAGS	:= -fsanitize=address
+#LDFLAGS	:= -fsanitize=address
 
 #CC		:= clang
 CC		:= gcc
@@ -114,14 +115,14 @@ MTXDIR	:= lib/mtxlib
 LIBMTX	:= $(MTXDIR)/libmtx.a
 
 SUBMOD_SRC := $(GLFWDIR)/src $(MLXDIR)/src $(LFTDIR)/libft.h $(MTXDIR)/src
-EXT_INCL := -I $(MLXDIR)/include -I $(GLFWDIR)/include 
+EXT_INCL := -I $(MLXDIR)/include -I $(GLFWDIR)/include -pthread 
 
 INCL	:= -I $(LFTDIR) -I $(MTXDIR)/includes $(EXT_INCL)
 
 $(MOBJS):	SPEC_INCL := -I m_include/
 $(BOBJS):	SPEC_INCL := -I b_include/
 
-BASE_LIBS := -ldl -pthread -lm
+BASE_LIBS := -ldl -lm
 PROJ_LIBS := $(LIBMTX) $(LIBMLX) $(LIBGLFW) $(LIBFT)
 LIBS	:= $(PROJ_LIBS) $(BASE_LIBS)
 
@@ -131,6 +132,7 @@ ifeq ($(UNAME_S), Darwin)
 endif
 
 NAME	:= cub3D
+BONUS_NAME	:= cub3D_bonus
 
 all: $(NAME)
 
@@ -160,22 +162,17 @@ $(LIBMTX):
 
 %.o: %.c 
 	$(CC) $(CFLAGS) $(INCL) $(SPEC_INCL) -o $@ -c $<
-
-# $(MOBJS) : $(MSRCS)
-# 	$(CC) $(CFLAGS) $(MINCL) -c $< -o $@
-	
-# $(BOBJS) : $(BSRCS)
-# 	$(CC) $(CFLAGS) $(BINCL) -c $< -o $@
 	
 #$(NAME): git_submodule $(LIBMTX) $(LIBMLX) $(LIBFT) $(OBJS)
 $(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(MOBJS)
-	echo $(MOBJS)
 	@echo "Linking executable"
-	$(CC) $(CFLAGS) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(SPEC_INCL) -o $(NAME)
 
-bonus: $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
+$(BONUS_NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
 	@echo "Linking executable"
-	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
+	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(SPEC_INCL) -o $(BONUS_NAME)
+
+bonus: $(BONUS_NAME) $(BOBJS)
 
 clean:
 	@rm -f $(MOBJS) $(BOBJS)
@@ -187,5 +184,5 @@ fclean: clean
 
 re: fclean bonus
 
-.PHONY: all, clean, fclean, re, libmlx
+.PHONY: all, clean, fclean, re, libmlx libmtx libglfw3 libft
 
