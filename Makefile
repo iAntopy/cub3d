@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,9 +6,9 @@
 #    By: gehebert <gehebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/26 01:37:41 by gehebert         ###   ########.fr        #
+#    Updated: 2023/06/26 20:01:28 by gehebert         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 MSRC_FLS	:=		main.c 			\
 					event_handlers.c	\
@@ -132,8 +132,7 @@ ifeq ($(UNAME_S), Darwin)
 endif
 
 NAME	:= cub3D
-
-all: $(NAME)
+BAME	:= bonus_cub3D
 
 $(SUBMOD_SRC):
 	@echo "Submodule init"
@@ -169,14 +168,17 @@ $(LIBMTX):
 # 	$(CC) $(CFLAGS) $(BINCL) -c $< -o $@
 	
 #$(NAME): git_submodule $(LIBMTX) $(LIBMLX) $(LIBFT) $(OBJS)
+
 $(NAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(MOBJS)
-	echo $(MOBJS)
-	@echo "Linking executable"
 	$(CC) $(CFLAGS) $(MOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(MINCL) -o $(NAME)
 
-bonus: $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
-	@echo "Linking executable"
-	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(NAME)
+$(BAME): $(SUBMOD_SRC) $(PROJ_LIBS) $(BOBJS)
+	$(CC) $(CFLAGS) $(BOBJS) $(LIBS) $(LDFLAGS) $(INCL) $(BINCL) -o $(BAME)
+
+
+bonus:	$(BAME)
+
+all:	$(NAME)
 
 clean:
 	@rm -f $(MOBJS) $(BOBJS)
@@ -184,9 +186,9 @@ clean:
 #	@rm -rf $(GLFWDIR)/build
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(BAME)
 
-re: fclean bonus
+re: fclean all
 
-.PHONY: all, clean, fclean, re, libmlx
+.PHONY: all, bonus, clean, fclean, re, libmlx
 
