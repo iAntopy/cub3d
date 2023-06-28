@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:08:21 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/27 18:56:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 22:04:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	__obj_lever_check_if_pressed(t_oinst *obj, t_cub *cub)
 	other = cub->objs.instances;
 	while (other)
 	{
-		if (obj_get_type(other) == OBJ_PLAYER
+		if (obj_get_issolid(other)
 			&& other->cx == obj->cx && other->cy == obj->cy)
 		{
 			activate_portal(prtl, 1);

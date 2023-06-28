@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/27 15:51:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 22:01:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 # include "../lib/mtxlib/includes/mtxlib.h"
 
 # define DEBUG 0
-# define HD 0
+# define HD 1
 
 /// SCN_WIDTH MUST BE > SCN_HEIGHT
 # if HD
-#  define SCN_WIDTH  1980
+#  define SCN_WIDTH  1560
 #  define SCN_HEIGHT 1080
 # else
 #  define SCN_WIDTH  1024
