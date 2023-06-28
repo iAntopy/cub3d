@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 20:10:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 20:06:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:08:44 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	update_rays(t_cub *cub)
 	_mtx_addf_pscalar(cub->hero.rcast.theta_offs, cub->hero.ori,
 		cub->hero.rcast.ray_thetas);
 	mtx_linspace_update(cub->hero.rcast.ray_thetas,
-		cub->hero.ori - cub->hfov, cub->hero.ori + FOV_HF, 1);
+		cub->hero.ori - cub->hfov, cub->hero.ori + cub->hfov, 1);
 	mtx_cos(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[0]);
 	mtx_sin(cub->hero.rcast.ray_thetas, cub->hero.rcast.rays[1]);
 	raycast_all_vectors(&cub->hero.rcast, &cub->map);

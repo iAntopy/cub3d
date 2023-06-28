@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 21:07:26 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/26 19:33:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:41:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,13 @@ int	set_player_cell_pos(t_cub *cub, int x, int y)
 
 void	cub_setup_mlx_hooks_and_settings(t_cub *cub)
 {
+	int	wpos[4];
+
 	mlx_focus(cub->mlx);
 	mlx_set_cursor_mode(cub->mlx, MLX_MOUSE_HIDDEN);
+	mlx_get_window_pos(cub->mlx, wpos, wpos + 1);
+	mlx_set_mouse_pos(cub->mlx, wpos[0] + cub->scn_midx,
+		wpos[1] + cub->scn_midx + 1);
 	mlx_cursor_hook(cub->mlx, on_cursor_move, cub);
 	mlx_key_hook(cub->mlx, on_keypress, cub);
 	mlx_loop_hook(cub->mlx, (void (*)(void *))on_update, cub);

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 18:18:35 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/26 21:05:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:51:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,6 +367,8 @@ typedef struct s_objects_list_elem
 	float						dist;
 
 	int							isactive;
+	int							isteleportable;
+	t_oinst						*last_teleport_prtl;
 	int							scheduled_for_deletion;
 	int							counter;
 

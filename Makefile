@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/26 20:40:05 by iamongeo          #+#    #+#              #
-#    Updated: 2023/06/27 01:34:52 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/06/27 20:25:58 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,7 @@ BSRC_FLS	:=		main.c 			\
 				object_activators.c	\
 				object_actions.c	\
 				object_actions2.c	\
+				object_actions3.c	\
 				object_linkers.c	\
 				object_instanciators.c	\
 				object_instanciators2.c	\

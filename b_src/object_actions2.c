@@ -6,15 +6,14 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:08:21 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 15:27:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:56:52 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-#define PORTAL_TRIGGER_DIST_SQ 400.0f
 #define NPC_TWICH_TIMER 100
-#define LEVER_RESET_TIMER 400
+#define LEVER_RESET_TIMER 800
 
 // target is resulting target coord as vect2
 static void	find_proper_npc_dest(t_cub *cub, t_oinst *npc)
@@ -28,6 +27,9 @@ static void	find_proper_npc_dest(t_cub *cub, t_oinst *npc)
 		npc->ori = ft_random() * M_TAU;
 		npc->target[0] = npc->px + cosf(npc->ori) * NPC_TWICH_TIMER;
 		npc->target[1] = npc->py + sinf(npc->ori) * NPC_TWICH_TIMER;
+		if (npc->target[0] < 0 || cub->map.width_px <= npc->target[0]
+			|| npc->target[1] < 0 || cub->map.height_px <= npc->target[1])
+			continue ;
 		get_cell(npc->target[0], npc->target[1], cell, cell + 1);
 		is_in_wall = is_wall(&cub->map, cell[0], cell[1]);
 	}
@@ -51,34 +53,6 @@ int	__obj_action_player(t_oinst *obj, t_cub *cub)
 	else if (obj->isactive)
 		obj_move_rel(cub, obj, 1.0f, 0.0f);
 	++obj->counter;
-	return (0);
-}
-
-int	__obj_action_portal(t_oinst *obj, t_cub *cub)
-{
-	float	dt[2];
-	float	dist;
-	t_oinst	*other;
-
-	if (!obj->isactive || !obj->relative || obj->counter > 0)
-		return (obj->counter--);
-	other = cub->objs.instances;
-	while (other)
-	{
-		if (!(obj_get_type(other) == OBJ_PLAYER
-				|| obj_get_type(other) == OBJ_FIREBALL) && next_obj(&other))
-			continue ;
-		find_vector_delta(&obj->px, &other->px, dt);
-		dist = dt[0] * dt[0] + dt[1] * dt[1];
-		if (dist < PORTAL_TRIGGER_DIST_SQ)
-		{
-			obj_set_position(cub, other, ((t_oinst *)obj->relative)->px,
-				((t_oinst *)obj->relative)->py);
-			((t_oinst *)obj->relative)->counter = 30;
-			break ;
-		}
-		other = other->next;
-	}
 	return (0);
 }
 

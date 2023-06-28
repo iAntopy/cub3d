@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 19:13:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/05 19:13:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:28:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	create_fireball_instance(t_cub *cub, float *pos, int alleg, t_oinst *link)
 	}
 	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
+	new_obj->isteleportable = 1;
 	cub->objs.instances = new_obj;
 	return (new_obj->_id);
 }
@@ -66,6 +67,7 @@ int	create_firepit_instance(t_cub *cub, float *pos, int alleg, t_oinst *link)
 	}
 	new_obj->gset = new_obj->type->gsets[0];
 	new_obj->next = cub->objs.instances;
+	new_obj->isteleportable = 1;
 	cub->objs.instances = new_obj;
 	return (new_obj->_id);
 }

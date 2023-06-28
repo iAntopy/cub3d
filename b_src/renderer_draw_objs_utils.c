@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 03:54:32 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/27 01:38:43 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:39:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ inline int	__rdr_obj_out_of_frame(t_objd *od)
 		|| (od->pframe[2] <= (od->drawx - (od->dims[0] >> 1))));
 }
 
-// Assumes is_drawable == true, checked earlier.
+// Assumes is_drawable == true, checked earlier. 
+// If the object is oriented (has multiple textures loaded to diplay it
+// in differentes orientations) this selects the correct texture based
+// on orientation. Otherwise, selects the texture based on current texture id.
+// texture ids would be used to cycle through animation sequences.
 inline void	__rdr_select_draw_texture(t_objd *od, t_oinst *obj)
 {
 	const float		rad_to_idx_ratio = 8.0f * M_INV_TAU;

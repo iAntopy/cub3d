@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 08:22:23 by gehebert          #+#    #+#             */
-/*   Updated: 2023/06/25 01:10:57 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:16:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,11 @@ t_cub	*e_mtrx_count(t_cub *cub)
 
 t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 {
+	printf("get in\n");
 	box->xnum = 0;
 	box->pnum = 0;
 	cub = e_mtrx_count(cub);
+	printf("cub %p\n", cub);
 	if (!cub || cub->box.pset == 0)
 		return (NULL);
 	box->xform = (mlx_texture_t **)calloc(sizeof(mlx_texture_t *),
@@ -122,9 +124,11 @@ t_cub	*e_list_txtr(t_cub *cub, t_box *box, t_map *map)
 	cub->dual = (t_matrx *)calloc(sizeof(t_matrx), cub->box.n_dual + 1);
 	if (!cub->dual)
 		return (NULL);
+	printf("lololo\n");
 	cub = e_mtrx_link(cub, box, map->raw);
 	if (!cub)
 		return (NULL);
+	printf("lalala\n");
 	cub->box.chrs = chrs_builder(cub);
 	if (!cub->box.chrs)
 		return (NULL);

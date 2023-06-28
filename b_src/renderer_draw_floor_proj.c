@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 17:27:04 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/07 22:17:05 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:20:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ typedef struct s_floor_ceiling_proj_data
 	int				x;
 	int				y;
 	float			*params;
-	uint32_t		*fl_p;
-	uint32_t		*wl_p;
-	uint32_t		*cl_p;
 	float			*dpbuff;
 	float			*dpbuff_flr;
 	char			*isproj;
@@ -41,12 +38,6 @@ static void	__init_flr_ceil_proj_data(t_cub *cub, t_flrp *fp)
 	fp->pbuff = (uint32_t *)cub->renderer.objs_layer->pixels;
 	fp->y = cub->scn_midy;
 	fp->params = cub->renderer.floor_factors - 1;
-	fp->fl_p = (uint32_t *)cub->renderer.bg_layer->pixels
-		+ (SCN_WIDTH * (cub->scn_midy + 1)) - 1;
-	fp->wl_p = (uint32_t *)cub->renderer.walls_layer->pixels
-		+ (SCN_WIDTH * (cub->scn_midy + 1)) - 1;
-	fp->cl_p = (uint32_t *)cub->renderer.bg_layer->pixels
-		+ (SCN_WIDTH * (cub->scn_midy - 2)) - 1;
 	fp->dpbuff = cub->renderer.dpbuff;
 	fp->dpbuff_flr = fp->dpbuff + cub->yoffs[fp->y];
 	fp->isproj = cub->renderer.isproj + cub->yoffs[fp->y];

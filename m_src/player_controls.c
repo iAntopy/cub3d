@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 05:52:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/04/13 19:49:53 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:10:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	cub_player_zoom(t_cub *cub, float dz)
 {
 	float	new_fov;
 
-	if (fabsf(dz) > 0.5)
+	if (fabsf(dz) > 0.9)
 		return ;
 	new_fov = cub->fov * (1 + dz);
 	if (new_fov < FOV_MIN)

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 15:28:02 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/08 23:04:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:43:01 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static inline void	__init_wproj(t_cub *cub, t_walp *wp, t_rcol *rc, int prj_h)
 	wp->tex_shape[1] = tex->height;
 	rc->half_texh = (tex->height >> 1);
 	tex_start_x = (int)(wp->pd->tex_ratio * tex->width);
-	rc->scn_height = ft_clamp(wp->pd->tex_height, 0, prj_h - 1);
+	rc->scn_height = ft_clamp(wp->pd->tex_height, 0, prj_h - 2);
 	rc->half_height = (rc->scn_height >> 1);
 	rc->ratio = (float)tex->height / (float)wp->pd->tex_height;
 	rc->scn_start_y = ((SCN_HEIGHT - rc->scn_height) >> 1);

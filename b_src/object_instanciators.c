@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 20:45:55 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/12 15:34:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:28:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	create_player_instance(t_cub *cub, float *pos, int alleg, t_oinst *spawnp)
 	new_obj->relative = spawnp;
 	new_obj->gset = new_obj->type->gsets[new_obj->alleg];
 	new_obj->next = cub->objs.instances;
+	new_obj->isteleportable = 1;
 	cub->objs.instances = new_obj;
 	return (new_obj->_id);
 }

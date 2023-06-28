@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 01:09:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/06/23 16:36:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:46:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static uint32_t	*init_column_data(t_cub *cub, t_rdata *rd, t_rcol *rc, int *tw)
 	*tw = tex->width;
 	rc->half_texh = (tex->height >> 1);
 	tex_start_x = (int)(rd->tex_ratio * tex->width);
-	rc->scn_height = ft_clamp(rd->tex_height, 0, SCN_HEIGHT);
+	rc->scn_height = ft_clamp(rd->tex_height, 0, SCN_HEIGHT - 1);
 	rc->half_height = (rc->scn_height >> 1);
 	rc->ratio = (float)tex->height / (float)rd->tex_height;
 	rc->scn_start_y = ((SCN_HEIGHT - rc->scn_height) >> 1);
