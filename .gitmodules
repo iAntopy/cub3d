@@ -7,11 +7,11 @@
 	path = lib/glfw
 	url = https://github.com/glfw/glfw.git
 	branch = master
-[submodule "lib/libft"]
-	path = lib/libft
-	url = https://github.com/iAntopy/libft.git
-	branch = cub3d
 [submodule "lib/mtxlib"]
 	path = lib/mtxlib
 	url = https://github.com/iAntopy/mtxlib.git
+	branch = cub3d
+[submodule "lib/libft"]
+	path = lib/libft
+	url = https://github.com/iAntopy/libft.git
 	branch = cub3d
